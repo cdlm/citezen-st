@@ -26,13 +26,18 @@ BibEntry >> addToBibSet: aBibSet [
 ]
 
 { #category : #accessing }
-BibEntry >> fields [
-	^ fields
+BibEntry >> at: fieldName [
+	^ fields at: fieldName
 ]
 
 { #category : #accessing }
-BibEntry >> fields: aDictionary [
-	fields := aDictionary
+BibEntry >> at: fieldName put: aValue [
+	^ fields at: fieldName put: aValue
+]
+
+{ #category : #initialization }
+BibEntry >> initialize [
+	fields := Dictionary new
 ]
 
 { #category : #accessing }
@@ -45,12 +50,22 @@ BibEntry >> key: aKey [
 	key := aKey
 ]
 
+{ #category : #initialization }
+BibEntry >> setFields: aDictionary [
+	fields := aDictionary
+]
+
+{ #category : #accessing }
+BibEntry >> size [
+	^ fields size
+]
+
 { #category : #accessing }
 BibEntry >> type [
 	^ type
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 BibEntry >> type: aType [
 	type := aType
 ]

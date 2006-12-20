@@ -80,7 +80,7 @@ BibParser >> buildEntry: tokens [
 		startingAt: (self class startingStateForBodyContents).
 	^ (BibEntry type: (tokens at: 2) value)
 		key: body key;
-		fields: body value
+		setFields: body value
 ]
 
 { #category : #'private-building' }

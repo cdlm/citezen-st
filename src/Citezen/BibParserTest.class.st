@@ -28,7 +28,7 @@ BibParserTest >> testEntry [
 	self assert: bibset macros isEmpty.
 	entry := bibset entries at: 'foobar'.
 	self assert: entry type = 'article'.
-	self assert: entry fields size = 4
+	self assert: entry size = 4
 ]
 
 { #category : #testing }
