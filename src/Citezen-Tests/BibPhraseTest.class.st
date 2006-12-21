@@ -1,5 +1,5 @@
 Class {
-	#name : #PhraseTest,
+	#name : #BibPhraseTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'entry',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #setup }
-PhraseTest >> setUp [
+BibPhraseTest >> setUp [
 	entry := (BibEntry type: #article)
 		key: #foobar;
 		at: #author put: 'A';
@@ -24,22 +24,22 @@ PhraseTest >> setUp [
 		BibFieldRef name: #journal.
 		BibFieldRef name: #year.
 	}.
-	renderer := TextRenderer new
+	renderer := BibTextRenderer new
 ]
 
 { #category : #testing }
-PhraseTest >> testPhrase [
-	phrase renderEntry: entry using: renderer.
+BibPhraseTest >> testPhrase [
+	renderer render: phrase for: entry.
 	self assert: renderer contents = 'ATJY'
 ]
 
 { #category : #testing }
-PhraseTest >> testPhraseWithDecorations [
+BibPhraseTest >> testPhraseWithDecorations [
 	phrase initiator: '[42] ';
 		 terminator: '.';
 		 separator: '; ';
 		 lastSeparator: ', '.
 	"not really correct use of the last separator, should be a separate phrase"
-	phrase renderEntry: entry using: renderer.
+	renderer render: phrase for: entry.
 	self assert: renderer contents = '[42] A; T; J, Y.'
 ]
