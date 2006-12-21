@@ -16,6 +16,11 @@ BibSequencePhrase class >> with: aCollection [
 	^ self new addAll: aCollection; yourself
 ]
 
+{ #category : #'visitor-double dispatch' }
+BibSequencePhrase >> acceptVisitor: aVisitor [
+	^ aVisitor visitSequencePhrase: self
+]
+
 { #category : #accessing }
 BibSequencePhrase >> addAll: phrasesCollection [
 	^ subPhrases addAll: phrasesCollection
@@ -26,9 +31,20 @@ BibSequencePhrase >> initialize [
 	subPhrases := OrderedCollection new
 ]
 
+{ #category : #accessing }
+BibSequencePhrase >> initiator [
+	^ initiator
+]
+
 { #category : #initializing }
 BibSequencePhrase >> initiator: anObject [
 	initiator := anObject
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> lastSeparator [
+	lastSeparator ifNotNil: [^ lastSeparator].
+	^ separator
 ]
 
 { #category : #initializing }
@@ -36,39 +52,29 @@ BibSequencePhrase >> lastSeparator: anObject [
 	lastSeparator := anObject
 ]
 
-{ #category : #templating }
-BibSequencePhrase >> renderEntry: anEntry using: aRenderer [
-	|subSize|
-	subSize := subPhrases size.
-	subSize > 0 ifTrue: [
-		initiator ifNotNil: [aRenderer text: initiator].
-		subPhrases
-			do: [:each | each renderEntry: anEntry using: aRenderer]
-			separatedBy: [
-				subSize := subSize - 1. "count down to last separator"
-				subSize = 1
-					ifTrue: [self renderLastSeparatorUsing: aRenderer]
-					ifFalse: [self renderSeparatorUsing: aRenderer]].
-		terminator ifNotNil: [aRenderer text: terminator]
-	]
-]
-
-{ #category : #templating }
-BibSequencePhrase >> renderLastSeparatorUsing: aRenderer [
-	lastSeparator ifNil: [^ self renderSeparatorUsing: aRenderer].
-	aRenderer text: lastSeparator
-	
-]
-
-{ #category : #templating }
-BibSequencePhrase >> renderSeparatorUsing: aRenderer [
-	separator ifNotNil: [aRenderer text: separator]
-	
+{ #category : #accessing }
+BibSequencePhrase >> separator [
+	^ separator
 ]
 
 { #category : #initializing }
 BibSequencePhrase >> separator: anObject [
 	separator := anObject
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> size [
+	^ subPhrases size
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> subPhrases [
+	^ subPhrases
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> terminator [
+	^ terminator
 ]
 
 { #category : #initializing }
