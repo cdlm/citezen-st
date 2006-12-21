@@ -1,7 +1,7 @@
 Class {
 	#name : #BibParser,
 	#superclass : #SmaCCParser,
-	#category : #Citezen
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
@@ -13,7 +13,7 @@ BibParser class >> parserDefinitionComment [
 %start Bibfile BodyContents Field;
 
 ## outer parser rules
-Bibfile:
+Bibfile :
 	(CommentDeclaration | MacroDeclaration | EntryDeclaration)*
 		{ BibSet fromDeclarations: ('1' reject: [:it | it isNil]) };
 

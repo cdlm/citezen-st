@@ -1,7 +1,7 @@
 Class {
 	#name : #BibScanner,
 	#superclass : #SmaCCScanner,
-	#category : #Citezen
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
