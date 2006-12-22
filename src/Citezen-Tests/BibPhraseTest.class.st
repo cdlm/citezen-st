@@ -35,10 +35,10 @@ BibPhraseTest >> testPhrase [
 
 { #category : #testing }
 BibPhraseTest >> testPhraseWithDecorations [
-	phrase initiator: '[42] ';
-		 terminator: '.';
-		 separator: '; ';
-		 lastSeparator: ', '.
+	phrase initiatorText: '[42] ';
+		 terminatorText: '.';
+		 separatorText: '; ';
+		 lastSeparatorText: ', '.
 	"not really correct use of the last separator, should be a separate phrase"
 	renderer render: phrase for: entry.
 	self assert: renderer contents = '[42] A; T; J, Y.'
