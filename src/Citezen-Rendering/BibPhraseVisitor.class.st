@@ -12,7 +12,7 @@ BibPhraseVisitor >> visit: anObject [
 { #category : #'visitor-double dispatch' }
 BibPhraseVisitor >> visitAlternativePhrase: aPhrase [
 	"walk everywhere by default"
-	aPhrase subPhrases do: [:each | self visit: each]
+	^ aPhrase subPhrases do: [:each | self visit: each]
 ]
 
 { #category : #'visitor-double dispatch' }
@@ -20,6 +20,10 @@ BibPhraseVisitor >> visitFieldRef: aPhrase [
 ]
 
 { #category : #'visitor-double dispatch' }
+BibPhraseVisitor >> visitLiteralPhrase: aPhrase [
+]
+
+{ #category : #'visitor-double dispatch' }
 BibPhraseVisitor >> visitSequencePhrase: aPhrase [
-	aPhrase subPhrases do: [:each | self visit: each]
+	^ aPhrase do: [:each | self visit: each]
 ]
