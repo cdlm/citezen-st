@@ -12,13 +12,37 @@ Class {
 }
 
 { #category : #'instance creation' }
-BibSequencePhrase class >> with: aCollection [
-	^ self new addAll: aCollection; yourself
+BibSequencePhrase class >> with: aCollection [ 
+	^ self new addSubPhrases: aCollection;
+		 yourself
+]
+
+{ #category : #'visitor-double dispatch' }
+BibSequencePhrase >> acceptVisitor: aVisitor [
+	^ aVisitor visitSequencePhrase: self
 ]
 
 { #category : #accessing }
-BibSequencePhrase >> addAll: phrasesCollection [
+BibSequencePhrase >> addSubPhrases: phrasesCollection [ 
 	^ subPhrases addAll: phrasesCollection
+]
+
+{ #category : #enumerating }
+BibSequencePhrase >> do: aBlock [
+	"iterates through 'virtual elements', eg. including necessary separators etc."
+	|remainingSize|
+	remainingSize := subPhrases size.
+	remainingSize > 0 ifTrue: [
+		self initiator ifNotNilDo: aBlock.
+		subPhrases
+			do: [:each | aBlock value: each]
+			separatedBy: [
+				remainingSize := remainingSize - 1. "count down to last separator"
+				remainingSize = 1
+					ifTrue: [self lastSeparator ifNotNilDo: aBlock]
+					ifFalse: [self separator ifNotNilDo: aBlock]].
+		self terminator ifNotNilDo: aBlock
+	]
 ]
 
 { #category : #initializing }
@@ -26,52 +50,68 @@ BibSequencePhrase >> initialize [
 	subPhrases := OrderedCollection new
 ]
 
-{ #category : #initializing }
-BibSequencePhrase >> initiator: anObject [
-	initiator := anObject
+{ #category : #accessing }
+BibSequencePhrase >> initiator [
+	^ initiator
 ]
 
-{ #category : #initializing }
-BibSequencePhrase >> lastSeparator: anObject [
-	lastSeparator := anObject
+{ #category : #accessing }
+BibSequencePhrase >> initiator: aPhrase [
+	initiator := aPhrase
 ]
 
-{ #category : #templating }
-BibSequencePhrase >> renderEntry: anEntry using: aRenderer [
-	|subSize|
-	subSize := subPhrases size.
-	subSize > 0 ifTrue: [
-		initiator ifNotNil: [aRenderer text: initiator].
-		subPhrases
-			do: [:each | each renderEntry: anEntry using: aRenderer]
-			separatedBy: [
-				subSize := subSize - 1. "count down to last separator"
-				subSize = 1
-					ifTrue: [self renderLastSeparatorUsing: aRenderer]
-					ifFalse: [self renderSeparatorUsing: aRenderer]].
-		terminator ifNotNil: [aRenderer text: terminator]
-	]
+{ #category : #accessing }
+BibSequencePhrase >> initiatorText: aString [
+	initiator := BibLiteralPhrase text: aString
 ]
 
-{ #category : #templating }
-BibSequencePhrase >> renderLastSeparatorUsing: aRenderer [
-	lastSeparator ifNil: [^ self renderSeparatorUsing: aRenderer].
-	aRenderer text: lastSeparator
-	
+{ #category : #accessing }
+BibSequencePhrase >> lastSeparator [
+	lastSeparator ifNil: [^ separator].
+	^ lastSeparator
 ]
 
-{ #category : #templating }
-BibSequencePhrase >> renderSeparatorUsing: aRenderer [
-	separator ifNotNil: [aRenderer text: separator]
-	
+{ #category : #accessing }
+BibSequencePhrase >> lastSeparator: aPhrase [
+	lastSeparator := aPhrase
 ]
 
-{ #category : #initializing }
-BibSequencePhrase >> separator: anObject [
-	separator := anObject
+{ #category : #accessing }
+BibSequencePhrase >> lastSeparatorText: aString [
+	lastSeparator := BibLiteralPhrase text: aString
 ]
 
-{ #category : #initializing }
-BibSequencePhrase >> terminator: anObject [
-	terminator := anObject
+{ #category : #accessing }
+BibSequencePhrase >> separator [
+	^ separator
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> separator: aPhrase [
+	separator := aPhrase
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> separatorText: aString [
+	separator := BibLiteralPhrase text: aString
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> subPhrases [
+	^ subPhrases
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> terminator [
+	^ terminator
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> terminator: aPhrase [
+	terminator := aPhrase
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> terminatorText: aString [
+	terminator := BibLiteralPhrase text: aString
 ]

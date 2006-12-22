@@ -4,7 +4,7 @@ Class {
 	#category : #'Citezen-Rendering'
 }
 
-{ #category : #templating }
-BibPhrase >> renderEntry: anEntry using: aRenderer [
-	self subclassResponsibility
+{ #category : #'visitor-double dispatch' }
+BibPhrase >> acceptVisitor: aVisitor [
+	^ self subclassResponsibility
 ]

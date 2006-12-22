@@ -12,6 +12,11 @@ BibFieldRef class >> name: aSymbol [
 	^ self new fieldName: aSymbol; yourself
 ]
 
+{ #category : #'visitor-double dispatch' }
+BibFieldRef >> acceptVisitor: aVisitor [
+	^ aVisitor visitFieldRef: self
+]
+
 { #category : #accessing }
 BibFieldRef >> fieldName [
 	^ fieldName
@@ -20,9 +25,4 @@ BibFieldRef >> fieldName [
 { #category : #accessing }
 BibFieldRef >> fieldName: aSymbol [
 	fieldName := aSymbol
-]
-
-{ #category : #templating }
-BibFieldRef >> renderEntry: anEntry using: aRenderer [
-	aRenderer text: (anEntry at: self fieldName)
 ]
