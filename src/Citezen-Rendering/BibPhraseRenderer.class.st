@@ -18,8 +18,9 @@ BibPhraseRenderer >> contents [
 	^ stream contents
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BibPhraseRenderer >> initialize [
+	super initialize.
 	stream := WriteStream on: String new
 ]
 
@@ -31,7 +32,7 @@ BibPhraseRenderer >> render: aPhrase for: anEntry [
 	self visit: evaluatedPhrase
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BibPhraseRenderer >> setStream: aStream [
 	stream := aStream
 ]
