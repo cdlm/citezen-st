@@ -28,18 +28,45 @@ BibPhraseTest >> setUp [
 ]
 
 { #category : #testing }
-BibPhraseTest >> testPhrase [
+BibPhraseTest >> testEvaluation [
+	| result |
+	result := BibPhraseEvaluator evaluate: phrase for: entry.
+	self assert: result subPhrases size = 4.
+	self assert: result subPhrases first text = 'A'.
+	self assert: result subPhrases second text = 'T'.
+	self assert: result subPhrases third text = 'J'.
+	self assert: result subPhrases fourth text = 'Y'
+]
+
+{ #category : #testing }
+BibPhraseTest >> testEvaluationWithMissingField [
+	|result|
+	phrase add: (BibFieldRef name: #month). "fifth field"
+	result := BibPhraseEvaluator evaluate: phrase for: entry.
+	self assert: result subPhrases size = 4.
+	self assert: result subPhrases last text = 'Y'
+]
+
+{ #category : #testing }
+BibPhraseTest >> testRender [
 	renderer render: phrase for: entry.
 	self assert: renderer contents = 'ATJY'
 ]
 
 { #category : #testing }
-BibPhraseTest >> testPhraseWithDecorations [
-	phrase initiatorText: '[42] ';
-		 terminatorText: '.';
-		 separatorText: '; ';
-		 lastSeparatorText: ', '.
-	"not really correct use of the last separator, should be a separate phrase"
+BibPhraseTest >> testRenderWithDecorations [
+	phrase
+		initiatorText: '[42] ';
+		terminatorText: '.';
+		separatorText: '; ';
+		lastSeparatorText: ', '.
 	renderer render: phrase for: entry.
 	self assert: renderer contents = '[42] A; T; J, Y.'
+]
+
+{ #category : #testing }
+BibPhraseTest >> testRenderWithMissingField [
+	phrase add: (BibFieldRef name: #month).
+	renderer render: phrase for: entry.
+	self assert: renderer contents = 'ATJY'
 ]
