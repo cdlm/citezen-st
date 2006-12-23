@@ -40,7 +40,12 @@ BibEntry >> at: fieldName put: aValue [
 	^ fields at: fieldName put: aValue
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+BibEntry >> hasField: fieldName [
+	^ fields includesKey: fieldName
+]
+
+{ #category : #'initialize-release' }
 BibEntry >> initialize [
 	fields := Dictionary new
 ]
@@ -55,7 +60,7 @@ BibEntry >> key: aKey [
 	key := aKey
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BibEntry >> setFields: aDictionary [
 	fields := aDictionary
 ]
@@ -70,7 +75,7 @@ BibEntry >> type [
 	^ type
 ]
 
-{ #category : #initialization }
+{ #category : #'initialize-release' }
 BibEntry >> type: aType [
 	type := aType
 ]

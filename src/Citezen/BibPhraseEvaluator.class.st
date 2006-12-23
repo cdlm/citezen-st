@@ -18,6 +18,11 @@ BibPhraseEvaluator >> entry: anEntry [
 ]
 
 { #category : #'visitor-double dispatch' }
+BibPhraseEvaluator >> visitAlternativePhrase: aPhrase [ 
+	^ (aPhrase subPhraseFor: entry) ifNotNilDo: [:it | self visit: it]
+]
+
+{ #category : #'visitor-double dispatch' }
 BibPhraseEvaluator >> visitFieldRef: aFieldRef [
 	|value|
 	value := entry at: aFieldRef fieldName ifAbsent: [^ nil].

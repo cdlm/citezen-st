@@ -18,7 +18,7 @@ BibLiteralPhrase >> acceptVisitor: aVisitor [
 	^ aVisitor visitLiteralPhrase: self
 ]
 
-{ #category : #initializing }
+{ #category : #'initialize-release' }
 BibLiteralPhrase >> setText: aString [
 	text := aString
 ]

@@ -51,8 +51,9 @@ BibSequencePhrase >> do: aBlock [
 	]
 ]
 
-{ #category : #initializing }
+{ #category : #'initialize-release' }
 BibSequencePhrase >> initialize [
+	super initialize.
 	subPhrases := OrderedCollection new
 ]
 

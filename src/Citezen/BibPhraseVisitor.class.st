@@ -10,9 +10,9 @@ BibPhraseVisitor >> visit: anObject [
 ]
 
 { #category : #'visitor-double dispatch' }
-BibPhraseVisitor >> visitAlternativePhrase: aPhrase [
+BibPhraseVisitor >> visitAlternativePhrase: aPhrase [ 
 	"walk everywhere by default"
-	^ aPhrase subPhrases do: [:each | self visit: each]
+	^ aPhrase do: [:each | self visit: each]
 ]
 
 { #category : #'visitor-double dispatch' }
