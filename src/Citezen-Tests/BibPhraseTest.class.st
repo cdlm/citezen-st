@@ -28,6 +28,19 @@ BibPhraseTest >> setUp [
 ]
 
 { #category : #testing }
+BibPhraseTest >> testAlternate [
+	phrase add:
+		(BibAlternativePhrase new
+			add: (BibLiteralPhrase text: 'foo')
+			condition: [:anEntry | anEntry hasField: #bar]).
+	renderer render: phrase for: entry.
+	self assert: renderer contents = 'ATJY'.
+	entry at: #bar put: #whatever.
+	renderer render: phrase for: entry.
+	self assert: renderer contents = 'ATJYATJYfoo'
+]
+
+{ #category : #testing }
 BibPhraseTest >> testEvaluation [
 	| result |
 	result := BibPhraseEvaluator evaluate: phrase for: entry.
