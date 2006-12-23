@@ -31,6 +31,11 @@ BibEntry >> at: fieldName [
 ]
 
 { #category : #accessing }
+BibEntry >> at: fieldName ifAbsent: aBlock [
+	^ fields at: fieldName ifAbsent: aBlock
+]
+
+{ #category : #accessing }
 BibEntry >> at: fieldName put: aValue [
 	^ fields at: fieldName put: aValue
 ]

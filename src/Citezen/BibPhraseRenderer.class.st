@@ -24,9 +24,11 @@ BibPhraseRenderer >> initialize [
 ]
 
 { #category : #rendering }
-BibPhraseRenderer >> render: aPhrase for: anEntry [ 
-	currentEntry := anEntry.
-	self visit: aPhrase
+BibPhraseRenderer >> render: aPhrase for: anEntry [
+	|evaluatedPhrase|
+	evaluatedPhrase := BibPhraseEvaluator evaluate: aPhrase for: anEntry.
+	evaluatedPhrase ifNil: [^ self].
+	self visit: evaluatedPhrase
 ]
 
 { #category : #initialization }

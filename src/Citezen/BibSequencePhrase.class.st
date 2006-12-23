@@ -13,8 +13,9 @@ Class {
 
 { #category : #'instance creation' }
 BibSequencePhrase class >> with: aCollection [ 
-	^ self new addSubPhrases: aCollection;
-		 yourself
+	^ (self new)
+		addAll: aCollection;
+		yourself
 ]
 
 { #category : #'visitor-double dispatch' }
@@ -23,7 +24,12 @@ BibSequencePhrase >> acceptVisitor: aVisitor [
 ]
 
 { #category : #accessing }
-BibSequencePhrase >> addSubPhrases: phrasesCollection [ 
+BibSequencePhrase >> add: aPhrase [ 
+	^ subPhrases add: aPhrase
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> addAll: phrasesCollection [ 
 	^ subPhrases addAll: phrasesCollection
 ]
 
@@ -33,15 +39,15 @@ BibSequencePhrase >> do: aBlock [
 	|remainingSize|
 	remainingSize := subPhrases size.
 	remainingSize > 0 ifTrue: [
-		self initiator ifNotNilDo: aBlock.
+		self initiatorDo: aBlock.
 		subPhrases
 			do: [:each | aBlock value: each]
 			separatedBy: [
 				remainingSize := remainingSize - 1. "count down to last separator"
 				remainingSize = 1
-					ifTrue: [self lastSeparator ifNotNilDo: aBlock]
-					ifFalse: [self separator ifNotNilDo: aBlock]].
-		self terminator ifNotNilDo: aBlock
+					ifTrue: [self lastSeparatorDo: aBlock]
+					ifFalse: [self separatorDo: aBlock]].
+		self terminatorDo: aBlock
 	]
 ]
 
@@ -60,9 +66,19 @@ BibSequencePhrase >> initiator: aPhrase [
 	initiator := aPhrase
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing-convenience' }
+BibSequencePhrase >> initiatorDo: aBlock [
+	^ self initiator ifNotNilDo: aBlock
+]
+
+{ #category : #'accessing-convenience' }
 BibSequencePhrase >> initiatorText: aString [
 	initiator := BibLiteralPhrase text: aString
+]
+
+{ #category : #accessing }
+BibSequencePhrase >> internalLastSeparator [
+	^ lastSeparator
 ]
 
 { #category : #accessing }
@@ -76,7 +92,12 @@ BibSequencePhrase >> lastSeparator: aPhrase [
 	lastSeparator := aPhrase
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing-convenience' }
+BibSequencePhrase >> lastSeparatorDo: aBlock [ 
+	^ self internalLastSeparator ifNotNilDo: aBlock
+]
+
+{ #category : #'accessing-convenience' }
 BibSequencePhrase >> lastSeparatorText: aString [
 	lastSeparator := BibLiteralPhrase text: aString
 ]
@@ -91,7 +112,12 @@ BibSequencePhrase >> separator: aPhrase [
 	separator := aPhrase
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing-convenience' }
+BibSequencePhrase >> separatorDo: aBlock [
+	^ self separator ifNotNilDo: aBlock
+]
+
+{ #category : #'accessing-convenience' }
 BibSequencePhrase >> separatorText: aString [
 	separator := BibLiteralPhrase text: aString
 ]
@@ -111,7 +137,12 @@ BibSequencePhrase >> terminator: aPhrase [
 	terminator := aPhrase
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing-convenience' }
+BibSequencePhrase >> terminatorDo: aBlock [
+	^ self terminator ifNotNilDo: aBlock
+]
+
+{ #category : #'accessing-convenience' }
 BibSequencePhrase >> terminatorText: aString [
 	terminator := BibLiteralPhrase text: aString
 ]
