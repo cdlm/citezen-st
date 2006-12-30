@@ -16,6 +16,12 @@ BibPhraseVisitor >> visitAlternativePhrase: aPhrase [
 ]
 
 { #category : #'visitor-double dispatch' }
+BibPhraseVisitor >> visitBlockPhrase: aBlockPhrase [
+	^ self visit: aBlockPhrase subphrase
+
+]
+
+{ #category : #'visitor-double dispatch' }
 BibPhraseVisitor >> visitFieldRef: aPhrase [
 ]
 

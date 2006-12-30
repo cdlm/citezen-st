@@ -18,6 +18,11 @@ BibLiteralPhrase >> acceptVisitor: aVisitor [
 	^ aVisitor visitLiteralPhrase: self
 ]
 
+{ #category : #printing }
+BibLiteralPhrase >> printString [
+	^ super printString , '(''' , self text , ''')'
+]
+
 { #category : #'initialize-release' }
 BibLiteralPhrase >> setText: aString [
 	text := aString

@@ -23,6 +23,16 @@ BibPhraseEvaluator >> visitAlternativePhrase: aPhrase [
 ]
 
 { #category : #'visitor-double dispatch' }
+BibPhraseEvaluator >> visitBlockPhrase: aBlockPhrase [
+	|subphrase|
+	subphrase := super visitBlockPhrase: aBlockPhrase.
+	subphrase ifNil: [^ nil].
+	^ BibBlockPhrase
+		named: aBlockPhrase name
+		with: subphrase
+]
+
+{ #category : #'visitor-double dispatch' }
 BibPhraseEvaluator >> visitFieldRef: aFieldRef [
 	|value|
 	value := entry at: aFieldRef fieldName ifAbsent: [^ nil].
@@ -35,15 +45,16 @@ BibPhraseEvaluator >> visitLiteralPhrase: aPhrase [
 ]
 
 { #category : #'visitor-double dispatch' }
-BibPhraseEvaluator >> visitSequencePhrase: aPhrase [
-	|subPhrases|
+BibPhraseEvaluator >> visitSequencePhrase: aPhrase [ 
+	| subPhrases |
 	subPhrases := OrderedCollection new.
-	aPhrase subPhrases do: [:each |
-		(self visit: each) ifNotNilDo: [:it | subPhrases add: it]].
+	aPhrase subphrases 
+		do: [:each | (self visit: each) ifNotNilDo: [:it | subPhrases add: it]].
 	subPhrases ifEmpty: [^ nil].
 	^ (BibSequencePhrase with: subPhrases)
 		initiator: (aPhrase initiatorDo: [:it | self visit: it]);
 		separator: (aPhrase separatorDo: [:it | self visit: it]);
-		lastSeparator: (aPhrase internalLastSeparator ifNotNilDo: [:it | self visit: it]);
+		lastSeparator: (aPhrase internalLastSeparator 
+					ifNotNilDo: [:it | self visit: it]);
 		terminator: (aPhrase terminatorDo: [:it | self visit: it])
 ]
