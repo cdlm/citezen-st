@@ -7,6 +7,22 @@ Class {
 	#category : #'Citezen-Rendering'
 }
 
+{ #category : #'instance creation' }
+BibAlternativePhrase class >> rules: anAssociationCollection [
+	|instance|
+	instance := self new.
+	anAssociationCollection do: [:each |
+		instance add: each value condition: each key].
+	^ instance
+]
+
+{ #category : #'instance creation' }
+BibAlternativePhrase class >> rules: anAssociationCollection default: aPhrase [
+	^ (self rules: anAssociationCollection)
+		default: aPhrase;
+		yourself
+]
+
 { #category : #'visitor-double dispatch' }
 BibAlternativePhrase >> acceptVisitor: aVisitor [
 	^ aVisitor visitAlternativePhrase: self
@@ -15,6 +31,11 @@ BibAlternativePhrase >> acceptVisitor: aVisitor [
 { #category : #accessing }
 BibAlternativePhrase >> add: aPhrase condition: aBlock [ 
 	rules add: aBlock -> aPhrase
+]
+
+{ #category : #accessing }
+BibAlternativePhrase >> default: aPhrase [ 
+	rules add: [:whatever | true] -> aPhrase
 ]
 
 { #category : #accessing }

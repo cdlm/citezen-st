@@ -8,3 +8,8 @@ Class {
 BibPhrase >> acceptVisitor: aVisitor [
 	^ self subclassResponsibility
 ]
+
+{ #category : #convenience }
+BibPhrase >> named: aString [
+	^ BibBlockPhrase named: aString with: self
+]

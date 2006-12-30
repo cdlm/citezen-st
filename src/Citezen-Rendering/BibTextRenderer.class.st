@@ -1,6 +1,6 @@
 Class {
 	#name : #BibTextRenderer,
-	#superclass : #BibPhraseRenderer,
+	#superclass : #BibStreamRenderer,
 	#category : #'Citezen-Rendering'
 }
 

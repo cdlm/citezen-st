@@ -2,7 +2,7 @@ Class {
 	#name : #BibSequencePhrase,
 	#superclass : #BibPhrase,
 	#instVars : [
-		'subPhrases',
+		'subphrases',
 		'initiator',
 		'separator',
 		'lastSeparator',
@@ -25,36 +25,55 @@ BibSequencePhrase >> acceptVisitor: aVisitor [
 
 { #category : #accessing }
 BibSequencePhrase >> add: aPhrase [ 
-	^ subPhrases add: aPhrase
+	^ subphrases add: aPhrase
 ]
 
 { #category : #accessing }
 BibSequencePhrase >> addAll: phrasesCollection [ 
-	^ subPhrases addAll: phrasesCollection
+	^ subphrases addAll: phrasesCollection
+]
+
+{ #category : #'accessing-convenience' }
+BibSequencePhrase >> addField: aFieldName [
+	self add: (BibFieldRef field: aFieldName)
+]
+
+{ #category : #'accessing-convenience' }
+BibSequencePhrase >> addFields: aCollection [
+	aCollection do: [:each | self addField: each]
+]
+
+{ #category : #'accessing-convenience' }
+BibSequencePhrase >> addNamedField: aFieldName [
+	self add:
+		((BibFieldRef field: aFieldName) named: aFieldName)
+]
+
+{ #category : #'accessing-convenience' }
+BibSequencePhrase >> addNamedFields: aCollection [
+	aCollection do: [:each | self addNamedField: each]
 ]
 
 { #category : #enumerating }
-BibSequencePhrase >> do: aBlock [
-	"iterates through 'virtual elements', eg. including necessary separators etc."
-	|remainingSize|
-	remainingSize := subPhrases size.
-	remainingSize > 0 ifTrue: [
-		self initiatorDo: aBlock.
-		subPhrases
-			do: [:each | aBlock value: each]
-			separatedBy: [
-				remainingSize := remainingSize - 1. "count down to last separator"
-				remainingSize = 1
-					ifTrue: [self lastSeparatorDo: aBlock]
-					ifFalse: [self separatorDo: aBlock]].
-		self terminatorDo: aBlock
-	]
+BibSequencePhrase >> do: aBlock [ 
+	| remainingSize |
+	remainingSize := subphrases size.
+	remainingSize > 0 
+		ifTrue: 
+			[self initiatorDo: aBlock.
+			subphrases do: [:each | aBlock value: each]
+				separatedBy: 
+					[remainingSize := remainingSize - 1.
+					remainingSize = 1 
+						ifTrue: [self lastSeparatorDo: aBlock]
+						ifFalse: [self separatorDo: aBlock]].
+			self terminatorDo: aBlock]
 ]
 
 { #category : #'initialize-release' }
 BibSequencePhrase >> initialize [
 	super initialize.
-	subPhrases := OrderedCollection new
+	subphrases := OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -95,7 +114,7 @@ BibSequencePhrase >> lastSeparator: aPhrase [
 
 { #category : #'accessing-convenience' }
 BibSequencePhrase >> lastSeparatorDo: aBlock [ 
-	^ self internalLastSeparator ifNotNilDo: aBlock
+	^ self lastSeparator ifNotNilDo: aBlock
 ]
 
 { #category : #'accessing-convenience' }
@@ -124,8 +143,8 @@ BibSequencePhrase >> separatorText: aString [
 ]
 
 { #category : #accessing }
-BibSequencePhrase >> subPhrases [
-	^ subPhrases
+BibSequencePhrase >> subphrases [
+	^ subphrases
 ]
 
 { #category : #accessing }
