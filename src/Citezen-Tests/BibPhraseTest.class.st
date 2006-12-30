@@ -19,10 +19,10 @@ BibPhraseTest >> setUp [
 		at: #year put: 'Y';
 		yourself.
 	phrase := BibSequencePhrase with: {
-		BibFieldRef name: #author.
-		BibFieldRef name: #title.
-		BibFieldRef name: #journal.
-		BibFieldRef name: #year.
+		BibFieldRef field: #author.
+		BibFieldRef field: #title.
+		BibFieldRef field: #journal.
+		BibFieldRef field: #year.
 	}.
 	renderer := BibTextRenderer new
 ]
@@ -44,20 +44,26 @@ BibPhraseTest >> testAlternate [
 BibPhraseTest >> testEvaluation [
 	| result |
 	result := BibPhraseEvaluator evaluate: phrase for: entry.
-	self assert: result subPhrases size = 4.
-	self assert: result subPhrases first text = 'A'.
-	self assert: result subPhrases second text = 'T'.
-	self assert: result subPhrases third text = 'J'.
-	self assert: result subPhrases fourth text = 'Y'
+	self assert: result subphrases size = 4.
+	self assert: result subphrases first text = 'A'.
+	self assert: result subphrases second text = 'T'.
+	self assert: result subphrases third text = 'J'.
+	self assert: result subphrases fourth text = 'Y'
 ]
 
 { #category : #testing }
 BibPhraseTest >> testEvaluationWithMissingField [
-	|result|
-	phrase add: (BibFieldRef name: #month). "fifth field"
+	| result |
+	phrase add: (BibFieldRef field: #month).
 	result := BibPhraseEvaluator evaluate: phrase for: entry.
-	self assert: result subPhrases size = 4.
-	self assert: result subPhrases last text = 'Y'
+	self assert: result subphrases size = 4.
+	self assert: result subphrases last text = 'Y'
+]
+
+{ #category : #testing }
+BibPhraseTest >> testLibraryArticle [
+	renderer render: BibPhraseLibrary article for: entry.
+	self assert: renderer contents = 'A. T. In J, Y.'
 ]
 
 { #category : #testing }
@@ -79,7 +85,7 @@ BibPhraseTest >> testRenderWithDecorations [
 
 { #category : #testing }
 BibPhraseTest >> testRenderWithMissingField [
-	phrase add: (BibFieldRef name: #month).
+	phrase add: (BibFieldRef field: #month).
 	renderer render: phrase for: entry.
 	self assert: renderer contents = 'ATJY'
 ]
