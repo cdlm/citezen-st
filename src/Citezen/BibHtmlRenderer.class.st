@@ -7,15 +7,19 @@ Class {
 	#category : #'Citezen-Rendering'
 }
 
+{ #category : #'instance creation' }
+BibHtmlRenderer class >> on: anHtmlCanvas [
+	^ self new html: anHtmlCanvas
+]
+
 { #category : #accessing }
-BibHtmlRenderer >> contents [
-	^ html document close stream contents
+BibHtmlRenderer >> html [
+	^ html
 ]
 
 { #category : #'initialize-release' }
-BibHtmlRenderer >> initialize [
-	super initialize.
-	html := WAStaticHtmlCanvas root: WAHtmlRoot new
+BibHtmlRenderer >> html: anHtmlCanvas [
+	html := anHtmlCanvas
 ]
 
 { #category : #'visitor-double dispatch' }
