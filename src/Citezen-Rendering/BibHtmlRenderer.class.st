@@ -13,6 +13,11 @@ BibHtmlRenderer class >> on: anHtmlCanvas [
 ]
 
 { #category : #accessing }
+BibHtmlRenderer >> contents [
+	^html document stream contents
+]
+
+{ #category : #accessing }
 BibHtmlRenderer >> html [
 	^ html
 ]
