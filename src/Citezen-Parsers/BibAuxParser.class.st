@@ -50,7 +50,7 @@ BibAuxParser class >> scannerClass [
 
 { #category : #'generated-starting states' }
 BibAuxParser class >> startingStateForAuxFile [
-	^2
+	^1
 ]
 
 { #category : #'private-building' }
@@ -66,6 +66,16 @@ BibAuxParser >> addDatabase: aString [
 { #category : #'private-building' }
 BibAuxParser >> addDatabases: aCollection [
 	aCollection do: [:each | self addDatabase: each]
+]
+
+{ #category : #accessing }
+BibAuxParser >> citations [
+	^ citations
+]
+
+{ #category : #accessing }
+BibAuxParser >> databases [
+	^ databases
 ]
 
 { #category : #'initialize-release' }
@@ -138,6 +148,11 @@ BibAuxParser >> reduceTable [
 #(22 0 #reduceActionForRepeatXXGroupXXXXXXXXXXnameX1:)
 #(22 2 #reduceActionForRepeatXXGroupXXXXXXXXXXnameX2:)
 )
+]
+
+{ #category : #accessing }
+BibAuxParser >> style [
+	^ style
 ]
 
 { #category : #'private-building' }
