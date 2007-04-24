@@ -6,10 +6,10 @@ Class {
 
 { #category : #'test data' }
 BibParserTest class >> auxFile [
-	^'\citation{foobar}
+	^'junk
+	\citation{foobar}
 \citation{meuh}
-\bibstyle{alpha}
-\bibdata{test}
+\bibstyle{alpha}\bibdata{test}
 '
 ]
 
