@@ -4,6 +4,55 @@ Class {
 	#category : #'Citezen-Tests'
 }
 
+{ #category : #'test data' }
+BibParserTest class >> auxFile [
+	^'\citation{foobar}
+\citation{meuh}
+\bibstyle{alpha}
+\bibdata{test}
+'
+]
+
+{ #category : #'test data' }
+BibParserTest class >> bblFile [
+	^ '\begin{thebibliography}{dGdL42}
+
+\bibitem[dGdL42]{foobar}
+Thomas de~Grenier~de Latour.
+\newblock Hello world.
+\newblock {\em baz}, 2042.
+
+\bibitem[meu]{meuh}
+
+
+\end{thebibliography}
+'
+]
+
+{ #category : #'test data' }
+BibParserTest class >> bibFile [
+	^ '@string{ foo = "bar" }
+@string{ foo = "baz" }
+@article(foobar,
+	title = "Hello world",
+	author = {Thomas de Grenier de Latour},
+	journal = foo,
+	year = 2042,
+)
+
+@misc{meuh}'
+]
+
+{ #category : #testing }
+BibParserTest >> testAux [
+	| aux |
+	aux := BibAuxParser on: self class auxFile readStream.
+	aux parse.
+	self assert: aux citations size = 2.
+	self assert: aux databases size = 1.
+	self assert: aux style = 'alpha'
+]
+
 { #category : #testing }
 BibParserTest >> testComment [
 	|bibset|
