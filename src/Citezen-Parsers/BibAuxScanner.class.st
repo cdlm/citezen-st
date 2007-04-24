@@ -8,16 +8,16 @@ Class {
 BibAuxScanner class >> scannerDefinitionComment [
 
 	"<newline>		:	\r \n | \n | \r	;
-<name>		:	[A-Za-z0-9\!\$\&\*\+\-\.\/\:\;\<\>\?\[\]\^\_\`\|]+	;
+<name>			:	[A-Za-z0-9\!\$\&\*\+\-\.\/\:\;\<\>\?\[\]\^\_\`\|]+	;
 
 <citation>		:	\\ citation	;
-<bibcite>		:	\\ bibcite	;
+<bibcite>			:	\\ bibcite	;
 <bibstyle>		:	\\ bibstyle	;
 <bibdata>		:	\\ bibdata	;
 
 # tokens parsed by code
 <bracedString>	:	\{	;
-<junk>			:	[^\r\n]	;"
+<junk>			:	.	;"
 ]
 
 { #category : #scanning }
@@ -216,10 +216,10 @@ BibAuxScanner >> scanForToken [
 					^ self reportLastMatch].
 			^ self reportLastMatch].
 	currentCharacter = Character lf 
-		ifTrue: [^ self recordAndReportMatch: #(4 )].
+		ifTrue: [^ self recordAndReportMatch: #(4 11 )].
 	currentCharacter = Character cr 
 		ifTrue: 
-			[self recordMatch: #(4 ).
+			[self recordMatch: #(4 11 ).
 			self step.
 			currentCharacter = Character lf 
 				ifTrue: [^ self recordAndReportMatch: #(4 )].
