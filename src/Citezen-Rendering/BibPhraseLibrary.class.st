@@ -23,5 +23,26 @@ BibPhraseLibrary class >> article [
 		addNamedField: #note;
 		separatorText: '. ';
 		terminatorText: '.';
-		named: 'entry'
+		named: 'article'
+]
+
+{ #category : #'basic entry types' }
+BibPhraseLibrary class >> bibarticle [
+	^ BibSequencePhrase new
+		addNamedFields: #(url keywords);
+		add: ((BibAlternativePhrase
+				rules: {
+					[:e | e hasField: #here]
+					-> (BibSequencePhrase new
+							add: (BibLiteralPhrase text: 'HERE');
+							addField: #weight;
+							separatorText: '/ '; yourself)}
+				default: (BibSequencePhrase new
+							addFields: #(water fire);
+							separatorText: '| '; yourself))
+			named: 'elements');
+		addNamedField: #note;
+		separatorText: '!? ';
+		terminatorText: '...';
+		named: 'nimp'
 ]

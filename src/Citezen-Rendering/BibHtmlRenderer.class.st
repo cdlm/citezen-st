@@ -35,6 +35,11 @@ BibHtmlRenderer >> visitBlockPhrase: aPhrase [
 ]
 
 { #category : #'visitor-double dispatch' }
+BibHtmlRenderer >> visitFieldRef: aFieldRef [
+	html text: (entry at: aFieldRef fieldName)
+]
+
+{ #category : #'visitor-double dispatch' }
 BibHtmlRenderer >> visitLiteralPhrase: aPhrase [
 	html text: aPhrase text
 ]

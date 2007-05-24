@@ -43,6 +43,11 @@ BibAlternativePhrase >> do: aBlock [
 	^ rules do: [:each | aBlock value: each value]
 ]
 
+{ #category : #accessing }
+BibAlternativePhrase >> do: aBlock for: anEntry [
+	^ (self subPhraseFor: anEntry) ifNotNilDo: [:it | aBlock value: it]
+]
+
 { #category : #'initialize-release' }
 BibAlternativePhrase >> initialize [
 	super initialize.
