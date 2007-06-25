@@ -9,6 +9,7 @@ BibScanner class >> scannerDefinitionComment [
 
 	"<whitespace>	:	[\s]*	;
 <comment>	:	\% [^\r\n]*	;
+<number>	:	[0-9]+ ;
 <name>		:	[A-Za-z0-9\!\$\&\*\+\-\.\/\:\;\<\>\?\[\]\^\_\`\|]+	;
 <quotedString>	:	\"" [^\""]* \""	;
 
@@ -23,39 +24,85 @@ BibScanner class >> scannerDefinitionComment [
 
 { #category : #'generated-tokens' }
 BibScanner >> bracedStringId [
-	^11
+	^12
 ]
 
 { #category : #'generated-tokens' }
 BibScanner >> emptySymbolTokenId [
-	^27
-]
-
-{ #category : #'generated-tokens' }
-BibScanner >> errorTokenId [
 	^28
 ]
 
 { #category : #'generated-tokens' }
+BibScanner >> errorTokenId [
+	^29
+]
+
+{ #category : #'generated-tokens' }
 BibScanner >> parenthesizedStringId [
-	^12
+	^13
 ]
 
 { #category : #'generated-scanner' }
 BibScanner >> scan1 [
+	self recordMatch: #(1 ).
 	self step.
-	currentCharacter == $r 
+	currentCharacter = $C 
 		ifTrue: 
 			[self step.
-			currentCharacter == $i 
+			currentCharacter = $O 
 				ifTrue: 
 					[self step.
-					currentCharacter == $n 
+					currentCharacter = $M 
 						ifTrue: 
 							[self step.
-							currentCharacter == $g ifTrue: [^ self recordAndReportMatch: #(9 )].
+							currentCharacter = $M 
+								ifTrue: 
+									[self step.
+									currentCharacter = $E 
+										ifTrue: 
+											[self step.
+											currentCharacter = $N 
+												ifTrue: 
+													[self step.
+													currentCharacter = $T ifTrue: [^ self recordAndReportMatch: #(11 )].
+													^ self reportLastMatch].
+											^ self reportLastMatch].
+									^ self reportLastMatch].
 							^ self reportLastMatch].
 					^ self reportLastMatch].
+			currentCharacter = $o ifTrue: [^ self scan2].
+			^ self reportLastMatch].
+	currentCharacter = $S 
+		ifTrue: 
+			[self step.
+			currentCharacter = $T 
+				ifTrue: 
+					[self step.
+					currentCharacter = $R 
+						ifTrue: 
+							[self step.
+							currentCharacter = $I 
+								ifTrue: 
+									[self step.
+									currentCharacter = $N 
+										ifTrue: 
+											[self step.
+											currentCharacter = $G ifTrue: [^ self recordAndReportMatch: #(10 )].
+											^ self reportLastMatch].
+									^ self reportLastMatch].
+							^ self reportLastMatch].
+					^ self reportLastMatch].
+			currentCharacter = $t ifTrue: [^ self scan3].
+			^ self reportLastMatch].
+	currentCharacter = $c 
+		ifTrue: 
+			[self step.
+			currentCharacter = $o ifTrue: [^ self scan2].
+			^ self reportLastMatch].
+	currentCharacter = $s 
+		ifTrue: 
+			[self step.
+			currentCharacter = $t ifTrue: [^ self scan3].
 			^ self reportLastMatch].
 	^ self reportLastMatch
 ]
@@ -63,19 +110,19 @@ BibScanner >> scan1 [
 { #category : #'generated-scanner' }
 BibScanner >> scan2 [
 	self step.
-	currentCharacter == $m 
+	currentCharacter = $m 
 		ifTrue: 
 			[self step.
-			currentCharacter == $m 
+			currentCharacter = $m 
 				ifTrue: 
 					[self step.
-					currentCharacter == $e 
+					currentCharacter = $e 
 						ifTrue: 
 							[self step.
-							currentCharacter == $n 
+							currentCharacter = $n 
 								ifTrue: 
 									[self step.
-									currentCharacter == $t ifTrue: [^ self recordAndReportMatch: #(10 )].
+									currentCharacter = $t ifTrue: [^ self recordAndReportMatch: #(11 )].
 									^ self reportLastMatch].
 							^ self reportLastMatch].
 					^ self reportLastMatch].
@@ -85,65 +132,19 @@ BibScanner >> scan2 [
 
 { #category : #'generated-scanner' }
 BibScanner >> scan3 [
-	self recordMatch: #(1 ).
 	self step.
-	currentCharacter == $C 
+	currentCharacter = $r 
 		ifTrue: 
 			[self step.
-			currentCharacter == $O 
+			currentCharacter = $i 
 				ifTrue: 
 					[self step.
-					currentCharacter == $M 
+					currentCharacter = $n 
 						ifTrue: 
 							[self step.
-							currentCharacter == $M 
-								ifTrue: 
-									[self step.
-									currentCharacter == $E 
-										ifTrue: 
-											[self step.
-											currentCharacter == $N 
-												ifTrue: 
-													[self step.
-													currentCharacter == $T ifTrue: [^ self recordAndReportMatch: #(10 )].
-													^ self reportLastMatch].
-											^ self reportLastMatch].
-									^ self reportLastMatch].
+							currentCharacter = $g ifTrue: [^ self recordAndReportMatch: #(10 )].
 							^ self reportLastMatch].
 					^ self reportLastMatch].
-			currentCharacter == $o ifTrue: [^ self scan2].
-			^ self reportLastMatch].
-	currentCharacter == $S 
-		ifTrue: 
-			[self step.
-			currentCharacter == $T 
-				ifTrue: 
-					[self step.
-					currentCharacter == $R 
-						ifTrue: 
-							[self step.
-							currentCharacter == $I 
-								ifTrue: 
-									[self step.
-									currentCharacter == $N 
-										ifTrue: 
-											[self step.
-											currentCharacter == $G ifTrue: [^ self recordAndReportMatch: #(9 )].
-											^ self reportLastMatch].
-									^ self reportLastMatch].
-							^ self reportLastMatch].
-					^ self reportLastMatch].
-			currentCharacter == $t ifTrue: [^ self scan1].
-			^ self reportLastMatch].
-	currentCharacter == $c 
-		ifTrue: 
-			[self step.
-			currentCharacter == $o ifTrue: [^ self scan2].
-			^ self reportLastMatch].
-	currentCharacter == $s 
-		ifTrue: 
-			[self step.
-			currentCharacter == $t ifTrue: [^ self scan1].
 			^ self reportLastMatch].
 	^ self reportLastMatch
 ]
@@ -152,46 +153,79 @@ BibScanner >> scan3 [
 BibScanner >> scanForToken [
 	self recordMatch: #whitespace.
 	self step.
-	(currentCharacter == $! or: 
-			[currentCharacter == $$ or: 
-					[currentCharacter == $& or: 
+	(currentCharacter = $! or: 
+			[currentCharacter = $$ or: 
+					[currentCharacter = $& or: 
 							[(currentCharacter between: $* and: $+) or: 
-									[(currentCharacter between: $- and: $<) or: 
-											[(currentCharacter between: $> and: $?) or: 
-													[(currentCharacter between: $A and: $[) 
-														or: [(currentCharacter between: $] and: $z) or: [currentCharacter == $|]]]]]]]]) 
+									[(currentCharacter between: $- and: $/) or: 
+											[(currentCharacter between: $: and: $<) or: 
+													[(currentCharacter between: $> and: $?) or: 
+															[(currentCharacter between: $A and: $[) 
+																or: [(currentCharacter between: $] and: $z) or: [currentCharacter = $|]]]]]]]]]) 
 		ifTrue: 
 			[
-			[self recordMatch: #(7 ).
+			[self recordMatch: #(8 ).
 			self step.
-			currentCharacter == $! or: 
-					[currentCharacter == $$ or: 
-							[currentCharacter == $& or: 
+			currentCharacter = $! or: 
+					[currentCharacter = $$ or: 
+							[currentCharacter = $& or: 
 									[(currentCharacter between: $* and: $+) or: 
 											[(currentCharacter between: $- and: $<) or: 
 													[(currentCharacter between: $> and: $?) or: 
 															[(currentCharacter between: $A and: $[) 
-																or: [(currentCharacter between: $] and: $z) or: [currentCharacter == $|]]]]]]]]] 
+																or: [(currentCharacter between: $] and: $z) or: [currentCharacter = $|]]]]]]]]] 
 					whileTrue.
 			^ self reportLastMatch].
-	(currentCharacter isSeparator 
-		or: [currentCharacter == (Character value: 11)]) 
+	(currentCharacter between: $0 and: $9) 
+		ifTrue: 
+			[
+			[self recordMatch: #(7 8 ).
+			self step.
+			(currentCharacter = $! or: 
+					[currentCharacter = $$ or: 
+							[currentCharacter = $& or: 
+									[(currentCharacter between: $* and: $+) or: 
+											[(currentCharacter between: $- and: $/) or: 
+													[(currentCharacter between: $: and: $<) or: 
+															[(currentCharacter between: $> and: $?) or: 
+																	[(currentCharacter between: $A and: $[) 
+																		or: [(currentCharacter between: $] and: $z) or: [currentCharacter = $|]]]]]]]]]) 
+				ifTrue: 
+					[
+					[self recordMatch: #(8 ).
+					self step.
+					currentCharacter = $! or: 
+							[currentCharacter = $$ or: 
+									[currentCharacter = $& or: 
+											[(currentCharacter between: $* and: $+) or: 
+													[(currentCharacter between: $- and: $<) or: 
+															[(currentCharacter between: $> and: $?) or: 
+																	[(currentCharacter between: $A and: $[) 
+																		or: [(currentCharacter between: $] and: $z) or: [currentCharacter = $|]]]]]]]]] 
+							whileTrue.
+					^ self reportLastMatch].
+			currentCharacter between: $0 and: $9] 
+					whileTrue.
+			^ self reportLastMatch].
+	((currentCharacter between: Character tab and: Character cr) 
+		or: [currentCharacter = Character space]) 
 			ifTrue: 
 				[
 				[self recordMatch: #whitespace.
 				self step.
-				currentCharacter isSeparator 
-					or: [currentCharacter == (Character value: 11)]] 
+				(currentCharacter between: Character tab and: Character cr) 
+					or: [currentCharacter = Character space]] 
 						whileTrue.
 				^ self reportLastMatch].
-	currentCharacter == $" 
+	currentCharacter = $" 
 		ifTrue: 
 			[
 			[self step.
-			currentCharacter ~~ $"] whileTrue.
-			^ self recordAndReportMatch: #(8 )].
-	currentCharacter == $# ifTrue: [^ self recordAndReportMatch: #(3 )].
-	currentCharacter == $% 
+			currentCharacter ~= $"] whileTrue.
+			currentCharacter = $" ifTrue: [^ self recordAndReportMatch: #(9 )].
+			^ self reportLastMatch].
+	currentCharacter = $# ifTrue: [^ self recordAndReportMatch: #(3 )].
+	currentCharacter = $% 
 		ifTrue: 
 			[
 			[self recordMatch: #comment.
@@ -201,12 +235,11 @@ BibScanner >> scanForToken [
 						or: [currentCharacter >= (Character value: 14)]]] 
 					whileTrue.
 			^ self reportLastMatch].
-	currentCharacter == $( 
+	currentCharacter = $( 
 		ifTrue: [^ self recordAndReportMatch: #parenthesizedString].
-	currentCharacter == $, ifTrue: [^ self recordAndReportMatch: #(2 )].
-	currentCharacter == $= ifTrue: [^ self recordAndReportMatch: #(4 )].
-	currentCharacter == $@ ifTrue: [^ self scan3].
-	currentCharacter == ${ 
-		ifTrue: [^ self recordAndReportMatch: #bracedString].
+	currentCharacter = $, ifTrue: [^ self recordAndReportMatch: #(2 )].
+	currentCharacter = $= ifTrue: [^ self recordAndReportMatch: #(4 )].
+	currentCharacter = $@ ifTrue: [^ self scan1].
+	currentCharacter = ${ ifTrue: [^ self recordAndReportMatch: #bracedString].
 	^ self reportLastMatch
 ]

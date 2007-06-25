@@ -60,6 +60,12 @@ BibEntry >> key: aKey [
 	key := aKey
 ]
 
+{ #category : #accessing }
+BibEntry >> macroReferences [
+	"returns all fields of this entry that have a macro as value"
+	^ fields select: [:each | each value isSymbol]
+]
+
 { #category : #'initialize-release' }
 BibEntry >> setFields: aDictionary [
 	fields := aDictionary

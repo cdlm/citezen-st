@@ -38,6 +38,24 @@ BibSet >> addMacro: aMacro ifDuplicate: aBlock [
 	^ aBlock value
 ]
 
+{ #category : #enumerating }
+BibSet >> do: aBlock [
+	self entries do: aBlock
+]
+
+{ #category : #cleanup }
+BibSet >> dropUnusedMacros [
+	| usedMacros |
+	usedMacros := Dictionary new.
+	self do: [ :eachEntry |
+		eachEntry macroReferences do: [ :eachField | | macroKey |
+			macroKey := eachField value.
+			usedMacros at: macroKey put: (self macroAt: macroKey)
+		]
+	].
+	macros := usedMacros
+]
+
 { #category : #accessing }
 BibSet >> entries [
 	^ entries
@@ -51,6 +69,18 @@ BibSet >> initialize [
 ]
 
 { #category : #accessing }
+BibSet >> macroAt: aKey [
+	^ macros at: aKey
+]
+
+{ #category : #accessing }
 BibSet >> macros [
 	^ macros
+]
+
+{ #category : #'arranging - combining' }
+BibSet >> select: aPredicate [
+	^ self class new
+		setEntries: (self entries select: aPredicate) ;
+		setMacros: self macros
 ]

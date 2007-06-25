@@ -35,7 +35,7 @@ BodyContents :
 	<name> ("","" Field)* { '1' value -> ('2' collect: [:each | each at: 2]) };
 
 Field :
-	<name> ""="" Value { BibField key: '1' value value: '3' };
+	<name> ""="" Value { BibField key: '1' value asSymbol value: '3' };
 
 Value :
 	SimpleValue ( ""#"" SimpleValue )*
@@ -48,7 +48,8 @@ Value :
 SimpleValue :
 	<quotedString> { '1' value allButFirst allButLast }
 	| <bracedString> { '1' value allButFirst allButLast }
-	| <name> { '1' value };
+	| <number> { '1' value asNumber }
+	| <name> { '1' value asSymbol };
 "
 ]
 
@@ -80,7 +81,7 @@ BibParser >> buildEntry: tokens [
 		startingAt: (self class startingStateForBodyContents).
 	^ (BibEntry type: (tokens at: 2) value)
 		key: body key;
-		setFields: body value
+		addFields: body value
 ]
 
 { #category : #'private-building' }
@@ -108,7 +109,7 @@ BibParser >> reduceActionForCommentDeclaration1: nodes [
 
 { #category : #'generated-reduction actions' }
 BibParser >> reduceActionForField1: nodes [ 
-	^ BibField key: (nodes at: 1) value value: (nodes at: 3)
+	^ BibField key: (nodes at: 1) value asSymbol value: (nodes at: 3)
 ]
 
 { #category : #'generated-reduction actions' }
@@ -184,7 +185,12 @@ BibParser >> reduceActionForSimpleValue2: nodes [
 
 { #category : #'generated-reduction actions' }
 BibParser >> reduceActionForSimpleValue3: nodes [ 
-	^ (nodes at: 1) value
+	^ (nodes at: 1) value asNumber
+]
+
+{ #category : #'generated-reduction actions' }
+BibParser >> reduceActionForSimpleValue4: nodes [ 
+	^ (nodes at: 1) value asSymbol
 ]
 
 { #category : #'generated-reduction actions' }
@@ -192,25 +198,24 @@ BibParser >> reduceActionForValue1: nodes [
 	^ (nodes at: 2) isEmpty 
 		ifTrue: [nodes at: 1]
 		ifFalse: 
-			[(BibCompositeValue with: (nodes at: '1'))
-				addAll: ((nodes at: '2') collect: [:subcoll | subcoll at: 2]);
+			[(BibCompositeValue with: (nodes at: 1))
+				addAll: ((nodes at: 2) collect: [:subcoll | subcoll at: 2]);
 				yourself]
 ]
 
 { #category : #'generated-tables' }
 BibParser >> reduceTable [
 	^#(
-#(13 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
-#(13 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
-#(13 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration3:)
-#(14 0 #reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
-#(14 2 #reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
-#(15 3 #buildEntry:)
-#(16 2 #buildMacro:)
+#(14 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
+#(14 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
+#(14 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration3:)
+#(15 1 #reduceFor:)
+#(16 0 #reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
+#(16 2 #reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
 #(17 1 #reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX1:)
 #(17 1 #reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX2:)
-#(18 2 #reduceActionForCommentDeclaration1:)
-#(19 3 #reduceActionForField1:)
+#(18 2 #buildMacro:)
+#(19 2 #reduceActionForCommentDeclaration1:)
 #(20 2 #reduceFor:)
 #(21 0 #reduceActionForRepeatXXGroupXXXXXXXXXField1:)
 #(21 2 #reduceActionForRepeatXXGroupXXXXXXXXXField2:)
@@ -218,55 +223,58 @@ BibParser >> reduceTable [
 #(23 1 #reduceActionForSimpleValue1:)
 #(23 1 #reduceActionForSimpleValue2:)
 #(23 1 #reduceActionForSimpleValue3:)
+#(23 1 #reduceActionForSimpleValue4:)
 #(24 2 #reduceFor:)
 #(25 0 #reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue1:)
 #(25 2 #reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue2:)
-#(26 2 #reduceActionForBodyContents1:)
-#(29 1 #reduceActionForBibfile1:)
-#(30 1 #reduceFor:)
+#(26 3 #reduceActionForField1:)
+#(27 2 #reduceActionForBodyContents1:)
+#(30 3 #buildEntry:)
+#(31 1 #reduceActionForBibfile1:)
 )
 ]
 
 { #category : #'generated-tables' }
 BibParser >> transitionTable [
 	^#(
-#(3 18 1 18 9 18 10 21 14 18 27 25 29)
-#(3 18 1 18 9 18 10 21 14 18 27 29 29)
-#(3 33 7 37 26)
-#(3 41 7 45 19)
-#(3 49 1 53 9 57 10 61 13 65 15 69 16 73 18 94 27)
-#(2 0 27)
-#(2 0 27)
-#(3 54 2 77 21 54 27)
-#(2 0 27)
+#(3 22 1 22 10 22 11 21 16 22 28 25 31)
+#(3 22 1 22 10 22 11 21 16 22 28 29 31)
+#(3 33 8 37 27)
+#(3 41 8 45 26)
+#(3 49 1 53 10 57 11 61 14 65 18 69 19 102 28 73 30)
+#(2 0 28)
+#(2 0 28)
+#(3 50 2 77 21 50 28)
+#(2 0 28)
 #(2 81 4)
-#(2 0 27)
-#(2 85 7)
-#(3 89 11 93 12 97 17)
-#(3 89 11 93 12 101 17)
-#(2 22 1 9 10 27)
-#(2 14 1 9 10 27)
-#(2 10 1 9 10 27)
-#(2 6 1 9 10 27)
-#(3 105 2 109 20 90 27)
-#(3 113 7 117 8 121 11 125 22 129 23)
-#(3 89 11 93 12 133 17)
-#(2 38 1 9 10 27)
-#(2 34 1 9 10 27)
-#(2 30 1 9 10 27)
-#(2 42 1 9 10 27)
-#(3 41 7 137 19)
-#(2 58 2 27)
-#(2 74 2 3 27)
-#(2 66 2 3 27)
-#(2 70 2 3 27)
-#(2 46 2 27)
-#(3 82 2 82 3 141 25 82 27)
-#(2 26 1 9 10 27)
-#(2 50 2 27)
-#(3 62 2 145 3 149 24 62 27)
-#(3 113 7 117 8 121 11 153 23)
-#(2 86 2 3 27)
-#(2 78 2 3 27)
+#(2 0 28)
+#(2 85 8)
+#(3 89 12 93 13 97 17)
+#(3 89 12 93 13 101 17)
+#(2 26 1 10 11 28)
+#(2 10 1 10 11 28)
+#(2 6 1 10 11 28)
+#(2 14 1 10 11 28)
+#(3 105 2 109 20 94 28)
+#(3 113 7 117 8 121 9 125 12 129 22 133 23)
+#(3 89 12 93 13 137 17)
+#(2 34 1 10 11 28)
+#(2 30 1 10 11 28)
+#(2 38 1 10 11 28)
+#(2 42 1 10 11 28)
+#(3 41 8 141 26)
+#(2 54 2 28)
+#(2 70 2 3 28)
+#(2 74 2 3 28)
+#(2 62 2 3 28)
+#(2 66 2 3 28)
+#(2 90 2 28)
+#(3 82 2 82 3 145 25 82 28)
+#(2 98 1 10 11 28)
+#(2 46 2 28)
+#(3 58 2 149 3 153 24 58 28)
+#(3 113 7 117 8 121 9 125 12 157 23)
+#(2 86 2 3 28)
+#(2 78 2 3 28)
 )
 ]
