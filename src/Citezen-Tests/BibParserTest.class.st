@@ -99,3 +99,22 @@ BibParserTest >> testScannedComment [
 	self assert: bibset macros isEmpty.
 	self assert: bibset entries isEmpty
 ]
+
+{ #category : #testing }
+BibParserTest >> testSimpleValues [
+	|bibset entry|
+	bibset := BibParser parse: '
+@sometype(somekey,
+	num = 42,
+	ref = 42foo,
+	reftoo = foo42,
+	justavalue = "42"
+)
+'.
+	entry := bibset entries at: 'somekey'.
+	self assert: (entry at: 'num') isNumber.
+	self assert: (entry at: 'ref') isSymbol .
+	self assert: (entry at: 'reftoo') isSymbol.
+	self assert: (entry at: 'justavalue') isNumber not.
+	self assert: (entry at: 'justavalue') isSymbol not
+]
