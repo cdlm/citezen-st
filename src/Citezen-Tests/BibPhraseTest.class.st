@@ -41,26 +41,6 @@ BibPhraseTest >> testAlternate [
 ]
 
 { #category : #testing }
-BibPhraseTest >> testEvaluation [
-	| result |
-	result := BibPhraseEvaluator evaluate: phrase for: entry.
-	self assert: result subphrases size = 4.
-	self assert: result subphrases first text = 'A'.
-	self assert: result subphrases second text = 'T'.
-	self assert: result subphrases third text = 'J'.
-	self assert: result subphrases fourth text = 'Y'
-]
-
-{ #category : #testing }
-BibPhraseTest >> testEvaluationWithMissingField [
-	| result |
-	phrase add: (BibFieldRef field: #month).
-	result := BibPhraseEvaluator evaluate: phrase for: entry.
-	self assert: result subphrases size = 4.
-	self assert: result subphrases last text = 'Y'
-]
-
-{ #category : #testing }
 BibPhraseTest >> testLibraryArticle [
 	renderer render: BibPhraseLibrary article for: entry.
 	self assert: renderer contents = 'A. T. In J, Y.'
