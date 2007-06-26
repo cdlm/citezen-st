@@ -12,7 +12,7 @@ BibTextRenderer >> text: aString [
 
 { #category : #'visitor-double dispatch' }
 BibTextRenderer >> visitFieldRef: aFieldRef [
-	self text: (currentEntry at: aFieldRef fieldName)
+	self text: (entry at: aFieldRef fieldName)
 ]
 
 { #category : #'visitor-double dispatch' }
