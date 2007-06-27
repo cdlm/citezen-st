@@ -2,14 +2,19 @@ Class {
 	#name : #BibHtmlRenderer,
 	#superclass : #BibRenderer,
 	#instVars : [
-		'html'
+		'html',
+		'context',
+		'document',
+		'docRoot'
 	],
 	#category : #'Citezen-Rendering'
 }
 
 { #category : #'instance creation' }
-BibHtmlRenderer class >> on: anHtmlCanvas [
-	^ self new html: anHtmlCanvas
+BibHtmlRenderer class >> html: anHtmlCanvas [
+	^ (self new)
+		html: anHtmlCanvas;
+		yourself
 ]
 
 { #category : #accessing }
@@ -22,7 +27,7 @@ BibHtmlRenderer >> html [
 	^ html
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #accessing }
 BibHtmlRenderer >> html: anHtmlCanvas [
 	html := anHtmlCanvas
 ]

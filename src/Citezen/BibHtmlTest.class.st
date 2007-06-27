@@ -19,20 +19,25 @@ BibHtmlTest >> setUp [
 		at: #year put: 'Y';
 		yourself.
 	phrase := BibPhraseLibrary article.
-	renderer := (BibHtmlRenderer on: (WAStaticHtmlCanvas root: WAHtmlRoot new))
+	
+	renderer := BibHtmlRenderer html:
+		(WAStaticHtmlCanvas document:
+			(WAHtmlStreamDocument new stream: String new writeStream))
 ]
 
 { #category : #testing }
 BibHtmlTest >> testArticle [
+	| actual |
 	renderer render: phrase for: entry.
-	self assert: renderer contents = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Seaside</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type" /></head><body><div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
+	actual := renderer contents.
+	self assert: actual = '<div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
 ]
 
 { #category : #testing }
 BibHtmlTest >> testSeveral [
+	| actual |
 	renderer render: phrase for: entry.
 	renderer render: phrase for: entry.
-	self assert: renderer contents = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><title>Seaside</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type" /></head><body><div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div><div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
+	actual := renderer contents.
+	self assert: actual = '<div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div><div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
 ]
