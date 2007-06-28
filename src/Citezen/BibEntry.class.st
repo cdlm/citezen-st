@@ -16,7 +16,10 @@ BibEntry class >> type: entryType [
 
 { #category : #accessing }
 BibEntry >> addFields: aCollection [
-	aCollection do: [:each | fields add: each]
+	aCollection do: [:each |
+		self
+			at: each key asLowercase asSymbol
+			put: each value]
 ]
 
 { #category : #bibset }
@@ -64,11 +67,6 @@ BibEntry >> key: aKey [
 BibEntry >> macroReferences [
 	"returns all fields of this entry that have a macro as value"
 	^ fields select: [:each | each value isSymbol]
-]
-
-{ #category : #'initialize-release' }
-BibEntry >> setFields: aDictionary [
-	fields := aDictionary
 ]
 
 { #category : #accessing }

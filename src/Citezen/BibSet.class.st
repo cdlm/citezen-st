@@ -45,20 +45,25 @@ BibSet >> do: aBlock [
 
 { #category : #cleanup }
 BibSet >> dropUnusedMacros [
-	| usedMacros |
-	usedMacros := Dictionary new.
-	self do: [ :eachEntry |
-		eachEntry macroReferences do: [ :eachField | | macroKey |
-			macroKey := eachField value.
-			usedMacros at: macroKey put: (self macroAt: macroKey)
-		]
-	].
-	macros := usedMacros
+	| toKeep |
+	toKeep := self referencedMacros.
+	macros := macros associationsSelect: [:each | toKeep includes: each key]
 ]
 
 { #category : #accessing }
 BibSet >> entries [
 	^ entries
+]
+
+{ #category : #'arranging - combining' }
+BibSet >> groupedBy: aBlock [
+	| result |
+	result := Dictionary new.
+	self do: [ :each |
+		(result at: (aBlock value: each) ifAbsentPut: BibSet new)
+			addEntry: each
+	].
+	^ result
 ]
 
 { #category : #'initialize-release' }
@@ -78,9 +83,18 @@ BibSet >> macros [
 	^ macros
 ]
 
+{ #category : #accessing }
+BibSet >> referencedMacros [
+	| usedMacros |
+	usedMacros := Set new.
+	self do: [ :eachEntry |
+		usedMacros addAll: (eachEntry macroReferences collect: [:each | each value])
+	].
+	^ usedMacros
+]
+
 { #category : #'arranging - combining' }
 BibSet >> select: aPredicate [
 	^ self class new
-		setEntries: (self entries select: aPredicate) ;
-		setMacros: self macros
+		setEntries: (self entries select: aPredicate)
 ]

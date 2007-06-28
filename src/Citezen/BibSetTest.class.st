@@ -7,15 +7,30 @@ Class {
 	#category : #'Citezen-Tests'
 }
 
-{ #category : #setup }
-BibSetTest >> setUp [
-	bibset := BibParser parse: '
-@string(used = "foo")
-@string(unused = "bar")
-@sometype{somekey,
-	foo = used
-}'
+{ #category : #accessing }
+BibSetTest class >> resources [
+	^ Array with: BibTestResource
+]
 
+{ #category : #running }
+BibSetTest >> setUp [
+	bibset := BibTestResource current bibset
+]
+
+{ #category : #testing }
+BibSetTest >> testGroupedBy [
+	| groups groupedItemCount |
+	groups := bibset groupedBy: [:each | each type].
+	groupedItemCount := groups inject: 0 into: [:sum :each | sum + each entries size].
+	self assert: groupedItemCount = bibset entries size.
+	self assert: (groups at: #article) entries size = 2.
+	self assert: (groups at: #inproceedings) entries size = 1.
+	self assert: (groups at: #misc) entries size = 1.
+]
+
+{ #category : #testing }
+BibSetTest >> testReferencedMacros [
+	self assert: bibset referencedMacros size = 1
 ]
 
 { #category : #testing }

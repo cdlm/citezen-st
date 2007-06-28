@@ -1,3 +1,6 @@
+"
+A BibPhrasePrunableEvaluator will visit a (partial) phrase to determine if it is prunable or not for the given entry. ""Prunable"" means the phrase will be empty once evaluated with the data from this entry. 
+"
 Class {
 	#name : #BibPhrasePrunableEvaluator,
 	#superclass : #BibPhraseVisitor,
