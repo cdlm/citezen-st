@@ -20,7 +20,23 @@ BibPhraseLibraryTest >> setUp [
 		at: #fire put: 'F';
 		at: #water put: 'W';
 		yourself.
-	phrase := BibPhraseLibrary bibarticle.
+	phrase := BibSequencePhrase new
+		addNamedFields: #(url keywords);
+		add: ((BibAlternativePhrase
+				rules: {
+					[:e | e hasField: #here]
+					-> (BibSequencePhrase new
+							add: (BibLiteralPhrase text: 'HERE');
+							addField: #weight;
+							separatorText: '/ '; yourself)}
+				default: (BibSequencePhrase new
+							addFields: #(water fire);
+							separatorText: '| '; yourself))
+			named: 'elements');
+		addNamedField: #note;
+		separatorText: '!? ';
+		terminatorText: '...';
+		named: 'nimp'.
 	renderer := (BibBblRenderer new)
 ]
 

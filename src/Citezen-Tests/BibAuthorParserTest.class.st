@@ -4,7 +4,7 @@ Class {
 	#category : #'Citezen-Tests'
 }
 
-{ #category : #tests }
+{ #category : #testing }
 BibAuthorParserTest >> testAuthorCommaSingle [
 	| authorString authors |
 	authorString := 'Nierstrasz, Oscar'.
@@ -13,7 +13,7 @@ BibAuthorParserTest >> testAuthorCommaSingle [
 	self assert: (authors at: 1) lastNames asArray = #('Nierstrasz')
 ]
 
-{ #category : #tests }
+{ #category : #testing }
 BibAuthorParserTest >> testAuthorCommaTwoAuthors [
 	| authorString authors |
 	authorString := 'Nierstrasz, Oscar and Ducasse, St\''ephane'.
@@ -24,7 +24,7 @@ BibAuthorParserTest >> testAuthorCommaTwoAuthors [
 	self assert: (authors at: 2) lastNames asArray = #('Ducasse').
 ]
 
-{ #category : #tests }
+{ #category : #testing }
 BibAuthorParserTest >> testAuthorSingle [
 	| authorString authors |
 	authorString := 'Oscar Nierstrasz'.
@@ -33,7 +33,7 @@ BibAuthorParserTest >> testAuthorSingle [
 	self assert: (authors at: 1) lastNames asArray = #('Nierstrasz')
 ]
 
-{ #category : #tests }
+{ #category : #testing }
 BibAuthorParserTest >> testAuthorSingleNoFirstName [
 	| authorString authors |
 	authorString := ' Nierstrasz'.
@@ -41,7 +41,7 @@ BibAuthorParserTest >> testAuthorSingleNoFirstName [
 	self assert: (authors at: 1) lastNames asArray = #('Nierstrasz')
 ]
 
-{ #category : #tests }
+{ #category : #testing }
 BibAuthorParserTest >> testLongParticleName [
 	| authorString author |
 	authorString := 'Charles Louis Xavier Joseph de la Vallée Poussin'.
@@ -51,7 +51,7 @@ BibAuthorParserTest >> testLongParticleName [
 	self assert: author particles asArray = #('de' 'la')
 ]
 
-{ #category : #tests }
+{ #category : #testing }
 BibAuthorParserTest >> testMultiParticleName [
 	| authorString author |
 	authorString := 'Théodule du Cellier de Lagrange'.
@@ -61,7 +61,7 @@ BibAuthorParserTest >> testMultiParticleName [
 	self assert: author particles asArray = #('du')
 ]
 
-{ #category : #tests }
+{ #category : #testing }
 BibAuthorParserTest >> testTwoAuthors [
 	| authorString authors |
 	authorString := 'Oscar Nierstrasz and St\''ephane Ducasse'.

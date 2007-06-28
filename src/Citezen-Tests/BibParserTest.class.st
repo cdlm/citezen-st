@@ -18,7 +18,7 @@ BibParserTest class >> bblFile [
 	^ '\begin{thebibliography}{dGdL42}
 
 \bibitem[dGdL42]{foobar}
-Thomas de~Grenier~de Latour.
+Théodule du~Cellier~de Lagrange.
 \newblock Hello world.
 \newblock {\em baz}, 2042.
 
@@ -27,20 +27,6 @@ Thomas de~Grenier~de Latour.
 
 \end{thebibliography}
 '
-]
-
-{ #category : #'test data' }
-BibParserTest class >> bibFile [
-	^ '@string{ foo = "bar" }
-@string{ foo = "baz" }
-@article(foobar,
-	title = "Hello world",
-	author = {Thomas de Grenier de Latour},
-	journal = foo,
-	year = 2042,
-)
-
-@misc{meuh}'
 ]
 
 { #category : #testing }
@@ -68,7 +54,7 @@ BibParserTest >> testEntry [
 	|bibset entry|
 	bibset := BibParser parse: '
 @article(foobar,
-	title = "Hello world",
+	Title = "Hello world",
 	author = {Foo Bar},
 	journal = foo,
 	year = 2042
@@ -77,7 +63,8 @@ BibParserTest >> testEntry [
 	self assert: bibset macros isEmpty.
 	entry := bibset entries at: 'foobar'.
 	self assert: entry type = 'article'.
-	self assert: entry size = 4
+	self assert: entry size = 4.
+	self assert: (entry at: #title) = 'Hello world'
 ]
 
 { #category : #testing }
