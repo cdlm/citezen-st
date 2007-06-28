@@ -16,33 +16,30 @@ BibPhraseLibrary class >> article [
 							addField: #pages;
 							separatorText: ', '; yourself)}
 				default: (BibSequencePhrase new
-							addFields: #(journal volume number month year);
-							initiatorText: 'In ';
-							separatorText: ', '; yourself))
+							addField: #journal;
+							add: self volumeNumberPages;
+							add: self monthYear;
+							initiatorText: 'In '; separatorText: ', '; yourself))
 			named: 'publishing');
 		addNamedField: #note;
-		separatorText: '. ';
-		terminatorText: '.';
+		separatorText: '. '; terminatorText: '.';
 		named: 'article'
 ]
 
-{ #category : #'basic entry types' }
-BibPhraseLibrary class >> bibarticle [
+{ #category : #'partial phrases' }
+BibPhraseLibrary class >> monthYear [
 	^ BibSequencePhrase new
-		addNamedFields: #(url keywords);
-		add: ((BibAlternativePhrase
-				rules: {
-					[:e | e hasField: #here]
-					-> (BibSequencePhrase new
-							add: (BibLiteralPhrase text: 'HERE');
-							addField: #weight;
-							separatorText: '/ '; yourself)}
-				default: (BibSequencePhrase new
-							addFields: #(water fire);
-							separatorText: '| '; yourself))
-			named: 'elements');
-		addNamedField: #note;
-		separatorText: '!? ';
-		terminatorText: '...';
-		named: 'nimp'
+		separatorText: ' ';
+		addFields: #(month year)
+]
+
+{ #category : #'partial phrases' }
+BibPhraseLibrary class >> volumeNumberPages [
+	^ BibSequencePhrase new
+		separatorText: ': ';
+		add: (BibSequencePhrase new
+			addField: #volume;
+			add: (BibSequencePhrase new
+				initiatorText: '(';	addField: #number; terminatorText: ')'));
+		addField: #pages
 ]
