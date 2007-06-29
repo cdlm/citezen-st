@@ -16,6 +16,11 @@ BibSet class >> fromDeclarations: declarations [
 	^ instance
 ]
 
+{ #category : #'visitor-double dispatch' }
+BibSet >> acceptVisitor: aVisitor [
+	^ aVisitor visitBibSet: self
+]
+
 { #category : #adding }
 BibSet >> addEntry: anEntry [
 	entries at: anEntry key put: anEntry

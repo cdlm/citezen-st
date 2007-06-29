@@ -14,6 +14,11 @@ BibEntry class >> type: entryType [
 	^ self new type: entryType; yourself
 ]
 
+{ #category : #'visitor-double dispatch' }
+BibEntry >> acceptVisitor: aVisitor [
+	^ aVisitor visitEntry: self
+]
+
 { #category : #accessing }
 BibEntry >> addFields: aCollection [
 	aCollection do: [:each |

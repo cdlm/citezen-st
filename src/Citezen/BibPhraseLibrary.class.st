@@ -1,10 +1,16 @@
 Class {
 	#name : #BibPhraseLibrary,
 	#superclass : #Object,
+	#instVars : [
+		'phrases'
+	],
+	#classInstVars : [
+		'defaultInstance'
+	],
 	#category : #'Citezen-Rendering'
 }
 
-{ #category : #'basic entry types' }
+{ #category : #'phrases-entries' }
 BibPhraseLibrary class >> article [
 	^ BibSequencePhrase new
 		addNamedFields: #(author title);
@@ -26,14 +32,34 @@ BibPhraseLibrary class >> article [
 		named: 'article'
 ]
 
-{ #category : #'partial phrases' }
+{ #category : #'instance creation' }
+BibPhraseLibrary class >> default [
+	^ defaultInstance ifNil: [defaultInstance := self new]
+]
+
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> errorPhrase: anEntry [
+	^ BibLiteralPhrase text: 'Unknown entry type:', anEntry type
+]
+
+{ #category : #'phrases-partial' }
 BibPhraseLibrary class >> monthYear [
 	^ BibSequencePhrase new
 		separatorText: ' ';
 		addFields: #(month year)
 ]
 
-{ #category : #'partial phrases' }
+{ #category : #'as yet unclassified' }
+BibPhraseLibrary class >> phraseFor: anEntry [
+	| selector |
+	selector := anEntry type.
+	
+	^ ((self class allMethodsInCategory: 'phrases-entries') includes: selector)
+		ifTrue: [self perform: selector]
+		ifFalse: [self errorPhrase: anEntry]
+]
+
+{ #category : #'phrases-partial' }
 BibPhraseLibrary class >> volumeNumberPages [
 	^ BibSequencePhrase new
 		separatorText: ': ';
@@ -42,4 +68,16 @@ BibPhraseLibrary class >> volumeNumberPages [
 			add: (BibSequencePhrase new
 				initiatorText: '(';	addField: #number; terminatorText: ')'));
 		addField: #pages
+]
+
+{ #category : #'initialize-release' }
+BibPhraseLibrary >> initialize [
+	phrases := Dictionary new
+]
+
+{ #category : #'as yet unclassified' }
+BibPhraseLibrary >> phraseFor: anEntry [
+	^ phrases
+		at: anEntry type
+		ifAbsentPut: [self class phraseFor: anEntry]
 ]
