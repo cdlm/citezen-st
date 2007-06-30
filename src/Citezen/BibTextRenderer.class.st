@@ -7,7 +7,15 @@ Class {
 { #category : #rendering }
 BibTextRenderer >> text: aString [
 	aString ifNil: [^ self].
-	stream nextPutAll: aString
+	stream nextPutAll: aString asString
+]
+
+{ #category : #'visitor-double dispatch' }
+BibTextRenderer >> visitEntry: anEntry [
+	super visitEntry: anEntry.
+	self text: '
+
+'
 ]
 
 { #category : #'visitor-double dispatch' }

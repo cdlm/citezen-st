@@ -23,7 +23,8 @@ BibPhraseLibrary class >> article [
 							separatorText: ', '; yourself)}
 				default: (BibSequencePhrase new
 							addField: #journal;
-							add: self volumeNumberPages;
+							add: self volumeNumber;
+							add: self pages;
 							add: self monthYear;
 							initiatorText: 'In '; separatorText: ', '; yourself))
 			named: 'publishing');
@@ -42,6 +43,32 @@ BibPhraseLibrary class >> errorPhrase: anEntry [
 	^ BibLiteralPhrase text: 'Unknown entry type:', anEntry type
 ]
 
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> inproceedings [
+	^ BibSequencePhrase new
+		addNamedFields: #(author title);
+		add: ((BibAlternativePhrase
+				rules: {
+					[:e | e hasField: #crossref]
+					-> (BibSequencePhrase new
+							add: (BibLiteralPhrase text: 'CROSSREF');
+							addField: #pages;
+							separatorText: ', '; yourself)}
+				default: (BibSequencePhrase new
+							add: (BibSequencePhrase new
+								addField: #editor;
+								terminatorText: ' (Ed.)'; yourself);
+							addField: #booktitle;
+							add: self series;
+							add: self publisherAddress;
+							add: self monthYear;
+							initiatorText: 'In '; separatorText: ', '; yourself))
+			named: 'publishing');
+		addNamedField: #note;
+		separatorText: '. '; terminatorText: '.';
+		named: 'inproceedings'
+]
+
 { #category : #'phrases-partial' }
 BibPhraseLibrary class >> monthYear [
 	^ BibSequencePhrase new
@@ -49,7 +76,15 @@ BibPhraseLibrary class >> monthYear [
 		addFields: #(month year)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> pages [
+	^ BibSequencePhrase new
+		initiatorText: 'p. ';
+		addField: #pages;
+		yourself
+]
+
+{ #category : #querying }
 BibPhraseLibrary class >> phraseFor: anEntry [
 	| selector |
 	selector := anEntry type.
@@ -60,14 +95,27 @@ BibPhraseLibrary class >> phraseFor: anEntry [
 ]
 
 { #category : #'phrases-partial' }
-BibPhraseLibrary class >> volumeNumberPages [
+BibPhraseLibrary class >> publisherAddress [
+	^ BibLiteralPhrase text: 'publisherAddress'
+]
+
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> series [
 	^ BibSequencePhrase new
-		separatorText: ': ';
+		addField: #series;
+		add: self volumeNumber;
+		add: self pages;
+		separatorText: ' ';
+		yourself
+]
+
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> volumeNumber [
+	^ BibSequencePhrase new
+		addField: #volume;
 		add: (BibSequencePhrase new
-			addField: #volume;
-			add: (BibSequencePhrase new
-				initiatorText: '(';	addField: #number; terminatorText: ')'));
-		addField: #pages
+			initiatorText: '(';	addField: #number; terminatorText: ')');
+		yourself
 ]
 
 { #category : #'initialize-release' }
@@ -75,9 +123,10 @@ BibPhraseLibrary >> initialize [
 	phrases := Dictionary new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #querying }
 BibPhraseLibrary >> phraseFor: anEntry [
-	^ phrases
+	^ self class phraseFor: anEntry
+	"^ phrases
 		at: anEntry type
-		ifAbsentPut: [self class phraseFor: anEntry]
+		ifAbsentPut: [self class phraseFor: anEntry]"
 ]
