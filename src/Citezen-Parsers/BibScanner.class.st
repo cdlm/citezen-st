@@ -70,7 +70,7 @@ BibScanner >> scan1 [
 									^ self reportLastMatch].
 							^ self reportLastMatch].
 					^ self reportLastMatch].
-			currentCharacter = $o ifTrue: [^ self scan2].
+			currentCharacter = $o ifTrue: [^ self scan3].
 			^ self reportLastMatch].
 	currentCharacter = $S 
 		ifTrue: 
@@ -92,23 +92,42 @@ BibScanner >> scan1 [
 									^ self reportLastMatch].
 							^ self reportLastMatch].
 					^ self reportLastMatch].
-			currentCharacter = $t ifTrue: [^ self scan3].
+			currentCharacter = $t ifTrue: [^ self scan2].
 			^ self reportLastMatch].
 	currentCharacter = $c 
 		ifTrue: 
 			[self step.
-			currentCharacter = $o ifTrue: [^ self scan2].
+			currentCharacter = $o ifTrue: [^ self scan3].
 			^ self reportLastMatch].
 	currentCharacter = $s 
 		ifTrue: 
 			[self step.
-			currentCharacter = $t ifTrue: [^ self scan3].
+			currentCharacter = $t ifTrue: [^ self scan2].
 			^ self reportLastMatch].
 	^ self reportLastMatch
 ]
 
 { #category : #'generated-scanner' }
 BibScanner >> scan2 [
+	self step.
+	currentCharacter = $r 
+		ifTrue: 
+			[self step.
+			currentCharacter = $i 
+				ifTrue: 
+					[self step.
+					currentCharacter = $n 
+						ifTrue: 
+							[self step.
+							currentCharacter = $g ifTrue: [^ self recordAndReportMatch: #(10 )].
+							^ self reportLastMatch].
+					^ self reportLastMatch].
+			^ self reportLastMatch].
+	^ self reportLastMatch
+]
+
+{ #category : #'generated-scanner' }
+BibScanner >> scan3 [
 	self step.
 	currentCharacter = $m 
 		ifTrue: 
@@ -124,25 +143,6 @@ BibScanner >> scan2 [
 									[self step.
 									currentCharacter = $t ifTrue: [^ self recordAndReportMatch: #(11 )].
 									^ self reportLastMatch].
-							^ self reportLastMatch].
-					^ self reportLastMatch].
-			^ self reportLastMatch].
-	^ self reportLastMatch
-]
-
-{ #category : #'generated-scanner' }
-BibScanner >> scan3 [
-	self step.
-	currentCharacter = $r 
-		ifTrue: 
-			[self step.
-			currentCharacter = $i 
-				ifTrue: 
-					[self step.
-					currentCharacter = $n 
-						ifTrue: 
-							[self step.
-							currentCharacter = $g ifTrue: [^ self recordAndReportMatch: #(10 )].
 							^ self reportLastMatch].
 					^ self reportLastMatch].
 			^ self reportLastMatch].

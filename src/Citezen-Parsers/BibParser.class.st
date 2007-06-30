@@ -32,7 +32,7 @@ CommentDeclaration :
 
 ## inner parser rules
 BodyContents :
-	<name> ("","" Field)* { '1' value -> ('2' collect: [:each | each at: 2]) };
+	<name> ("","" Field)* { '1' value asSymbol -> ('2' collect: [:each | each at: 2]) };
 
 Field :
 	<name> ""="" Value { BibField key: '1' value asSymbol value: '3' };
@@ -60,7 +60,7 @@ BibParser class >> scannerClass [
 
 { #category : #'generated-starting states' }
 BibParser class >> startingStateForBibfile [
-	^2
+	^1
 ]
 
 { #category : #'generated-starting states' }
@@ -79,7 +79,7 @@ BibParser >> buildEntry: tokens [
 	body := BibParser
 		parse: (tokens at: 3) value allButFirst allButLast
 		startingAt: (self class startingStateForBodyContents).
-	^ (BibEntry type: (tokens at: 2) value)
+	^ (BibEntry type: (tokens at: 2) value asSymbol)
 		key: body key;
 		addFields: body value
 ]
@@ -99,7 +99,8 @@ BibParser >> reduceActionForBibfile1: nodes [
 
 { #category : #'generated-reduction actions' }
 BibParser >> reduceActionForBodyContents1: nodes [ 
-	^ (nodes at: 1) value -> ((nodes at: 2) collect: [:each | each at: 2])
+	^ (nodes at: 1) value asSymbol 
+		-> ((nodes at: 2) collect: [:each | each at: 2])
 ]
 
 { #category : #'generated-reduction actions' }
