@@ -33,9 +33,50 @@ BibPhraseLibrary class >> article [
 		named: 'article'
 ]
 
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> book [
+	^ BibSequencePhrase new
+		addNamedField: #author;
+		add: self editor;
+		add: ((BibAlternativePhrase
+				rules: {
+					[:e | e hasField: #crossref]
+					-> (BibSequencePhrase new
+							add: (BibLiteralPhrase text: 'CROSSREF');
+							addField: #pages;
+							separatorText: ', '; yourself)}
+				default: (BibSequencePhrase new
+							addField: #title;
+							add: self edition;
+							add: self series;
+							add: self publisherAddress;
+							add: self monthYear;
+							initiatorText: 'In '; separatorText: ', '; yourself))
+			named: 'publishing');
+		addNamedField: #note;
+		separatorText: '. '; terminatorText: '.';
+		named: 'book'
+]
+
 { #category : #'instance creation' }
 BibPhraseLibrary class >> default [
 	^ defaultInstance ifNil: [defaultInstance := self new]
+]
+
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> edition [
+	^ BibSequencePhrase new
+		addField: #edition;
+		terminatorText: ' ed.';
+		yourself
+]
+
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> editor [
+	^ BibSequencePhrase new
+		addField: #editor;
+		terminatorText: ' (Ed.)';
+		yourself
 ]
 
 { #category : #'phrases-partial' }
@@ -69,6 +110,20 @@ BibPhraseLibrary class >> inproceedings [
 		named: 'inproceedings'
 ]
 
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> misc [
+	^ BibSequencePhrase new
+		addNamedFields: #(author title);
+		add: ((BibSequencePhrase new
+				addField: #howpublished;
+				add: self monthYear;
+				separatorText: ', '; yourself)
+			named: 'publishing');
+		addNamedField: #note;
+		separatorText: '. '; terminatorText: '.';
+		named: 'misc'
+]
+
 { #category : #'phrases-partial' }
 BibPhraseLibrary class >> monthYear [
 	^ BibSequencePhrase new
@@ -82,6 +137,21 @@ BibPhraseLibrary class >> pages [
 		initiatorText: 'p. ';
 		addField: #pages;
 		yourself
+]
+
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> phdthesis [
+	^ BibSequencePhrase new
+		addNamedFields: #(author title);
+		add: ((BibSequencePhrase new
+				add: self thesisType;
+				addFields: #(school address);
+				add: self monthYear;
+				separatorText: ', '; yourself)
+			named: 'publishing');
+		addNamedField: #note;
+		separatorText: '. '; terminatorText: '.';
+		named: 'phdthesis'
 ]
 
 { #category : #querying }
@@ -107,6 +177,13 @@ BibPhraseLibrary class >> series [
 		add: self pages;
 		separatorText: ' ';
 		yourself
+]
+
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> thesisType [
+	^ BibAlternativePhrase
+		rules: {[:e | e hasField: #type] -> (BibFieldRef field: #type)}
+		default: (BibLiteralPhrase text: 'Ph.D. thesis')
 ]
 
 { #category : #'phrases-partial' }
