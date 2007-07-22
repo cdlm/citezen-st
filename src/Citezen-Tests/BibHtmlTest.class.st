@@ -18,7 +18,7 @@ BibHtmlTest >> setUp [
 		at: #journal put: 'J';
 		at: #year put: 'Y';
 		yourself.
-	phrase := BibPhraseLibrary article.
+	phrase := BibPhraseLibrary phraseFor: entry.
 	
 	renderer := BibHtmlRenderer html:
 		(WAStaticHtmlCanvas document:

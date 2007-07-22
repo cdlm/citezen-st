@@ -19,7 +19,7 @@ BibPrunableTest >> setUp [
 		at: #journal put: 'J';
 		at: #year put: 'Y';
 		yourself.
-visitor := BibPhrasePrunableEvaluator new entry: entry
+	visitor := BibPhrasePrunableEvaluator new entry: entry
 ]
 
 { #category : #testing }
