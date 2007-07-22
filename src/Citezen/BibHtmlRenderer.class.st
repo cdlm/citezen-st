@@ -1,6 +1,11 @@
+"
+Render bibliographic entries to HTML using Seaside's canvas.
+
+NB. Both BibHtmlRenderer and the canvas know about the stream, so using #setStream: after #html: will break stuff.
+"
 Class {
 	#name : #BibHtmlRenderer,
-	#superclass : #BibRenderer,
+	#superclass : #BibStreamRenderer,
 	#instVars : [
 		'html',
 		'context',
@@ -19,17 +24,20 @@ BibHtmlRenderer class >> html: anHtmlCanvas [
 
 { #category : #accessing }
 BibHtmlRenderer >> contents [
-	^html document stream contents
+	^ self html document stream contents
 ]
 
 { #category : #accessing }
 BibHtmlRenderer >> html [
-	^ html
+	^ html ifNil: [
+		self html: (WAStaticHtmlCanvas document:
+			(WAHtmlStreamDocument new stream: stream))]
 ]
 
 { #category : #accessing }
 BibHtmlRenderer >> html: anHtmlCanvas [
-	html := anHtmlCanvas
+	html := anHtmlCanvas.
+	self setStream: html document stream
 ]
 
 { #category : #'visitor-double dispatch' }

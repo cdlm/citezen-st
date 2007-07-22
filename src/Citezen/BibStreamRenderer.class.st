@@ -20,7 +20,7 @@ BibStreamRenderer >> contents [
 { #category : #'initialize-release' }
 BibStreamRenderer >> initialize [
 	super initialize.
-	stream := WriteStream on: String new
+	self setStream: (WriteStream on: String new)
 ]
 
 { #category : #'initialize-release' }

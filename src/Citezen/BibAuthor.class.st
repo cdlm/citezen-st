@@ -89,8 +89,7 @@ BibAuthor >> displayShortenedNameOn: aStream [
 
 { #category : #accessing }
 BibAuthor >> firstNames [
-	firstNames isNil ifTrue: [^OrderedCollection new].
-	^ firstNames
+	^ firstNames ifNil: [OrderedCollection new]
 ]
 
 { #category : #accessing }
@@ -100,8 +99,7 @@ BibAuthor >> firstNames: aCollection [
 
 { #category : #accessing }
 BibAuthor >> junior [
-	junior isNil ifTrue: [^ OrderedCollection new].
-	^ junior
+	^ junior ifNil: [OrderedCollection new]
 ]
 
 { #category : #accessing }
@@ -111,8 +109,7 @@ BibAuthor >> junior: aCollection [
 
 { #category : #accessing }
 BibAuthor >> lastNames [
-	lastNames isNil ifTrue: [^ OrderedCollection new].
-	^ lastNames
+	^ lastNames ifNil: [OrderedCollection new]
 ]
 
 { #category : #accessing }
@@ -122,8 +119,7 @@ BibAuthor >> lastNames: aCollection [
 
 { #category : #accessing }
 BibAuthor >> particles [
-	particles isNil ifTrue: [^ OrderedCollection new].
-	^ particles
+	^ particles ifNil: [OrderedCollection new]
 ]
 
 { #category : #accessing }
