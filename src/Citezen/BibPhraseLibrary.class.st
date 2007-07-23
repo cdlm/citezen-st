@@ -27,15 +27,12 @@ BibPhraseLibrary class >> article [
 							addField: #pages;
 							separatorText: ', '; yourself)}
 				default: (BibSequencePhrase new
-							addField: #journal;
-							add: self volumeNumber;
-							add: self pages;
-							add: self monthYear;
+							add: (self containmentIn: #journal);
+							add: self locationMonthYear;
 							initiatorText: 'In '; separatorText: ', '; yourself))
 			named: 'publishing');
 		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.';
-		named: 'article'
+		separatorText: '. '; terminatorText: '.'
 ]
 
 { #category : #'phrases-entries' }
@@ -53,14 +50,23 @@ BibPhraseLibrary class >> book [
 				default: (BibSequencePhrase new
 							addField: #title;
 							add: self edition;
-							add: self series;
+							add: (self containmentIn: #series);
 							add: self publisherAddress;
-							add: self monthYear;
+							add: self locationMonthYear;
 							initiatorText: 'In '; separatorText: ', '; yourself))
 			named: 'publishing');
 		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.';
-		named: 'book'
+		separatorText: '. '; terminatorText: '.'
+]
+
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> containmentIn: containerField [
+	^ BibSequencePhrase new
+		addField: containerField;
+		add: self volumeNumber;
+		add: self pages;
+		separatorText: ' ';
+		yourself
 ]
 
 { #category : #'instance creation' }
@@ -89,6 +95,13 @@ BibPhraseLibrary class >> errorPhrase: anEntry [
 	^ BibLiteralPhrase text: 'Unknown entry type:', anEntry type
 ]
 
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> field: aSymbol default: aString [
+	^ BibAlternativePhrase
+		rules: {[:e | e hasField: aSymbol] -> (BibFieldRef field: aSymbol)}
+		default: (BibLiteralPhrase text: aString)
+]
+
 { #category : #'phrases-entries' }
 BibPhraseLibrary class >> inproceedings [
 	^ BibSequencePhrase new
@@ -105,14 +118,30 @@ BibPhraseLibrary class >> inproceedings [
 								addField: #editor;
 								terminatorText: ' (Ed.)'; yourself);
 							addField: #booktitle;
-							add: self series;
+							add: (self containmentIn: #series);
 							add: self publisherAddress;
-							add: self monthYear;
+							add: self locationMonthYear;
 							initiatorText: 'In '; separatorText: ', '; yourself))
 			named: 'publishing');
 		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.';
-		named: 'inproceedings'
+		separatorText: '. '; terminatorText: '.'
+]
+
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> locationMonthYear [
+	^ BibSequencePhrase new
+		separatorText: ', ';
+		addField: #location;
+		add: (BibSequencePhrase new
+			separatorText: ' ';
+			addFields: #(month year))
+]
+
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> mastersthesis [
+	^ self 
+		numberedReportFrom: #school
+		type: 'Master''s thesis'
 ]
 
 { #category : #'phrases-entries' }
@@ -121,19 +150,31 @@ BibPhraseLibrary class >> misc [
 		addNamedFields: #(author title);
 		add: ((BibSequencePhrase new
 				addField: #howpublished;
-				add: self monthYear;
+				add: self locationMonthYear;
 				separatorText: ', '; yourself)
 			named: 'publishing');
 		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.';
-		named: 'misc'
+		separatorText: '. '; terminatorText: '.'
 ]
 
 { #category : #'phrases-partial' }
-BibPhraseLibrary class >> monthYear [
-	^ BibSequencePhrase new
-		separatorText: ' ';
-		addFields: #(month year)
+BibPhraseLibrary class >> numberedReportFrom: institution type: aString [
+	^ (BibSequencePhrase new)
+		addNamedFields: #(#author #title );
+		add: (((BibSequencePhrase new)
+					add: ((BibSequencePhrase new)
+								add: (self field: #type default: aString);
+								addField: #number;
+								separatorText: ' ';
+								yourself);
+					addField: institution;
+					addField: #address;
+					add: self locationMonthYear;
+					separatorText: ', ';
+					yourself) named: 'publishing');
+		addNamedField: #note;
+		separatorText: '. ';
+		terminatorText: '.'
 ]
 
 { #category : #'phrases-partial' }
@@ -146,49 +187,41 @@ BibPhraseLibrary class >> pages [
 
 { #category : #'phrases-entries' }
 BibPhraseLibrary class >> phdthesis [
-	^ BibSequencePhrase new
-		addNamedFields: #(author title);
-		add: ((BibSequencePhrase new
-				add: self thesisType;
-				addFields: #(school address);
-				add: self monthYear;
-				separatorText: ', '; yourself)
-			named: 'publishing');
-		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.';
-		named: 'phdthesis'
+	^ self 
+		numberedReportFrom: #school
+		type: 'Ph.D. thesis'
 ]
 
 { #category : #querying }
 BibPhraseLibrary class >> phraseFor: anEntry [
+	"Return a template phrase, named by the entry type, and built from the matching method in protocol phrases-entries."
 	| selector |
 	selector := anEntry type.
-	
 	^ ((self class allMethodsInCategory: 'phrases-entries') includes: selector)
-		ifTrue: [self perform: selector]
+		ifTrue: [(self perform: selector) named: selector]
 		ifFalse: [self errorPhrase: anEntry]
 ]
 
 { #category : #'phrases-partial' }
 BibPhraseLibrary class >> publisherAddress [
-	^ BibLiteralPhrase text: 'publisherAddress'
-]
-
-{ #category : #'phrases-partial' }
-BibPhraseLibrary class >> series [
 	^ BibSequencePhrase new
-		addField: #series;
-		add: self volumeNumber;
-		add: self pages;
-		separatorText: ' ';
+		addFields: #(publisher address);
+		separatorText: ', ';
 		yourself
 ]
 
-{ #category : #'phrases-partial' }
-BibPhraseLibrary class >> thesisType [
-	^ BibAlternativePhrase
-		rules: {[:e | e hasField: #type] -> (BibFieldRef field: #type)}
-		default: (BibLiteralPhrase text: 'Ph.D. thesis')
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> techreport [
+	^ self 
+		numberedReportFrom: #institution
+		type: 'Technical report'
+]
+
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> unpublished [
+	^ BibSequencePhrase new
+		addNamedFields: #(author title note);
+		separatorText: '. '; terminatorText: '.'
 ]
 
 { #category : #'phrases-partial' }

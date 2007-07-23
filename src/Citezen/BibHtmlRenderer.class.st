@@ -30,8 +30,8 @@ BibHtmlRenderer >> contents [
 { #category : #accessing }
 BibHtmlRenderer >> html [
 	^ html ifNil: [
-		self html: (WAStaticHtmlCanvas document:
-			(WAHtmlStreamDocument new stream: stream))]
+		html := WAStaticHtmlCanvas document:
+			(WAHtmlStreamDocument new stream: stream)]
 ]
 
 { #category : #accessing }
@@ -42,17 +42,17 @@ BibHtmlRenderer >> html: anHtmlCanvas [
 
 { #category : #'visitor-double dispatch' }
 BibHtmlRenderer >> visitBlockPhrase: aPhrase [
-	html div
+	self html div
 		class: aPhrase name;
 		with: [super visitBlockPhrase: aPhrase]
 ]
 
 { #category : #'visitor-double dispatch' }
 BibHtmlRenderer >> visitFieldRef: aFieldRef [
-	html text: (entry at: aFieldRef fieldName)
+	self html text: (entry at: aFieldRef fieldName)
 ]
 
 { #category : #'visitor-double dispatch' }
 BibHtmlRenderer >> visitLiteralPhrase: aPhrase [
-	html text: aPhrase text
+	self html text: aPhrase text
 ]

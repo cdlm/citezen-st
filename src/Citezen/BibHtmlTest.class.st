@@ -3,7 +3,6 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'entry',
-		'phrase',
 		'renderer'
 	],
 	#category : #'Citezen-Tests'
@@ -18,17 +17,14 @@ BibHtmlTest >> setUp [
 		at: #journal put: 'J';
 		at: #year put: 'Y';
 		yourself.
-	phrase := BibPhraseLibrary phraseFor: entry.
 	
-	renderer := BibHtmlRenderer html:
-		(WAStaticHtmlCanvas document:
-			(WAHtmlStreamDocument new stream: String new writeStream))
+	renderer := BibHtmlRenderer library: BibPhraseLibrary default
 ]
 
 { #category : #testing }
 BibHtmlTest >> testArticle [
 	| actual |
-	renderer render: phrase for: entry.
+	renderer render: entry.
 	actual := renderer contents.
 	self assert: actual = '<div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
 ]
@@ -36,8 +32,8 @@ BibHtmlTest >> testArticle [
 { #category : #testing }
 BibHtmlTest >> testSeveral [
 	| actual |
-	renderer render: phrase for: entry.
-	renderer render: phrase for: entry.
+	renderer render: entry.
+	renderer render: entry.
 	actual := renderer contents.
 	self assert: actual = '<div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div><div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
 ]
