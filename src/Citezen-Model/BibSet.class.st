@@ -5,7 +5,7 @@ Class {
 		'macros',
 		'entries'
 	],
-	#category : #Citezen
+	#category : #'Citezen-Model'
 }
 
 { #category : #'instance creation' }

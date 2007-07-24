@@ -1,7 +1,7 @@
 Class {
 	#name : #BibField,
 	#superclass : #Association,
-	#category : #Citezen
+	#category : #'Citezen-Model'
 }
 
 { #category : #bibset }
