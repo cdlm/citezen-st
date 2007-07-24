@@ -48,6 +48,11 @@ BibEntry >> at: fieldName put: aValue [
 	^ fields at: fieldName put: aValue
 ]
 
+{ #category : #enumerating }
+BibEntry >> do: aBlock [
+	fields do: aBlock
+]
+
 { #category : #accessing }
 BibEntry >> hasField: fieldName [
 	^ fields includesKey: fieldName
