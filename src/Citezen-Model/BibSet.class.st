@@ -23,13 +23,7 @@ BibSet >> acceptVisitor: aVisitor [
 
 { #category : #adding }
 BibSet >> addEntry: anEntry [
-	entries at: anEntry key put: anEntry
-]
-
-{ #category : #adding }
-BibSet >> addEntry: anEntry ifDuplicate: aBlock [
-	entries at: anEntry key ifAbsent: [^ self addEntry: anEntry].
-	^ aBlock value
+	entries add: anEntry
 ]
 
 { #category : #adding }
@@ -37,10 +31,9 @@ BibSet >> addMacro: anAssociation [
 	macros add: anAssociation
 ]
 
-{ #category : #adding }
-BibSet >> addMacro: aMacro ifDuplicate: aBlock [
-	macros at: aMacro key ifAbsent: [^ self addMacro: aMacro].
-	^ aBlock value
+{ #category : #cleanup }
+BibSet >> checkDuplicates [
+	self notYetImplemented
 ]
 
 { #category : #enumerating }
@@ -60,6 +53,11 @@ BibSet >> entries [
 	^ entries
 ]
 
+{ #category : #accessing }
+BibSet >> entryAt: aKey [
+	^ entries at: (entries findFirst: [:each | each key = aKey])
+]
+
 { #category : #'arranging - combining' }
 BibSet >> groupedBy: aBlock [
 	| result |
@@ -75,7 +73,7 @@ BibSet >> groupedBy: aBlock [
 BibSet >> initialize [
 	super initialize.
 	macros := Dictionary new. "name -> value"
-	entries := Dictionary new "entry key -> entry"
+	entries := OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -102,4 +100,19 @@ BibSet >> referencedMacros [
 BibSet >> select: aPredicate [
 	^ self class new
 		setEntries: (self entries select: aPredicate)
+]
+
+{ #category : #'arranging - combining' }
+BibSet >> sortBy: aSortBlock [
+	entries := entries asSortedCollection: aSortBlock
+]
+
+{ #category : #'arranging - combining' }
+BibSet >> sortByAuthor [
+	self notYetImplemented
+]
+
+{ #category : #'arranging - combining' }
+BibSet >> sortByDateReverse [
+	self sortBy: [:x :y | (x at: #year) >= (y at: #year)]
 ]

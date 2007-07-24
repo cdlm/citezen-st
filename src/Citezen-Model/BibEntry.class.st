@@ -29,8 +29,7 @@ BibEntry >> addFields: aCollection [
 
 { #category : #bibset }
 BibEntry >> addToBibSet: aBibSet [
-	aBibSet addEntry: self ifDuplicate: [Error signal]
-
+	aBibSet addEntry: self
 ]
 
 { #category : #accessing }

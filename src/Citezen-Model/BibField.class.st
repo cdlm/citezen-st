@@ -6,5 +6,5 @@ Class {
 
 { #category : #bibset }
 BibField >> addToBibSet: aBibSet [
-	aBibSet addMacro: self ifDuplicate: [Error signal]
+	aBibSet addMacro: self
 ]
