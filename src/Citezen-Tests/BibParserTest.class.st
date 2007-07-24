@@ -73,7 +73,7 @@ BibParserTest >> testMacro [
 	bibset := BibParser parse: '
 @string(foo = {bar})
 '.
-	self assert: (bibset macros at: 'foo') = 'bar'.
+	self assert: (bibset macroAt: 'foo') value = 'bar'.
 	self assert: bibset entries isEmpty
 ]
 
