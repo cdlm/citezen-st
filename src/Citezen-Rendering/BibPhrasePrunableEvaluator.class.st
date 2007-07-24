@@ -3,7 +3,7 @@ A BibPhrasePrunableEvaluator will visit a (partial) phrase to determine if it is
 "
 Class {
 	#name : #BibPhrasePrunableEvaluator,
-	#superclass : #BibPhraseVisitor,
+	#superclass : #BibVisitor,
 	#instVars : [
 		'entry'
 	],

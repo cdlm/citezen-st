@@ -2,49 +2,36 @@ Class {
 	#name : #BibBblRenderer,
 	#superclass : #BibTextRenderer,
 	#instVars : [
-		'showBlocks'
+		'firstBlock'
 	],
 	#category : #'Citezen-Rendering'
 }
 
 { #category : #rendering }
-BibBblRenderer >> basicText: aString [
-	super text: aString
+BibBblRenderer >> beginEntry: anEntry [
+	self flag: 'TODO compute displayKey'.
+	self
+		text: '\bibitem[displayKey]{' , anEntry key , '}';
+		newline.
+	firstBlock := true.
+
 ]
 
 { #category : #rendering }
 BibBblRenderer >> block: aBlock [
-	showBlocks ifTrue: [
-		self basicText: '
-\newblock '
-	].
-	aBlock value
+	firstBlock ifFalse: [self newline; text: '\newblock '].
+	aBlock value.
+	"firstBlock := false is done in #text: instead of here because phrases have nested blocks"
 ]
 
 { #category : #'initialize-release' }
 BibBblRenderer >> initialize [
 	super initialize.
-	showBlocks := false
-]
-
-{ #category : #rendering }
-BibBblRenderer >> render: aPhrase for: anEntry [
-	showBlocks := false.
-	self basicText: '\bibitem[displayKey]{' , anEntry key , '}
-'. "need display key here"
-	super render: aPhrase for: anEntry.
-	self basicText: '
-
-'
+	firstBlock := true
 ]
 
 { #category : #rendering }
 BibBblRenderer >> text: aString [
-	showBlocks := true.
-	super text: aString
-]
-
-{ #category : #'visitor-double dispatch' }
-BibBblRenderer >> visitBlockPhrase: aPhrase [
-	self block: [super visitBlockPhrase: aPhrase]
+	super text: aString.
+	firstBlock := false
 ]

@@ -5,22 +5,47 @@ Class {
 }
 
 { #category : #rendering }
+BibTextRenderer >> beginEntry: anEntry [
+	"do nothing"
+]
+
+{ #category : #rendering }
+BibTextRenderer >> block: aBlock [
+	aBlock value
+]
+
+{ #category : #rendering }
+BibTextRenderer >> endEntry: anEntry [
+	self newline; newline
+]
+
+{ #category : #rendering }
+BibTextRenderer >> newline [
+	stream cr
+]
+
+{ #category : #rendering }
 BibTextRenderer >> text: aString [
 	aString ifNil: [^ self].
 	stream nextPutAll: aString asString
 ]
 
 { #category : #'visitor-double dispatch' }
-BibTextRenderer >> visitEntry: anEntry [
-	super visitEntry: anEntry.
-	self text: '
+BibTextRenderer >> visitBlockPhrase: aPhrase [
+	self block: [super visitBlockPhrase: aPhrase]
+]
 
-'
+{ #category : #'visitor-double dispatch' }
+BibTextRenderer >> visitEntry: anEntry [
+	self beginEntry: anEntry.
+	super visitEntry: anEntry.
+	self endEntry: anEntry
+
 ]
 
 { #category : #'visitor-double dispatch' }
 BibTextRenderer >> visitFieldRef: aFieldRef [
-	self text: (entry at: aFieldRef fieldName)
+	self text: (currentEntry at: aFieldRef fieldName)
 ]
 
 { #category : #'visitor-double dispatch' }

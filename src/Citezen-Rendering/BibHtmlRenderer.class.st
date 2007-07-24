@@ -49,7 +49,7 @@ BibHtmlRenderer >> visitBlockPhrase: aPhrase [
 
 { #category : #'visitor-double dispatch' }
 BibHtmlRenderer >> visitFieldRef: aFieldRef [
-	self html text: (entry at: aFieldRef fieldName)
+	self html text: (currentEntry at: aFieldRef fieldName)
 ]
 
 { #category : #'visitor-double dispatch' }

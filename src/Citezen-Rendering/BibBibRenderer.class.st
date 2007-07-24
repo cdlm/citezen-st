@@ -1,54 +1,32 @@
 Class {
 	#name : #BibBibRenderer,
 	#superclass : #BibTextRenderer,
-	#instVars : [
-		'showBlocks'
-	],
 	#category : #'Citezen-Rendering'
 }
 
 { #category : #rendering }
-BibBibRenderer >> basicText: aString [
-	super text: aString
-]
-
-{ #category : #rendering }
-BibBibRenderer >> block: aBlock [
-	aBlock value
-]
-
-{ #category : #'initialize-release' }
-BibBibRenderer >> initialize [
-	super initialize.
-]
-
-{ #category : #rendering }
-BibBibRenderer >> render: aPhrase for: anEntry [
-	self basicText: '@' , anEntry type , '(' , anEntry key ,',
-'.
-	super render: aPhrase for: anEntry.
-	self basicText: ')
-
+BibBibRenderer >> beginEntry: anEntry [
+	self text: '@' , anEntry type , '(' , anEntry key ,',
 '
 ]
 
 { #category : #rendering }
-BibBibRenderer >> text: aString [
-	super text: aString
+BibBibRenderer >> endEntry: anEntry [
+	self text: ')'.
+	super endEntry: anEntry
 ]
 
 { #category : #'visitor-double dispatch' }
 BibBibRenderer >> visitFieldRef: aFieldRef [
-	self text: aFieldRef fieldName.
-	self text: ' = '.
+	self text: aFieldRef fieldName; text: ' = '.
 	aFieldRef fieldName = 'year' ifFalse: [
-		self text: '{'.
-		self text: (entry at: aFieldRef fieldName).
-		self text: '}',',',String cr
+		self
+			text: '{';
+			text: (currentEntry at: aFieldRef fieldName);
+			text: '},'; newline
 	]
 	ifTrue: [
-		self text: (entry at: aFieldRef fieldName).
-		self text: String cr
+		self text: (currentEntry at: aFieldRef fieldName); newline
 	]
 ]
 
