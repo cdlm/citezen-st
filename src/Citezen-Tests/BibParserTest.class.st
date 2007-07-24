@@ -61,7 +61,7 @@ BibParserTest >> testEntry [
 )
 '.
 	self assert: bibset macros isEmpty.
-	entry := bibset entries at: 'foobar'.
+	entry := bibset entryAt: 'foobar'.
 	self assert: entry type = 'article'.
 	self assert: entry size = 4.
 	self assert: (entry at: #title) = 'Hello world'
@@ -98,7 +98,7 @@ BibParserTest >> testSimpleValues [
 	justavalue = "42"
 )
 '.
-	entry := bibset entries at: 'somekey'.
+	entry := bibset entryAt: 'somekey'.
 	self assert: (entry at: 'num') isNumber.
 	self assert: (entry at: 'ref') isSymbol .
 	self assert: (entry at: 'reftoo') isSymbol.

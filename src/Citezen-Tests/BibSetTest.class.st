@@ -34,6 +34,13 @@ BibSetTest >> testReferencedMacros [
 ]
 
 { #category : #testing }
+BibSetTest >> testSortedBy [
+	bibset sortByDateReverse.
+	bibset entries overlappingPairsDo: [:x :y | self assert: (x at: #year) >= (y at: #year)].
+	self assert: bibset entries last key = #meuh
+]
+
+{ #category : #testing }
 BibSetTest >> testUnusedMacros [
 	bibset macros size = 2.
 
