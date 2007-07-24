@@ -45,10 +45,7 @@ BibPhraseLibraryTest >> testNewBblPhrase [
 	|result|
 	renderer render: phrase for: entry.
 	result := renderer contents.
-	self assert: result = '\bibitem[displayKey]{foobar}
-U!? 
+	self assert: result = 'U!? 
 \newblock K!? 
-\newblock W| F...
-
-'
+\newblock W| F...'
 ]

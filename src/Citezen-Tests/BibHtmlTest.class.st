@@ -1,39 +1,22 @@
 Class {
 	#name : #BibHtmlTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'entry',
-		'renderer'
-	],
+	#superclass : #BibRendererTest,
 	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
-BibHtmlTest >> setUp [
-	entry := (BibEntry type: #article)
-		key: #foobar;
-		at: #author put: 'A';
-		at: #title put: 'T';
-		at: #journal put: 'J';
-		at: #year put: 'Y';
-		yourself.
-	
-	renderer := BibHtmlRenderer library: BibPhraseLibrary default
+BibHtmlTest >> rendererClass [
+	^ BibHtmlRenderer
 ]
 
 { #category : #testing }
 BibHtmlTest >> testArticle [
-	| actual |
-	renderer render: entry.
-	actual := renderer contents.
-	self assert: actual = '<div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
+	super testArticle.
+	self assert: result = '<div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
 ]
 
 { #category : #testing }
 BibHtmlTest >> testSeveral [
-	| actual |
-	renderer render: entry.
-	renderer render: entry.
-	actual := renderer contents.
-	self assert: actual = '<div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div><div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
+	super testSeveral.
+	self assert: result = '<div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div><div class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, Y</div>.</div>'
 ]

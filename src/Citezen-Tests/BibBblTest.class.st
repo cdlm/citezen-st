@@ -1,32 +1,20 @@
 Class {
 	#name : #BibBblTest,
-	#superclass : #TestCase,
+	#superclass : #BibRendererTest,
 	#instVars : [
-		'entry',
-		'phrase',
-		'renderer'
+		'phrase'
 	],
 	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
-BibBblTest >> setUp [
-	entry := (BibEntry type: #article)
-		key: #foobar;
-		at: #author put: 'A';
-		at: #title put: 'T';
-		at: #journal put: 'J';
-		at: #year put: 'Y';
-		yourself.
-	phrase := BibPhraseLibrary phraseFor: entry.
-	renderer := (BibBblRenderer new)
+BibBblTest >> rendererClass [
+	^ BibBblRenderer
 ]
 
 { #category : #testing }
 BibBblTest >> testArticle [
-	|result|
-	renderer render: phrase for: entry.
-	result := renderer contents.
+	super testArticle.
 	self assert: result = '\bibitem[displayKey]{foobar}
 A. 
 \newblock T. 
@@ -37,10 +25,7 @@ A.
 
 { #category : #testing }
 BibBblTest >> testSeveral [
-	|result|
-	renderer render: phrase for: entry.
-	renderer render: phrase for: entry.
-	result := renderer contents.
+	super testSeveral.
 	self assert: result = '\bibitem[displayKey]{foobar}
 A. 
 \newblock T. 

@@ -1,32 +1,20 @@
 Class {
 	#name : #BibBibTest,
-	#superclass : #TestCase,
+	#superclass : #BibRendererTest,
 	#instVars : [
-		'entry',
-		'phrase',
-		'renderer'
+		'phrase'
 	],
 	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
-BibBibTest >> setUp [
-	entry := (BibEntry type: #article)
-		key: #foobar;
-		at: #author put: 'A';
-		at: #title put: 'T';
-		at: #journal put: 'J';
-		at: #year put: 'Y';
-		yourself.
-	phrase := BibPhraseLibrary phraseFor: entry.
-	renderer := (BibBibRenderer new)
+BibBibTest >> rendererClass [
+	^ BibBibRenderer
 ]
 
 { #category : #testing }
 BibBibTest >> testArticle [
-	|result|
-	renderer render: phrase for: entry.
-	result := renderer contents.
+	super testArticle.
 	self assert: result = '@article(foobar,
 author = {A},
 title = {T},
@@ -39,10 +27,7 @@ year = Y
 
 { #category : #testing }
 BibBibTest >> testSeveral [
-	|result|
-	renderer render: phrase for: entry.
-	renderer render: phrase for: entry.
-	result := renderer contents.
+	super testSeveral.
 	self assert: result = '@article(foobar,
 author = {A},
 title = {T},
