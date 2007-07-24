@@ -21,10 +21,7 @@ BibEntry >> acceptVisitor: aVisitor [
 
 { #category : #accessing }
 BibEntry >> addFields: aCollection [
-	aCollection do: [:each |
-		self
-			at: each key asLowercase asSymbol
-			put: each value]
+	fields addAll: aCollection
 ]
 
 { #category : #bibset }
@@ -34,17 +31,22 @@ BibEntry >> addToBibSet: aBibSet [
 
 { #category : #accessing }
 BibEntry >> at: fieldName [
-	^ fields at: fieldName
+	^ self at: fieldName ifAbsent: [nil]
 ]
 
 { #category : #accessing }
 BibEntry >> at: fieldName ifAbsent: aBlock [
-	^ fields at: fieldName ifAbsent: aBlock
+	| index |
+	index := fields findFirst: [:each | each key = fieldName].
+	^ index = 0
+		ifTrue: [aBlock value]
+		ifFalse: [(fields at: index) value]
 ]
 
 { #category : #accessing }
 BibEntry >> at: fieldName put: aValue [
-	^ fields at: fieldName put: aValue
+	fields removeAllSuchThat: [:each | each key = fieldName].
+	fields add: (BibField key: fieldName value: aValue)
 ]
 
 { #category : #enumerating }
@@ -54,12 +56,12 @@ BibEntry >> do: aBlock [
 
 { #category : #accessing }
 BibEntry >> hasField: fieldName [
-	^ fields includesKey: fieldName
+	^ fields anySatisfy: [:each | each key = fieldName]
 ]
 
 { #category : #'initialize-release' }
 BibEntry >> initialize [
-	fields := Dictionary new
+	fields := OrderedCollection new
 ]
 
 { #category : #accessing }

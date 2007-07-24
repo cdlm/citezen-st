@@ -45,7 +45,7 @@ BibSet >> do: aBlock [
 BibSet >> dropUnusedMacros [
 	| toKeep |
 	toKeep := self referencedMacros.
-	macros := macros associationsSelect: [:each | toKeep includes: each key]
+	macros := macros select: [:each | toKeep includes: each key]
 ]
 
 { #category : #accessing }
@@ -72,13 +72,13 @@ BibSet >> groupedBy: aBlock [
 { #category : #'initialize-release' }
 BibSet >> initialize [
 	super initialize.
-	macros := Dictionary new. "name -> value"
+	macros := OrderedCollection new.
 	entries := OrderedCollection new
 ]
 
 { #category : #accessing }
 BibSet >> macroAt: aKey [
-	^ macros at: aKey
+	^ macros at: (macros findFirst: [:each | each key = aKey])
 ]
 
 { #category : #accessing }
