@@ -1,3 +1,10 @@
+"
+Quick test:
+
+	Transcript show: ((BibHtmlRenderer library: BibPhraseLibrary default)
+		render: (BibParser parse: BibTestResource myBibFile)) contents.
+
+"
 Class {
 	#name : #BibRenderer,
 	#superclass : #BibVisitor,
