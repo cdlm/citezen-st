@@ -34,7 +34,7 @@ BibTestResource class >> bibFile [
 	year = 2005
 }
 
-@misc{meuh,year=2}'
+@misc{meuh,year=2,month=feb}'
 
 ]
 
