@@ -1,6 +1,6 @@
 Class {
 	#name : #BibEntry,
-	#superclass : #Object,
+	#superclass : #BibStructure,
 	#instVars : [
 		'type',
 		'key',
@@ -21,6 +21,7 @@ BibEntry >> acceptVisitor: aVisitor [
 
 { #category : #accessing }
 BibEntry >> addFields: aCollection [
+	fields do: [:each | each scope: self].
 	fields addAll: aCollection
 ]
 
@@ -46,7 +47,7 @@ BibEntry >> at: fieldName ifAbsent: aBlock [
 { #category : #accessing }
 BibEntry >> at: fieldName put: aValue [
 	fields removeAllSuchThat: [:each | each key = fieldName].
-	fields add: (BibField key: fieldName value: aValue)
+	fields add: ((BibField key: fieldName value: aValue) scope: self; yourself)
 ]
 
 { #category : #enumerating }

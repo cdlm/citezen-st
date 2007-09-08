@@ -1,6 +1,6 @@
 Class {
 	#name : #BibField,
-	#superclass : #Object,
+	#superclass : #BibStructure,
 	#instVars : [
 		'key',
 		'value'
@@ -16,6 +16,12 @@ BibField class >> key: aSymbol value: aValue [
 { #category : #bibset }
 BibField >> addToBibSet: aBibSet [
 	aBibSet addMacro: self
+]
+
+{ #category : #accessing }
+BibField >> displayValue [
+	self flag: 'maybe expand curlies and TeX accents here'.
+	^ self value
 ]
 
 { #category : #accessing }

@@ -30,7 +30,19 @@ BibSetTest >> testGroupedBy [
 
 { #category : #testing }
 BibSetTest >> testReferencedMacros [
-	self assert: bibset referencedMacros size = 1
+	self assert: bibset referencedMacros size = 2
+]
+
+{ #category : #testing }
+BibSetTest >> testScope [
+	self should: [bibset macroAt: 'feb'] raise: Error.
+	self should: [bibset lookupMacroAt: 'feb'] raise: Error.
+	
+	bibset scope: BibSet months.
+
+	self should: [bibset macroAt: 'feb'] raise: Error.
+	self shouldnt: [bibset lookupMacroAt: 'feb'] raise: Error.
+	self assert: (bibset lookupMacroAt: 'feb') value = (BibSet months macroAt: 'feb') value
 ]
 
 { #category : #testing }

@@ -1,6 +1,6 @@
 Class {
 	#name : #BibSet,
-	#superclass : #Object,
+	#superclass : #BibStructure,
 	#instVars : [
 		'macros',
 		'entries'
@@ -16,6 +16,24 @@ BibSet class >> fromDeclarations: declarations [
 	^ instance
 ]
 
+{ #category : #'instance creation' }
+BibSet class >> months [
+	^ self new
+		addMacro: (BibField key: 'jan' value: 'January');
+		addMacro: (BibField key: 'feb' value: 'February');
+		addMacro: (BibField key: 'mar' value: 'March');
+		addMacro: (BibField key: 'apr' value: 'April');
+		addMacro: (BibField key: 'may' value: 'May');
+		addMacro: (BibField key: 'jun' value: 'June');
+		addMacro: (BibField key: 'jul' value: 'July');
+		addMacro: (BibField key: 'aug' value: 'August');
+		addMacro: (BibField key: 'sep' value: 'September');
+		addMacro: (BibField key: 'oct' value: 'October');
+		addMacro: (BibField key: 'nov' value: 'November');
+		addMacro: (BibField key: 'dec' value: 'December');
+		yourself
+]
+
 { #category : #'visitor-double dispatch' }
 BibSet >> acceptVisitor: aVisitor [
 	^ aVisitor visitBibSet: self
@@ -23,12 +41,14 @@ BibSet >> acceptVisitor: aVisitor [
 
 { #category : #adding }
 BibSet >> addEntry: anEntry [
+	anEntry scope: self.
 	entries add: anEntry
 ]
 
 { #category : #adding }
-BibSet >> addMacro: anAssociation [
-	macros add: anAssociation
+BibSet >> addMacro: aField [
+	aField scope: self.
+	macros add: aField
 ]
 
 { #category : #cleanup }
@@ -55,7 +75,17 @@ BibSet >> entries [
 
 { #category : #accessing }
 BibSet >> entryAt: aKey [
-	^ entries at: (entries findFirst: [:each | each key = aKey])
+	"Return the local entry definition, if known."
+	^ self entryAt: aKey ifAbsent: [Error signal]
+]
+
+{ #category : #accessing }
+BibSet >> entryAt: aKey ifAbsent: aBlock [
+	| index |
+	index := entries findFirst: [:each | each key = aKey].
+	^ index = 0
+		ifTrue: [aBlock value]
+		ifFalse: [entries at: index]
 ]
 
 { #category : #'arranging - combining' }
@@ -77,8 +107,33 @@ BibSet >> initialize [
 ]
 
 { #category : #accessing }
+BibSet >> lookupEntryAt: aKey [
+	"Return the entry named aKey, looking up the scope chain if necessary."
+	^ self entryAt: aKey ifAbsent: [scope ifNotNil: [scope lookupEntryAt: aKey]]
+]
+
+{ #category : #accessing }
+BibSet >> lookupMacroAt: aKey [
+	"Return the value of macro named aKey, looking up the scope chain if necessary."
+	^ self macroAt: aKey ifAbsent: [
+		scope isNil
+			ifTrue: [Error signal]
+			ifFalse: [scope lookupMacroAt: aKey]]
+]
+
+{ #category : #accessing }
 BibSet >> macroAt: aKey [
-	^ macros at: (macros findFirst: [:each | each key = aKey])
+	"Return the local macro definition, if known."
+	^ self macroAt: aKey ifAbsent: [Error signal.]
+]
+
+{ #category : #accessing }
+BibSet >> macroAt: aKey ifAbsent: aBlock [
+	| index |
+	index := macros findFirst: [:each | each key = aKey].
+	^ index = 0
+		ifTrue: [aBlock value]
+		ifFalse: [macros at: index]
 ]
 
 { #category : #accessing }
