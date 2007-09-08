@@ -115,10 +115,16 @@ BibSet >> lookupEntryAt: aKey [
 { #category : #accessing }
 BibSet >> lookupMacroAt: aKey [
 	"Return the value of macro named aKey, looking up the scope chain if necessary."
-	^ self macroAt: aKey ifAbsent: [
-		scope isNil
-			ifTrue: [Error signal]
-			ifFalse: [scope lookupMacroAt: aKey]]
+	^ self lookupMacroAt: aKey ifAbsent: [Error signal]
+]
+
+{ #category : #accessing }
+BibSet >> lookupMacroAt: aKey ifAbsent: aBlock [
+	"Return the value of macro named aKey, looking up the scope chain if necessary."
+	^ self macroAt: aKey ifAbsent:
+		[scope isNil
+			ifTrue: [aBlock value]
+			ifFalse: [scope lookupMacroAt: aKey ifAbsent: aBlock]]
 ]
 
 { #category : #accessing }
