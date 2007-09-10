@@ -1,7 +1,7 @@
 Class {
 	#name : #BibAuthorParser,
 	#superclass : #SmaCCParser,
-	#category : #'Citezen-Parsers'
+	#category : 'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }

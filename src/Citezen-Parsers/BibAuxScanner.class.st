@@ -1,7 +1,7 @@
 Class {
 	#name : #BibAuxScanner,
 	#superclass : #BibDelimitedStringScanner,
-	#category : #'Citezen-Parsers'
+	#category : 'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }

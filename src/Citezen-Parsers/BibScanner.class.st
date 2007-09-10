@@ -1,13 +1,13 @@
 Class {
 	#name : #BibScanner,
 	#superclass : #BibDelimitedStringScanner,
-	#category : #'Citezen-Parsers'
+	#category : 'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
 BibScanner class >> scannerDefinitionComment [
 
-	"<whitespace>	:	[\s]*	;
+	"<whitespace>	:	[ \t\r\n]*	;
 <comment>	:	\% [^\r\n]*	;
 <number>	:	[0-9]+ ;
 <name>		:	[A-Za-z0-9\!\$\&\*\+\-\.\/\:\;\<\>\?\[\]\^\_\`\|]+	;
@@ -207,14 +207,14 @@ BibScanner >> scanForToken [
 			currentCharacter between: $0 and: $9] 
 					whileTrue.
 			^ self reportLastMatch].
-	((currentCharacter between: Character tab and: Character cr) 
-		or: [currentCharacter = Character space]) 
+	((currentCharacter between: Character tab and: Character lf) 
+		or: [currentCharacter = Character cr or: [currentCharacter = Character space]]) 
 			ifTrue: 
 				[
 				[self recordMatch: #whitespace.
 				self step.
-				(currentCharacter between: Character tab and: Character cr) 
-					or: [currentCharacter = Character space]] 
+				(currentCharacter between: Character tab and: Character lf) 
+					or: [currentCharacter = Character cr or: [currentCharacter = Character space]]] 
 						whileTrue.
 				^ self reportLastMatch].
 	currentCharacter = $" 
