@@ -1,7 +1,7 @@
 Class {
 	#name : #BibHtmlTest,
 	#superclass : #BibRendererTest,
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #setup }

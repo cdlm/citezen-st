@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'phrase'
 	],
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #setup }

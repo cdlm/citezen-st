@@ -1,7 +1,7 @@
 Class {
 	#name : #BibParserTest,
 	#superclass : #TestCase,
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #'test data' }
@@ -29,9 +29,26 @@ Théodule du~Cellier~de Lagrange.
 '
 ]
 
-{ #category : #testing }
+{ #category : #'test data' }
+BibParserTest class >> bibFile [
+	^ '@string{ foo = "bar" }
+@string{ foo = "baz" }
+@article(foobar,
+	title = "HeY!",
+	author = {Théodule du Cellier de Lagrange},
+	journal = foo,
+	year = 2042
+)
+
+@misc{meuh,
+	title = {L''eau ou hors le deux}}'
+]
+
+{ #category : #tests }
 BibParserTest >> testAux [
 	| aux |
+	"Keep the parser itself because it accumulates what we want.
+	#parse returns the value of the initial grammar rule"
 	aux := BibAuxParser on: self class auxFile readStream.
 	aux parse.
 	self assert: aux citations size = 2.
@@ -39,7 +56,16 @@ BibParserTest >> testAux [
 	self assert: aux style = 'alpha'
 ]
 
-{ #category : #testing }
+{ #category : #'tests (todo)' }
+BibParserTest >> testBib [
+	|bibset|
+	"fails because of the last comma"
+	bibset := BibParser parse: '@article{key, year=42,}'.
+	self assert: bibset macros size = 2.
+	self assert: bibset entries size = 2
+]
+
+{ #category : #tests }
 BibParserTest >> testComment [
 	|bibset|
 	bibset := BibParser parse: '
@@ -49,7 +75,7 @@ BibParserTest >> testComment [
 	self assert: bibset entries isEmpty
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 BibParserTest >> testEntry [
 	|bibset entry|
 	bibset := BibParser parse: '
@@ -67,7 +93,7 @@ BibParserTest >> testEntry [
 	self assert: (entry at: #title) = 'Hello world'
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 BibParserTest >> testMacro [
 	|bibset|
 	bibset := BibParser parse: '
@@ -77,7 +103,7 @@ BibParserTest >> testMacro [
 	self assert: bibset entries isEmpty
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 BibParserTest >> testScannedComment [
 	|bibset|
 	bibset := BibParser parse: '
@@ -87,7 +113,7 @@ BibParserTest >> testScannedComment [
 	self assert: bibset entries isEmpty
 ]
 
-{ #category : #testing }
+{ #category : #tests }
 BibParserTest >> testSimpleValues [
 	|bibset entry|
 	bibset := BibParser parse: '
