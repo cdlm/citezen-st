@@ -1,7 +1,7 @@
 Class {
 	#name : #BibEvaluableField,
 	#superclass : #BibField,
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #accessing }
