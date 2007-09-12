@@ -17,46 +17,51 @@ Class {
 
 { #category : #'phrases-entries' }
 BibPhraseLibrary class >> article [
-	^ BibSequencePhrase new
-		addNamedFields: #(author title);
-		add: ((BibAlternativePhrase
-				rules: {
-					[:e | e hasField: #crossref]
-					-> (BibSequencePhrase new
-							add: (BibLiteralPhrase text: 'CROSSREF');
-							addField: #pages;
-							separatorText: ', '; yourself)}
-				default: (BibSequencePhrase new
+	^ (BibSequencePhrase new)
+		addBlockWithField: #author;
+		addBlockWithField: #title;
+		add: ((BibAlternativePhrase rules: { 
+							([:e | e hasField: #crossref] -> ((BibSequencePhrase new)
+										add: (BibLiteralPhrase text: 'CROSSREF');
+										addField: #pages;
+										separatorText: ', ';
+										yourself))}
+					default: ((BibSequencePhrase new)
 							add: (self containmentIn: #journal);
 							add: self locationMonthYear;
-							initiatorText: 'In '; separatorText: ', '; yourself))
-			named: 'publishing');
-		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.'
+							initiatorText: 'In ';
+							separatorText: ', ';
+							yourself)) 
+						blockNamed: 'publishing');
+		addBlockWithField: #note;
+		separatorText: '. ';
+		terminatorText: '.'
 ]
 
 { #category : #'phrases-entries' }
 BibPhraseLibrary class >> book [
-	^ BibSequencePhrase new
-		addNamedField: #author;
+	^ (BibSequencePhrase new)
+		addBlockWithField: #author;
 		add: self editor;
-		add: ((BibAlternativePhrase
-				rules: {
-					[:e | e hasField: #crossref]
-					-> (BibSequencePhrase new
-							add: (BibLiteralPhrase text: 'CROSSREF');
-							addField: #pages;
-							separatorText: ', '; yourself)}
-				default: (BibSequencePhrase new
+		add: ((BibAlternativePhrase rules: { 
+							([:e | e hasField: #crossref] -> ((BibSequencePhrase new)
+										add: (BibLiteralPhrase text: 'CROSSREF');
+										addField: #pages;
+										separatorText: ', ';
+										yourself))}
+					default: ((BibSequencePhrase new)
 							addField: #title;
 							add: self edition;
 							add: (self containmentIn: #series);
 							add: self publisherAddress;
 							add: self locationMonthYear;
-							initiatorText: 'In '; separatorText: ', '; yourself))
-			named: 'publishing');
-		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.'
+							initiatorText: 'In ';
+							separatorText: ', ';
+							yourself)) 
+						blockNamed: 'publishing');
+		addBlockWithField: #note;
+		separatorText: '. ';
+		terminatorText: '.'
 ]
 
 { #category : #'phrases-partial' }
@@ -71,6 +76,7 @@ BibPhraseLibrary class >> containmentIn: containerField [
 
 { #category : #'instance creation' }
 BibPhraseLibrary class >> default [
+	"defaultInstance := nil"
 	^ defaultInstance ifNil: [defaultInstance := self new]
 ]
 
@@ -104,27 +110,31 @@ BibPhraseLibrary class >> field: aSymbol default: aString [
 
 { #category : #'phrases-entries' }
 BibPhraseLibrary class >> inproceedings [
-	^ BibSequencePhrase new
-		addNamedFields: #(author title);
-		add: ((BibAlternativePhrase
-				rules: {
-					[:e | e hasField: #crossref]
-					-> (BibSequencePhrase new
-							add: (BibLiteralPhrase text: 'CROSSREF');
-							addField: #pages;
-							separatorText: ', '; yourself)}
-				default: (BibSequencePhrase new
-							add: (BibSequencePhrase new
-								addField: #editor;
-								terminatorText: ' (Ed.)'; yourself);
+	^ (BibSequencePhrase new)
+		addBlockWithField: #author;
+		addBlockWithField: #title;
+		add: ((BibAlternativePhrase rules: { 
+							([:e | e hasField: #crossref] -> ((BibSequencePhrase new)
+										add: (BibLiteralPhrase text: 'CROSSREF');
+										addField: #pages;
+										separatorText: ', ';
+										yourself))}
+					default: ((BibSequencePhrase new)
+							add: ((BibSequencePhrase new)
+										addField: #editor;
+										terminatorText: ' (Ed.)';
+										yourself);
 							addField: #booktitle;
 							add: (self containmentIn: #series);
 							add: self publisherAddress;
 							add: self locationMonthYear;
-							initiatorText: 'In '; separatorText: ', '; yourself))
-			named: 'publishing');
-		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.'
+							initiatorText: 'In ';
+							separatorText: ', ';
+							yourself)) 
+						blockNamed: 'publishing');
+		addBlockWithField: #note;
+		separatorText: '. ';
+		terminatorText: '.'
 ]
 
 { #category : #'phrases-partial' }
@@ -146,21 +156,24 @@ BibPhraseLibrary class >> mastersthesis [
 
 { #category : #'phrases-entries' }
 BibPhraseLibrary class >> misc [
-	^ BibSequencePhrase new
-		addNamedFields: #(author title);
-		add: ((BibSequencePhrase new
-				addField: #howpublished;
-				add: self locationMonthYear;
-				separatorText: ', '; yourself)
-			named: 'publishing');
-		addNamedField: #note;
-		separatorText: '. '; terminatorText: '.'
+	^ (BibSequencePhrase new)
+		addBlockWithField: #author;
+		addBlockWithField: #title;
+		add: (((BibSequencePhrase new)
+					addField: #howpublished;
+					add: self locationMonthYear;
+					separatorText: ', ';
+					yourself) blockNamed: 'publishing');
+		addBlockWithField: #note;
+		separatorText: '. ';
+		terminatorText: '.'
 ]
 
 { #category : #'phrases-partial' }
-BibPhraseLibrary class >> numberedReportFrom: institution type: aString [
+BibPhraseLibrary class >> numberedReportFrom: institution type: aString [ 
 	^ (BibSequencePhrase new)
-		addNamedFields: #(#author #title );
+		addBlockWithField: #author;
+		addBlockWithField: #title;
 		add: (((BibSequencePhrase new)
 					add: ((BibSequencePhrase new)
 								add: (self field: #type default: aString);
@@ -171,8 +184,8 @@ BibPhraseLibrary class >> numberedReportFrom: institution type: aString [
 					addField: #address;
 					add: self locationMonthYear;
 					separatorText: ', ';
-					yourself) named: 'publishing');
-		addNamedField: #note;
+					yourself) blockNamed: 'publishing');
+		addBlockWithField: #note;
 		separatorText: '. ';
 		terminatorText: '.'
 ]
@@ -220,7 +233,9 @@ BibPhraseLibrary class >> techreport [
 { #category : #'phrases-entries' }
 BibPhraseLibrary class >> unpublished [
 	^ BibSequencePhrase new
-		addNamedFields: #(author title note);
+		addBlockWithField: #author;
+		addBlockWithField: #title;
+		addBlockWithField: #note;
 		separatorText: '. '; terminatorText: '.'
 ]
 

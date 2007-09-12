@@ -20,12 +20,6 @@ BibVisitor >> visitBibSet: aBibSet [
 	aBibSet do: [:each | self visit: each]
 ]
 
-{ #category : #'visiting-phrases' }
-BibVisitor >> visitBlockPhrase: aBlockPhrase [
-	^ self visit: aBlockPhrase subphrase
-
-]
-
 { #category : #'visiting-bibsets' }
 BibVisitor >> visitEntry: anEntry [
 	anEntry do: [:each | self visit: each]
@@ -42,6 +36,11 @@ BibVisitor >> visitFieldRef: aPhrase [
 
 { #category : #'visiting-phrases' }
 BibVisitor >> visitLiteralPhrase: aPhrase [
+]
+
+{ #category : #'visiting-phrases' }
+BibVisitor >> visitNamedPhrase: aPhrase [ 
+	^ self visit: aPhrase subphrase
 ]
 
 { #category : #'visiting-phrases' }

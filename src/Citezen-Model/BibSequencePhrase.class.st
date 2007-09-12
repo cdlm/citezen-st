@@ -34,6 +34,11 @@ BibSequencePhrase >> addAll: phrasesCollection [
 ]
 
 { #category : #'accessing-convenience' }
+BibSequencePhrase >> addBlockWithField: aFieldName [ 
+	self add: ((BibFieldRef field: aFieldName) blockNamed: aFieldName)
+]
+
+{ #category : #'accessing-convenience' }
 BibSequencePhrase >> addField: aFieldName [
 	self add: (BibFieldRef field: aFieldName)
 ]
@@ -41,17 +46,6 @@ BibSequencePhrase >> addField: aFieldName [
 { #category : #'accessing-convenience' }
 BibSequencePhrase >> addFields: aCollection [
 	aCollection do: [:each | self addField: each]
-]
-
-{ #category : #'accessing-convenience' }
-BibSequencePhrase >> addNamedField: aFieldName [
-	self add:
-		((BibFieldRef field: aFieldName) named: aFieldName)
-]
-
-{ #category : #'accessing-convenience' }
-BibSequencePhrase >> addNamedFields: aCollection [
-	aCollection do: [:each | self addNamedField: each]
 ]
 
 { #category : #enumerating }
