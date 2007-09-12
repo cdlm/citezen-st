@@ -1,16 +1,16 @@
 Class {
-	#name : #BibAuxParser,
+	#name : #CZAuxParser,
 	#superclass : #SmaCCParser,
 	#instVars : [
 		'citations',
 		'style',
 		'databases'
 	],
-	#category : 'Citezen-Parsers'
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
-BibAuxParser class >> parserDefinitionComment [
+CZAuxParser class >> parserDefinitionComment [
 
 	"%id <bracedString> <citation> <bibcite> <bibstyle> <bibdata> <any>;
 %start AuxFile;
@@ -43,93 +43,93 @@ DatabaseDeclaration :
 ]
 
 { #category : #'generated-accessing' }
-BibAuxParser class >> scannerClass [
-	^BibAuxScanner
+CZAuxParser class >> scannerClass [
+	^ CZAuxScanner
 ]
 
 { #category : #'generated-starting states' }
-BibAuxParser class >> startingStateForAuxFile [
+CZAuxParser class >> startingStateForAuxFile [
 	^1
 ]
 
 { #category : #'private-building' }
-BibAuxParser >> addCitation: aString [
+CZAuxParser >> addCitation: aString [
 	citations add: aString
 ]
 
 { #category : #'private-building' }
-BibAuxParser >> addDatabase: aString [
+CZAuxParser >> addDatabase: aString [
 	databases add: aString
 ]
 
 { #category : #'private-building' }
-BibAuxParser >> addDatabases: aCollection [
+CZAuxParser >> addDatabases: aCollection [
 	aCollection do: [:each | self addDatabase: each]
 ]
 
 { #category : #accessing }
-BibAuxParser >> citations [
+CZAuxParser >> citations [
 	^ citations
 ]
 
 { #category : #accessing }
-BibAuxParser >> databases [
+CZAuxParser >> databases [
 	^ databases
 ]
 
 { #category : #'initialize-release' }
-BibAuxParser >> initialize [
+CZAuxParser >> initialize [
 	super initialize.
 	citations := Bag new.
 	databases := OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuxParser >> reduceActionForDatabaseDeclaration1: nodes [ 
+CZAuxParser >> reduceActionForDatabaseDeclaration1: nodes [ 
 	^ self
 		addDatabase: (nodes at: 3) value;
 		addDatabases: ((nodes at: 4) collect: [:each | each second])
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuxParser >> reduceActionForGroupXXXXXXnewlineXXXXXjunkXXXXXnameX1: nodes [ 
+CZAuxParser >> reduceActionForGroupXXXXXXnewlineXXXXXjunkXXXXXnameX1: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuxParser >> reduceActionForGroupXXXXXXnewlineXXXXXjunkXXXXXnameX2: nodes [ 
+CZAuxParser >> reduceActionForGroupXXXXXXnewlineXXXXXjunkXXXXXnameX2: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuxParser >> reduceActionForGroupXXXXXXnewlineXXXXXjunkXXXXXnameX3: nodes [ 
+CZAuxParser >> reduceActionForGroupXXXXXXnewlineXXXXXjunkXXXXXnameX3: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuxParser >> reduceActionForReferenceCitation1: nodes [ 
+CZAuxParser >> reduceActionForReferenceCitation1: nodes [ 
 	^ self addCitation: (nodes at: 3) value
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuxParser >> reduceActionForRepeatXXGroupXXXXXXXXXXnameX1: nodes [ 
+CZAuxParser >> reduceActionForRepeatXXGroupXXXXXXXXXXnameX1: nodes [ 
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuxParser >> reduceActionForRepeatXXGroupXXXXXXXXXXnameX2: nodes [ 
+CZAuxParser >> reduceActionForRepeatXXGroupXXXXXXXXXXnameX2: nodes [ 
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuxParser >> reduceActionForStyleDeclaration1: nodes [ 
+CZAuxParser >> reduceActionForStyleDeclaration1: nodes [ 
 	^ self style: (nodes at: 3) value
 ]
 
 { #category : #'generated-tables' }
-BibAuxParser >> reduceTable [
+CZAuxParser >> reduceTable [
 	^#(
 #(12 1 #reduceFor:)
 #(12 1 #reduceFor:)
@@ -153,17 +153,17 @@ BibAuxParser >> reduceTable [
 ]
 
 { #category : #accessing }
-BibAuxParser >> style [
+CZAuxParser >> style [
 	^ style
 ]
 
 { #category : #'private-building' }
-BibAuxParser >> style: aString [
+CZAuxParser >> style: aString [
 	style := aString
 ]
 
 { #category : #'generated-tables' }
-BibAuxParser >> transitionTable [
+CZAuxParser >> transitionTable [
 	^#(
 #(3 22 4 22 5 22 6 22 7 22 8 22 9 22 11 13 14 22 23)
 #(3 22 4 22 5 22 6 22 7 22 8 22 9 22 11 17 14 22 23)

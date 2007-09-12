@@ -1,11 +1,11 @@
 Class {
-	#name : #BibAuxScanner,
-	#superclass : #BibDelimitedStringScanner,
-	#category : 'Citezen-Parsers'
+	#name : #CZAuxScanner,
+	#superclass : #CZDelimitedStringScanner,
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
-BibAuxScanner class >> scannerDefinitionComment [
+CZAuxScanner class >> scannerDefinitionComment [
 
 	"<newline>		:	\r \n | \n | \r	;
 <name>			:	[A-Za-z0-9\!\$\&\*\+\-\.\/\:\;\<\>\?\[\]\^\_\`\|]+	;
@@ -21,7 +21,7 @@ BibAuxScanner class >> scannerDefinitionComment [
 ]
 
 { #category : #scanning }
-BibAuxScanner >> any [
+CZAuxScanner >> any [
 	| tokenId |
 	self halt.
 	outputStream contents = '\' ifTrue: [
@@ -37,47 +37,47 @@ BibAuxScanner >> any [
 ]
 
 { #category : #'generated-tokens' }
-BibAuxScanner >> anyId [
+CZAuxScanner >> anyId [
 	^13
 ]
 
 { #category : #'generated-tokens' }
-BibAuxScanner >> bibciteId [
+CZAuxScanner >> bibciteId [
 	^7
 ]
 
 { #category : #'generated-tokens' }
-BibAuxScanner >> bibdataId [
+CZAuxScanner >> bibdataId [
 	^9
 ]
 
 { #category : #'generated-tokens' }
-BibAuxScanner >> bibstyleId [
+CZAuxScanner >> bibstyleId [
 	^8
 ]
 
 { #category : #'generated-tokens' }
-BibAuxScanner >> bracedStringId [
+CZAuxScanner >> bracedStringId [
 	^10
 ]
 
 { #category : #'generated-tokens' }
-BibAuxScanner >> citationId [
+CZAuxScanner >> citationId [
 	^6
 ]
 
 { #category : #'generated-tokens' }
-BibAuxScanner >> emptySymbolTokenId [
+CZAuxScanner >> emptySymbolTokenId [
 	^23
 ]
 
 { #category : #'generated-tokens' }
-BibAuxScanner >> errorTokenId [
+CZAuxScanner >> errorTokenId [
 	^24
 ]
 
 { #category : #'generated-scanner' }
-BibAuxScanner >> scan1 [
+CZAuxScanner >> scan1 [
 	self recordMatch: #(11 ).
 	self step.
 	currentCharacter = $b 
@@ -168,7 +168,7 @@ BibAuxScanner >> scan1 [
 ]
 
 { #category : #'generated-scanner' }
-BibAuxScanner >> scanForToken [
+CZAuxScanner >> scanForToken [
 	self step.
 	(currentCharacter <= Character tab or: 
 			[(currentCharacter between: (Character value: 11) and: Character newPage) 

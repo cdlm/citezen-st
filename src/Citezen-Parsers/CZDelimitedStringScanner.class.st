@@ -1,16 +1,16 @@
 Class {
-	#name : #BibDelimitedStringScanner,
+	#name : #CZDelimitedStringScanner,
 	#superclass : #SmaCCScanner,
-	#category : 'Citezen-Parsers'
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #scanning }
-BibDelimitedStringScanner >> bracedString [
+CZDelimitedStringScanner >> bracedString [
 	self delimitedTokenId: self bracedStringId from: ${ to: $}
 ]
 
 { #category : #scanning }
-BibDelimitedStringScanner >> delimitedTokenId: tokenId from: startChar to: stopChar [ 
+CZDelimitedStringScanner >> delimitedTokenId: tokenId from: startChar to: stopChar [ 
 	"Scans stuff between delimiters, taking care of nested delimiters."
 
 	| token |
@@ -24,12 +24,12 @@ BibDelimitedStringScanner >> delimitedTokenId: tokenId from: startChar to: stopC
 ]
 
 { #category : #scanning }
-BibDelimitedStringScanner >> parenthesizedString [
+CZDelimitedStringScanner >> parenthesizedString [
 	self delimitedTokenId: self parenthesizedStringId from: $( to: $)
 ]
 
 { #category : #scanning }
-BibDelimitedStringScanner >> scanUpTo: stopChar ignore: startChar [ 
+CZDelimitedStringScanner >> scanUpTo: stopChar ignore: startChar [ 
 	| level |
 	level := 0.
 	self step.

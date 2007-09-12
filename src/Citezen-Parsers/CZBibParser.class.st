@@ -1,11 +1,11 @@
 Class {
-	#name : #BibParser,
+	#name : #CZBibParser,
 	#superclass : #SmaCCParser,
-	#category : 'Citezen-Parsers'
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
-BibParser class >> parserDefinitionComment [
+CZBibParser class >> parserDefinitionComment [
 
 	"## See http://www.gerg.ca/software/btOOL/doc/bt_language.html
 
@@ -54,158 +54,155 @@ SimpleValue :
 ]
 
 { #category : #'generated-accessing' }
-BibParser class >> scannerClass [
-	^BibScanner
+CZBibParser class >> scannerClass [
+	^ CZBibScanner
 ]
 
 { #category : #'generated-starting states' }
-BibParser class >> startingStateForBibfile [
+CZBibParser class >> startingStateForBibfile [
 	^1
 ]
 
 { #category : #'generated-starting states' }
-BibParser class >> startingStateForBodyContents [
+CZBibParser class >> startingStateForBodyContents [
 	^3
 ]
 
 { #category : #'generated-starting states' }
-BibParser class >> startingStateForField [
+CZBibParser class >> startingStateForField [
 	^4
 ]
 
 { #category : #'private-building' }
-BibParser >> buildEntry: tokens [
+CZBibParser >> buildEntry: tokens [ 
 	| body |
-	body := BibParser
-		parse: (tokens at: 3) value allButFirst allButLast
-		startingAt: (self class startingStateForBodyContents).
-	^ (BibEntry type: (tokens at: 2) value asSymbol)
+	body := CZBibParser parse: (tokens at: 3) value allButFirst allButLast
+				startingAt: self class startingStateForBodyContents.
+	^ (CZEntry type: (tokens at: 2) value asSymbol)
 		key: body key;
 		addFields: body value
 ]
 
 { #category : #'private-building' }
-BibParser >> buildMacro: tokens [
-	^ BibParser
-		parse: (tokens at: 2) value allButFirst allButLast
-		startingAt: (self class startingStateForField)
-
+CZBibParser >> buildMacro: tokens [ 
+	^ CZBibParser parse: (tokens at: 2) value allButFirst allButLast
+		startingAt: self class startingStateForField
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForBibfile1: nodes [ 
-	^ BibSet fromDeclarations: ((nodes at: 1) reject: [:it | it isNil])
+CZBibParser >> reduceActionForBibfile1: nodes [ 
+	^ CZSet fromDeclarations: ((nodes at: 1) reject: [:it | it isNil])
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForBodyContents1: nodes [ 
+CZBibParser >> reduceActionForBodyContents1: nodes [ 
 	^ (nodes at: 1) value asSymbol 
 		-> ((nodes at: 2) collect: [:each | each at: 2])
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForCommentDeclaration1: nodes [ 
+CZBibParser >> reduceActionForCommentDeclaration1: nodes [ 
 	^ nil
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForField1: nodes [ 
-	^ BibField key: (nodes at: 1) value asSymbol value: (nodes at: 3)
+CZBibParser >> reduceActionForField1: nodes [ 
+	^ CZField key: (nodes at: 1) value asSymbol value: (nodes at: 3)
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration3: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration3: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX1: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX1: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX2: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX2: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1: nodes [ 
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2: nodes [ 
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForRepeatXXGroupXXXXXXXXXField1: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXField1: nodes [ 
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForRepeatXXGroupXXXXXXXXXField2: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXField2: nodes [ 
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue1: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue1: nodes [ 
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue2: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue2: nodes [ 
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForSimpleValue1: nodes [ 
+CZBibParser >> reduceActionForSimpleValue1: nodes [ 
 	^ (nodes at: 1) value allButFirst allButLast
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForSimpleValue2: nodes [ 
+CZBibParser >> reduceActionForSimpleValue2: nodes [ 
 	^ (nodes at: 1) value allButFirst allButLast
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForSimpleValue3: nodes [ 
+CZBibParser >> reduceActionForSimpleValue3: nodes [ 
 	^ (nodes at: 1) value asNumber
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForSimpleValue4: nodes [ 
+CZBibParser >> reduceActionForSimpleValue4: nodes [ 
 	^ (nodes at: 1) value asSymbol
 ]
 
 { #category : #'generated-reduction actions' }
-BibParser >> reduceActionForValue1: nodes [ 
+CZBibParser >> reduceActionForValue1: nodes [ 
 	^ (nodes at: 2) isEmpty 
 		ifTrue: [nodes at: 1]
 		ifFalse: 
-			[(BibCompositeValue with: (nodes at: 1))
+			[(CZCompositeValue with: (nodes at: 1))
 				addAll: ((nodes at: 2) collect: [:subcoll | subcoll at: 2]);
 				yourself]
 ]
 
 { #category : #'generated-tables' }
-BibParser >> reduceTable [
+CZBibParser >> reduceTable [
 	^#(
 #(14 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
 #(14 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
@@ -236,7 +233,7 @@ BibParser >> reduceTable [
 ]
 
 { #category : #'generated-tables' }
-BibParser >> transitionTable [
+CZBibParser >> transitionTable [
 	^#(
 #(3 22 1 22 10 22 11 21 16 22 28 25 31)
 #(3 22 1 22 10 22 11 21 16 22 28 29 31)

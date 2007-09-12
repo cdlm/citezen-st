@@ -1,11 +1,11 @@
 Class {
-	#name : #BibScanner,
-	#superclass : #BibDelimitedStringScanner,
-	#category : 'Citezen-Parsers'
+	#name : #CZBibScanner,
+	#superclass : #CZDelimitedStringScanner,
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
-BibScanner class >> scannerDefinitionComment [
+CZBibScanner class >> scannerDefinitionComment [
 
 	"<whitespace>	:	[ \t\r\n]*	;
 <comment>	:	\% [^\r\n]*	;
@@ -23,27 +23,27 @@ BibScanner class >> scannerDefinitionComment [
 ]
 
 { #category : #'generated-tokens' }
-BibScanner >> bracedStringId [
+CZBibScanner >> bracedStringId [
 	^12
 ]
 
 { #category : #'generated-tokens' }
-BibScanner >> emptySymbolTokenId [
+CZBibScanner >> emptySymbolTokenId [
 	^28
 ]
 
 { #category : #'generated-tokens' }
-BibScanner >> errorTokenId [
+CZBibScanner >> errorTokenId [
 	^29
 ]
 
 { #category : #'generated-tokens' }
-BibScanner >> parenthesizedStringId [
+CZBibScanner >> parenthesizedStringId [
 	^13
 ]
 
 { #category : #'generated-scanner' }
-BibScanner >> scan1 [
+CZBibScanner >> scan1 [
 	self recordMatch: #(1 ).
 	self step.
 	currentCharacter = $C 
@@ -108,7 +108,7 @@ BibScanner >> scan1 [
 ]
 
 { #category : #'generated-scanner' }
-BibScanner >> scan2 [
+CZBibScanner >> scan2 [
 	self step.
 	currentCharacter = $r 
 		ifTrue: 
@@ -127,7 +127,7 @@ BibScanner >> scan2 [
 ]
 
 { #category : #'generated-scanner' }
-BibScanner >> scan3 [
+CZBibScanner >> scan3 [
 	self step.
 	currentCharacter = $m 
 		ifTrue: 
@@ -150,7 +150,7 @@ BibScanner >> scan3 [
 ]
 
 { #category : #'generated-scanner' }
-BibScanner >> scanForToken [
+CZBibScanner >> scanForToken [
 	self recordMatch: #whitespace.
 	self step.
 	(currentCharacter = $! or: 

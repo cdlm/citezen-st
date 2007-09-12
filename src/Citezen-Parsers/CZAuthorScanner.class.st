@@ -1,11 +1,11 @@
 Class {
-	#name : #BibAuthorScanner,
+	#name : #CZAuthorScanner,
 	#superclass : #SmaCCScanner,
-	#category : 'Citezen-Parsers'
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-initialization' }
-BibAuthorScanner class >> initializeKeywordMap [
+CZAuthorScanner class >> initializeKeywordMap [
 	keywordMap := Dictionary new.
 	#(#(4 'and' 3 ) ) do: 
 				[:each | 
@@ -15,7 +15,7 @@ BibAuthorScanner class >> initializeKeywordMap [
 ]
 
 { #category : #'generated-comments' }
-BibAuthorScanner class >> scannerDefinitionComment [
+CZAuthorScanner class >> scannerDefinitionComment [
 
 	"<whitespace>	:	[\s]*	;
 <and>			:	a n d	;
@@ -25,17 +25,17 @@ BibAuthorScanner class >> scannerDefinitionComment [
 ]
 
 { #category : #'generated-tokens' }
-BibAuthorScanner >> emptySymbolTokenId [
+CZAuthorScanner >> emptySymbolTokenId [
 	^12
 ]
 
 { #category : #'generated-tokens' }
-BibAuthorScanner >> errorTokenId [
+CZAuthorScanner >> errorTokenId [
 	^13
 ]
 
 { #category : #'generated-scanner' }
-BibAuthorScanner >> scanForToken [
+CZAuthorScanner >> scanForToken [
 	self recordMatch: #whitespace.
 	self step.
 	(currentCharacter <= Character backspace or: 

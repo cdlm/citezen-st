@@ -1,11 +1,11 @@
 Class {
-	#name : #BibAuthorParser,
+	#name : #CZAuthorParser,
 	#superclass : #SmaCCParser,
-	#category : 'Citezen-Parsers'
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
-BibAuthorParser class >> parserDefinitionComment [
+CZAuthorParser class >> parserDefinitionComment [
 
 	"authorList :
 	author ( <and> author )*
@@ -20,73 +20,71 @@ author :
 ]
 
 { #category : #'generated-accessing' }
-BibAuthorParser class >> scannerClass [
-	^BibAuthorScanner
+CZAuthorParser class >> scannerClass [
+	^ CZAuthorScanner
 ]
 
 { #category : #'generated-starting states' }
-BibAuthorParser class >> startingStateForauthorList [
+CZAuthorParser class >> startingStateForauthorList [
 	^1
 ]
 
 { #category : #'private-building' }
-BibAuthorParser >> buildAuthor: tokens [
-	tokens second ifNil:
-		[^ BibAuthor named: (tokens first collect: [:each | each value])].
-	tokens third ifNil:
-		[^ BibAuthor
-			named: (tokens first collect: [:each | each value])
-			firstNames: ((tokens second allButFirst: 1) collect: [:each | each value])].
-	^ BibAuthor
-			named: (tokens first collect: [:each | each value])
-			firstNames: ((tokens third allButFirst: 1) collect: [:each | each value])
-			junior: ((tokens second allButFirst: 1) collect: [:each | each value])
-
+CZAuthorParser >> buildAuthor: tokens [ 
+	tokens second 
+		ifNil: [^ CZAuthor named: (tokens first collect: [:each | each value])].
+	tokens third ifNil: 
+			[^ CZAuthor named: (tokens first collect: [:each | each value])
+				firstNames: ((tokens second allButFirst: 1) collect: [:each | each value])].
+	^ CZAuthor 
+		named: (tokens first collect: [:each | each value])
+		firstNames: ((tokens third allButFirst: 1) collect: [:each | each value])
+		junior: ((tokens second allButFirst: 1) collect: [:each | each value])
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuthorParser >> reduceActionForOptionalXXGroupXXXXXXXXXRepeatXMultipleXXXnameX1: nodes [ 
+CZAuthorParser >> reduceActionForOptionalXXGroupXXXXXXXXXRepeatXMultipleXXXnameX1: nodes [ 
 	^ nil
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuthorParser >> reduceActionForOptionalXXGroupXXXXXXXXXRepeatXMultipleXXXnameX2: nodes [ 
+CZAuthorParser >> reduceActionForOptionalXXGroupXXXXXXXXXRepeatXMultipleXXXnameX2: nodes [ 
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuthorParser >> reduceActionForRepeatXMultipleXXXnameX1: nodes [ 
+CZAuthorParser >> reduceActionForRepeatXMultipleXXXnameX1: nodes [ 
 	^ OrderedCollection with: (nodes at: 1)
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuthorParser >> reduceActionForRepeatXMultipleXXXnameX2: nodes [ 
+CZAuthorParser >> reduceActionForRepeatXMultipleXXXnameX2: nodes [ 
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuthorParser >> reduceActionForRepeatXXGroupXXXXXXandXXauthor1: nodes [ 
+CZAuthorParser >> reduceActionForRepeatXXGroupXXXXXXandXXauthor1: nodes [ 
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuthorParser >> reduceActionForRepeatXXGroupXXXXXXandXXauthor2: nodes [ 
+CZAuthorParser >> reduceActionForRepeatXXGroupXXXXXXandXXauthor2: nodes [ 
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-BibAuthorParser >> reduceActionForauthorList1: nodes [ 
+CZAuthorParser >> reduceActionForauthorList1: nodes [ 
 	^ (OrderedCollection with: (nodes at: 1))
 		addAll: ((nodes at: 2) collect: [:subcoll | subcoll at: 2]);
 		yourself
 ]
 
 { #category : #'generated-tables' }
-BibAuthorParser >> reduceTable [
+CZAuthorParser >> reduceTable [
 	^#(
 #(5 0 #reduceActionForRepeatXXGroupXXXXXXandXXauthor1:)
 #(5 2 #reduceActionForRepeatXXGroupXXXXXXandXXauthor2:)
@@ -103,7 +101,7 @@ BibAuthorParser >> reduceTable [
 ]
 
 { #category : #'generated-tables' }
-BibAuthorParser >> transitionTable [
+CZAuthorParser >> transitionTable [
 	^#(
 #(3 9 4 13 6 17 7 21 9)
 #(2 26 1 3 4 12)
