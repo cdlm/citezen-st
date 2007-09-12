@@ -1,11 +1,11 @@
 Class {
-	#name : #BibParserTest,
+	#name : #CZParserTest,
 	#superclass : #TestCase,
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #'test data' }
-BibParserTest class >> auxFile [
+CZParserTest class >> auxFile [
 	^'junk
 	\citation{foobar}
 \citation{meuh}
@@ -14,7 +14,7 @@ BibParserTest class >> auxFile [
 ]
 
 { #category : #'test data' }
-BibParserTest class >> bblFile [
+CZParserTest class >> bblFile [
 	^ '\begin{thebibliography}{dGdL42}
 
 \bibitem[dGdL42]{foobar}
@@ -30,7 +30,7 @@ Théodule du~Cellier~de Lagrange.
 ]
 
 { #category : #'test data' }
-BibParserTest class >> bibFile [
+CZParserTest class >> bibFile [
 	^ '@string{ foo = "bar" }
 @string{ foo = "baz" }
 @article(foobar,
@@ -45,11 +45,9 @@ BibParserTest class >> bibFile [
 ]
 
 { #category : #tests }
-BibParserTest >> testAux [
+CZParserTest >> testAux [
 	| aux |
-	"Keep the parser itself because it accumulates what we want.
-	#parse returns the value of the initial grammar rule"
-	aux := BibAuxParser on: self class auxFile readStream.
+	aux := CZAuxParser on: self class auxFile readStream.
 	aux parse.
 	self assert: aux citations size = 2.
 	self assert: aux databases size = 1.
@@ -57,18 +55,17 @@ BibParserTest >> testAux [
 ]
 
 { #category : #'tests (todo)' }
-BibParserTest >> testBib [
-	|bibset|
-	"fails because of the last comma"
-	bibset := BibParser parse: '@article{key, year=42,}'.
+CZParserTest >> testBib [
+	| bibset |
+	bibset := CZBibParser parse: '@article{key, year=42,}'.
 	self assert: bibset macros size = 2.
 	self assert: bibset entries size = 2
 ]
 
 { #category : #tests }
-BibParserTest >> testComment [
-	|bibset|
-	bibset := BibParser parse: '
+CZParserTest >> testComment [
+	| bibset |
+	bibset := CZBibParser parse: '
 @comment( junk )
 '.
 	self assert: bibset macros isEmpty.
@@ -76,9 +73,10 @@ BibParserTest >> testComment [
 ]
 
 { #category : #tests }
-BibParserTest >> testEntry [
-	|bibset entry|
-	bibset := BibParser parse: '
+CZParserTest >> testEntry [
+	| bibset entry |
+	bibset := CZBibParser 
+				parse: '
 @article(foobar,
 	Title = "Hello world",
 	author = {Foo Bar},
@@ -94,9 +92,9 @@ BibParserTest >> testEntry [
 ]
 
 { #category : #tests }
-BibParserTest >> testMacro [
-	|bibset|
-	bibset := BibParser parse: '
+CZParserTest >> testMacro [
+	| bibset |
+	bibset := CZBibParser parse: '
 @string(foo = {bar})
 '.
 	self assert: (bibset macroAt: 'foo') value = 'bar'.
@@ -104,9 +102,9 @@ BibParserTest >> testMacro [
 ]
 
 { #category : #tests }
-BibParserTest >> testScannedComment [
-	|bibset|
-	bibset := BibParser parse: '
+CZParserTest >> testScannedComment [
+	| bibset |
+	bibset := CZBibParser parse: '
 % junk stuff
 '.
 	self assert: bibset macros isEmpty.
@@ -114,9 +112,10 @@ BibParserTest >> testScannedComment [
 ]
 
 { #category : #tests }
-BibParserTest >> testSimpleValues [
-	|bibset entry|
-	bibset := BibParser parse: '
+CZParserTest >> testSimpleValues [
+	| bibset entry |
+	bibset := CZBibParser 
+				parse: '
 @sometype(somekey,
 	num = 42,
 	ref = 42foo,
@@ -126,7 +125,7 @@ BibParserTest >> testSimpleValues [
 '.
 	entry := bibset entryAt: 'somekey'.
 	self assert: (entry at: 'num') isNumber.
-	self assert: (entry at: 'ref') isSymbol .
+	self assert: (entry at: 'ref') isSymbol.
 	self assert: (entry at: 'reftoo') isSymbol.
 	self assert: (entry at: 'justavalue') isNumber not.
 	self assert: (entry at: 'justavalue') isSymbol not

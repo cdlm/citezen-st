@@ -1,5 +1,5 @@
 Class {
-	#name : #BibPhraseLibraryTest,
+	#name : #CZPhraseLibraryTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'entry',
@@ -8,12 +8,12 @@ Class {
 		'rendererBib',
 		'phraseBib'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
-BibPhraseLibraryTest >> setUp [
-	entry := (BibEntry type: #article)
+CZPhraseLibraryTest >> setUp [
+	entry := (CZEntry type: #article)
 				key: #foobar;
 				at: #url put: 'U';
 				at: #keywords put: 'K';
@@ -42,7 +42,7 @@ BibPhraseLibraryTest >> setUp [
 ]
 
 { #category : #testing }
-BibPhraseLibraryTest >> testNewBblPhrase [
+CZPhraseLibraryTest >> testNewBblPhrase [
 	|result|
 	renderer render: phrase for: entry.
 	result := renderer contents.

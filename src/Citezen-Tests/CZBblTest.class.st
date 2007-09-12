@@ -1,19 +1,19 @@
 Class {
-	#name : #BibBblTest,
-	#superclass : #BibRendererTest,
+	#name : #CZBblTest,
+	#superclass : #CZRendererTest,
 	#instVars : [
 		'phrase'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
-BibBblTest >> rendererClass [
+CZBblTest >> rendererClass [
 	^ BibBblRenderer
 ]
 
 { #category : #testing }
-BibBblTest >> testArticle [
+CZBblTest >> testArticle [
 	super testArticle.
 	self assert: result = '\bibitem[displayKey]{foobar}
 A. 
@@ -24,7 +24,7 @@ A.
 ]
 
 { #category : #testing }
-BibBblTest >> testSeveral [
+CZBblTest >> testSeveral [
 	super testSeveral.
 	self assert: result = '\bibitem[displayKey]{foobar}
 A. 

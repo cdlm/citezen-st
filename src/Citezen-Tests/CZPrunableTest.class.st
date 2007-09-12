@@ -1,5 +1,5 @@
 Class {
-	#name : #BibPrunableTest,
+	#name : #CZPrunableTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'entry',
@@ -7,23 +7,23 @@ Class {
 		'renderer',
 		'visitor'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
-BibPrunableTest >> setUp [
-	entry := (BibEntry type: #article)
-		key: #foobar;
-		at: #author put: 'A';
-		at: #title put: 'T';
-		at: #journal put: 'J';
-		at: #year put: 'Y';
-		yourself.
+CZPrunableTest >> setUp [
+	entry := (CZEntry type: #article)
+				key: #foobar;
+				at: #author put: 'A';
+				at: #title put: 'T';
+				at: #journal put: 'J';
+				at: #year put: 'Y';
+				yourself.
 	visitor := BibPhrasePrunableEvaluator new entry: entry
 ]
 
 { #category : #testing }
-BibPrunableTest >> testAlternative [
+CZPrunableTest >> testAlternative [
 	|result|
 	phrase := BibAlternativePhrase new add: (BibLiteralPhrase text: 'foo')
 			condition: [:anEntry | anEntry hasField: #author] .
@@ -37,7 +37,7 @@ BibPrunableTest >> testAlternative [
 ]
 
 { #category : #testing }
-BibPrunableTest >> testFieldRef [
+CZPrunableTest >> testFieldRef [
 	|result|
 	phrase := BibFieldRef field: #author.
 	result := visitor visit: phrase.
@@ -49,7 +49,7 @@ BibPrunableTest >> testFieldRef [
 ]
 
 { #category : #testing }
-BibPrunableTest >> testLiteral [
+CZPrunableTest >> testLiteral [
 	|result|
 	phrase := BibLiteralPhrase text: 'ABCD'.
 	result := visitor visit: phrase.
@@ -57,7 +57,7 @@ BibPrunableTest >> testLiteral [
 ]
 
 { #category : #testing }
-BibPrunableTest >> testSequence [
+CZPrunableTest >> testSequence [
 	|result|
 	phrase := BibSequencePhrase new addFields: #(year author).
 	result := visitor visit: phrase.

@@ -1,24 +1,24 @@
 Class {
-	#name : #BibSetTest,
+	#name : #CZSetTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'bibset'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #accessing }
-BibSetTest class >> resources [
-	^ Array with: BibTestResource
+CZSetTest class >> resources [
+	^ Array with: CZTestResource
 ]
 
 { #category : #running }
-BibSetTest >> setUp [
-	bibset := BibTestResource current bibset
+CZSetTest >> setUp [
+	bibset := CZTestResource current bibset
 ]
 
 { #category : #testing }
-BibSetTest >> testGroupedBy [
+CZSetTest >> testGroupedBy [
 	| groups groupedItemCount |
 	groups := bibset groupedBy: [:each | each type].
 	groupedItemCount := groups inject: 0 into: [:sum :each | sum + each entries size].
@@ -29,31 +29,30 @@ BibSetTest >> testGroupedBy [
 ]
 
 { #category : #testing }
-BibSetTest >> testReferencedMacros [
+CZSetTest >> testReferencedMacros [
 	self assert: bibset referencedMacros size = 2
 ]
 
 { #category : #testing }
-BibSetTest >> testScope [
+CZSetTest >> testScope [
 	self should: [bibset macroAt: 'feb'] raise: Error.
 	self should: [bibset lookupMacroAt: 'feb'] raise: Error.
-	
-	bibset scope: BibSet months.
-
+	bibset scope: CZSet months.
 	self should: [bibset macroAt: 'feb'] raise: Error.
 	self shouldnt: [bibset lookupMacroAt: 'feb'] raise: Error.
-	self assert: (bibset lookupMacroAt: 'feb') value = (BibSet months macroAt: 'feb') value
+	self assert: (bibset lookupMacroAt: 'feb') value 
+				= (CZSet months macroAt: 'feb') value
 ]
 
 { #category : #testing }
-BibSetTest >> testSortedBy [
+CZSetTest >> testSortedBy [
 	bibset sortByDateReverse.
 	bibset entries overlappingPairsDo: [:x :y | self assert: (x at: #year) >= (y at: #year)].
 	self assert: bibset entries last key = #meuh
 ]
 
 { #category : #testing }
-BibSetTest >> testUnusedMacros [
+CZSetTest >> testUnusedMacros [
 	bibset macros size = 2.
 
 	bibset dropUnusedMacros.

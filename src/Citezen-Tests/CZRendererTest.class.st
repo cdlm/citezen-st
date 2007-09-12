@@ -1,44 +1,44 @@
 Class {
-	#name : #BibRendererTest,
+	#name : #CZRendererTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'entry',
 		'renderer',
 		'result'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #testing }
-BibRendererTest class >> isAbstract [
-	^ self == BibRendererTest
+CZRendererTest class >> isAbstract [
+	^ self == CZRendererTest
 ]
 
 { #category : #setup }
-BibRendererTest >> rendererClass [
+CZRendererTest >> rendererClass [
 	self shouldBeImplemented
 ]
 
 { #category : #setup }
-BibRendererTest >> setUp [
-	entry := (BibEntry type: #article)
-		key: #foobar;
-		at: #author put: 'A';
-		at: #title put: 'T';
-		at: #journal put: 'J';
-		at: #year put: 'Y';
-		yourself.
+CZRendererTest >> setUp [
+	entry := (CZEntry type: #article)
+				key: #foobar;
+				at: #author put: 'A';
+				at: #title put: 'T';
+				at: #journal put: 'J';
+				at: #year put: 'Y';
+				yourself.
 	renderer := self rendererClass library: BibPhraseLibrary default
 ]
 
 { #category : #testing }
-BibRendererTest >> testArticle [
+CZRendererTest >> testArticle [
 	renderer render: entry.
 	result := renderer contents.
 ]
 
 { #category : #testing }
-BibRendererTest >> testSeveral [
+CZRendererTest >> testSeveral [
 	renderer render: entry.
 	renderer render: entry.
 	result := renderer contents.

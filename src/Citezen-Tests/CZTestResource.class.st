@@ -1,14 +1,14 @@
 Class {
-	#name : #BibTestResource,
+	#name : #CZTestResource,
 	#superclass : #TestResource,
 	#instVars : [
 		'bibset'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #'test data' }
-BibTestResource class >> bibFile [
+CZTestResource class >> bibFile [
 	^ '
 @string{ used = {Never Opened Transactions on Boring Stuff} }
 @string{ unused = "baz" }
@@ -39,7 +39,7 @@ BibTestResource class >> bibFile [
 ]
 
 { #category : #'test data' }
-BibTestResource class >> myBibFile [
+CZTestResource class >> myBibFile [
 	^ '
 %% This BibTeX bibliography file was created using BibDesk.
 %% http://bibdesk.sourceforge.net/
@@ -201,11 +201,11 @@ Our approach is based on a MOF-level interface (MOF: Meta-Object Facility) for m
 ]
 
 { #category : #accessing }
-BibTestResource >> bibset [
+CZTestResource >> bibset [
 	^ bibset
 ]
 
 { #category : #running }
-BibTestResource >> setUp [
-	bibset := BibParser parse: self class bibFile
+CZTestResource >> setUp [
+	bibset := CZBibParser parse: self class bibFile
 ]

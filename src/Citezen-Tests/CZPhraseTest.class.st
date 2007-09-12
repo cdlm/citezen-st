@@ -1,34 +1,33 @@
 Class {
-	#name : #BibPhraseTest,
+	#name : #CZPhraseTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'entry',
 		'phrase',
 		'renderer'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
-BibPhraseTest >> setUp [
-	entry := (BibEntry type: #article)
-		key: #foobar;
-		at: #author put: 'A';
-		at: #title put: 'T';
-		at: #journal put: 'J';
-		at: #year put: 'Y';
-		yourself.
-	phrase := BibSequencePhrase with: {
-		BibFieldRef field: #author.
-		BibFieldRef field: #title.
-		BibFieldRef field: #journal.
-		BibFieldRef field: #year.
-	}.
+CZPhraseTest >> setUp [
+	entry := (CZEntry type: #article)
+				key: #foobar;
+				at: #author put: 'A';
+				at: #title put: 'T';
+				at: #journal put: 'J';
+				at: #year put: 'Y';
+				yourself.
+	phrase := BibSequencePhrase with: { 
+						(BibFieldRef field: #author).
+						(BibFieldRef field: #title).
+						(BibFieldRef field: #journal).
+						(BibFieldRef field: #year)}.
 	renderer := BibTextRenderer new
 ]
 
 { #category : #testing }
-BibPhraseTest >> testAlternate [
+CZPhraseTest >> testAlternate [
 	phrase add:
 		(BibAlternativePhrase new
 			add: (BibLiteralPhrase text: 'foo')
@@ -41,19 +40,19 @@ BibPhraseTest >> testAlternate [
 ]
 
 { #category : #testing }
-BibPhraseTest >> testLibraryArticle [
+CZPhraseTest >> testLibraryArticle [
 	renderer render: BibPhraseLibrary article for: entry.
 	self assert: renderer contents = 'A. T. In J, Y.'
 ]
 
 { #category : #testing }
-BibPhraseTest >> testRender [
+CZPhraseTest >> testRender [
 	renderer render: phrase for: entry.
 	self assert: renderer contents = 'ATJY'
 ]
 
 { #category : #testing }
-BibPhraseTest >> testRenderWithDecorations [
+CZPhraseTest >> testRenderWithDecorations [
 	phrase
 		initiatorText: '[42] ';
 		terminatorText: '.';
@@ -64,7 +63,7 @@ BibPhraseTest >> testRenderWithDecorations [
 ]
 
 { #category : #testing }
-BibPhraseTest >> testRenderWithMissingField [
+CZPhraseTest >> testRenderWithMissingField [
 	phrase add: (BibFieldRef field: #month).
 	renderer render: phrase for: entry.
 	self assert: renderer contents = 'ATJY'

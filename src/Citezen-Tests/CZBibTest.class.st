@@ -1,19 +1,19 @@
 Class {
-	#name : #BibBibTest,
-	#superclass : #BibRendererTest,
+	#name : #CZBibTest,
+	#superclass : #CZRendererTest,
 	#instVars : [
 		'phrase'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
-BibBibTest >> rendererClass [
+CZBibTest >> rendererClass [
 	^ BibBibRenderer
 ]
 
 { #category : #testing }
-BibBibTest >> testArticle [
+CZBibTest >> testArticle [
 	super testArticle.
 	self assert: result = '@article(foobar,
 author = {A},
@@ -26,7 +26,7 @@ year = Y
 ]
 
 { #category : #testing }
-BibBibTest >> testSeveral [
+CZBibTest >> testSeveral [
 	super testSeveral.
 	self assert: result = '@article(foobar,
 author = {A},
