@@ -12,7 +12,7 @@ Class {
 		'document',
 		'docRoot'
 	],
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #'instance creation' }
@@ -41,13 +41,6 @@ BibHtmlRenderer >> html: anHtmlCanvas [
 ]
 
 { #category : #'visitor-double dispatch' }
-BibHtmlRenderer >> visitBlockPhrase: aPhrase [
-	self html div
-		class: aPhrase name;
-		with: [super visitBlockPhrase: aPhrase]
-]
-
-{ #category : #'visitor-double dispatch' }
 BibHtmlRenderer >> visitFieldRef: aFieldRef [
 	self html text: (currentEntry at: aFieldRef fieldName)
 ]
@@ -55,4 +48,11 @@ BibHtmlRenderer >> visitFieldRef: aFieldRef [
 { #category : #'visitor-double dispatch' }
 BibHtmlRenderer >> visitLiteralPhrase: aPhrase [
 	self html text: aPhrase text
+]
+
+{ #category : #'visitor-double dispatch' }
+BibHtmlRenderer >> visitNamedPhrase: aPhrase [ 
+	(aPhrase isBlock ifTrue: [self html div] ifFalse: [self html span])
+		class: aPhrase name;
+		with: [super visitNamedPhrase: aPhrase]
 ]

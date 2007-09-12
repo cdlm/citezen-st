@@ -1,7 +1,7 @@
 Class {
 	#name : #BibBibRenderer,
 	#superclass : #BibTextRenderer,
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #rendering }

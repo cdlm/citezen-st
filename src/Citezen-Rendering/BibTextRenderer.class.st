@@ -1,7 +1,7 @@
 Class {
 	#name : #BibTextRenderer,
 	#superclass : #BibStreamRenderer,
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #rendering }
@@ -31,11 +31,6 @@ BibTextRenderer >> text: aString [
 ]
 
 { #category : #'visitor-double dispatch' }
-BibTextRenderer >> visitBlockPhrase: aPhrase [
-	self block: [super visitBlockPhrase: aPhrase]
-]
-
-{ #category : #'visitor-double dispatch' }
 BibTextRenderer >> visitEntry: anEntry [
 	self beginEntry: anEntry.
 	super visitEntry: anEntry.
@@ -51,4 +46,9 @@ BibTextRenderer >> visitFieldRef: aFieldRef [
 { #category : #'visitor-double dispatch' }
 BibTextRenderer >> visitLiteralPhrase: aPhrase [
 	self text: aPhrase text
+]
+
+{ #category : #'visitor-double dispatch' }
+BibTextRenderer >> visitNamedPhrase: aPhrase [ 
+	self block: [super visitNamedPhrase: aPhrase]
 ]

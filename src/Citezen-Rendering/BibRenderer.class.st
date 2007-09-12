@@ -12,7 +12,7 @@ Class {
 		'library',
 		'currentEntry'
 	],
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #'instance creation' }
