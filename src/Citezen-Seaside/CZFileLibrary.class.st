@@ -1,11 +1,11 @@
 Class {
-	#name : #BibFileLibrary,
+	#name : #CZFileLibrary,
 	#superclass : #WAFileLibrary,
 	#category : #'Citezen-Seaside'
 }
 
 { #category : #'accessing-styles' }
-BibFileLibrary >> bibCss [
+CZFileLibrary >> bibCss [
 	^ '/* Citezen
 	
 	Copyright (c) 2007 Damien Pollet
@@ -46,6 +46,6 @@ BibFileLibrary >> bibCss [
 ]
 
 { #category : #accessing }
-BibFileLibrary >> selectorsToInclude [
+CZFileLibrary >> selectorsToInclude [
 	^ #( bibCss )
 ]

@@ -1,5 +1,5 @@
 Class {
-	#name : #BibComponent,
+	#name : #CZBibliographyComponent,
 	#superclass : #MAComponent,
 	#instVars : [
 		'file'
@@ -8,12 +8,12 @@ Class {
 }
 
 { #category : #testing }
-BibComponent class >> canBeRoot [
+CZBibliographyComponent class >> canBeRoot [
 	^ true
 ]
 
 { #category : #'accessing-descriptions' }
-BibComponent class >> descriptionFile [
+CZBibliographyComponent class >> descriptionFile [
 	^ MAFileDescription new
 		comment: 'The .bib file to render.';
 		componentClass: MAServerFileChooserComponent;
@@ -24,38 +24,39 @@ BibComponent class >> descriptionFile [
 ]
 
 { #category : #testing }
-BibComponent class >> isAbstract [
+CZBibliographyComponent class >> isAbstract [
 	^ false
 ]
 
 { #category : #accessing }
-BibComponent class >> label [
+CZBibliographyComponent class >> label [
 	^ 'Bibliography'
 ]
 
 { #category : #accessing }
-BibComponent >> file [
+CZBibliographyComponent >> file [
 	^ file
 ]
 
 { #category : #accessing }
-BibComponent >> file: aFileModel [
+CZBibliographyComponent >> file: aFileModel [
 	file := aFileModel
 ]
 
 { #category : #rendering }
-BibComponent >> renderContentOn: html [ 
+CZBibliographyComponent >> renderContentOn: html [ 
 	| bibset |
 	file ifNil: [^ self renderFileUnspecifiedOn: html].
-	bibset := BibParser parseStream: file readStream ascii.
-	html div id: 'bibliography'; with: [
-		(BibHtmlRenderer html: html)
-			library: BibPhraseLibrary default;
-			render: bibset
-	]
+	bibset := CZBibParser parseStream: file readStream ascii.
+	(html div)
+		id: 'bibliography';
+		with: 
+				[(BibHtmlRenderer html: html)
+					library: BibPhraseLibrary default;
+					render: bibset]
 ]
 
 { #category : #rendering }
-BibComponent >> renderFileUnspecifiedOn: html [ 
+CZBibliographyComponent >> renderFileUnspecifiedOn: html [ 
 	html render: 'No file specified'
 ]
