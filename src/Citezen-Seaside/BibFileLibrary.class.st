@@ -15,9 +15,9 @@ BibFileLibrary >> bibCss [
 
 /* entries */
 
-#bibliography .inproceedings,
-#bibliography .misc,
-#bibliography .phdthesis {
+#bibliography span.inproceedings,
+#bibliography span.misc,
+#bibliography span.phdthesis {
 	display: block;
 	margin-bottom: 1em;
 }
