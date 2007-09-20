@@ -19,14 +19,13 @@ CZField >> addToBibSet: aBibSet [
 ]
 
 { #category : #accessing }
-CZField >> displayValue [
-	self flag: 'maybe expand curlies and TeX accents here'.
-	^ self value
+CZField >> key [
+	^ key
 ]
 
 { #category : #accessing }
-CZField >> key [
-	^ key
+CZField >> rawValue [
+	^ value
 ]
 
 { #category : #'initialize-release' }
@@ -37,5 +36,6 @@ CZField >> setKey: aSymbol value: aValue [
 
 { #category : #accessing }
 CZField >> value [
-	^ value
+	self flag: 'maybe expand curlies and TeX accents here'.
+	^ self rawValue
 ]

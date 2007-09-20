@@ -41,7 +41,7 @@ CZEntry >> at: fieldName ifAbsent: aBlock [
 	index := fields findFirst: [:each | each key = fieldName].
 	^ index = 0
 		ifTrue: [aBlock value]
-		ifFalse: [(fields at: index) value]
+		ifFalse: [fields at: index]
 ]
 
 { #category : #accessing }
@@ -80,7 +80,7 @@ CZEntry >> key: aKey [
 { #category : #accessing }
 CZEntry >> macroReferences [
 	"returns all fields of this entry that have a macro as value"
-	^ fields select: [:each | each value isSymbol]
+	^ fields select: [:each | each rawValue isSymbol]
 ]
 
 { #category : #accessing }
