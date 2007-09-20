@@ -47,7 +47,7 @@ CZSetTest >> testScope [
 { #category : #testing }
 CZSetTest >> testSortedBy [
 	bibset sortByDateReverse.
-	bibset entries overlappingPairsDo: [:x :y | self assert: (x at: #year) >= (y at: #year)].
+	bibset entries overlappingPairsDo: [:x :y | self assert: (x at: #year) value >= (y at: #year) value].
 	self assert: bibset entries last key = #meuh
 ]
 

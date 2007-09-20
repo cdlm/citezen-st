@@ -88,7 +88,7 @@ CZParserTest >> testEntry [
 	entry := bibset entryAt: 'foobar'.
 	self assert: entry type = 'article'.
 	self assert: entry size = 4.
-	self assert: (entry at: #title) = 'Hello world'
+	self assert: (entry at: #title) value = 'Hello world'
 ]
 
 { #category : #tests }
@@ -97,6 +97,7 @@ CZParserTest >> testMacro [
 	bibset := CZBibParser parse: '
 @string(foo = {bar})
 '.
+	self assert: (bibset macroAt: 'foo') rawValue = 'bar'.
 	self assert: (bibset macroAt: 'foo') value = 'bar'.
 	self assert: bibset entries isEmpty
 ]
@@ -124,9 +125,9 @@ CZParserTest >> testSimpleValues [
 )
 '.
 	entry := bibset entryAt: 'somekey'.
-	self assert: (entry at: 'num') isNumber.
-	self assert: (entry at: 'ref') isSymbol.
-	self assert: (entry at: 'reftoo') isSymbol.
-	self assert: (entry at: 'justavalue') isNumber not.
-	self assert: (entry at: 'justavalue') isSymbol not
+	self assert: (entry at: 'num') rawValue isNumber.
+	self assert: (entry at: 'ref') rawValue isSymbol.
+	self assert: (entry at: 'reftoo') rawValue isSymbol.
+	self assert: (entry at: 'justavalue') rawValue isNumber not.
+	self assert: (entry at: 'justavalue') rawValue isSymbol not
 ]
