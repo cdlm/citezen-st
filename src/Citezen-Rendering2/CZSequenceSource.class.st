@@ -4,12 +4,11 @@ Class {
 	#category : #'Citezen-Rendering2'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 CZSequenceSource >> streamFrom: anEntry to: aNodeStream [ 
-	| nodesStream nodes |
-	nodesStream := OrderedCollection new writeStream.
+	| nodesStream |
+	nodesStream := Array new writeStream.
 	children do: [:each | each streamFrom: anEntry to: nodesStream].
-	nodes := nodesStream contents.
-	(nodes allSatisfy: [:it | it isVolatile]) "true even if empty"
-		ifFalse: [aNodeStream nextPut: (CZGroup nodes: nodes)]
+	(CZGroup fromGroup: self nodes: nodesStream contents asOrderedCollection)
+		streamFrom: anEntry to: aNodeStream
 ]

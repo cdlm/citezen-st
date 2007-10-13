@@ -23,5 +23,6 @@ CZFieldSource >> streamFrom: anEntry to: aNodeStream [
 		ifTrue: [| node |
 			node := (CZNode from: (anEntry at: fieldName) value).
 			node origin: fieldName.
+			self isVolatile ifTrue: [node beVolatile].
 			aNodeStream nextPut: node]
 ]

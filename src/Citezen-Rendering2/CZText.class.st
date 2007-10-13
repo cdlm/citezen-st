@@ -16,3 +16,13 @@ CZText class >> text: aString [
 CZText >> setText: aString [
 	string := aString
 ]
+
+{ #category : #rendering }
+CZText >> streamFrom: anEntry to: aNodeStream [ 
+	aNodeStream nextPut: self
+]
+
+{ #category : #accessing }
+CZText >> text [
+	^ string
+]

@@ -10,9 +10,9 @@ Class {
 
 { #category : #'instance creation' }
 CZNode class >> from: anObject [
-	^ anObject isCollection
-		ifTrue: [CZGroup nodes: anObject]
-		ifFalse: [CZText text: anObject]
+	^ (anObject isString or: [anObject isNumber])
+		ifTrue: [CZText text: anObject]
+		ifFalse: [CZGroup nodes: anObject]
 ]
 
 { #category : #'initialize-release' }
@@ -39,4 +39,9 @@ CZNode >> origin [
 { #category : #'initialize-release' }
 CZNode >> origin: anObject [ 
 	origin := anObject
+]
+
+{ #category : #rendering }
+CZNode >> streamFrom: anEntry to: aNodeStream [ 
+	self subclassResponsibility
 ]
