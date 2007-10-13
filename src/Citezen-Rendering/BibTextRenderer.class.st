@@ -40,7 +40,7 @@ BibTextRenderer >> visitEntry: anEntry [
 
 { #category : #'visitor-double dispatch' }
 BibTextRenderer >> visitFieldRef: aFieldRef [
-	self text: (currentEntry at: aFieldRef fieldName)
+	self text: (currentEntry at: aFieldRef fieldName) value
 ]
 
 { #category : #'visitor-double dispatch' }

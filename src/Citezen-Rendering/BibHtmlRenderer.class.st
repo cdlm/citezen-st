@@ -42,7 +42,7 @@ BibHtmlRenderer >> html: anHtmlCanvas [
 
 { #category : #'visitor-double dispatch' }
 BibHtmlRenderer >> visitFieldRef: aFieldRef [
-	self html text: (currentEntry at: aFieldRef fieldName)
+	self html text: (currentEntry at: aFieldRef fieldName) value
 ]
 
 { #category : #'visitor-double dispatch' }
