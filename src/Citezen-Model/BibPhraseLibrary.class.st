@@ -12,7 +12,7 @@ Class {
 	#classInstVars : [
 		'defaultInstance'
 	],
-	#category : 'Citezen-Rendering'
+	#category : #'Citezen-Rendering'
 }
 
 { #category : #'phrases-entries' }
@@ -106,6 +106,35 @@ BibPhraseLibrary class >> field: aSymbol default: aString [
 	^ BibAlternativePhrase
 		rules: {[:e | e hasField: aSymbol] -> (BibFieldRef field: aSymbol)}
 		default: (BibLiteralPhrase text: aString)
+]
+
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> incollection [
+	^ (BibSequencePhrase new)
+		addBlockWithField: #author;
+		addBlockWithField: #title;
+		add: ((BibAlternativePhrase rules: { 
+							([:e | e hasField: #crossref] -> ((BibSequencePhrase new)
+										add: (BibLiteralPhrase text: 'CROSSREF');
+										addField: #pages;
+										separatorText: ', ';
+										yourself))}
+					default: ((BibSequencePhrase new)
+							add: ((BibSequencePhrase new)
+										addField: #editor;
+										terminatorText: ' (Ed.)';
+										yourself);
+							addField: #booktitle;
+							add: (self containmentIn: #series);
+							add: self publisherAddress;
+							add: self locationMonthYear;
+							initiatorText: 'In ';
+							separatorText: ', ';
+							yourself)) 
+						blockNamed: 'publishing');
+		addBlockWithField: #note;
+		separatorText: '. ';
+		terminatorText: '.'
 ]
 
 { #category : #'phrases-entries' }

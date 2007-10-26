@@ -34,6 +34,14 @@ CZSet class >> months [
 		yourself
 ]
 
+{ #category : #'mathematical operations' }
+CZSet >> \ aCZSet [
+	"Answer the set difference A \ B between the receiver A and aSet B. The set
+	difference is defined by A \ B = { x | x in A and x not in B }."
+
+	^self select: [ :each | (aCZSet entries includes: each) not ]
+]
+
 { #category : #'visitor-double dispatch' }
 CZSet >> acceptVisitor: aVisitor [
 	^ aVisitor visitBibSet: self
@@ -105,6 +113,11 @@ CZSet >> initialize [
 ]
 
 { #category : #accessing }
+CZSet >> isEmpty [
+	^self entries isEmpty
+]
+
+{ #category : #accessing }
 CZSet >> lookupEntryAt: aKey [
 	"Return the entry named aKey, looking up the scope chain if necessary."
 	^ self entryAt: aKey ifAbsent: [scope ifNotNil: [scope lookupEntryAt: aKey]]
@@ -156,9 +169,20 @@ CZSet >> referencedMacros [
 ]
 
 { #category : #'arranging - combining' }
+CZSet >> reject: aPredicate [
+	^ self class new
+		setEntries: (self entries reject: aPredicate)
+]
+
+{ #category : #'arranging - combining' }
 CZSet >> select: aPredicate [
 	^ self class new
 		setEntries: (self entries select: aPredicate)
+]
+
+{ #category : #accessing }
+CZSet >> setEntries: aCollection [
+	entries := aCollection
 ]
 
 { #category : #'arranging - combining' }
