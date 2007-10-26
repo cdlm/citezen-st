@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'fieldName'
 	],
-	#category : 'Citezen-Rendering'
+	#category : #'Citezen-Rendering'
 }
 
 { #category : #'instance creation' }
