@@ -1,6 +1,9 @@
 Class {
 	#name : #CZBibWidget,
 	#superclass : #CZBibliographyComponent,
+	#instVars : [
+		'bibEntries'
+	],
 	#category : #'Citezen-Seaside'
 }
 
@@ -10,46 +13,48 @@ CZBibWidget class >> label [
 ]
 
 { #category : #'as yet unclassified' }
+CZBibWidget >> renderAnnote: annote withTitle: aString on: html [
+
+	self
+		renderEntries: (bibEntries select: [:each | (each at: 'annote' ifAbsent: [nil]) value = annote])
+		withTitle: aString
+		on: html
+]
+
+{ #category : #'as yet unclassified' }
 CZBibWidget >> renderContentOn: html [ 
-	| bibset sets restset |
 	file ifNil: [^ self renderFileUnspecifiedOn: html].
-	bibset _ CZBibParser parseStream: file readStream ascii.
+	bibEntries _ CZBibParser parseStream: file readStream ascii.
 
-	sets _ #(
-		('internationaljournal' 'Journal publications')
-		('invited' 'Invited publications')
-		('articlebook' 'Book chapters')
-		('internationalconference' 'Conference publications')
-		('internationalworkshop' 'Workshop publications')
-		('tooldemo' 'Tool demos')
-		('phdthesis' 'Theses')
-	).
-	restset _ bibset.
+	self renderAnnote: 'internationaljournal' withTitle: 'Journal Publications' on: html.
+	self renderEntryType: 'incollection' withTitle: 'Book Chapters' on: html.
+	self renderAnnote: 'internationalconference' withTitle: 'Conference Publications' on: html.
+	self renderAnnote: 'internationalworkshop' withTitle: 'Workshop Publications' on: html.
+	self renderAnnote: 'tooldemo' withTitle: 'Tool Demos' on: html.
+	self renderEntryType: 'phdthesis' withTitle: 'PhD Theses' on: html.
+	self renderEntryType: 'mastersthesis' withTitle: 'Masters Theses' on: html.
+	self renderEntryType: 'techreport' withTitle: 'Technical Reports' on: html.
+	self renderEntryType: 'misc' withTitle: 'Miscelaneuos' on: html.
+]
 
-	sets do: [:eachPair | | currentSet |
-		currentSet _ bibset select: [:each |
-			(each at: 'annote' ifAbsent: [nil]) value = eachPair first].
-		currentSet sortBy: [:a :b | (a at: 'year' ifAbsent: ['0']) value > (b at: 'year' ifAbsent: ['0']) value].
-		currentSet isEmpty ifFalse: [
-			html heading level: 1; with: eachPair last .
-			(html orderedList)
-				class: 'bib';
-				with: 
-					[(CZBibHtmlRenderer2 html: html)
-						library: BibPhraseLibrary default;
-						render: currentSet].
-		].
-		restset _ restset \ currentSet.
-	].
-	restset sortBy: [:a :b | (a at: 'year' ifAbsent: ['0']) value > (b at: 'year' ifAbsent: ['0']) value].
-	restset isEmpty ifFalse: [
-		html heading level: 1; with: 'Other publications'.
-		(html orderedList)
-			class: 'bib';
-			with: 
-				[(CZBibHtmlRenderer2 html: html)
-					library: BibPhraseLibrary default;
-					render: restset].
-	].
+{ #category : #'as yet unclassified' }
+CZBibWidget >> renderEntries: aCollection withTitle: aString on: html [
+	| sortedCollection |
+	sortedCollection := aCollection sortBy: [:a :b | (a at: 'year' ifAbsent: ['0']) value > (b at: 'year' ifAbsent: ['0']) value].
+	html heading level: 1; with: aString.
+	(html orderedList)
+		class: 'bib';
+		with: 
+			[(CZBibHtmlRenderer2 html: html)
+				library: BibPhraseLibrary default;
+				render: sortedCollection].
+]
 
+{ #category : #'as yet unclassified' }
+CZBibWidget >> renderEntryType: aType withTitle: aString on: html [
+
+	self
+		renderEntries: (bibEntries select: [:each | each type = aType])
+		withTitle: aString
+		on: html
 ]
