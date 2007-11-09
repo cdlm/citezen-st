@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'bibset'
 	],
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #accessing }
@@ -53,7 +53,7 @@ CZSetTest >> testSortedBy [
 
 { #category : #testing }
 CZSetTest >> testUnusedMacros [
-	bibset macros size = 2.
+	self assert: bibset macros size = 2.
 
 	bibset dropUnusedMacros.
 	self assert: bibset macros size = 1.
