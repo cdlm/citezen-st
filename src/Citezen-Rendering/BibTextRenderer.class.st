@@ -1,7 +1,7 @@
 Class {
 	#name : #BibTextRenderer,
 	#superclass : #BibStreamRenderer,
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #rendering }
@@ -36,11 +36,6 @@ BibTextRenderer >> visitEntry: anEntry [
 	super visitEntry: anEntry.
 	self endEntry: anEntry
 
-]
-
-{ #category : #'visitor-double dispatch' }
-BibTextRenderer >> visitFieldRef: aFieldRef [
-	self text: (currentEntry at: aFieldRef fieldName) value
 ]
 
 { #category : #'visitor-double dispatch' }

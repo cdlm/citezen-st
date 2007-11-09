@@ -12,7 +12,7 @@ Class {
 		'library',
 		'currentEntry'
 	],
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #'instance creation' }
@@ -23,8 +23,13 @@ BibRenderer class >> library: aPhraseLibrary [
 ]
 
 { #category : #accessing }
+BibRenderer >> formatFor: aField [
+	^ self library formatFor: aField
+]
+
+{ #category : #accessing }
 BibRenderer >> library [
-	^ library
+	^ library ifNil: [BibPhraseLibrary default]
 ]
 
 { #category : #accessing }
@@ -56,6 +61,13 @@ BibRenderer >> visitAlternativePhrase: aPhrase [
 { #category : #'visiting-bibsets' }
 BibRenderer >> visitEntry: anEntry [
 	self render: (self phraseFor: anEntry) for: anEntry
+]
+
+{ #category : #'visiting-bibsets' }
+BibRenderer >> visitFieldRef: aFieldRef [
+	| field |
+	field := currentEntry at: aFieldRef fieldName.
+	field ifNotNil: [self visit: (self formatFor: field)]
 ]
 
 { #category : #'visiting-phrases' }
