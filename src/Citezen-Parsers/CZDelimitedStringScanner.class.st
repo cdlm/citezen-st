@@ -1,7 +1,7 @@
 Class {
 	#name : #CZDelimitedStringScanner,
 	#superclass : #SmaCCScanner,
-	#category : #'Citezen-Parsers'
+	#category : 'Citezen-Parsers'
 }
 
 { #category : #scanning }
