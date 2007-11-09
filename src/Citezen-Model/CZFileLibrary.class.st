@@ -1,7 +1,7 @@
 Class {
 	#name : #CZFileLibrary,
 	#superclass : #WAFileLibrary,
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #'accessing-styles' }

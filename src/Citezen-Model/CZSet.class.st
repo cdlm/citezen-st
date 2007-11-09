@@ -5,7 +5,7 @@ Class {
 		'macros',
 		'entries'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -124,18 +124,10 @@ CZSet >> lookupEntryAt: aKey [
 ]
 
 { #category : #accessing }
-CZSet >> lookupMacroAt: aKey [
-	"Return the value of macro named aKey, looking up the scope chain if necessary."
-	^ self lookupMacroAt: aKey ifAbsent: [Error signal]
-]
-
-{ #category : #accessing }
 CZSet >> lookupMacroAt: aKey ifAbsent: aBlock [
-	"Return the value of macro named aKey, looking up the scope chain if necessary."
+	"Return the local value of macro named aKey, or look it up."
 	^ self macroAt: aKey ifAbsent:
-		[scope isNil
-			ifTrue: [aBlock value]
-			ifFalse: [scope lookupMacroAt: aKey ifAbsent: aBlock]]
+		[super lookupMacroAt: aKey ifAbsent: aBlock]
 ]
 
 { #category : #accessing }
@@ -163,7 +155,7 @@ CZSet >> referencedMacros [
 	| usedMacros |
 	usedMacros := Set new.
 	self do: [ :eachEntry |
-		usedMacros addAll: (eachEntry macroReferences collect: [:each | each value])
+		usedMacros addAll: (eachEntry macroReferences collect: [:each | each rawValue])
 	].
 	^ usedMacros
 ]

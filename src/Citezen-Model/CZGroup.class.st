@@ -6,7 +6,7 @@ Class {
 		'isBlock',
 		'children'
 	],
-	#category : #'Citezen-Rendering2'
+	#category : 'Citezen-Rendering2'
 }
 
 { #category : #'instance creation' }

@@ -12,7 +12,7 @@ Class {
 	#classInstVars : [
 		'defaultInstance'
 	],
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #'phrases-entries' }
@@ -36,6 +36,20 @@ BibPhraseLibrary class >> article [
 		addBlockWithField: #note;
 		separatorText: '. ';
 		terminatorText: '.'
+]
+
+{ #category : #'formats-fields' }
+BibPhraseLibrary class >> author: aField [
+	| authors andSep |
+	^ [
+		authors := (CZAuthorParser parse: aField value)
+			collect: [:each | BibLiteralPhrase text: each fullName].
+		andSep := authors size > 2 ifTrue: [', and '] ifFalse: [' and '].
+		(BibSequencePhrase with: authors)
+			separatorText: ', ';
+			lastSeparatorText: andSep;
+			yourself
+	] on: SmaCCParserError do: [self defaultFormat: aField]
 ]
 
 { #category : #'phrases-entries' }
@@ -80,6 +94,11 @@ BibPhraseLibrary class >> default [
 	^ defaultInstance ifNil: [defaultInstance := self new]
 ]
 
+{ #category : #'formats-partial' }
+BibPhraseLibrary class >> defaultFormat: aField [
+	^ BibLiteralPhrase text: aField value
+]
+
 { #category : #'phrases-partial' }
 BibPhraseLibrary class >> edition [
 	^ BibSequencePhrase new
@@ -96,6 +115,11 @@ BibPhraseLibrary class >> editor [
 		yourself
 ]
 
+{ #category : #'formats-fields' }
+BibPhraseLibrary class >> editor: aField [
+	^ self author: aField
+]
+
 { #category : #'phrases-partial' }
 BibPhraseLibrary class >> errorPhrase: anEntry [
 	^ BibLiteralPhrase text: 'Unknown entry type:', anEntry type
@@ -106,6 +130,16 @@ BibPhraseLibrary class >> field: aSymbol default: aString [
 	^ BibAlternativePhrase
 		rules: {[:e | e hasField: aSymbol] -> (BibFieldRef field: aSymbol)}
 		default: (BibLiteralPhrase text: aString)
+]
+
+{ #category : #querying }
+BibPhraseLibrary class >> formatFor: aField [
+	"Return a phrase representing the value of this field."
+	| selector |
+	selector := (aField key copyWith: $:) asSymbol.
+	^ ((self class allMethodsInCategory: 'formats-fields') includes: selector)
+		ifTrue: [self perform: selector with: aField]
+		ifFalse: [self defaultFormat: aField]
 ]
 
 { #category : #'phrases-entries' }
@@ -275,6 +309,12 @@ BibPhraseLibrary class >> volumeNumber [
 		add: (BibSequencePhrase new
 			initiatorText: '(';	addField: #number; terminatorText: ')');
 		yourself
+]
+
+{ #category : #querying }
+BibPhraseLibrary >> formatFor: aField [
+	^ self class formatFor: aField
+
 ]
 
 { #category : #'initialize-release' }

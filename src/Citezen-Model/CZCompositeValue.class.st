@@ -1,6 +1,6 @@
 Class {
 	#name : #CZCompositeValue,
-	#superclass : #Object,
+	#superclass : #CZScoped,
 	#instVars : [
 		'values'
 	],

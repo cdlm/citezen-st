@@ -12,7 +12,7 @@ Class {
 		'document',
 		'docRoot'
 	],
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #'instance creation' }
@@ -38,11 +38,6 @@ BibHtmlRenderer >> html [
 BibHtmlRenderer >> html: anHtmlCanvas [
 	html := anHtmlCanvas.
 	self setStream: html document stream
-]
-
-{ #category : #'visitor-double dispatch' }
-BibHtmlRenderer >> visitFieldRef: aFieldRef [
-	self html text: (currentEntry at: aFieldRef fieldName) value
 ]
 
 { #category : #'visitor-double dispatch' }
