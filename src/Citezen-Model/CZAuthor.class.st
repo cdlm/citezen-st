@@ -7,7 +7,7 @@ Class {
 		'particles',
 		'junior'
 	],
-	#category : 'Citezen-Model'
+	#category : #'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -97,14 +97,6 @@ CZAuthor >> firstNames: aCollection [
 	firstNames := aCollection
 ]
 
-{ #category : #displaying }
-CZAuthor >> fullName [
-	| stream |
-	stream := String new writeStream.
-	self displayFullNameOn: stream.
-	^ stream contents
-]
-
 { #category : #accessing }
 CZAuthor >> junior [
 	^ junior ifNil: [OrderedCollection new]
@@ -147,9 +139,4 @@ CZAuthor >> printOn: aStream [
 		do: [:name | aStream nextPutAll: name]
 		separatedBy: [aStream space].
 	aStream nextPut: $)
-]
-
-{ #category : #displaying }
-CZAuthor >> shortenedName [
-	^ (self displayShortenedNameOn: (String new writeStream)) contents
 ]

@@ -6,7 +6,7 @@ Class {
 		'key',
 		'fields'
 	],
-	#category : 'Citezen-Model'
+	#category : #'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -21,9 +21,8 @@ CZEntry >> acceptVisitor: aVisitor [
 
 { #category : #accessing }
 CZEntry >> addFields: aCollection [
-	fields addAll: aCollection.
-	aCollection do: [:each | each scope: self]
-
+	fields do: [:each | each scope: self].
+	fields addAll: aCollection
 ]
 
 { #category : #bibset }
