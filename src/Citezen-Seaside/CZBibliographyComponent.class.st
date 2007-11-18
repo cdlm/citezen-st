@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'file'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #testing }
@@ -48,6 +48,7 @@ CZBibliographyComponent >> renderContentOn: html [
 	| bibset |
 	file ifNil: [^ self renderFileUnspecifiedOn: html].
 	bibset := CZBibParser parseStream: file readStream ascii.
+	bibset scope: CZSet months.
 	(html div)
 		id: 'bibliography';
 		with: 
