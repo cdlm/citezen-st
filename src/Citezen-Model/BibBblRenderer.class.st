@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'firstBlock'
 	],
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #rendering }

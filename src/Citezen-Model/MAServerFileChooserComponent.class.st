@@ -1,7 +1,7 @@
 Class {
 	#name : #MAServerFileChooserComponent,
 	#superclass : #MAElementComponent,
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #testing }

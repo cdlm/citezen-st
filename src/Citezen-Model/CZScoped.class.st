@@ -7,12 +7,26 @@ Class {
 	#instVars : [
 		'scope'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #testing }
 CZScoped class >> isAbstract [
 	^ true
+]
+
+{ #category : #accessing }
+CZScoped >> lookupMacroAt: aKey [
+	"Return the value of macro named aKey, looking up the scope chain if necessary."
+	^ self lookupMacroAt: aKey ifAbsent: [Error signal]
+]
+
+{ #category : #accessing }
+CZScoped >> lookupMacroAt: aKey ifAbsent: aBlock [
+	"Look up the scope chain for the value of macro named aKey."
+	^ scope isNil
+		ifTrue: [aBlock value]
+		ifFalse: [scope lookupMacroAt: aKey ifAbsent: aBlock]
 ]
 
 { #category : #accessing }

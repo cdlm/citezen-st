@@ -5,7 +5,7 @@ Class {
 		'key',
 		'value'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -31,11 +31,17 @@ CZField >> rawValue [
 { #category : #'initialize-release' }
 CZField >> setKey: aSymbol value: aValue [
 	key := aSymbol.
-	value := aValue
+	value := aValue.
+	value scope: self
 ]
 
 { #category : #accessing }
 CZField >> value [
-	self flag: 'maybe expand curlies and TeX accents here'.
-	^ self rawValue
+	| expandedValue |
+	expandedValue := value isSymbol
+		ifTrue: [(self lookupMacroAt: value) value "evaluation fixpoint"]
+		ifFalse: [value value "evaluate CZCompositeValues"].
+	expandedValue isString
+		ifTrue: [expandedValue := expandedValue reject: [:each | each = ${ or: [each = $}]]].
+	^ expandedValue
 ]

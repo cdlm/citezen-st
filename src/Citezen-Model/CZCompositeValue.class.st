@@ -1,10 +1,10 @@
 Class {
 	#name : #CZCompositeValue,
-	#superclass : #Object,
+	#superclass : #CZScoped,
 	#instVars : [
 		'values'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #'instance creation' }

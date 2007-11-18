@@ -5,7 +5,7 @@ Class {
 		'macros',
 		'entries'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -16,7 +16,7 @@ CZSet class >> fromDeclarations: declarations [
 	^ instance
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'standard definitions' }
 CZSet class >> months [
 	^ (self new)
 		addMacro: (CZField key: 'jan' value: 'January');
@@ -31,6 +31,18 @@ CZSet class >> months [
 		addMacro: (CZField key: 'oct' value: 'October');
 		addMacro: (CZField key: 'nov' value: 'November');
 		addMacro: (CZField key: 'dec' value: 'December');
+		yourself
+]
+
+{ #category : #'standard definitions' }
+CZSet class >> standardDefinitions [
+	^ self months
+]
+
+{ #category : #'instance creation' }
+CZSet class >> withStandardDefinitions [
+	^ self new
+		scope: self standardDefinitions;
 		yourself
 ]
 
@@ -124,18 +136,10 @@ CZSet >> lookupEntryAt: aKey [
 ]
 
 { #category : #accessing }
-CZSet >> lookupMacroAt: aKey [
-	"Return the value of macro named aKey, looking up the scope chain if necessary."
-	^ self lookupMacroAt: aKey ifAbsent: [Error signal]
-]
-
-{ #category : #accessing }
 CZSet >> lookupMacroAt: aKey ifAbsent: aBlock [
-	"Return the value of macro named aKey, looking up the scope chain if necessary."
+	"Return the local value of macro named aKey, or look it up."
 	^ self macroAt: aKey ifAbsent:
-		[scope isNil
-			ifTrue: [aBlock value]
-			ifFalse: [scope lookupMacroAt: aKey ifAbsent: aBlock]]
+		[super lookupMacroAt: aKey ifAbsent: aBlock]
 ]
 
 { #category : #accessing }
@@ -163,7 +167,7 @@ CZSet >> referencedMacros [
 	| usedMacros |
 	usedMacros := Set new.
 	self do: [ :eachEntry |
-		usedMacros addAll: (eachEntry macroReferences collect: [:each | each value])
+		usedMacros addAll: (eachEntry macroReferences collect: [:each | each rawValue])
 	].
 	^ usedMacros
 ]
@@ -198,4 +202,10 @@ CZSet >> sortByAuthor [
 { #category : #'arranging - combining' }
 CZSet >> sortByDateReverse [
 	self sortBy: [:x :y | (x at: #year) value >= (y at: #year) value]
+]
+
+{ #category : #'initialize-release' }
+CZSet >> withStandardDefinitions [
+	self scope: self class standardDefinitions.
+	^ self
 ]

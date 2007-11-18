@@ -6,7 +6,7 @@ Class {
 		'urls',
 		'entries'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #'as yet unclassified' }
@@ -46,7 +46,7 @@ CZBibList >> addChildrenFromString: aString [
 	
 	|  page pagetitle |
 
-	entries := CZBibParser parseStream: aString readStream ascii.
+	entries := (CZBibParser parseStream: aString readStream ascii) withStandardDefinitions.
 
 	entries do: [:each |
 		page := self childrenDecoration at: each key ifAbsent: [

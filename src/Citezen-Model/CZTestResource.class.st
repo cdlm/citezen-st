@@ -1,10 +1,17 @@
+"
+TestResources cache their value, so this micht need to be run sometimes:
+	CZTestResource reset
+	
+To check:
+	CZTestResource current
+"
 Class {
 	#name : #CZTestResource,
 	#superclass : #TestResource,
 	#instVars : [
 		'bibset'
 	],
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #'test data' }

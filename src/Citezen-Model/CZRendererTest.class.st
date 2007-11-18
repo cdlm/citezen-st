@@ -6,7 +6,7 @@ Class {
 		'renderer',
 		'result'
 	],
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #testing }

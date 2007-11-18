@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'bib'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #accessing }
