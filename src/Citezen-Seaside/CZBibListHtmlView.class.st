@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'bib'
 	],
-	#category : 'Citezen-Seaside'
+	#category : #'Citezen-Seaside'
 }
 
 { #category : #accessing }
@@ -16,7 +16,7 @@ CZBibListHtmlView >> bib [
 CZBibListHtmlView >> render: bibEntries annote: annote withTitle: aString on: html [
 	
 	| selectedEntries |
-	selectedEntries := bibEntries select: [:each | (each at: 'annote' ifAbsent: [nil]) value = annote].
+	selectedEntries := bibEntries select: [:each | annote match: (each at: 'annote' ifAbsent: ['']) value].
 	self
 		renderEntries: selectedEntries
 		withTitle: aString
@@ -53,8 +53,8 @@ CZBibListHtmlView >> renderContentOn: html [
 	bibEntries := self render: bibEntries annote: 'internationaljournal' withTitle: 'Journal Publications' on: html.
 	bibEntries := self render: bibEntries type: 'incollection' withTitle: 'Book Chapters' on: html.
 	bibEntries := self render: bibEntries annote: 'invited' withTitle: 'Invited Publications' on: html.
-	bibEntries := self render: bibEntries annote: 'internationalconference' withTitle: 'Conference Publications' on: html.
-	bibEntries := self render: bibEntries annote: 'internationalworkshop' withTitle: 'Workshop Publications' on: html.
+	bibEntries := self render: bibEntries annote: '*conference*' withTitle: 'Conference Publications' on: html.
+	bibEntries := self render: bibEntries annote: '*workshop*' withTitle: 'Workshop Publications' on: html.
 	bibEntries := self render: bibEntries annote: 'tooldemo' withTitle: 'Tool Demos' on: html.
 	bibEntries := self render: bibEntries type: 'phdthesis' withTitle: 'PhD Theses' on: html.
 	bibEntries := self render: bibEntries type: 'mastersthesis' withTitle: 'Masters Theses' on: html.

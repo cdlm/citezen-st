@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'html'
 	],
-	#category : 'Citezen-Seaside'
+	#category : #'Citezen-Seaside'
 }
 
 { #category : #'as yet unclassified' }
@@ -18,7 +18,7 @@ CZBibEntryHtmlRenderer class >> html: anHtmlCanvas [
 CZBibEntryHtmlRenderer class >> htmlOutOfLatexString: aString [
 
 	| text |
-	text _ aString reject: [:each | each = ${ or: [each = $}]].
+	text _ aString asString reject: [:each | each = ${ or: [each = $}]].
 
 	text _ text copyReplaceAll: '\''e' with: '&eacute;' asTokens: false.
 	text _ text copyReplaceAll: '\^i' with: '&icirc;' asTokens: false.
