@@ -5,7 +5,7 @@ Class {
 		'key',
 		'value'
 	],
-	#category : 'Citezen-Model'
+	#category : #'Citezen-Model'
 }
 
 { #category : #'instance creation' }
