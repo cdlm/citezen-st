@@ -7,6 +7,11 @@ Class {
 	#category : #'Citezen-Seaside'
 }
 
+{ #category : #'as yet unclassified' }
+CZBibListHtmlView class >> isValidIn: aContext [
+	^ (super isValidIn: aContext) and: [ aContext structure isKindOf: CZBibList ]
+]
+
 { #category : #accessing }
 CZBibListHtmlView >> bib [
 	^bib ifNil: [bib := (self find: CZBibList)]
