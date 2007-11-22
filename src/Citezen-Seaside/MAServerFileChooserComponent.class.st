@@ -19,7 +19,9 @@ MAServerFileChooserComponent >> filePath [
 { #category : #actions }
 MAServerFileChooserComponent >> filePath: aString [
 	<todo: 'detect mime type'>
-	self value: (self description kind fromRio: Cwd / aString)
+	aString isEmpty ifFalse: [
+		self value: (self description kind fromRio: Cwd / String)
+		]
 ]
 
 { #category : #actions }

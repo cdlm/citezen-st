@@ -76,7 +76,7 @@ CZBibList >> file [
 { #category : #accessing }
 CZBibList >> file: aFileModel [
 	file := aFileModel.
-	file ifNotNil: [self addChildrenFromString: file].
+	file ifNotNil: [file isEmpty ifFalse: [self addChildrenFromString: file]].
 ]
 
 { #category : #accessing }
