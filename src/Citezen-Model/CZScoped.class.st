@@ -18,7 +18,7 @@ CZScoped class >> isAbstract [
 { #category : #accessing }
 CZScoped >> lookupMacroAt: aKey [
 	"Return the value of macro named aKey, looking up the scope chain if necessary."
-	^ self lookupMacroAt: aKey ifAbsent: [Error signal]
+	^ self lookupMacroAt: aKey ifAbsent: [aKey]
 ]
 
 { #category : #accessing }
