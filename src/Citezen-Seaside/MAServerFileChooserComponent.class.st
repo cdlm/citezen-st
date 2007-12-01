@@ -1,7 +1,7 @@
 Class {
 	#name : #MAServerFileChooserComponent,
 	#superclass : #MAElementComponent,
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #testing }
@@ -20,7 +20,7 @@ MAServerFileChooserComponent >> filePath [
 MAServerFileChooserComponent >> filePath: aString [
 	<todo: 'detect mime type'>
 	aString isEmpty ifFalse: [
-		self value: (self description kind fromRio: Cwd / String)
+		self value: (self description kind fromRio: Cwd / aString)
 		]
 ]
 

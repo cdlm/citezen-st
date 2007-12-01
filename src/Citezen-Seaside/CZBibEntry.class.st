@@ -4,12 +4,12 @@ Class {
 	#instVars : [
 		'entry'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #'as yet unclassified' }
 CZBibEntry class >> canBeChildOf: aStructureClass [
-	^ aStructureClass includesBehavior: CZBib
+	^ aStructureClass includesBehavior: CZBibList
 ]
 
 { #category : #'as yet unclassified' }

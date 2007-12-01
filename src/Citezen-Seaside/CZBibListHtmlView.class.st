@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'bib'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #'as yet unclassified' }
@@ -34,7 +34,7 @@ CZBibListHtmlView >> render: bibEntries restOn: html [
 
 	self
 		renderEntries: bibEntries
-		withTitle: 'Miscelaneous'
+		withTitle: 'Miscellaneous'
 		on: html
 ]
 

@@ -6,15 +6,36 @@ Class {
 		'urls',
 		'entries'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 CZBibList class >> canBeParentOf: aStructureClass [
 	^ aStructureClass includesBehavior: CZBibEntry
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing-descriptions' }
+CZBibList class >> descriptionContainer [
+	^ (super descriptionContainer)
+		addCondition: [:memento |
+			[ memento cache
+				at: self descriptionEntries
+				put: (self entriesFromMemento: memento).
+				true
+			] on: SmaCCParserError do: [false] ]
+		labelled: 'Files and Urls must be BibTex databases';
+		yourself
+]
+
+{ #category : #'accessing-descriptions' }
+CZBibList class >> descriptionEntries [
+	^ MAFileDescription new
+		selectorAccessor: #entries;
+		beHidden;
+		yourself
+]
+
+{ #category : #'accessing-descriptions' }
 CZBibList class >> descriptionFile [
 	^ MAFileDescription new
 		comment: 'The .bib file to render.';
@@ -26,7 +47,7 @@ CZBibList class >> descriptionFile [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing-descriptions' }
 CZBibList class >> descriptionUrls [
 	^ MAMemoDescription new
 		selectorAccessor: #urls;
@@ -36,19 +57,55 @@ CZBibList class >> descriptionUrls [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
+CZBibList class >> entriesFromMemento: aMemento [
+	| entries |
+	entries := OrderedCollection new.
+	(aMemento cache at: self descriptionFile)
+		ifNotNilDo: [:file | entries add: (self parseEntriesFromString: file) ].
+	(aMemento cache at: self descriptionUrls)
+		ifNotNilDo: [:urls |
+			(urls findTokens: String crlf) do: [:each | entries add:
+				(self parseEntriesFromString: (HTTPSocket httpGet: each)) ] ].
+	^ entries
+]
+
+{ #category : #testing }
 CZBibList class >> isAbstract [
 	^false
 ]
 
+{ #category : #private }
+CZBibList class >> parseEntriesFromString: aString [
+	^ CZBibParser parseStream: aString readStream ascii
+]
+
 { #category : #accessing }
-CZBibList >> addChildrenFromString: aString [
-	
-	|  page pagetitle |
+CZBibList >> entries [
+	^ entries ifNil: [self resetEntries]
+]
 
-	entries := (CZBibParser parseStream: aString readStream ascii) withStandardDefinitions.
+{ #category : #accessing }
+CZBibList >> entries: aCollection [
+	self resetEntries.
+	aCollection do: [:each | self entries merge: each].
+	self rebuildChildren
+]
 
-	entries do: [:each |
+{ #category : #accessing }
+CZBibList >> file [
+	^file
+]
+
+{ #category : #accessing }
+CZBibList >> file: aFileModel [
+	file := aFileModel
+]
+
+{ #category : #accessing }
+CZBibList >> rebuildChildren [
+	self removeDecoration: self childrenDecoration.
+	entries do: [:each | | page pagetitle |
 		page := self childrenDecoration at: each key ifAbsent: [
 					self addChild: (CZBibEntry named: each key)].
 		pagetitle := (each at: 'title') value.
@@ -63,20 +120,8 @@ CZBibList >> addChildrenFromString: aString [
 ]
 
 { #category : #accessing }
-CZBibList >> entries [
-
-	^entries ifNil: [entries := CZSet new]
-]
-
-{ #category : #accessing }
-CZBibList >> file [
-	^file
-]
-
-{ #category : #accessing }
-CZBibList >> file: aFileModel [
-	file := aFileModel.
-	file ifNotNil: [file isEmpty ifFalse: [self addChildrenFromString: file]].
+CZBibList >> resetEntries [
+	^ entries := CZSet new withStandardDefinitions
 ]
 
 { #category : #accessing }
@@ -87,16 +132,7 @@ CZBibList >> urls [
 
 { #category : #accessing }
 CZBibList >> urls: aCRSeparatedList [
-
-	urls := aCRSeparatedList.
-	self urls ifNotNil: [
-		(self urls findTokens: String crlf) do: [:eachUrl |
-			[self addChildrenFromString: (HTTPSocket httpGet: eachUrl)]
-				on: SmaCCParserError 
-				do: [ :err | err resignalAs: (MAConditionError description: self class descriptionUrls signal: eachUrl) ].
-		]
-	].
-
+	urls := aCRSeparatedList
 ]
 
 { #category : #accessing }
