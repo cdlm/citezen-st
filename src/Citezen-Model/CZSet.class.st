@@ -5,7 +5,7 @@ Class {
 		'macros',
 		'entries'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -108,6 +108,15 @@ CZSet >> entryAt: aKey ifAbsent: aBlock [
 		ifFalse: [entries at: index]
 ]
 
+{ #category : #accessing }
+CZSet >> entryAt: aKey put: anEntry [
+	| index |
+	index := entries findFirst: [:each | each key = aKey].
+	^ index = 0
+		ifTrue: [entries add: anEntry]
+		ifFalse: [entries at: index put: anEntry]
+]
+
 { #category : #'arranging - combining' }
 CZSet >> groupedBy: aBlock [ 
 	| result |
@@ -158,8 +167,24 @@ CZSet >> macroAt: aKey ifAbsent: aBlock [
 ]
 
 { #category : #accessing }
+CZSet >> macroAt: aKey put: aMacro [
+	| index |
+	index := macros findFirst: [:each | each key = aKey].
+	^ index = 0
+		ifTrue: [macros add: aMacro]
+		ifFalse: [macros at: index put: aMacro]
+]
+
+{ #category : #accessing }
 CZSet >> macros [
 	^ macros
+]
+
+{ #category : #'arranging - combining' }
+CZSet >> merge: aCZSet [
+	"Merge aCZSet into the receiver, replacing macros or entries."
+	aCZSet macros do: [:each | self macroAt: each key put: each].
+	aCZSet entries do: [:each | self entryAt: each key put: each]
 ]
 
 { #category : #accessing }

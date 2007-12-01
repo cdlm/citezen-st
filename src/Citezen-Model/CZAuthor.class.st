@@ -7,7 +7,7 @@ Class {
 		'particles',
 		'junior'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #'instance creation' }
