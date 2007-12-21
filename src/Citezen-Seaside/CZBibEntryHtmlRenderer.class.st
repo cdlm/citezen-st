@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'html'
 	],
-	#category : 'Citezen-Seaside'
+	#category : #'Citezen-Seaside'
 }
 
 { #category : #'as yet unclassified' }
