@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'scope'
 	],
-	#category : 'Citezen-Model'
+	#category : #'Citezen-Model'
 }
 
 { #category : #testing }
