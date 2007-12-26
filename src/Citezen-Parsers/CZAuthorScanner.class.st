@@ -1,7 +1,7 @@
 Class {
 	#name : #CZAuthorScanner,
 	#superclass : #SmaCCScanner,
-	#category : 'Citezen-Parsers'
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-initialization' }

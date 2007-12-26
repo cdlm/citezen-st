@@ -1,3 +1,8 @@
+"
+Parser for LaTeX's .aux files, collecting citations marks, as well as the used databases and style. The parser stores a Bag of citations, an OrderedCollection of databases and a single style by himself (probably not very robust if the grammar needs backtracks).
+
+Some LaTeX classes or packages redefine the format of citations in the .aux file so this will probably break for such files.
+"
 Class {
 	#name : #CZAuxParser,
 	#superclass : #SmaCCParser,
@@ -6,7 +11,7 @@ Class {
 		'style',
 		'databases'
 	],
-	#category : 'Citezen-Parsers'
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }
