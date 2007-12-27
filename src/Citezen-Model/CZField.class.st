@@ -1,3 +1,6 @@
+"
+Name / Value pair used as a single field of a bibliographic entry, or as the declaration of a macro.
+"
 Class {
 	#name : #CZField,
 	#superclass : #CZScoped,

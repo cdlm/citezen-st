@@ -1,5 +1,5 @@
 "
-Defines scope for macro definitions. For instance base definitions for month macros are (erm, will be) defined in a constant BibSet that is the top scope.
+Defines scope for macro definitions. For instance base definitions for month macros are (erm, should be) defined in a constant BibSet that is the top scope.
 "
 Class {
 	#name : #CZScoped,

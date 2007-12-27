@@ -1,3 +1,6 @@
+"
+Concatenation expression as value of a BibTeX field or macro (represents the foo # bar notation in BibTeX).
+"
 Class {
 	#name : #CZCompositeValue,
 	#superclass : #CZScoped,

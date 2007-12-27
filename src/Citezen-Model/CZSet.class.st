@@ -1,3 +1,6 @@
+"
+Set of bibliographic entries and macro definitions, equivalent of a .bib BibTeX file.
+"
 Class {
 	#name : #CZSet,
 	#superclass : #CZScoped,

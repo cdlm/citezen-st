@@ -1,3 +1,6 @@
+"
+A bibliographic entry representing a single document or unit published work.
+"
 Class {
 	#name : #CZEntry,
 	#superclass : #CZScoped,
