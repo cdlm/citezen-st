@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'file',
 		'urls',
-		'entries'
+		'entries',
+		'filteringKeyword'
 	],
 	#category : #'Citezen-Seaside'
 }
@@ -48,6 +49,16 @@ CZBibList class >> descriptionFile [
 ]
 
 { #category : #'accessing-descriptions' }
+CZBibList class >> descriptionFilteringKeyword [
+	^ MAStringDescription new
+		selectorAccessor: #filteringKeyword;
+		label: 'Filtering keyword';
+		priority: 1000;
+		beEditable;
+		yourself
+]
+
+{ #category : #'accessing-descriptions' }
 CZBibList class >> descriptionUrls [
 	^ MAMemoDescription new
 		selectorAccessor: #urls;
@@ -62,7 +73,7 @@ CZBibList class >> entriesFromMemento: aMemento [
 	| entries |
 	entries := OrderedCollection new.
 	(aMemento cache at: self descriptionFile)
-		ifNotNilDo: [:file | entries add: (self parseEntriesFromString: file) ].
+		ifNotNilDo: [:file | (file directory fileExists: file filename) ifTrue: [ entries add: (self parseEntriesFromString: file) ]].
 	(aMemento cache at: self descriptionUrls)
 		ifNotNilDo: [:urls |
 			(urls findTokens: String crlf) do: [:each | entries add:
@@ -87,8 +98,20 @@ CZBibList >> entries [
 
 { #category : #accessing }
 CZBibList >> entries: aCollection [
+	| selectedEntries |
+	
 	self resetEntries.
-	aCollection do: [:each | self entries merge: each].
+	
+	(self filteringKeyword notNil and: [self filteringKeyword notEmpty]) ifTrue: [
+		selectedEntries := aCollection collect: [:eachSet |
+			eachSet select: [:each |
+				(each hasField: 'keywords') and: [
+					((each at: 'keywords') value findTokens: Character space) includes: self filteringKeyword.
+				].
+			]
+		].
+	].
+	selectedEntries do: [:each | self entries merge: each].
 	self rebuildChildren
 ]
 
@@ -100,6 +123,16 @@ CZBibList >> file [
 { #category : #accessing }
 CZBibList >> file: aFileModel [
 	file := aFileModel
+]
+
+{ #category : #accessing }
+CZBibList >> filteringKeyword [
+	^filteringKeyword
+]
+
+{ #category : #accessing }
+CZBibList >> filteringKeyword: aString [
+	filteringKeyword := aString
 ]
 
 { #category : #accessing }
