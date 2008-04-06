@@ -7,7 +7,7 @@ Class {
 		'entries',
 		'filteringKeyword'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #testing }
@@ -73,7 +73,7 @@ CZBibList class >> entriesFromMemento: aMemento [
 	| entries |
 	entries := OrderedCollection new.
 	(aMemento cache at: self descriptionFile)
-		ifNotNilDo: [:file | (file directory fileExists: file filename) ifTrue: [ entries add: (self parseEntriesFromString: file) ]].
+		ifNotNilDo: [:file | (file directory fileExists: file filename) ifTrue: [ entries add: (self parseEntriesFromString: file contents) ]].
 	(aMemento cache at: self descriptionUrls)
 		ifNotNilDo: [:urls |
 			(urls findTokens: String crlf) do: [:each | entries add:
@@ -87,8 +87,13 @@ CZBibList class >> isAbstract [
 ]
 
 { #category : #private }
+CZBibList class >> parseEntriesFromFile: aFileModel [
+	^ CZBibParser parse: aFileModel readStream
+]
+
+{ #category : #private }
 CZBibList class >> parseEntriesFromString: aString [
-	^ CZBibParser parseStream: aString readStream ascii
+	^ CZBibParser parse: aString asString
 ]
 
 { #category : #accessing }
@@ -102,6 +107,7 @@ CZBibList >> entries: aCollection [
 	
 	self resetEntries.
 	
+	selectedEntries := aCollection.
 	(self filteringKeyword notNil and: [self filteringKeyword notEmpty]) ifTrue: [
 		selectedEntries := aCollection collect: [:eachSet |
 			eachSet select: [:each |

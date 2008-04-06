@@ -1,8 +1,13 @@
 Class {
 	#name : #MAReferenceFileModel,
 	#superclass : #MAExternalFileModel,
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
+
+{ #category : #'instance creation' }
+MAReferenceFileModel class >> baseDirectory [
+	^ baseDirectory ifNil: [ FileDirectory default ]
+]
 
 { #category : #'instance creation' }
 MAReferenceFileModel class >> fromRio: aRio [
@@ -11,12 +16,6 @@ MAReferenceFileModel class >> fromRio: aRio [
 		"base directory if absolute"
 		location: aRio split allButLast;
 		yourself
-]
-
-{ #category : #configuration }
-MAReferenceFileModel >> baseDirectory [
-	<todo: 'extract default baseDirectory'>
-	^ BaseDirectory ifNil: [ FileDirectory default ]
 ]
 
 { #category : #'accessing-dynamic' }

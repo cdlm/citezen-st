@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'bibset'
 	],
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #accessing }
@@ -36,7 +36,7 @@ CZSetTest >> testReferencedMacros [
 { #category : #testing }
 CZSetTest >> testScope [
 	self should: [bibset macroAt: 'feb'] raise: Error.
-	self should: [bibset lookupMacroAt: 'feb'] raise: Error.
+	self assert: (bibset lookupMacroAt: 'feb') isUndefined.
 	bibset scope: CZSet months.
 	self should: [bibset macroAt: 'feb'] raise: Error.
 	self shouldnt: [bibset lookupMacroAt: 'feb'] raise: Error.

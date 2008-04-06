@@ -5,12 +5,9 @@ NB. Both BibHtmlRenderer and the canvas know about the stream, so using #setStre
 "
 Class {
 	#name : #BibHtmlRenderer,
-	#superclass : #BibStreamRenderer,
+	#superclass : #BibRenderer,
 	#instVars : [
-		'html',
-		'context',
-		'document',
-		'docRoot'
+		'html'
 	],
 	#category : #'Citezen-Rendering'
 }
@@ -31,18 +28,18 @@ BibHtmlRenderer >> contents [
 BibHtmlRenderer >> html [
 	^ html ifNil: [
 		html := WAStaticHtmlCanvas document:
-			(WAHtmlStreamDocument new stream: stream)]
+			(WAHtmlStreamDocument new stream: (String new writeStream))]
 ]
 
 { #category : #accessing }
 BibHtmlRenderer >> html: anHtmlCanvas [
-	html := anHtmlCanvas.
-	self setStream: html document stream
+	html := anHtmlCanvas
 ]
 
 { #category : #'visitor-double dispatch' }
-BibHtmlRenderer >> visitLiteralPhrase: aPhrase [
-	self html text: aPhrase text
+BibHtmlRenderer >> text: aString [
+	aString ifNil: [^ self].
+	self html text: aString asString
 ]
 
 { #category : #'visitor-double dispatch' }

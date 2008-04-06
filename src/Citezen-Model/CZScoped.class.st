@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'scope'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #testing }
@@ -18,7 +18,7 @@ CZScoped class >> isAbstract [
 { #category : #accessing }
 CZScoped >> lookupMacroAt: aKey [
 	"Return the value of macro named aKey, looking up the scope chain if necessary."
-	^ self lookupMacroAt: aKey ifAbsent: [aKey]
+	^ self lookupMacroAt: aKey ifAbsent: [CZField undefined: aKey]
 ]
 
 { #category : #accessing }

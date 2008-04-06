@@ -1,7 +1,7 @@
 Class {
 	#name : #CZSequenceSource,
 	#superclass : #CZGroup,
-	#category : #'Citezen-Rendering2'
+	#category : 'Citezen-Rendering2'
 }
 
 { #category : #rendering }

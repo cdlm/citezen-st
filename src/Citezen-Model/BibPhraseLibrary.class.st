@@ -12,7 +12,7 @@ Class {
 	#classInstVars : [
 		'defaultInstance'
 	],
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #'phrases-entries' }

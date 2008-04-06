@@ -8,7 +8,7 @@ Class {
 		'key',
 		'value'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -16,9 +16,21 @@ CZField class >> key: aSymbol value: aValue [
 	^ self new setKey: aSymbol asLowercase asSymbol value: aValue
 ]
 
+{ #category : #'instance creation' }
+CZField class >> undefined: aSymbol [
+	^ CZUndefinedField
+		key: aSymbol
+		value: aSymbol asString "symbols get recursively looked up"
+]
+
 { #category : #bibset }
 CZField >> addToBibSet: aBibSet [
 	aBibSet addMacro: self
+]
+
+{ #category : #accessing }
+CZField >> isUndefined [
+	^ false
 ]
 
 { #category : #accessing }

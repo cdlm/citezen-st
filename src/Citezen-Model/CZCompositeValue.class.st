@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'values'
 	],
-	#category : #'Citezen-Model'
+	#category : 'Citezen-Model'
 }
 
 { #category : #'instance creation' }
