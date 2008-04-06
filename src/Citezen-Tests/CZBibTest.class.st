@@ -1,10 +1,7 @@
 Class {
 	#name : #CZBibTest,
 	#superclass : #CZRendererTest,
-	#instVars : [
-		'phrase'
-	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
