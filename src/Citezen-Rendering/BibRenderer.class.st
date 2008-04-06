@@ -22,6 +22,11 @@ BibRenderer class >> library: aPhraseLibrary [
 		yourself
 ]
 
+{ #category : #rendering }
+BibRenderer >> block: aBlock [
+	aBlock value
+]
+
 { #category : #accessing }
 BibRenderer >> formatFor: aField [
 	^ self library formatFor: aField
@@ -53,6 +58,11 @@ BibRenderer >> render: aPhrase for: anEntry [
 	self visit: aPhrase
 ]
 
+{ #category : #rendering }
+BibRenderer >> text: aString [
+	self subclassResponsibility
+]
+
 { #category : #'visiting-phrases' }
 BibRenderer >> visitAlternativePhrase: aPhrase [
 	^ aPhrase do: [:each | self visit: each] for: currentEntry
@@ -68,6 +78,16 @@ BibRenderer >> visitFieldRef: aFieldRef [
 	| field |
 	field := currentEntry at: aFieldRef fieldName.
 	field ifNotNil: [self visit: (self formatFor: field)]
+]
+
+{ #category : #'visitor-double dispatch' }
+BibRenderer >> visitLiteralPhrase: aPhrase [
+	self text: aPhrase text
+]
+
+{ #category : #'visiting-phrases' }
+BibRenderer >> visitNamedPhrase: aPhrase [ 
+	self block: [super visitNamedPhrase: aPhrase]
 ]
 
 { #category : #'visiting-phrases' }

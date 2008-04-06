@@ -1,17 +1,25 @@
 Class {
 	#name : #BibTextRenderer,
-	#superclass : #BibStreamRenderer,
-	#category : 'Citezen-Rendering'
+	#superclass : #BibRenderer,
+	#instVars : [
+		'stream'
+	],
+	#category : #'Citezen-Rendering'
 }
+
+{ #category : #'instance creation' }
+BibTextRenderer class >> on: aStream [
+	^ self new stream: aStream; yourself
+]
 
 { #category : #rendering }
 BibTextRenderer >> beginEntry: anEntry [
 	"do nothing"
 ]
 
-{ #category : #rendering }
-BibTextRenderer >> block: aBlock [
-	aBlock value
+{ #category : #accessing }
+BibTextRenderer >> contents [
+	^ stream contents
 ]
 
 { #category : #rendering }
@@ -19,9 +27,20 @@ BibTextRenderer >> endEntry: anEntry [
 	self newline; newline
 ]
 
+{ #category : #'initialize-release' }
+BibTextRenderer >> initialize [
+	super initialize.
+	self setStream: (WriteStream on: String new)
+]
+
 { #category : #rendering }
 BibTextRenderer >> newline [
 	stream cr
+]
+
+{ #category : #'initialize-release' }
+BibTextRenderer >> setStream: aStream [
+	stream := aStream
 ]
 
 { #category : #rendering }
@@ -36,14 +55,4 @@ BibTextRenderer >> visitEntry: anEntry [
 	super visitEntry: anEntry.
 	self endEntry: anEntry
 
-]
-
-{ #category : #'visitor-double dispatch' }
-BibTextRenderer >> visitLiteralPhrase: aPhrase [
-	self text: aPhrase text
-]
-
-{ #category : #'visitor-double dispatch' }
-BibTextRenderer >> visitNamedPhrase: aPhrase [ 
-	self block: [super visitNamedPhrase: aPhrase]
 ]
