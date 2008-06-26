@@ -32,8 +32,9 @@ CZBibList class >> descriptionContainer [
 CZBibList class >> descriptionEntries [
 	^ MAFileDescription new
 		selectorAccessor: #entries;
-		beHidden;
+		componentClass: nil;
 		yourself
+
 ]
 
 { #category : #'accessing-descriptions' }
@@ -73,11 +74,12 @@ CZBibList class >> entriesFromMemento: aMemento [
 	| entries |
 	entries := OrderedCollection new.
 	(aMemento cache at: self descriptionFile)
-		ifNotNilDo: [:file | (file directory fileExists: file filename) ifTrue: [ entries add: (self parseEntriesFromString: file) ]].
+		ifNotNilDo: [:file | (file directory fileExists: file filename) ifTrue: [ entries add: (self parseEntriesFromString: file contents) ]].
 	(aMemento cache at: self descriptionUrls)
 		ifNotNilDo: [:urls |
 			(urls findTokens: String crlf) do: [:each | entries add:
-				(self parseEntriesFromString: (HTTPSocket httpGet: each)) ] ].
+				(self parseEntriesFromString: (HTTPSocket httpGet: each)
+					contents) ] ].
 	^ entries
 ]
 
@@ -87,8 +89,13 @@ CZBibList class >> isAbstract [
 ]
 
 { #category : #private }
+CZBibList class >> parseEntriesFromFile: aFileModel [
+	^ CZBibParser parse: aFileModel readStream
+]
+
+{ #category : #private }
 CZBibList class >> parseEntriesFromString: aString [
-	^ CZBibParser parseStream: aString readStream ascii
+	^ CZBibParser parse: aString asString
 ]
 
 { #category : #accessing }
@@ -102,6 +109,8 @@ CZBibList >> entries: aCollection [
 	
 	self resetEntries.
 	
+	selectedEntries := aCollection.
+
 	(self filteringKeyword notNil and: [self filteringKeyword notEmpty]) ifTrue: [
 		selectedEntries := aCollection collect: [:eachSet |
 			eachSet select: [:each |
@@ -137,6 +146,7 @@ CZBibList >> filteringKeyword: aString [
 
 { #category : #accessing }
 CZBibList >> rebuildChildren [
+	self halt.
 	self removeDecoration: self childrenDecoration.
 	entries do: [:each | | page pagetitle |
 		page := self childrenDecoration at: each key ifAbsent: [

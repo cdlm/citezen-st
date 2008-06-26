@@ -1,6 +1,6 @@
 Class {
 	#name : #CZBibEntryHtmlRenderer,
-	#superclass : #BibStreamRenderer,
+	#superclass : #BibTextRenderer,
 	#instVars : [
 		'html'
 	],
@@ -52,10 +52,9 @@ CZBibEntryHtmlRenderer >> visitBibSet: aBibSet [
 	]
 ]
 
-{ #category : #'visitor-double dispatch' }
+{ #category : #'visiting-bibsets' }
 CZBibEntryHtmlRenderer >> visitEntry: anEntry [
-
-	super visitEntry: anEntry
+	self render: (self phraseFor: anEntry) for: anEntry
 ]
 
 { #category : #'visitor-double dispatch' }

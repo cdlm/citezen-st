@@ -5,18 +5,17 @@ Class {
 }
 
 { #category : #'instance creation' }
+MAReferenceFileModel class >> baseDirectory [
+	^ baseDirectory ifNil: [ FileDirectory default ]
+]
+
+{ #category : #'instance creation' }
 MAReferenceFileModel class >> fromRio: aRio [
 	^ self new
 		filename: aRio fileName;
 		"base directory if absolute"
 		location: aRio split allButLast;
 		yourself
-]
-
-{ #category : #configuration }
-MAReferenceFileModel >> baseDirectory [
-	<todo: 'extract default baseDirectory'>
-	^ BaseDirectory ifNil: [ FileDirectory default ]
 ]
 
 { #category : #'accessing-dynamic' }
