@@ -73,10 +73,10 @@ CZBibList class >> descriptionUrls [
 CZBibList class >> entriesFromMemento: aMemento [
 	| entries |
 	entries := OrderedCollection new.
-	(aMemento cache at: self descriptionFile)
-		ifNotNilDo: [:file | (file directory fileExists: file filename) ifTrue: [ entries add: (self parseEntriesFromString: file contents) ]].
-	(aMemento cache at: self descriptionUrls)
-		ifNotNilDo: [:urls |
+	(aMemento cache at: self descriptionFile) ifNotNilDo: [:file | 
+			(file directory fileExists: file filename) ifTrue: [ 
+				entries add: (self parseEntriesFromString: file contents) ]].
+	(aMemento cache at: self descriptionUrls) ifNotNilDo: [:urls |
 			(urls findTokens: String crlf) do: [:each | entries add:
 				(self parseEntriesFromString: (HTTPSocket httpGet: each)
 					contents) ] ].
@@ -146,7 +146,6 @@ CZBibList >> filteringKeyword: aString [
 
 { #category : #accessing }
 CZBibList >> rebuildChildren [
-	self halt.
 	self removeDecoration: self childrenDecoration.
 	entries do: [:each | | page pagetitle |
 		page := self childrenDecoration at: each key ifAbsent: [
