@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'bibset'
 	],
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #accessing }

@@ -1,7 +1,7 @@
 Class {
 	#name : #CZHtmlTest,
 	#superclass : #CZRendererTest,
-	#category : #'Citezen-Tests'
+	#category : 'Citezen-Tests'
 }
 
 { #category : #setup }

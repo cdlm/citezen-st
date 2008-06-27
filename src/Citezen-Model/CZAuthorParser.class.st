@@ -5,7 +5,7 @@ The parsed syntax is the one described in the BibTeX documentation, i.e. ""and""
 Class {
 	#name : #CZAuthorParser,
 	#superclass : #SmaCCParser,
-	#category : #'Citezen-Parsers'
+	#category : 'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }

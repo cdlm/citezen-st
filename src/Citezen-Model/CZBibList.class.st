@@ -7,7 +7,7 @@ Class {
 		'entries',
 		'filteringKeyword'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #testing }
@@ -32,9 +32,8 @@ CZBibList class >> descriptionContainer [
 CZBibList class >> descriptionEntries [
 	^ MAFileDescription new
 		selectorAccessor: #entries;
-		componentClass: nil;
+		beHidden;
 		yourself
-
 ]
 
 { #category : #'accessing-descriptions' }
@@ -109,7 +108,6 @@ CZBibList >> entries: aCollection [
 	self resetEntries.
 	
 	selectedEntries := aCollection.
-
 	(self filteringKeyword notNil and: [self filteringKeyword notEmpty]) ifTrue: [
 		selectedEntries := aCollection collect: [:eachSet |
 			eachSet select: [:each |

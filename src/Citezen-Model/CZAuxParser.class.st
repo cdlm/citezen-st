@@ -13,7 +13,7 @@ Class {
 		'style',
 		'databases'
 	],
-	#category : #'Citezen-Parsers'
+	#category : 'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }

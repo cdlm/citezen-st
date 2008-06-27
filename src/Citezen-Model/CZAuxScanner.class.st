@@ -1,7 +1,7 @@
 Class {
 	#name : #CZAuxScanner,
 	#superclass : #CZDelimitedStringScanner,
-	#category : #'Citezen-Parsers'
+	#category : 'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }

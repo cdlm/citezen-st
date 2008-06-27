@@ -1,7 +1,7 @@
 Class {
 	#name : #BibVisitor,
 	#superclass : #Object,
-	#category : #'Citezen-Rendering'
+	#category : 'Citezen-Rendering'
 }
 
 { #category : #visiting }
