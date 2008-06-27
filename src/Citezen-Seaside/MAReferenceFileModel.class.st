@@ -1,7 +1,7 @@
 Class {
 	#name : #MAReferenceFileModel,
 	#superclass : #MAExternalFileModel,
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #'instance creation' }

@@ -7,7 +7,7 @@ Class {
 		'entries',
 		'filteringKeyword'
 	],
-	#category : #'Citezen-Seaside'
+	#category : 'Citezen-Seaside'
 }
 
 { #category : #testing }
@@ -32,9 +32,8 @@ CZBibList class >> descriptionContainer [
 CZBibList class >> descriptionEntries [
 	^ MAFileDescription new
 		selectorAccessor: #entries;
-		componentClass: nil;
+		beHidden;
 		yourself
-
 ]
 
 { #category : #'accessing-descriptions' }
@@ -73,13 +72,12 @@ CZBibList class >> descriptionUrls [
 CZBibList class >> entriesFromMemento: aMemento [
 	| entries |
 	entries := OrderedCollection new.
-	(aMemento cache at: self descriptionFile) ifNotNilDo: [:file | 
-			(file directory fileExists: file filename) ifTrue: [ 
-				entries add: (self parseEntriesFromString: file contents) ]].
-	(aMemento cache at: self descriptionUrls) ifNotNilDo: [:urls |
+	(aMemento cache at: self descriptionFile)
+		ifNotNilDo: [:file | (file directory fileExists: file filename) ifTrue: [ entries add: (self parseEntriesFromString: file contents) ]].
+	(aMemento cache at: self descriptionUrls)
+		ifNotNilDo: [:urls |
 			(urls findTokens: String crlf) do: [:each | entries add:
-				(self parseEntriesFromString: (HTTPSocket httpGet: each)
-					contents) ] ].
+				(self parseEntriesFromString: (HTTPSocket httpGet: each)) ] ].
 	^ entries
 ]
 
@@ -110,7 +108,6 @@ CZBibList >> entries: aCollection [
 	self resetEntries.
 	
 	selectedEntries := aCollection.
-
 	(self filteringKeyword notNil and: [self filteringKeyword notEmpty]) ifTrue: [
 		selectedEntries := aCollection collect: [:eachSet |
 			eachSet select: [:each |
