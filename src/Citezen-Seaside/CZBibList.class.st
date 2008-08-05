@@ -112,7 +112,7 @@ CZBibList >> entries: aCollection [
 	selectedEntries := aCollection.
 
 	(self filteringKeyword notNil and: [self filteringKeyword notEmpty]) ifTrue: [
-		selectedEntries := aCollection halt collect: [:eachSet |
+		selectedEntries := aCollection collect: [:eachSet |
 			eachSet select: [:each |
 				(each hasField: 'keywords') and: [
 					((each at: 'keywords') value findTokens: (Array with: Character space with: Character cr with: Character lf)) includes: self filteringKeyword.
