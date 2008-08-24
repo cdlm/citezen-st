@@ -41,15 +41,12 @@ BibPhraseLibrary class >> article [
 { #category : #'formats-fields' }
 BibPhraseLibrary class >> author: aField [
 	| authors andSep |
-	^ [
-		authors := (CZAuthorParser parse: aField value)
-			collect: [:each | BibLiteralPhrase text: each fullName].
-		andSep := authors size > 2 ifTrue: [', and '] ifFalse: [' and '].
-		(BibSequencePhrase with: authors)
-			separatorText: ', ';
-			lastSeparatorText: andSep;
-			yourself
-	] on: SmaCCParserError do: [self defaultFormat: aField]
+	authors := aField value collect: [:each | BibLiteralPhrase text: each fullName].
+	andSep := authors size > 2 ifTrue: [', and '] ifFalse: [' and '].
+	^ (BibSequencePhrase with: authors)
+		separatorText: ', ';
+		lastSeparatorText: andSep;
+		yourself
 ]
 
 { #category : #'phrases-entries' }
@@ -324,6 +321,11 @@ BibPhraseLibrary class >> volumeNumber [
 		add: (BibSequencePhrase new
 			initiatorText: '(';	addField: #number; terminatorText: ')');
 		yourself
+]
+
+{ #category : #'formats-fields' }
+BibPhraseLibrary class >> year: aField [
+	^ BibLiteralPhrase text: aField value printString
 ]
 
 { #category : #querying }
