@@ -6,7 +6,7 @@ Class {
 		'stream',
 		'entry'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #running }

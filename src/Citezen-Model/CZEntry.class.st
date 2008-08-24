@@ -9,7 +9,7 @@ Class {
 		'key',
 		'fields'
 	],
-	#category : 'Citezen-Model'
+	#category : #'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -85,6 +85,14 @@ CZEntry >> key: aKey [
 CZEntry >> macroReferences [
 	"returns all fields of this entry that have a macro as value"
 	^ fields select: [:each | each rawValue isSymbol]
+]
+
+{ #category : #bibset }
+CZEntry >> moveToBibSet: aBibSet [
+	self scope ifNotNilDo: [:it |
+		"pull references if necessary"
+		it removeEntry: self].
+	aBibSet addEntry: self
 ]
 
 { #category : #accessing }

@@ -7,7 +7,7 @@ Class {
 		'entries',
 		'filteringKeyword'
 	],
-	#category : 'Citezen-Seaside'
+	#category : #'Citezen-Seaside'
 }
 
 { #category : #testing }
@@ -98,7 +98,7 @@ CZBibList class >> parseEntriesFromString: aString [
 
 { #category : #accessing }
 CZBibList >> entries [
-	^ entries ifNil: [self resetEntries]
+	^ entries ifNil: [entries := CZSet new withStandardDefinitions]
 ]
 
 { #category : #accessing }
@@ -112,7 +112,7 @@ CZBibList >> entries: aCollection [
 		selectedEntries := aCollection collect: [:eachSet |
 			eachSet select: [:each |
 				(each hasField: 'keywords') and: [
-					((each at: 'keywords') value findTokens: Character space) includes: self filteringKeyword.
+					((each at: 'keywords') value) includesSubString: self filteringKeyword.
 				].
 			]
 		].
@@ -160,7 +160,7 @@ CZBibList >> rebuildChildren [
 
 { #category : #accessing }
 CZBibList >> resetEntries [
-	^ entries := CZSet new withStandardDefinitions
+	^ entries := nil
 ]
 
 { #category : #accessing }

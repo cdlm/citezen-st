@@ -1,7 +1,7 @@
 Class {
 	#name : #CZAuthorParserTest,
 	#superclass : #TestCase,
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #testing }

@@ -18,11 +18,12 @@ CZBibEntryHtmlRenderer class >> html: anHtmlCanvas [
 CZBibEntryHtmlRenderer class >> htmlOutOfLatexString: aString [
 
 	| text |
-	text _ aString asString reject: [:each | each = ${ or: [each = $}]].
+	text := aString asString reject: [:each | each = ${ or: [each = $}]].
 
-	text _ text copyReplaceAll: '\''e' with: '&eacute;' asTokens: false.
-	text _ text copyReplaceAll: '\^i' with: '&icirc;' asTokens: false.
-	text _ text copyReplaceAll: '\^\i' with: '&icirc;' asTokens: false.
+	text := text copyReplaceAll: '\''e' with: '&eacute;' asTokens: false.
+	text := text copyReplaceAll: '\`e' with: '&egrave;' asTokens: false.
+	text := text copyReplaceAll: '\^i' with: '&icirc;' asTokens: false.
+	text := text copyReplaceAll: '\^\i' with: '&icirc;' asTokens: false.
 
 	^text
 ]

@@ -4,7 +4,7 @@ Parser for BibTeX's .bib database format. Parsing will return an instance of CZS
 Class {
 	#name : #CZBibParser,
 	#superclass : #SmaCCParser,
-	#category : 'Citezen-Parsers'
+	#category : #'Citezen-Parsers'
 }
 
 { #category : #'generated-comments' }

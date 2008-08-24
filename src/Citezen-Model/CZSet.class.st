@@ -8,7 +8,7 @@ Class {
 		'macros',
 		'entries'
 	],
-	#category : 'Citezen-Model'
+	#category : #'Citezen-Model'
 }
 
 { #category : #'instance creation' }
@@ -204,6 +204,12 @@ CZSet >> referencedMacros [
 CZSet >> reject: aPredicate [
 	^ self class new
 		setEntries: (self entries reject: aPredicate)
+]
+
+{ #category : #adding }
+CZSet >> removeEntry: anEntry [
+	anEntry scope: nil.
+	entries remove: anEntry
 ]
 
 { #category : #'arranging - combining' }
