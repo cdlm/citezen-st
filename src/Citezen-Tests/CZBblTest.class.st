@@ -15,7 +15,7 @@ CZBblTest >> testArticle [
 	self assert: result = '\bibitem[displayKey]{foobar}
 A. 
 \newblock T. 
-\newblock In J, Y.
+\newblock In J, 4.
 
 '
 ]
@@ -26,12 +26,12 @@ CZBblTest >> testSeveral [
 	self assert: result = '\bibitem[displayKey]{foobar}
 A. 
 \newblock T. 
-\newblock In J, Y.
+\newblock In J, 4.
 
 \bibitem[displayKey]{foobar}
 A. 
 \newblock T. 
-\newblock In J, Y.
+\newblock In J, 4.
 
 '
 ]

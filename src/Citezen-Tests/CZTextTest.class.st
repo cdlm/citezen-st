@@ -12,7 +12,7 @@ CZTextTest >> rendererClass [
 { #category : #'as yet unclassified' }
 CZTextTest >> testArticle [
 	super testArticle.
-	self assert: result = 'A. T. In J, Y.
+	self assert: result = 'A. T. In J, 4.
 
 '
 ]
@@ -20,9 +20,9 @@ CZTextTest >> testArticle [
 { #category : #'as yet unclassified' }
 CZTextTest >> testSeveral [
 	super testSeveral.
-	self assert: result = 'A. T. In J, Y.
+	self assert: result = 'A. T. In J, 4.
 
-A. T. In J, Y.
+A. T. In J, 4.
 
 '
 ]

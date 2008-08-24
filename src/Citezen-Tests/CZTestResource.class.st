@@ -216,3 +216,8 @@ CZTestResource >> bibset [
 CZTestResource >> setUp [
 	bibset := CZBibParser parse: self class bibFile
 ]
+
+{ #category : #running }
+CZTestResource >> tearDown [
+	bibset := nil
+]

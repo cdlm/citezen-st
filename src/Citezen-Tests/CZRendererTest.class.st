@@ -26,7 +26,7 @@ CZRendererTest >> setUp [
 				at: #author put: 'A';
 				at: #title put: 'T';
 				at: #journal put: 'J';
-				at: #year put: 'Y';
+				at: #year put: '4';
 				yourself.
 	renderer := self rendererClass library: BibPhraseLibrary default
 ]

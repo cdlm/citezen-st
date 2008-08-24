@@ -16,7 +16,7 @@ CZBibTest >> testArticle [
 author = {A},
 title = {T},
 journal = {J},
-year = Y
+year = 4
 )
 
 '
@@ -29,14 +29,14 @@ CZBibTest >> testSeveral [
 author = {A},
 title = {T},
 journal = {J},
-year = Y
+year = 4
 )
 
 @article(foobar,
 author = {A},
 title = {T},
 journal = {J},
-year = Y
+year = 4
 )
 
 '

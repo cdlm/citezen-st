@@ -16,7 +16,7 @@ CZPhraseTest >> setUp [
 				at: #author put: 'A';
 				at: #title put: 'T';
 				at: #journal put: 'J';
-				at: #year put: 'Y';
+				at: #year put: '4';
 				yourself.
 	phrase := BibSequencePhrase with: { 
 						(BibFieldRef field: #author).
@@ -33,22 +33,22 @@ CZPhraseTest >> testAlternate [
 			add: (BibLiteralPhrase text: 'foo')
 			condition: [:anEntry | anEntry hasField: #bar]).
 	renderer render: phrase for: entry.
-	self assert: renderer contents = 'ATJY'.
+	self assert: renderer contents = 'ATJ4'.
 	entry at: #bar put: #whatever.
 	renderer render: phrase for: entry.
-	self assert: renderer contents = 'ATJYATJYfoo'
+	self assert: renderer contents = 'ATJ4ATJ4foo'
 ]
 
 { #category : #testing }
 CZPhraseTest >> testLibraryArticle [
 	renderer render: BibPhraseLibrary article for: entry.
-	self assert: renderer contents = 'A. T. In J, Y.'
+	self assert: renderer contents = 'A. T. In J, 4.'
 ]
 
 { #category : #testing }
 CZPhraseTest >> testRender [
 	renderer render: phrase for: entry.
-	self assert: renderer contents = 'ATJY'
+	self assert: renderer contents = 'ATJ4'
 ]
 
 { #category : #testing }
@@ -59,12 +59,12 @@ CZPhraseTest >> testRenderWithDecorations [
 		separatorText: '; ';
 		lastSeparatorText: ', '.
 	renderer render: phrase for: entry.
-	self assert: renderer contents = '[42] A; T; J, Y.'
+	self assert: renderer contents = '[42] A; T; J, 4.'
 ]
 
 { #category : #testing }
 CZPhraseTest >> testRenderWithMissingField [
 	phrase add: (BibFieldRef field: #month).
 	renderer render: phrase for: entry.
-	self assert: renderer contents = 'ATJY'
+	self assert: renderer contents = 'ATJ4'
 ]
