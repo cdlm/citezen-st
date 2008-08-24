@@ -18,7 +18,7 @@ CZBibParser class >> parserDefinitionComment [
 ## outer parser rules
 Bibfile :
 	(CommentDeclaration | MacroDeclaration | EntryDeclaration)*
-		{ BibSet fromDeclarations: ('1' reject: [:it | it isNil]) };
+		{ CZSet fromDeclarations: ('1' reject: [:it | it isNil]) };
 
 EntryDeclaration :
 	""@"" <name> (<parenthesizedString> | <bracedString>)
@@ -38,13 +38,13 @@ BodyContents :
 	<name> ("","" Field)* { '1' value asSymbol -> ('2' collect: [:each | each at: 2]) };
 
 Field :
-	<name> ""="" Value { BibField key: '1' value asSymbol value: '3' };
+	<name> ""="" Value { CZField key: '1' value asSymbol rawValue: '3' };
 
 Value :
 	SimpleValue ( ""#"" SimpleValue )*
 		{ '2' isEmpty
 			ifTrue: [ '1' ]
-			ifFalse: [(BibCompositeValue with: '1')
+			ifFalse: [(CZCompositeValue with: '1')
 				addAll: ('2' collect: [:subcoll | subcoll at: 2]);
 				yourself] };
 
@@ -58,7 +58,7 @@ SimpleValue :
 
 { #category : #'generated-accessing' }
 CZBibParser class >> scannerClass [
-	^ CZBibScanner
+	^CZBibScanner
 ]
 
 { #category : #'generated-starting states' }
@@ -94,13 +94,12 @@ CZBibParser >> buildMacro: tokens [
 
 { #category : #'generated-reduction actions' }
 CZBibParser >> reduceActionForBibfile1: nodes [ 
-	^ CZSet fromDeclarations: ((nodes at: 1) reject: [:it | it isNil])
+	^ CZSet fromDeclarations: ((nodes at: 1) reject: [ :it | it isNil ])
 ]
 
 { #category : #'generated-reduction actions' }
 CZBibParser >> reduceActionForBodyContents1: nodes [ 
-	^ (nodes at: 1) value asSymbol 
-		-> ((nodes at: 2) collect: [:each | each at: 2])
+	^ (nodes at: 1) value asSymbol -> ((nodes at: 2) collect: [ :each | each at: 2 ])
 ]
 
 { #category : #'generated-reduction actions' }
@@ -110,7 +109,9 @@ CZBibParser >> reduceActionForCommentDeclaration1: nodes [
 
 { #category : #'generated-reduction actions' }
 CZBibParser >> reduceActionForField1: nodes [ 
-	^ CZField key: (nodes at: 1) value asSymbol value: (nodes at: 3)
+	^ CZField 
+		key: (nodes at: 1) value asSymbol
+		rawValue: (nodes at: 3)
 ]
 
 { #category : #'generated-reduction actions' }
@@ -197,11 +198,11 @@ CZBibParser >> reduceActionForSimpleValue4: nodes [
 { #category : #'generated-reduction actions' }
 CZBibParser >> reduceActionForValue1: nodes [ 
 	^ (nodes at: 2) isEmpty 
-		ifTrue: [nodes at: 1]
+		ifTrue: [ nodes at: 1 ]
 		ifFalse: 
-			[(CZCompositeValue with: (nodes at: 1))
-				addAll: ((nodes at: 2) collect: [:subcoll | subcoll at: 2]);
-				yourself]
+			[ (CZCompositeValue with: (nodes at: 1))
+				addAll: ((nodes at: 2) collect: [ :subcoll | subcoll at: 2 ]);
+				yourself ]
 ]
 
 { #category : #'generated-tables' }
@@ -263,18 +264,30 @@ CZBibParser >> transitionTable [
 #(2 30 1 10 11 28)
 #(2 38 1 10 11 28)
 #(2 42 1 10 11 28)
-#(3 41 8 141 26)
+#(3 141 8 145 26)
 #(2 54 2 28)
+#(2 70 3 28)
+#(2 74 3 28)
+#(2 62 3 28)
+#(2 66 3 28)
+#(2 90 28)
+#(3 82 3 149 25 82 28)
+#(2 98 1 10 11 28)
+#(2 153 4)
+#(2 46 2 28)
+#(3 157 3 161 24 58 28)
+#(3 165 7 169 8 173 9 177 12 181 22 185 23)
+#(3 113 7 117 8 121 9 125 12 189 23)
+#(2 86 3 28)
 #(2 70 2 3 28)
 #(2 74 2 3 28)
 #(2 62 2 3 28)
 #(2 66 2 3 28)
 #(2 90 2 28)
-#(3 82 2 82 3 145 25 82 28)
-#(2 98 1 10 11 28)
-#(2 46 2 28)
-#(3 58 2 149 3 153 24 58 28)
-#(3 113 7 117 8 121 9 125 12 157 23)
+#(3 82 2 82 3 193 25 82 28)
+#(2 78 3 28)
+#(3 58 2 197 3 201 24 58 28)
+#(3 165 7 169 8 173 9 177 12 205 23)
 #(2 86 2 3 28)
 #(2 78 2 3 28)
 )
