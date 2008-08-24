@@ -7,7 +7,7 @@ Class {
 		'renderer',
 		'visitor'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }

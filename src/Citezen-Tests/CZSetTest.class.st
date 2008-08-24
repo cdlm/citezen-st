@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'bibset'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #accessing }
@@ -22,6 +22,7 @@ CZSetTest >> testGroupedBy [
 	| groups groupedItemCount |
 	groups := bibset groupedBy: [:each | each type].
 	groupedItemCount := groups inject: 0 into: [:sum :each | sum + each entries size].
+	
 	self assert: groupedItemCount = bibset entries size.
 	self assert: (groups at: #article) entries size = 2.
 	self assert: (groups at: #inproceedings) entries size = 1.
@@ -31,6 +32,18 @@ CZSetTest >> testGroupedBy [
 { #category : #testing }
 CZSetTest >> testReferencedMacros [
 	self assert: bibset referencedMacros size = 2
+]
+
+{ #category : #testing }
+CZSetTest >> testRemoveUpdatesScope [
+	| otherSet entry |
+	otherSet := CZSet new.
+	entry := (CZEntry type: #article) key: #toBeMovedToOtherSet.
+	bibset addEntry: entry.
+	entry moveToBibSet: otherSet.
+	self deny: (bibset entries includes: entry).
+	self assert: (otherSet entries includes: entry).
+	self assert: entry scope = otherSet
 ]
 
 { #category : #testing }

@@ -6,7 +6,7 @@ Class {
 		'phrase',
 		'renderer'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }

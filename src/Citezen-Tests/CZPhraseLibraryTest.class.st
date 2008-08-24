@@ -8,7 +8,7 @@ Class {
 		'rendererBib',
 		'phraseBib'
 	],
-	#category : 'Citezen-Tests'
+	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
