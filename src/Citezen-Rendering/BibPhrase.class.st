@@ -1,7 +1,7 @@
 Class {
 	#name : #BibPhrase,
 	#superclass : #Object,
-	#category : 'Citezen-Rendering'
+	#category : #'Citezen-Rendering'
 }
 
 { #category : #'visitor-double dispatch' }

@@ -12,7 +12,7 @@ Class {
 	#classInstVars : [
 		'defaultInstance'
 	],
-	#category : 'Citezen-Rendering'
+	#category : #'Citezen-Rendering'
 }
 
 { #category : #'phrases-entries' }
@@ -300,6 +300,21 @@ BibPhraseLibrary class >> unpublished [
 		addBlockWithField: #title;
 		addBlockWithField: #note;
 		separatorText: '. '; terminatorText: '.'
+]
+
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> url [
+	^ (BibSequencePhrase new)
+		addBlockWithField: #author;
+		addBlockWithField: #title;
+		add: (((BibSequencePhrase new)
+					addField: #url;
+					add: self locationMonthYear;
+					separatorText: ', ';
+					yourself) blockNamed: 'publishing');
+		addBlockWithField: #note;
+		separatorText: '. ';
+		terminatorText: '.'
 ]
 
 { #category : #'phrases-partial' }
