@@ -51,7 +51,7 @@ CZEntry >> at: fieldName ifAbsent: aBlock [
 { #category : #accessing }
 CZEntry >> at: fieldName put: aValue [ 
 	fields removeAllSuchThat: [:each | each key = fieldName].
-	fields add: ((CZField key: fieldName value: aValue)
+	fields add: ((CZField key: fieldName rawValue: aValue)
 				scope: self;
 				yourself)
 ]
@@ -93,6 +93,16 @@ CZEntry >> moveToBibSet: aBibSet [
 		"pull references if necessary"
 		it removeEntry: self].
 	aBibSet addEntry: self
+]
+
+{ #category : #printing }
+CZEntry >> printOn: aStream [
+	aStream
+		nextPut: $@;
+		nextPutAll: self type;
+		nextPut: $(;
+		nextPutAll: self key;
+		nextPut: $)
 ]
 
 { #category : #accessing }

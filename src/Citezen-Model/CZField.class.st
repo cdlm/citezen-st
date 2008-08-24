@@ -8,12 +8,33 @@ Class {
 		'key',
 		'value'
 	],
+	#classInstVars : [
+		'valueClasses'
+	],
 	#category : #'Citezen-Model'
 }
 
 { #category : #'instance creation' }
+CZField class >> initializeValueClasses [
+	valueClasses := Dictionary new.
+	CZValue withAllSubclassesDo:
+		[:each | each fieldsOfThisFormat do:
+			[:field | valueClasses at: field put: each ]].
+
+]
+
+{ #category : #'instance creation' }
+CZField class >> key: aSymbol rawValue: valueFromParser [
+	^ self new
+		setKey: aSymbol asLowercase asSymbol
+		rawValue: valueFromParser
+]
+
+{ #category : #'instance creation' }
 CZField class >> key: aSymbol value: aValue [
-	^ self new setKey: aSymbol asLowercase asSymbol value: aValue
+	^ self new
+		setKey: aSymbol asLowercase asSymbol
+		value: aValue
 ]
 
 { #category : #'instance creation' }
@@ -21,6 +42,11 @@ CZField class >> undefined: aSymbol [
 	^ CZUndefinedField
 		key: aSymbol
 		value: aSymbol asString "symbols get recursively looked up"
+]
+
+{ #category : #'instance creation' }
+CZField class >> valueClasses [
+	^ valueClasses ifNil: [self initializeValueClasses]
 ]
 
 { #category : #bibset }
@@ -38,25 +64,45 @@ CZField >> key [
 	^ key
 ]
 
+{ #category : #printing }
+CZField >> printOn: aStream [
+	super printOn: aStream.
+	aStream
+		nextPut: $(;
+		nextPutAll: self key;
+		nextPut: $=.
+	self rawValue printOn: aStream.
+	aStream nextPut: $)
+]
+
 { #category : #accessing }
 CZField >> rawValue [
-	^ value
+	^ value notExpanded
 ]
 
 { #category : #'initialize-release' }
-CZField >> setKey: aSymbol value: aValue [
+CZField >> setKey: aSymbol rawValue: valueFromParser [
 	key := aSymbol.
-	value := aValue.
+	value := self valueClass with: valueFromParser.
+	value scope: self
+]
+
+{ #category : #'initialize-release' }
+CZField >> setKey: aSymbol value: czValue [
+	key := aSymbol.
+	value := czValue.
 	value scope: self
 ]
 
 { #category : #accessing }
 CZField >> value [
-	| expandedValue |
-	expandedValue := value isSymbol
-		ifTrue: [(self lookupMacroAt: value) value "evaluation fixpoint"]
-		ifFalse: [value value "evaluate CZCompositeValues"].
-	expandedValue isString
-		ifTrue: [expandedValue := expandedValue reject: [:each | each = ${ or: [each = $}]]].
-	^ expandedValue
+	"evaluate macros and composite values, and cleanup strings"
+	^ value expanded
+]
+
+{ #category : #accessing }
+CZField >> valueClass [
+	^ self class valueClasses
+		at: self key
+		ifAbsent: [CZString]
 ]

@@ -22,18 +22,18 @@ CZSet class >> fromDeclarations: declarations [
 { #category : #'standard definitions' }
 CZSet class >> months [
 	^ (self new)
-		addMacro: (CZField key: 'jan' value: 'January');
-		addMacro: (CZField key: 'feb' value: 'February');
-		addMacro: (CZField key: 'mar' value: 'March');
-		addMacro: (CZField key: 'apr' value: 'April');
-		addMacro: (CZField key: 'may' value: 'May');
-		addMacro: (CZField key: 'jun' value: 'June');
-		addMacro: (CZField key: 'jul' value: 'July');
-		addMacro: (CZField key: 'aug' value: 'August');
-		addMacro: (CZField key: 'sep' value: 'September');
-		addMacro: (CZField key: 'oct' value: 'October');
-		addMacro: (CZField key: 'nov' value: 'November');
-		addMacro: (CZField key: 'dec' value: 'December');
+		addMacro: (CZField key: 'jan' rawValue: 'January');
+		addMacro: (CZField key: 'feb' rawValue: 'February');
+		addMacro: (CZField key: 'mar' rawValue: 'March');
+		addMacro: (CZField key: 'apr' rawValue: 'April');
+		addMacro: (CZField key: 'may' rawValue: 'May');
+		addMacro: (CZField key: 'jun' rawValue: 'June');
+		addMacro: (CZField key: 'jul' rawValue: 'July');
+		addMacro: (CZField key: 'aug' rawValue: 'August');
+		addMacro: (CZField key: 'sep' rawValue: 'September');
+		addMacro: (CZField key: 'oct' rawValue: 'October');
+		addMacro: (CZField key: 'nov' rawValue: 'November');
+		addMacro: (CZField key: 'dec' rawValue: 'December');
 		yourself
 ]
 
@@ -188,6 +188,16 @@ CZSet >> merge: aCZSet [
 	"Merge aCZSet into the receiver, replacing macros or entries."
 	aCZSet macros do: [:each | self macroAt: each key put: each].
 	aCZSet entries do: [:each | self entryAt: each key put: each]
+]
+
+{ #category : #'as yet unclassified' }
+CZSet >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPut: $(.
+	entries size printOn: aStream.
+	aStream nextPutAll: ' entries, '.
+	macros size printOn: aStream.
+	aStream nextPutAll: ' macros)'
 ]
 
 { #category : #accessing }

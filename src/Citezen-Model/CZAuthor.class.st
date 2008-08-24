@@ -77,6 +77,18 @@ CZAuthor >> displayFullNameOn: aStream [
 ]
 
 { #category : #displaying }
+CZAuthor >> displayNormalizedNameOn: aStream [
+	self particles, self lastNames
+		do: [:each | aStream nextPutAll: each ]
+		separatedBy: [ aStream space ].
+	self firstNames ifNotEmpty: [aStream nextPutAll: ', '].
+	self firstNames
+		do: [:each | aStream nextPutAll: each ]
+		separatedBy: [ aStream space ].
+
+]
+
+{ #category : #displaying }
 CZAuthor >> displayShortenedNameOn: aStream [
 	"Write the first letters of the first names and the full last name on the argument stream."
 	self firstNames
@@ -128,6 +140,12 @@ CZAuthor >> lastNames: aCollection [
 	lastNames := aCollection
 ]
 
+{ #category : #displaying }
+CZAuthor >> normalizedName [
+	^ String streamContents: [:stream |
+		self displayNormalizedNameOn: stream ]
+]
+
 { #category : #accessing }
 CZAuthor >> particles [
 	^ particles ifNil: [OrderedCollection new]
@@ -154,5 +172,6 @@ CZAuthor >> printOn: aStream [
 
 { #category : #displaying }
 CZAuthor >> shortenedName [
-	^ (self displayShortenedNameOn: (String new writeStream)) contents
+	^ String streamContents: [:stream |
+		self displayShortenedNameOn: stream ]
 ]
