@@ -12,7 +12,8 @@ Class {
 
 { #category : #'as yet unclassified' }
 CZValue class >> defaultValue [
-	^ self subclassResponsibility
+	"Should be subclassResponsibility, but abused for undefined values"
+	^ self with: ''
 ]
 
 { #category : #'as yet unclassified' }
