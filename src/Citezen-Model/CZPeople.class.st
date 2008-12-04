@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CZPeople class >> defaultValue [
+	^ self with: #()
+]
+
+{ #category : #'as yet unclassified' }
 CZPeople class >> fieldsOfThisFormat [
 	^ #(author editor)
 ]

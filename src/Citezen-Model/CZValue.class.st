@@ -11,6 +11,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CZValue class >> defaultValue [
+	^ self subclassResponsibility
+]
+
+{ #category : #'as yet unclassified' }
 CZValue class >> fieldsOfThisFormat [
 	^ #()
 ]

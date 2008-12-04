@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CZInteger class >> defaultValue [
+	^ self with: 0
+]
+
+{ #category : #'as yet unclassified' }
 CZInteger class >> fieldsOfThisFormat [
 	^ #(year number volume edition)
 ]

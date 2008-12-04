@@ -36,7 +36,7 @@ CZEntry >> addToBibSet: aBibSet [
 
 { #category : #accessing }
 CZEntry >> at: fieldName [
-	^ self at: fieldName ifAbsent: [nil]
+	^ self at: fieldName ifAbsent: [CZField undefined: fieldName]
 ]
 
 { #category : #accessing }

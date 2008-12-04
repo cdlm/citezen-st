@@ -20,7 +20,7 @@ CZField class >> initializeValueClasses [
 	CZValue withAllSubclassesDo:
 		[:each | each fieldsOfThisFormat do:
 			[:field | valueClasses at: field put: each ]].
-
+	^ valueClasses
 ]
 
 { #category : #'instance creation' }
@@ -41,7 +41,7 @@ CZField class >> key: aSymbol value: aValue [
 CZField class >> undefined: aSymbol [
 	^ CZUndefinedField
 		key: aSymbol
-		value: aSymbol asString "symbols get recursively looked up"
+		value: (valueClasses at: aSymbol) defaultValue
 ]
 
 { #category : #'instance creation' }

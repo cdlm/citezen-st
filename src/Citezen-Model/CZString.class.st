@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CZString class >> defaultValue [
+	^ self with: ''
+]
+
+{ #category : #'as yet unclassified' }
 CZString >> expanded [
 	^ value asString reject: [ :each | each = ${ or: [ each = $} ] ]
 ]
