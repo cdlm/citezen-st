@@ -12,11 +12,11 @@ CZHtmlTest >> rendererClass [
 { #category : #testing }
 CZHtmlTest >> testArticle [
 	super testArticle.
-	self assert: result = '<span class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, 4</div>.</span>'
+	self assert: result = '<a name="foobar"></a><span class="article"><span class="author">A</span>. <span class="title">T</span>. <span class="publishing">In J, 4</span>.</span>'
 ]
 
 { #category : #testing }
 CZHtmlTest >> testSeveral [
 	super testSeveral.
-	self assert: result = '<span class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, 4</div>.</span><span class="article"><div class="author">A</div>. <div class="title">T</div>. <div class="publishing">In J, 4</div>.</span>'
+	self assert: result = '<a name="foobar"></a><span class="article"><span class="author">A</span>. <span class="title">T</span>. <span class="publishing">In J, 4</span>.</span><a name="foobar"></a><span class="article"><span class="author">A</span>. <span class="title">T</span>. <span class="publishing">In J, 4</span>.</span>'
 ]
