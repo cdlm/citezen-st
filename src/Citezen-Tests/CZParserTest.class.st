@@ -57,9 +57,9 @@ CZParserTest >> testAux [
 { #category : #'tests (todo)' }
 CZParserTest >> testBib [
 	| bibset |
-	bibset := CZBibParser parse: '@article{key, year=42,}'.
-	self assert: bibset macros size = 2.
-	self assert: bibset entries size = 2
+	bibset := CZBibParser parse: '@article{key, year=42}'.
+	self assert: bibset macros size = 0.
+	self assert: bibset entries size = 1
 ]
 
 { #category : #tests }
