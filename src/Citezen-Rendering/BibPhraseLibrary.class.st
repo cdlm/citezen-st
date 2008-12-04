@@ -23,7 +23,7 @@ BibPhraseLibrary class >> article [
 		add: ((BibAlternativePhrase rules: { 
 							([:e | e hasField: #crossref] -> ((BibSequencePhrase new)
 										add: (BibLiteralPhrase text: 'CROSSREF');
-										addField: #pages;
+										add: self pagination;
 										separatorText: ', ';
 										yourself))}
 					default: ((BibSequencePhrase new)
@@ -57,7 +57,7 @@ BibPhraseLibrary class >> book [
 		add: ((BibAlternativePhrase rules: { 
 							([:e | e hasField: #crossref] -> ((BibSequencePhrase new)
 										add: (BibLiteralPhrase text: 'CROSSREF');
-										addField: #pages;
+										add: self pagination;
 										separatorText: ', ';
 										yourself))}
 					default: ((BibSequencePhrase new)
@@ -80,7 +80,7 @@ BibPhraseLibrary class >> containmentIn: containerField [
 	^ BibSequencePhrase new
 		addField: containerField;
 		add: self volumeNumber;
-		add: self pages;
+		add: self pagination;
 		separatorText: ' ';
 		yourself
 ]
@@ -147,14 +147,11 @@ BibPhraseLibrary class >> incollection [
 		add: ((BibAlternativePhrase rules: { 
 							([:e | e hasField: #crossref] -> ((BibSequencePhrase new)
 										add: (BibLiteralPhrase text: 'CROSSREF');
-										addField: #pages;
+										add: self pagination;
 										separatorText: ', ';
 										yourself))}
 					default: ((BibSequencePhrase new)
-							add: ((BibSequencePhrase new)
-										addField: #editor;
-										terminatorText: ' (Ed.)';
-										yourself);
+							add: self editor;
 							addField: #booktitle;
 							add: (self containmentIn: #series);
 							add: self publisherAddress;
@@ -180,10 +177,7 @@ BibPhraseLibrary class >> inproceedings [
 										separatorText: ', ';
 										yourself))}
 					default: ((BibSequencePhrase new)
-							add: ((BibSequencePhrase new)
-										addField: #editor;
-										terminatorText: ' (Ed.)';
-										yourself);
+							add: self editor;
 							addField: #booktitle;
 							add: (self containmentIn: #series);
 							add: self publisherAddress;
@@ -251,7 +245,7 @@ BibPhraseLibrary class >> numberedReportFrom: institution type: aString [
 ]
 
 { #category : #'phrases-partial' }
-BibPhraseLibrary class >> pages [
+BibPhraseLibrary class >> pagination [
 	^ BibSequencePhrase new
 		initiatorText: 'p. ';
 		addField: #pages;
