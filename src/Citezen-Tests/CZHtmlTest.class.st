@@ -6,7 +6,7 @@ Class {
 
 { #category : #setup }
 CZHtmlTest >> rendererClass [
-	^ BibHtmlRenderer
+	^ CZHtmlRenderer
 ]
 
 { #category : #testing }
