@@ -72,12 +72,12 @@ CZBibListHtmlView >> renderContentOn: html [
 CZBibListHtmlView >> renderEntries: aCollection withTitle: aString on: html [
 	| sortedCollection |
 	aCollection isEmpty ifTrue: [^self].
-	sortedCollection _ aCollection sortBy: [:a :b | (a at: 'year' ifAbsent: ['0']) value > (b at: 'year' ifAbsent: ['0']) value].
+	sortedCollection := aCollection sortBy: [:a :b | (a at: 'year') value > (b at: 'year') value].
 	html heading level: 1; with: aString.
 	(html orderedList)
 		class: 'bib';
 		with: 
-			[(CZBibEntryHtmlRenderer html: html)
+			[(CZHtmlRenderer html: html)
 				library: BibPhraseLibrary default;
 				render: sortedCollection].
 ]

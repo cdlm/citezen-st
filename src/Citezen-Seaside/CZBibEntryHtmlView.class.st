@@ -20,7 +20,7 @@ CZBibEntryHtmlView >> entry [
 { #category : #rendering }
 CZBibEntryHtmlView >> renderContentOn: html [
 
-	(CZBibEntryHtmlRenderer html: html)
-				library: BibPhraseLibrary default;
-				render: self entry
+	(CZHtmlRenderer html: html)
+		library: BibPhraseLibrary default;
+		render: self entry
 ]

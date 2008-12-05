@@ -52,7 +52,7 @@ CZBibliographyComponent >> renderContentOn: html [
 	(html div)
 		id: 'bibliography';
 		with: 
-				[(BibHtmlRenderer html: html)
+				[(CZHtmlRenderer html: html)
 					library: BibPhraseLibrary default;
 					render: bibset]
 ]
