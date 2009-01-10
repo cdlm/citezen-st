@@ -151,7 +151,7 @@ CZBibList >> rebuildChildren [
 		page := self childrenDecoration at: each key ifAbsent: [
 					self addChild: (CZBibEntry named: each key)].
 		pagetitle := (each at: 'title') value.
-		pagetitle := CZHtmlRenderer halt htmlOutOfLatexString: pagetitle.
+		pagetitle := CZHtmlRenderer htmlOutOfLatexString: pagetitle.
 		page title: pagetitle.
 		(each hasField: 'keywords') ifTrue:[
 			page tags: ((each at: 'keywords') value findTokens: Character space).
