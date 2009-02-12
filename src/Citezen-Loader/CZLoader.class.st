@@ -18,8 +18,8 @@ CZLoader class >> load [
 CZLoader class >> loadCitezen [
 
 	Installer ss project: 'Citezen';
-		package: 'Citezen-All'
-	
+		addPackage: 'Citezen-All';
+		install: 'Citezen-All'
 	"Citezen-Seaside"
 ]
 
