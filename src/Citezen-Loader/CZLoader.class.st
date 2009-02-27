@@ -24,7 +24,20 @@ CZLoader class >> loadCitezen [
 ]
 
 { #category : #load }
+CZLoader class >> loadCitezenSeaside [
+	Installer ss
+		project: 'Citezen';
+		install: 'Citezen-Seaside'
+]
+
+{ #category : #load }
 CZLoader class >> loadSmacc [
 
 	Installer universe install: 'SmaCC runtime'
+]
+
+{ #category : #load }
+CZLoader class >> loadWithSeaside [
+	self load.
+	self loadCitezenSeaside
 ]
