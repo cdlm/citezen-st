@@ -1,9 +1,8 @@
 "
-Quick test:
+""Quick test:""
 
-	Transcript show: ((BibHtmlRenderer library: BibPhraseLibrary default)
-		render: (BibParser parse: BibTestResource myBibFile)) contents.
-
+Transcript show: ((CZHtmlRenderer library: BibPhraseLibrary default)
+		render: (CZBibParser parse: CZTestResource myBibFile)) contents.
 "
 Class {
 	#name : #BibRenderer,
