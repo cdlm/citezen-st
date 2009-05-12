@@ -42,9 +42,9 @@ CZPierBibEntry >> initializeText: aString [
 ]
 
 { #category : #querying }
-CZPierBibEntry >> matchesRegex: aString [
-	"want any match within self, not an exact match"
-	^ aString asRegex search: text
+CZPierBibEntry >> matches: aRegex [
+	"NB: want any match within self, not an exact match, so we send search:, not matches:"
+	^ aRegex search: text
 ]
 
 { #category : #rendering }

@@ -31,6 +31,11 @@ CZPierBibList >> entries [
 	^ entries
 ]
 
+{ #category : #querying }
+CZPierBibList >> filterRegex: aRegex [
+	^ self class withEntries: (entries select: [:each | each matches: aRegex ])
+]
+
 { #category : #initialization }
 CZPierBibList >> initializeEntries: someEntries [
 	entries := someEntries
@@ -41,11 +46,6 @@ CZPierBibList >> initializeFrom: aString [
 	| separator |
 	separator := String lf, String lf.
 	entries := (separator split: aString) collect: [:each | CZPierBibEntry from: each]
-]
-
-{ #category : #querying }
-CZPierBibList >> query: aString [
-	^ self class withEntries: (entries select: [:each | each matchesRegex: aString ])
 ]
 
 { #category : #rendering }

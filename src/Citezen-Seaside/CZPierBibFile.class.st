@@ -52,6 +52,11 @@ CZPierBibFile >> file: aFileModel [
 	file := aFileModel
 ]
 
+{ #category : #querying }
+CZPierBibFile >> filterRegex: aRegex [
+	^ bibList filterRegex: aRegex
+]
+
 { #category : #initialization }
 CZPierBibFile >> initialize [
 	super initialize.
@@ -81,8 +86,9 @@ CZPierBibFile >> loadFile [
 ]
 
 { #category : #querying }
-CZPierBibFile >> query: aString [
-	^ bibList query: aString
+CZPierBibFile >> query: aRegexString [
+	^ self filterRegex: aRegexString asRegex
+
 ]
 
 { #category : #accessing }
