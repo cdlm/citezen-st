@@ -19,6 +19,11 @@ MAReferenceFileModel class >> fromRio: aRio [
 ]
 
 { #category : #'accessing-dynamic' }
+MAReferenceFileModel >> exists [
+	^ (self directory exists and: [ self directory fileExists: self filename ])
+]
+
+{ #category : #'accessing-dynamic' }
 MAReferenceFileModel >> filePath [
 	^ ((self location
 		inject: Cwd
@@ -34,4 +39,10 @@ MAReferenceFileModel >> location [
 { #category : #'accessing-dynamic' }
 MAReferenceFileModel >> location: anArray [
 	location := anArray
+]
+
+{ #category : #'accessing-dynamic' }
+MAReferenceFileModel >> modificationTime [
+	"time the entry was last modified"
+	^ (self directory directoryEntryFor: self filename) modificationTime
 ]
