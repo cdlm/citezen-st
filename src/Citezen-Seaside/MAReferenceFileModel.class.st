@@ -18,7 +18,7 @@ MAReferenceFileModel class >> fromRio: aRio [
 		yourself
 ]
 
-{ #category : #'accessing-dynamic' }
+{ #category : #pierbib }
 MAReferenceFileModel >> exists [
 	^ (self directory exists and: [ self directory fileExists: self filename ])
 ]
@@ -41,8 +41,14 @@ MAReferenceFileModel >> location: anArray [
 	location := anArray
 ]
 
-{ #category : #'accessing-dynamic' }
+{ #category : #pierbib }
 MAReferenceFileModel >> modificationTime [
 	"time the entry was last modified"
 	^ (self directory directoryEntryFor: self filename) modificationTime
+]
+
+{ #category : #pierbib }
+MAReferenceFileModel >> readStream [
+	"override super readStream -- return text stream, not binary"
+	^ (self directory readOnlyFileNamed: self filename)
 ]
