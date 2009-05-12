@@ -80,6 +80,11 @@ CZPierBibFile >> loadFile [
 					loadedFile := file]]
 ]
 
+{ #category : #querying }
+CZPierBibFile >> query: aString [
+	^ bibList query: aString
+]
+
 { #category : #accessing }
 CZPierBibFile >> viewComponentClass [
 	^ CZPierBibFileView
