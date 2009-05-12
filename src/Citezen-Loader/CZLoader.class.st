@@ -24,16 +24,29 @@ CZLoader class >> loadCitezen [
 ]
 
 { #category : #load }
+CZLoader class >> loadCitezenPierBib [
+	Installer ss project: 'SplitJoin';
+		 install: 'SplitJoin'.
+	self updatePier.
+	self loadCitezenSeaside.
+]
+
+{ #category : #load }
 CZLoader class >> loadCitezenSeaside [
-	Installer ss
-		project: 'Citezen';
-		install: 'Citezen-Seaside'
+	Installer ss project: 'Citezen';
+		 install: 'Citezen-Seaside'
 ]
 
 { #category : #load }
 CZLoader class >> loadSmacc [
 
 	Installer universe install: 'SmaCC runtime'
+]
+
+{ #category : #load }
+CZLoader class >> loadWithPierBib [
+	self load.
+	self loadCitezenPierBib.
 ]
 
 { #category : #load }
