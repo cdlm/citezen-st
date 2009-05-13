@@ -40,21 +40,23 @@ CZPierBibFileView >> renderContentOn: html [
 ]
 
 { #category : #rendering }
-CZPierBibFileView >> renderErrorOn: html [
-	html heading: 'Invalid bibtex file'.
-	bib file
-		ifNil: [html text: 'The bibtex file has not been defined. Please edit this page and define it']
-		ifNotNil: [
-			html text: bib file filePath printString , ' is not a valid bibtex file. '.
-			bib file exists
-				ifFalse: [html text: 'No such file exists. ']]
+CZPierBibFileView >> renderDebugInfoOn: html [ 
+	html text: 'Loaded bibtex file: ' , bib file filePath printString; break;
+		text: 'Number of bib entries: ' , bib bibList size printString; break;
+		text: 'Last update: ' , bib modificationTimePrintString; break.
+
 ]
 
 { #category : #rendering }
-CZPierBibFileView >> renderQueryOn: html [ 
-	html text: 'Loaded bibtex file: ' , bib file filePath printString;
-		 break;
-		 text: 'Number of bib entries: ' , bib bibList size printString.
+CZPierBibFileView >> renderErrorOn: html [
+	html heading: 'Invalid bibtex file'.
+	html text: bib error.
+
+]
+
+{ #category : #rendering }
+CZPierBibFileView >> renderQueryOn: html [
+	self renderDebugInfoOn: html.
 	html form: [
 		html text: 'Query: '.
 		html textInput on: #query of: self.

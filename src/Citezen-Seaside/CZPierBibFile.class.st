@@ -12,9 +12,9 @@ Class {
 	#superclass : #PRStructure,
 	#instVars : [
 		'file',
-		'loadedFile',
 		'timestamp',
-		'bibList'
+		'bibList',
+		'error'
 	],
 	#category : #'Citezen-Seaside'
 }
@@ -39,7 +39,13 @@ CZPierBibFile class >> isAbstract [
 
 { #category : #accessing }
 CZPierBibFile >> bibList [
+	self isExpired ifTrue: [ self loadBibList ].
 	^ bibList
+]
+
+{ #category : #accessing }
+CZPierBibFile >> error [
+	^ error
 ]
 
 { #category : #accessing }
@@ -49,7 +55,8 @@ CZPierBibFile >> file [
 
 { #category : #accessing }
 CZPierBibFile >> file: aFileModel [
-	file := aFileModel
+	file := aFileModel.
+	self loadBibList.
 ]
 
 { #category : #querying }
@@ -61,34 +68,45 @@ CZPierBibFile >> filterRegex: aRegex [
 CZPierBibFile >> initialize [
 	super initialize.
 	timestamp := 0.
+	error := 'The bibtex file has not been defined. Please edit this page and define it. '
+]
+
+{ #category : #accessing }
+CZPierBibFile >> isExpired [
+	^ self isValid and: [file modificationTime > timestamp]
 ]
 
 { #category : #testing }
 CZPierBibFile >> isValid [
-	file = loadedFile
-		ifTrue: [(file notNil
-					and: [file modificationTime > timestamp])
-				ifTrue: [self loadFile]]
-		ifFalse: [self loadFile].
-	^ loadedFile notNil
+	^ bibList notNil
+
 ]
 
 { #category : #testing }
-CZPierBibFile >> loadFile [
-	"Postcondition: file = loadedFile or: [loadedFile isNil]"
-	loadedFile := nil.
+CZPierBibFile >> loadBibList [
 	bibList := nil.
 	(file filePath endsWith: '.bib')
 		ifTrue: [file exists
 				ifTrue: [timestamp := file modificationTime.
-					bibList := CZPierBibList from: file contents.
-					loadedFile := file]]
+					bibList := CZPierBibList from: file contents]
+				ifFalse: [error := file filePath , ' does not exist. ']]
+		ifFalse: [error := file filePath , ' does not appear to be a bibtex file. ']
+]
+
+{ #category : #querying }
+CZPierBibFile >> modificationTimePrintString [
+	^ (DateAndTime fromSeconds: timestamp) printString
 ]
 
 { #category : #querying }
 CZPierBibFile >> query: aRegexString [
 	^ self filterRegex: aRegexString asRegex
 
+]
+
+{ #category : #accessing }
+CZPierBibFile >> timestamp [
+	^ timestamp
 ]
 
 { #category : #accessing }
