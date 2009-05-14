@@ -1,11 +1,11 @@
 "
-I am a list of CSPierBibEntry bibtex entries. I originate from from CZPierBibFile.
+I am a list of [CZPier]BibEntry bibtex entries. I originate from from BibFile.
 
-I do not have a fixed url, so I am not a PRStructure.
+I do not have a fixed url, so I am not a PRStructure. I know how to render myself so I am a WAComponent.
 
 I represent either the result of a query, or the entire list of entries in the file.
 
-* Should I be a WAComponent, or some kind of Pier entity? (PRViewComponent?)
+* Should I be a some kind of Pier entity? (PRViewComponent?)
 "
 Class {
 	#name : #CZPierBibList,

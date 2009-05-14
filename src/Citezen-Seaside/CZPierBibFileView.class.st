@@ -1,5 +1,5 @@
 "
-I present a CZPierBibFile as a Pier page
+I present a [CZPier]BibFile as a Pier page
 "
 Class {
 	#name : #CZPierBibFileView,

@@ -1,11 +1,11 @@
 "
 I am a Pier Structure that points to a bibtex file. I am located at a fixed url.
 
-I read the file and split it up into strings represented individual CZPierBibEntry bibtex entries. The entries are parsed lazily, only when they are actually needed.
+I read the file and split it up into strings represented individual [CZPier]BibEntry bibtex entries. The entries are parsed lazily, only when they are actually needed.
 
 I remember the timestamp of the last time the file was read. Every time I am accessed, I check the timestamp, and reload the file only if I have been invalidated.
 
-I can be queried, yielding a CZPierBibList of CZPierBibEntry instances.
+I can be queried, yielding a BibList of BibEntry instances.
 "
 Class {
 	#name : #CZPierBibFile,

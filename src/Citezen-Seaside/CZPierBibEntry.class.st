@@ -1,11 +1,11 @@
 "
-I am a single bibtex entry in a CZPierBibList.
+I am a single bibtex entry in a [CZPier]BibList.
 
-I hold the text string for the bibtex entry, and possibly a parsed CZEntry, which is lazily computed.
+I hold the text string for the bibtex entry, and possibly a parsed BibEntry, which is lazily computed.
 
-I do not have a url of my own, so I am not a PRStructure.
+I do not have a url of my own, so I am not a PRStructure. I can render myself, so I am a WAComponent.
 
-* Should I be a WAComponent, or some kind of Pier entity? (PRViewComponent?)
+* Should I be some kind of Pier entity? (e.g., PRViewComponent?)
 "
 Class {
 	#name : #CZPierBibEntry,
