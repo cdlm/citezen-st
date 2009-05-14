@@ -10,6 +10,7 @@ Class {
 { #category : #'as yet unclassified' }
 CZPierBibBenchmark >> run [
 	"self new run"
+	<ignoreForCoverage>
 	| bib re result |
 	TimeProfileBrowser
 		spyOn: [bib := String lf , String lf split: (FileDirectory default oldFileNamed: '/home/scg/scgbib/scg.bib') contents].

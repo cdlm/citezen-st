@@ -4,8 +4,21 @@ I create a [CZPier]BibFile in Pier as a test fixture and smash it with various s
 Class {
 	#name : #CZPierBibTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'testPage'
+	],
 	#category : #'Citezen-Seaside'
 }
+
+{ #category : #'as yet unclassified' }
+CZPierBibTest class >> classNamesNotUnderTest [
+	^ #('CZBibEntry' 'CZBibEntryHtmlView' 'CZBibList' 'CZBibListHtmlView' 'CZBibliographyComponent' 'CZBibWidget' 'CZFileLibrary' 'CZHtmlRenderer' 'MAServerFileChooserComponent' 'PRVisitor' 'PRViewRenderer')
+]
+
+{ #category : #'as yet unclassified' }
+CZPierBibTest class >> packageNamesUnderTest [
+	^ #('Citezen-Seaside')
+]
 
 { #category : #'test data' }
 CZPierBibTest >> bibFileName [
@@ -26,6 +39,7 @@ CZPierBibTest >> createBibFilePage [
 	child file: (MAReferenceFileModel
 				fromRio: (Rio new: self bibFileName)).
 	parent addChild: child.
+	^ child
 ]
 
 { #category : #'test data' }
@@ -213,7 +227,7 @@ CZPierBibTest >> scgbibSample [
 CZPierBibTest >> setUp [
 	"self new setUp"
 	self createTestBibFile.
-	self createBibFilePage
+	testPage := self createBibFilePage
 ]
 
 { #category : #'test data' }
@@ -221,4 +235,9 @@ CZPierBibTest >> tearDown [
 	"self new tearDown"
 	self deleteTestBibFile.
 	self deleteBibFilePage
+]
+
+{ #category : #running }
+CZPierBibTest >> testValidity [
+	self assert: testPage isValid
 ]
