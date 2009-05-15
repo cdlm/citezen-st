@@ -3,24 +3,15 @@ This is work in progress. Description follows at end.
 
 --TO DO--
 BibFile
-- add auto-regex recognition
 - add view controls
-*** Queries
-- sets of keywords
-- or regex
 
-BibQuerySpec
-- ignoreCase = y/n
-- useRegex = n/y [auto-recognize regexes containing: []*^$\ ]
-- sortBy = author/year/category
-- display = plain/abstract/bibtex
-- showControls = y/n
+BibList
+- sort order
 
 BibQuery
 - stores a fixed query with query options
 - cache query result
 - timestamp invalidated when source file modified
-
 
 --ABOUT--
 These classes (all starting with CZPier -- we elide the prefix here for readability) are intended to replace the scgbib.cgi script with a pure Pier/Seaside solution.
