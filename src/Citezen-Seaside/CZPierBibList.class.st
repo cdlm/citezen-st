@@ -64,7 +64,7 @@ CZPierBibList >> query: queryString [
 
 { #category : #querying }
 CZPierBibList >> queryCaseSensitive: queryString [
-	^ self processQuery: (CZPierBibQuerySpec default queryString: queryString; caseSensitiveOn; yourself)
+	^ self processQuery: (CZPierBibQuerySpec default queryString: queryString; caseSensitive: true; yourself)
 ]
 
 { #category : #rendering }

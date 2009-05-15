@@ -6,7 +6,6 @@ Class {
 	#superclass : #PRDefaultView,
 	#instVars : [
 		'queryResult',
-		'queryString',
 		'querySpec',
 		'bibFile'
 	],
@@ -22,16 +21,6 @@ CZPierBibFileView >> bibFile [
 CZPierBibFileView >> initialize [
 	super initialize.
 	querySpec := CZPierBibQuerySpec default.
-]
-
-{ #category : #accessing }
-CZPierBibFileView >> queryString [
-	^ queryString
-]
-
-{ #category : #accessing }
-CZPierBibFileView >> queryString: aString [ 
-	queryString := aString
 ]
 
 { #category : #rendering }
@@ -61,10 +50,12 @@ CZPierBibFileView >> renderQueryOn: html [
 	self renderDebugInfoOn: html.
 	html
 		form: [html text: 'Query: '.
-			html textInput on: #queryString of: self.
+			html textInput on: #queryString of: querySpec.
 			html submitButton text: 'search';
-				callback: [querySpec queryString: queryString.
-					queryResult := self bibFile bibList processQuery: querySpec]].
+				callback: [queryResult := self bibFile bibList processQuery: querySpec].
+			html break; text: 'case sensitive'.
+			html checkbox on: #caseSensitive of: querySpec.
+				].
 	self renderQueryResultOn: html
 ]
 

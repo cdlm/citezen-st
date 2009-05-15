@@ -39,13 +39,8 @@ CZPierBibQuerySpec >> caseSensitive [
 ]
 
 { #category : #setters }
-CZPierBibQuerySpec >> caseSensitiveOff [
-	caseSensitive := false
-]
-
-{ #category : #setters }
-CZPierBibQuerySpec >> caseSensitiveOn [
-	caseSensitive := true
+CZPierBibQuerySpec >> caseSensitive: aBoolean [
+	caseSensitive := aBoolean
 ]
 
 { #category : #getters }
@@ -54,13 +49,8 @@ CZPierBibQuerySpec >> controls [
 ]
 
 { #category : #setters }
-CZPierBibQuerySpec >> controlsOff [
-	controls := false
-]
-
-{ #category : #setters }
-CZPierBibQuerySpec >> controlsOn [
-	controls := true
+CZPierBibQuerySpec >> controls: aBoolean [
+	controls := aBoolean
 ]
 
 { #category : #private }
@@ -114,10 +104,10 @@ CZPierBibQuerySpec >> regexChars [
 { #category : #'initialize-release' }
 CZPierBibQuerySpec >> setDefaults [
 	self queryString: ''.
-	self caseSensitiveOff.
+	self caseSensitive: false.
 	self sortByCategory.
 	self displaySummary.
-	self controlsOn
+	self controls: true.
 ]
 
 { #category : #getters }

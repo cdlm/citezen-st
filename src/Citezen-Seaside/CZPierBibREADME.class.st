@@ -2,7 +2,7 @@
 This is work in progress. Description follows at end.
 
 --TO DO--
-BibFile
+BibFileView
 - add view controls
 
 BibList
@@ -12,6 +12,8 @@ BibQuery
 - stores a fixed query with query options
 - cache query result
 - timestamp invalidated when source file modified
+
+* Catch regex compile errors! eg query: '*'
 
 --ABOUT--
 These classes (all starting with CZPier -- we elide the prefix here for readability) are intended to replace the scgbib.cgi script with a pure Pier/Seaside solution.
