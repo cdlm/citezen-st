@@ -31,11 +31,6 @@ CZPierBibList >> entries [
 	^ entries
 ]
 
-{ #category : #querying }
-CZPierBibList >> filterRegex: aRegex [
-	^ self class withEntries: (entries select: [:each | each matches: aRegex ])
-]
-
 { #category : #initialization }
 CZPierBibList >> initializeEntries: someEntries [
 	entries := someEntries
@@ -49,8 +44,43 @@ CZPierBibList >> initializeFrom: aString [
 ]
 
 { #category : #rendering }
-CZPierBibList >> renderContentOn: html [ 
+CZPierBibList >> printOn: aStream [
+	<ignoreForCoverage>
+	entries printOn: aStream
+]
+
+{ #category : #querying }
+CZPierBibList >> processQuery: querySpec [ 
+	^ querySpec useRegex
+		ifTrue: [self selectByRegex: querySpec regex ]
+		ifFalse: [self selectByKeywords: ('\s+' asRegex split: querySpec queryString) caseSensitive: querySpec caseSensitive ]
+		
+]
+
+{ #category : #querying }
+CZPierBibList >> query: queryString [
+	^ self processQuery: (CZPierBibQuerySpec default queryString: queryString; yourself)
+]
+
+{ #category : #querying }
+CZPierBibList >> queryCaseSensitive: queryString [
+	^ self processQuery: (CZPierBibQuerySpec default queryString: queryString; caseSensitiveOn; yourself)
+]
+
+{ #category : #rendering }
+CZPierBibList >> renderContentOn: html [
+	<ignoreForCoverage>
 	html unorderedList: [entries do: [:each | html listItem: [each renderContentOn: html]]]
+]
+
+{ #category : #querying }
+CZPierBibList >> selectByKeywords: keywordList caseSensitive: caseSensitive [
+	^ self class withEntries: (entries select: [ :each | each containsKeywords: keywordList caseSensitive: caseSensitive ])
+]
+
+{ #category : #querying }
+CZPierBibList >> selectByRegex: aRegex [ 
+	^ self class withEntries: (entries select: [ :each | each matchesRegex: aRegex ])
 ]
 
 { #category : #querying }

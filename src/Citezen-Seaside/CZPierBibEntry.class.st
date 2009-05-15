@@ -23,6 +23,11 @@ CZPierBibEntry class >> from: aString [
 
 ]
 
+{ #category : #querying }
+CZPierBibEntry >> containsKeywords: keywordList caseSensitive: caseSensitive [
+	^ keywordList allSatisfy: [:kwd | text includesSubstring: kwd caseSensitive: caseSensitive ]
+]
+
 { #category : #accessing }
 CZPierBibEntry >> entry [
 	"Needs some error checking.
@@ -42,13 +47,19 @@ CZPierBibEntry >> initializeText: aString [
 ]
 
 { #category : #querying }
-CZPierBibEntry >> matches: aRegex [
-	"NB: want any match within self, not an exact match, so we send search:, not matches:"
+CZPierBibEntry >> matchesRegex: aRegex [
 	^ aRegex search: text
 ]
 
 { #category : #rendering }
+CZPierBibEntry >> printOn: aStream [
+	<ignoreForCoverage>
+	text printOn: aStream
+]
+
+{ #category : #rendering }
 CZPierBibEntry >> renderContentOn: html [ 
+	<ignoreForCoverage>
 	[(CZHtmlRenderer html: html) library: BibPhraseLibrary default;
 		 render: self entry]
 		on: Error

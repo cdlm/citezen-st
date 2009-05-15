@@ -2,8 +2,6 @@
 This is work in progress. Description follows at end.
 
 --TO DO--
-*** Write some tests!
-
 BibFile
 - add auto-regex recognition
 - add view controls

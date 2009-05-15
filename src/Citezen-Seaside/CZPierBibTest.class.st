@@ -12,7 +12,12 @@ Class {
 
 { #category : #'as yet unclassified' }
 CZPierBibTest class >> classNamesNotUnderTest [
-	^ #('CZBibEntry' 'CZBibEntryHtmlView' 'CZBibList' 'CZBibListHtmlView' 'CZBibliographyComponent' 'CZBibWidget' 'CZFileLibrary' 'CZHtmlRenderer' 'MAServerFileChooserComponent' 'PRVisitor' 'PRViewRenderer')
+	^ #( "Not part of PierBib:"
+	'CZBibEntry' 'CZBibEntryHtmlView' 'CZBibList' 'CZBibListHtmlView' 'CZBibliographyComponent' 'CZBibWidget'
+	'CZFileLibrary' 'CZHtmlRenderer' 'MAServerFileChooserComponent' 'PRVisitor' 'PRViewRenderer'
+	"Don't test rendering classes"
+	'CZPierBibFileView'
+	)
 ]
 
 { #category : #'as yet unclassified' }
@@ -238,6 +243,54 @@ CZPierBibTest >> tearDown [
 ]
 
 { #category : #running }
+CZPierBibTest >> testBibFileKeywordQuery [
+	| result |
+	result := testPage bibList query: 'scg-pub oscar'.
+	self assert: result size = 2.
+]
+
+{ #category : #running }
+CZPierBibTest >> testBibFileKeywordQueryCaseSenstive [
+	| result |
+	result := testPage bibList queryCaseSensitive: 'scg-pub oscar'.
+	self assert: result size = 0.
+]
+
+{ #category : #running }
+CZPierBibTest >> testBibFileRegexQuery [
+	| result |
+	result := testPage bibList query: 'ach\w+ann'.
+	self assert: result size = 1.
+]
+
+{ #category : #running }
+CZPierBibTest >> testBibFileRegexQueryCaseSensitive [
+	| result |
+	result := testPage bibList queryCaseSensitive: 'ach\w+ann'.
+	self assert: result size = 0.
+]
+
+{ #category : #running }
+CZPierBibTest >> testBibListSize [
+	self assert: testPage bibList size = 6
+]
+
+{ #category : #running }
+CZPierBibTest >> testExpiry [
+	| oldTimestamp |
+	self assert: testPage isExpired not.
+	oldTimestamp := testPage timestamp.
+	self deleteTestBibFile.
+	(Delay forSeconds: 1) wait.
+	self createTestBibFile.
+	self assert: testPage isExpired.
+	self assert: testPage bibList notNil. "triggers reload"
+	self assert: testPage isExpired not.
+	self assert: oldTimestamp < testPage timestamp.
+]
+
+{ #category : #running }
 CZPierBibTest >> testValidity [
-	self assert: testPage isValid
+	self assert: testPage isValid.
+	self assert: testPage error isEmpty.
 ]

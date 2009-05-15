@@ -21,6 +21,7 @@ Class {
 
 { #category : #'accessing-description' }
 CZPierBibFile class >> descriptionFile [
+	<ignoreForCoverage>
 	^ MAFileDescription new
 		comment: 'Local path to .bib file to render.';
 		componentClass: MAServerFileChooserComponent;
@@ -50,6 +51,7 @@ CZPierBibFile >> error [
 
 { #category : #accessing }
 CZPierBibFile >> file [
+	<ignoreForCoverage>
 	^ file
 ]
 
@@ -57,11 +59,6 @@ CZPierBibFile >> file [
 CZPierBibFile >> file: aFileModel [
 	file := aFileModel.
 	self loadBibList.
-]
-
-{ #category : #querying }
-CZPierBibFile >> filterRegex: aRegex [
-	^ bibList filterRegex: aRegex
 ]
 
 { #category : #initialization }
@@ -85,6 +82,7 @@ CZPierBibFile >> isValid [
 { #category : #testing }
 CZPierBibFile >> loadBibList [
 	bibList := nil.
+	error := ''.
 	(file filePath endsWith: '.bib')
 		ifTrue: [file exists
 				ifTrue: [timestamp := file modificationTime.
@@ -95,13 +93,8 @@ CZPierBibFile >> loadBibList [
 
 { #category : #querying }
 CZPierBibFile >> modificationTimePrintString [
+	<ignoreForCoverage>
 	^ (DateAndTime fromSeconds: timestamp) printString
-]
-
-{ #category : #querying }
-CZPierBibFile >> query: aRegexString [
-	^ self filterRegex: aRegexString asRegex
-
 ]
 
 { #category : #accessing }
@@ -111,5 +104,6 @@ CZPierBibFile >> timestamp [
 
 { #category : #accessing }
 CZPierBibFile >> viewComponentClass [
+	<ignoreForCoverage>
 	^ CZPierBibFileView
 ]
