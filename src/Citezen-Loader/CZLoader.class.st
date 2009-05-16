@@ -24,16 +24,19 @@ CZLoader class >> loadCitezen [
 ]
 
 { #category : #load }
-CZLoader class >> loadCitezenPierBib [
+CZLoader class >> loadCitezenPier [
 	Installer ss project: 'SplitJoin';
 		 install: 'SplitJoin'.
 	self updatePier.
-	self loadCitezenSeaside.
+	Installer ss project: 'Citezen';
+		 install: 'Citezen-Magritte';
+		 install: 'Citezen-Pier'
 ]
 
 { #category : #load }
 CZLoader class >> loadCitezenSeaside [
 	Installer ss project: 'Citezen';
+		 install: 'Citezen-Magritte';
 		 install: 'Citezen-Seaside'
 ]
 
@@ -44,9 +47,9 @@ CZLoader class >> loadSmacc [
 ]
 
 { #category : #load }
-CZLoader class >> loadWithPierBib [
+CZLoader class >> loadWithPier [
 	self load.
-	self loadCitezenPierBib.
+	self loadCitezenPier.
 ]
 
 { #category : #load }
