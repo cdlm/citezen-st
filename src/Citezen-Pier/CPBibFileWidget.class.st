@@ -58,14 +58,16 @@ CPBibFileWidget >> renderErrorOn: html [
 
 { #category : #rendering }
 CPBibFileWidget >> renderQueryOn: html [ 
-	self renderDebugInfoOn: html.
-	html
-		form: [html text: 'Query: '.
+	"self renderDebugInfoOn: html."
+	html paragraph:
+	[html
+		form: [html big: 'Query: '.
 			html textInput on: #queryString of: querySpec.
 			html submitButton text: 'search';
 				callback: [queryResult := querySpec bibFile: self bibFile; processQuery].
 			html break; text: 'case sensitive'.
-			html checkbox on: #caseSensitive of: querySpec. ].
+			html checkbox on: #caseSensitive of: querySpec.
+		]].
 	self renderQueryResultOn: html
 ]
 

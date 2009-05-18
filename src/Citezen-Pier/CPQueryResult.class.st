@@ -24,29 +24,52 @@ CPQueryResult >> querySpec: aQuerySpec [
 ]
 
 { #category : #rendering }
-CPQueryResult >> renderContentOn: html [
+CPQueryResult >> renderContentOn: html [ 
 	<ignoreForCoverage>
 	self renderControlsOn: html.
-	html unorderedList: [entries do: [:each | html listItem: [each renderContentOn: html]]]
+	self entries
+		ifEmpty: [html heading: 'No matching entries found.']
+		ifNotEmpty: [html
+				unorderedList: [self entries
+						do: [:each | html
+								listItem: [each renderContentOn: html]]]]
 ]
 
 { #category : #rendering }
-CPQueryResult >> renderControlsOn: html [
+CPQueryResult >> renderControlsOn: html [ 
 	<ignoreForCoverage>
-	html heading: 'Query result: ' , '(' , self entries size printString , ' results)'.
-	html form: [
-	html text: 'Display: '.
+	querySpec hideControls ifFalse: 
+		[ html paragraph: 
+			[ html form: 
+				[ self renderSortBy: html.
+				self renderDisplayOn: html.
+				self renderHideControlsOn: html ] ] ]
+]
+
+{ #category : #rendering }
+CPQueryResult >> renderDisplayOn: html [ 
+	html text: ' Display: '.
 	html select
 		list: querySpec displayList;
-		on: #display of: querySpec;
-		beSubmitOnChange.
+		on: #display
+			of: querySpec;
+		beSubmitOnChange
+]
+
+{ #category : #rendering }
+CPQueryResult >> renderHideControlsOn: html [ 
+	html text: ' Hide controls: '.
+	^ html checkbox
+		on: #hideControls
+			of: querySpec;
+		submitOnClick
+]
+
+{ #category : #rendering }
+CPQueryResult >> renderSortBy: html [ 
+	<ignoreForCoverage>
 	html text: ' Sort by: '.
-	html select
-		list: querySpec sortList;
-		on: #sortBy of: querySpec;
-		beSubmitOnChange.
-	html text: ' Render controls: '.
-	html checkbox
-		on: #controls of: querySpec;
-		submitOnClick ]
+	html select list: querySpec sortList;
+		 on: #sortBy of: querySpec;
+		 beSubmitOnChange
 ]

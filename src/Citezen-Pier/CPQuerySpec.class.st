@@ -21,9 +21,9 @@ Class {
 		'bibFile',
 		'sortBy',
 		'display',
-		'controls',
 		'queryString',
-		'caseSensitive'
+		'caseSensitive',
+		'hideControls'
 	],
 	#category : #'Citezen-Pier'
 }
@@ -59,16 +59,6 @@ CPQuerySpec >> compilesAsARegex [
 ]
 
 { #category : #accessors }
-CPQuerySpec >> controls [
-	^ controls
-]
-
-{ #category : #accessors }
-CPQuerySpec >> controls: aBoolean [
-	controls := aBoolean
-]
-
-{ #category : #accessors }
 CPQuerySpec >> display [
 	^ display 
 ]
@@ -81,6 +71,16 @@ CPQuerySpec >> display: displayType [
 { #category : #accessors }
 CPQuerySpec >> displayList [
 	^ #(summary abstract bibtex)
+]
+
+{ #category : #accessors }
+CPQuerySpec >> hideControls [
+	^ hideControls
+]
+
+{ #category : #accessors }
+CPQuerySpec >> hideControls: aBoolean [ 
+	hideControls := aBoolean
 ]
 
 { #category : #querying }
@@ -133,7 +133,7 @@ CPQuerySpec >> setDefaults [
 	self caseSensitive: false.
 	self sortBy: #category.
 	self display: #summary.
-	self controls: true.
+	self hideControls: false
 ]
 
 { #category : #accessors }
