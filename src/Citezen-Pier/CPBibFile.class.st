@@ -99,6 +99,23 @@ CPBibFile >> modificationTimePrintString [
 	^ (DateAndTime fromSeconds: timestamp) printString
 ]
 
+{ #category : #querying }
+CPBibFile >> query: queryString [ 
+	^ CPQuerySpec default
+			queryString: queryString;
+			bibFile: self;
+			processQuery
+]
+
+{ #category : #querying }
+CPBibFile >> queryCaseSensitive: queryString [ 
+	^ CPQuerySpec default
+			queryString: queryString;
+			caseSensitive: true;
+			bibFile: self;
+			processQuery
+]
+
 { #category : #accessing }
 CPBibFile >> timestamp [
 	^ timestamp

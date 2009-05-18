@@ -244,28 +244,28 @@ CPBibTest >> tearDown [
 { #category : #running }
 CPBibTest >> testBibFileKeywordQuery [
 	| result |
-	result := testPage bibList query: 'scg-pub oscar'.
+	result := testPage query: 'scg-pub oscar'.
 	self assert: result size = 2.
 ]
 
 { #category : #running }
 CPBibTest >> testBibFileKeywordQueryCaseSenstive [
 	| result |
-	result := testPage bibList queryCaseSensitive: 'scg-pub oscar'.
+	result := testPage queryCaseSensitive: 'scg-pub oscar'.
 	self assert: result size = 0.
 ]
 
 { #category : #running }
 CPBibTest >> testBibFileRegexQuery [
 	| result |
-	result := testPage bibList query: 'ach\w+ann'.
+	result := testPage query: 'ach\w+ann'.
 	self assert: result size = 1.
 ]
 
 { #category : #running }
 CPBibTest >> testBibFileRegexQueryCaseSensitive [
 	| result |
-	result := testPage bibList queryCaseSensitive: 'ach\w+ann'.
+	result := testPage queryCaseSensitive: 'ach\w+ann'.
 	self assert: result size = 0.
 ]
 

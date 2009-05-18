@@ -60,7 +60,7 @@ CPHtmlRenderer class >> initialize [
 
 { #category : #'class initialization' }
 CPHtmlRenderer class >> initializeLatexToHtmlReplacements [
-	" self initializeLatexToHtmlReplacements "
+	" self initializeLatexToHtmlReplacements"
 	latexToHtmlReplacements := Dictionary new.
 	latexToHtmlReplacements at: '\''a' put: '&aacute;';
 		 at: '\''e' put: '&eacute;';

@@ -9,7 +9,7 @@ I represent either the result of a query, or the entire list of entries in the f
 "
 Class {
 	#name : #CPBibList,
-	#superclass : #PRDefaultView,
+	#superclass : #WAComponent,
 	#instVars : [
 		'entries'
 	],
@@ -19,11 +19,6 @@ Class {
 { #category : #'instance-creation' }
 CPBibList class >> from: aString [
 	^ self new initializeFrom: aString
-]
-
-{ #category : #'instance-creation' }
-CPBibList class >> withEntries: someEntries [
-	^ self new initializeEntries: someEntries
 ]
 
 { #category : #accessing }
@@ -49,35 +44,25 @@ CPBibList >> printOn: aStream [
 	entries printOn: aStream
 ]
 
-{ #category : #querying }
-CPBibList >> query: queryString [ 
-	^ CPQuerySpec default
-			queryString: queryString;
-			processQuery
-]
-
-{ #category : #querying }
-CPBibList >> queryCaseSensitive: queryString [ 
-	^ CPQuerySpec default
-			queryString: queryString;
-			caseSensitive: true;
-			processQuery
-]
-
 { #category : #rendering }
 CPBibList >> renderContentOn: html [
 	<ignoreForCoverage>
+	"Simple version -- QueryResult has the richer interface"
 	html unorderedList: [entries do: [:each | html listItem: [each renderContentOn: html]]]
 ]
 
 { #category : #querying }
-CPBibList >> selectByKeywords: keywordList caseSensitive: caseSensitive [
-	^ self class withEntries: (entries select: [ :each | each containsKeywords: keywordList caseSensitive: caseSensitive ])
+CPBibList >> selectEntriesByKeywords: keywordList caseSensitive: caseSensitive [ 
+	^ entries select: 
+		[ :each | 
+		each 
+			containsKeywords: keywordList
+			caseSensitive: caseSensitive ]
 ]
 
 { #category : #querying }
-CPBibList >> selectByRegex: aRegex [ 
-	^ self class withEntries: (entries select: [ :each | each matchesRegex: aRegex ])
+CPBibList >> selectEntriesByRegex: aRegex [ 
+	^ entries select: [ :each | each matchesRegex: aRegex ]
 ]
 
 { #category : #querying }

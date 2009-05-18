@@ -19,7 +19,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'bibFile',
-		'useRegex',
 		'sortBy',
 		'display',
 		'controls',
@@ -34,22 +33,22 @@ CPQuerySpec class >> default [
 	^ self new setDefaults
 ]
 
-{ #category : #getters }
+{ #category : #accessors }
 CPQuerySpec >> bibFile [
 	^ bibFile
 ]
 
-{ #category : #setters }
+{ #category : #accessors }
 CPQuerySpec >> bibFile: aBibFile [
 	bibFile := aBibFile
 ]
 
-{ #category : #getters }
+{ #category : #accessors }
 CPQuerySpec >> caseSensitive [
 	^ caseSensitive
 ]
 
-{ #category : #setters }
+{ #category : #accessors }
 CPQuerySpec >> caseSensitive: aBoolean [
 	caseSensitive := aBoolean
 ]
@@ -59,39 +58,29 @@ CPQuerySpec >> compilesAsARegex [
 	^ [queryString asRegex. true ] on: RegexSyntaxError do: [ false ]
 ]
 
-{ #category : #getters }
+{ #category : #accessors }
 CPQuerySpec >> controls [
 	^ controls
 ]
 
-{ #category : #setters }
+{ #category : #accessors }
 CPQuerySpec >> controls: aBoolean [
 	controls := aBoolean
 ]
 
-{ #category : #private }
-CPQuerySpec >> detectRegex [
-	useRegex := self looksLikeARegex and: [self compilesAsARegex]
-]
-
-{ #category : #getters }
+{ #category : #accessors }
 CPQuerySpec >> display [
 	^ display 
 ]
 
-{ #category : #setters }
-CPQuerySpec >> displayAbstract [
-	display := #abstract.
+{ #category : #accessors }
+CPQuerySpec >> display: displayType [
+	display := displayType
 ]
 
-{ #category : #setters }
-CPQuerySpec >> displayBibtex [
-	display := #bibtex.
-]
-
-{ #category : #setters }
-CPQuerySpec >> displaySummary [
-	display := #summary.
+{ #category : #accessors }
+CPQuerySpec >> displayList [
+	^ #(summary abstract bibtex)
 ]
 
 { #category : #querying }
@@ -106,21 +95,24 @@ CPQuerySpec >> looksLikeARegex [
 
 { #category : #querying }
 CPQuerySpec >> processQuery [
-	^ self useRegex
-		ifTrue: [self bibFile bibList selectByRegex: self regex ]
-		ifFalse: [self bibFile bibList selectByKeywords: self keywords caseSensitive: self caseSensitive ]
-
+	^ CPQueryResult new
+		querySpec: self;
+		initializeEntries: (self useRegex 
+			ifTrue: [ self bibFile bibList selectEntriesByRegex: self regex ]
+			ifFalse: 
+				[ self bibFile bibList 
+					selectEntriesByKeywords: self keywords
+					caseSensitive: self caseSensitive ])
 ]
 
-{ #category : #getters }
+{ #category : #accessors }
 CPQuerySpec >> queryString [
 	^ queryString
 ]
 
-{ #category : #setters }
+{ #category : #accessors }
 CPQuerySpec >> queryString: aString [
-	queryString := aString.
-	self detectRegex.
+	queryString := aString
 ]
 
 { #category : #querying }
@@ -139,32 +131,27 @@ CPQuerySpec >> regexChars [
 CPQuerySpec >> setDefaults [
 	self queryString: ''.
 	self caseSensitive: false.
-	self sortByCategory.
-	self displaySummary.
+	self sortBy: #category.
+	self display: #summary.
 	self controls: true.
 ]
 
-{ #category : #getters }
+{ #category : #accessors }
 CPQuerySpec >> sortBy [
 	^ sortBy 
 ]
 
-{ #category : #setters }
-CPQuerySpec >> sortByAuthor [
-	sortBy := #author
+{ #category : #accessors }
+CPQuerySpec >> sortBy: sortType [
+	sortBy := sortType
 ]
 
-{ #category : #setters }
-CPQuerySpec >> sortByCategory [
-	sortBy := #category
+{ #category : #accessors }
+CPQuerySpec >> sortList [
+	^ #(author year category)
 ]
 
-{ #category : #setters }
-CPQuerySpec >> sortByYear [
-	sortBy := #year
-]
-
-{ #category : #getters }
+{ #category : #querying }
 CPQuerySpec >> useRegex [
-	^ useRegex
+	^ self looksLikeARegex and: [self compilesAsARegex]
 ]

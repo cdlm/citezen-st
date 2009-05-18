@@ -9,7 +9,7 @@ I do not have a url of my own, so I am not a PRStructure. I can render myself, s
 "
 Class {
 	#name : #CPBibEntry,
-	#superclass : #PRDefaultView,
+	#superclass : #WAComponent,
 	#instVars : [
 		'text',
 		'entry'

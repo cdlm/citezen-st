@@ -1,68 +1,30 @@
-"
-I render a [CP]BibFilePage
-"
 Class {
 	#name : #CPBibFileView,
 	#superclass : #PRDefaultView,
 	#instVars : [
-		'queryResult',
-		'querySpec',
-		'bibFile'
+		'bibFileWidget'
 	],
 	#category : #'Citezen-Pier'
 }
 
-{ #category : #accessing }
-CPBibFileView >> bibFile [
-	^ bibFile ifNil: [ bibFile := self find: CPBibFile ]
+{ #category : #'as yet unclassified' }
+CPBibFileView >> children [
+	^ Array with: bibFileWidget 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #'as yet unclassified' }
 CPBibFileView >> initialize [
 	super initialize.
-	querySpec := CPQuerySpec default
+	bibFileWidget := CPBibFileWidget new
 ]
 
-{ #category : #rendering }
-CPBibFileView >> renderContentOn: html [ 
-	self bibFile isValid
-		ifTrue: [self renderQueryOn: html]
-		ifFalse: [self renderErrorOn: html]
+{ #category : #'as yet unclassified' }
+CPBibFileView >> renderContentOn: html [
+	html render: bibFileWidget 
 ]
 
-{ #category : #rendering }
-CPBibFileView >> renderDebugInfoOn: html [ 
-	html text: 'Loaded bibtex file: ' , self bibFile file filePath printString; break;
-		text: 'Number of bib entries: ' , self bibFile bibList size printString; break;
-		text: 'Last update: ' , self bibFile modificationTimePrintString; break.
-
-]
-
-{ #category : #rendering }
-CPBibFileView >> renderErrorOn: html [
-	html heading: 'Invalid bibtex file'.
-	html text: self bibFile error.
-
-]
-
-{ #category : #rendering }
-CPBibFileView >> renderQueryOn: html [ 
-	self renderDebugInfoOn: html.
-	html
-		form: [html text: 'Query: '.
-			html textInput on: #queryString of: querySpec.
-			html submitButton text: 'search';
-				callback: [queryResult := querySpec bibFile: self bibFile; processQuery].
-			html break; text: 'case sensitive'.
-			html checkbox on: #caseSensitive of: querySpec. ].
-	self renderQueryResultOn: html
-]
-
-{ #category : #rendering }
-CPBibFileView >> renderQueryResultOn: html [ 
-	"Need links to control output format, sort order etc"
-	queryResult
-		ifNotNil: [html heading: 'Query result: ' , '(' , queryResult entries size printString , ' results)'.
-			html render: queryResult ]
-		"ifNil: [ html text: 'I have nothing to show you']"
+{ #category : #'as yet unclassified' }
+CPBibFileView >> setContext: aContext [
+	super setContext: aContext.
+	bibFileWidget bibFile: aContext structure
 ]
