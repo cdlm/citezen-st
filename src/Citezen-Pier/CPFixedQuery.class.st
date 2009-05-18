@@ -4,7 +4,7 @@ I represent a fixed query on a [CP]BibFile. I cache my result (a BibList), and u
 I have a fixed URL, so am a PRStructure.
 "
 Class {
-	#name : #CPBibQueryPage,
+	#name : #CPFixedQuery,
 	#superclass : #PRStructure,
 	#category : #'Citezen-Pier'
 }

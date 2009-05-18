@@ -9,7 +9,7 @@ I represent either the result of a query, or the entire list of entries in the f
 "
 Class {
 	#name : #CPBibList,
-	#superclass : #Object,
+	#superclass : #PRDefaultView,
 	#instVars : [
 		'entries'
 	],
@@ -50,26 +50,18 @@ CPBibList >> printOn: aStream [
 ]
 
 { #category : #querying }
-CPBibList >> processQuery: querySpec [ 
-	^ querySpec useRegex
-		ifTrue: [self selectByRegex: querySpec regex ]
-		ifFalse: [self selectByKeywords: ('\s+' asRegex split: querySpec queryString) caseSensitive: querySpec caseSensitive ]
-		
-]
-
-{ #category : #querying }
 CPBibList >> query: queryString [ 
-	^ self processQuery: (CPBibQuerySpec default
+	^ CPQuerySpec default
 			queryString: queryString;
-			yourself)
+			processQuery
 ]
 
 { #category : #querying }
 CPBibList >> queryCaseSensitive: queryString [ 
-	^ self processQuery: (CPBibQuerySpec default
+	^ CPQuerySpec default
 			queryString: queryString;
 			caseSensitive: true;
-			yourself)
+			processQuery
 ]
 
 { #category : #rendering }

@@ -1,19 +1,5 @@
 "
-This is work in progress. Description follows at end.
-
---TO DO--
-BibFileView
-- add view controls
-
-BibList
-- sort order
-
-BibQuery
-- stores a fixed query with query options
-- cache query result
-- timestamp invalidated when source file modified
-
-* Catch regex compile errors! eg query: '*'
+This is work in progress. Initial description follows. To be updated ...
 
 --ABOUT--
 These classes (all starting with CP -- we elide the prefix here for readability) are intended to replace the scgbib.cgi script with a pure Pier/Seaside solution.

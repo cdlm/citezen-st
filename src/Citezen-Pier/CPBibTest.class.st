@@ -40,7 +40,7 @@ CPBibTest >> createBibFilePage [
 	"self new createBibFilePage"
 	| parent child |
 	parent := PRKernel instances anyOne root lookupPath: '/'.
-	child := CPBibFilePage named: self bibFilePageName.
+	child := CPBibFile named: self bibFilePageName.
 	child file: (MAReferenceFileModel fromRio: (Rio new: self bibFileName)).
 	parent addChild: child.
 	^ child

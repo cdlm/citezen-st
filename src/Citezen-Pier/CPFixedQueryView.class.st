@@ -2,7 +2,7 @@
 I render a [C}BibQueryPage]
 "
 Class {
-	#name : #CPBibQueryView,
+	#name : #CPFixedQueryView,
 	#superclass : #PRDefaultView,
 	#category : #'Citezen-Pier'
 }

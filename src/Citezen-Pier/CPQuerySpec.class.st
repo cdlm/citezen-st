@@ -15,9 +15,10 @@ I am basically a data holder with just a few smarts.
 
 "
 Class {
-	#name : #CPBibQuerySpec,
+	#name : #CPQuerySpec,
 	#superclass : #Object,
 	#instVars : [
+		'bibFile',
 		'useRegex',
 		'sortBy',
 		'display',
@@ -29,80 +30,113 @@ Class {
 }
 
 { #category : #'instance creation' }
-CPBibQuerySpec class >> default [
+CPQuerySpec class >> default [
 	^ self new setDefaults
 ]
 
 { #category : #getters }
-CPBibQuerySpec >> caseSensitive [
+CPQuerySpec >> bibFile [
+	^ bibFile
+]
+
+{ #category : #setters }
+CPQuerySpec >> bibFile: aBibFile [
+	bibFile := aBibFile
+]
+
+{ #category : #getters }
+CPQuerySpec >> caseSensitive [
 	^ caseSensitive
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> caseSensitive: aBoolean [
+CPQuerySpec >> caseSensitive: aBoolean [
 	caseSensitive := aBoolean
 ]
 
+{ #category : #private }
+CPQuerySpec >> compilesAsARegex [
+	^ [queryString asRegex. true ] on: RegexSyntaxError do: [ false ]
+]
+
 { #category : #getters }
-CPBibQuerySpec >> controls [
+CPQuerySpec >> controls [
 	^ controls
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> controls: aBoolean [
+CPQuerySpec >> controls: aBoolean [
 	controls := aBoolean
 ]
 
 { #category : #private }
-CPBibQuerySpec >> detectRegex [
-	useRegex := queryString includesAnyOf: self regexChars
+CPQuerySpec >> detectRegex [
+	useRegex := self looksLikeARegex and: [self compilesAsARegex]
 ]
 
 { #category : #getters }
-CPBibQuerySpec >> display [
+CPQuerySpec >> display [
 	^ display 
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> displayAbstract [
+CPQuerySpec >> displayAbstract [
 	display := #abstract.
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> displayBibtex [
+CPQuerySpec >> displayBibtex [
 	display := #bibtex.
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> displaySummary [
+CPQuerySpec >> displaySummary [
 	display := #summary.
 ]
 
+{ #category : #querying }
+CPQuerySpec >> keywords [
+	^ '\s+' asRegex split: self queryString
+]
+
+{ #category : #private }
+CPQuerySpec >> looksLikeARegex [
+	^ queryString includesAnyOf: self regexChars
+]
+
+{ #category : #querying }
+CPQuerySpec >> processQuery [
+	^ self useRegex
+		ifTrue: [self bibFile bibList selectByRegex: self regex ]
+		ifFalse: [self bibFile bibList selectByKeywords: self keywords caseSensitive: self caseSensitive ]
+
+]
+
 { #category : #getters }
-CPBibQuerySpec >> queryString [
+CPQuerySpec >> queryString [
 	^ queryString
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> queryString: aString [
+CPQuerySpec >> queryString: aString [
 	queryString := aString.
 	self detectRegex.
 ]
 
 { #category : #querying }
-CPBibQuerySpec >> regex [
+CPQuerySpec >> regex [
 	^ caseSensitive 
 		ifTrue: [ queryString asRegex ]
 		ifFalse: [ queryString asRegexIgnoringCase  ]
 ]
 
 { #category : #private }
-CPBibQuerySpec >> regexChars [
+CPQuerySpec >> regexChars [
 	^ '[]*?\'
 ]
 
 { #category : #'initialize-release' }
-CPBibQuerySpec >> setDefaults [
+CPQuerySpec >> setDefaults [
 	self queryString: ''.
 	self caseSensitive: false.
 	self sortByCategory.
@@ -111,26 +145,26 @@ CPBibQuerySpec >> setDefaults [
 ]
 
 { #category : #getters }
-CPBibQuerySpec >> sortBy [
+CPQuerySpec >> sortBy [
 	^ sortBy 
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> sortByAuthor [
+CPQuerySpec >> sortByAuthor [
 	sortBy := #author
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> sortByCategory [
+CPQuerySpec >> sortByCategory [
 	sortBy := #category
 ]
 
 { #category : #setters }
-CPBibQuerySpec >> sortByYear [
+CPQuerySpec >> sortByYear [
 	sortBy := #year
 ]
 
 { #category : #getters }
-CPBibQuerySpec >> useRegex [
+CPQuerySpec >> useRegex [
 	^ useRegex
 ]

@@ -8,7 +8,7 @@ I remember the timestamp of the last time the file was read. Every time I am acc
 I can be queried, yielding a BibList of BibEntry instances.
 "
 Class {
-	#name : #CPBibFilePage,
+	#name : #CPBibFile,
 	#superclass : #PRStructure,
 	#instVars : [
 		'file',
@@ -20,7 +20,7 @@ Class {
 }
 
 { #category : #'accessing-description' }
-CPBibFilePage class >> descriptionFile [
+CPBibFile class >> descriptionFile [
 	<ignoreForCoverage>
 	^ MAFileDescription new
 		comment: 'Local path to .bib file to render.';
@@ -33,54 +33,54 @@ CPBibFilePage class >> descriptionFile [
 ]
 
 { #category : #testing }
-CPBibFilePage class >> isAbstract [
+CPBibFile class >> isAbstract [
 	"Be recognized by Pier as a valid type of structure to be added to the wiki"
 	^false
 ]
 
 { #category : #accessing }
-CPBibFilePage >> bibList [
+CPBibFile >> bibList [
 	self isExpired ifTrue: [ self loadBibList ].
 	^ bibList
 ]
 
 { #category : #accessing }
-CPBibFilePage >> error [
+CPBibFile >> error [
 	^ error
 ]
 
 { #category : #accessing }
-CPBibFilePage >> file [
+CPBibFile >> file [
 	<ignoreForCoverage>
 	^ file
 ]
 
 { #category : #accessing }
-CPBibFilePage >> file: aFileModel [
+CPBibFile >> file: aFileModel [
 	file := aFileModel.
 	self loadBibList.
 ]
 
 { #category : #initialization }
-CPBibFilePage >> initialize [
+CPBibFile >> initialize [
 	super initialize.
 	timestamp := 0.
 	error := 'The bibtex file has not been defined. Please edit this page and define it. '
 ]
 
 { #category : #accessing }
-CPBibFilePage >> isExpired [
+CPBibFile >> isExpired [
 	^ self isValid and: [file modificationTime > timestamp]
 ]
 
 { #category : #testing }
-CPBibFilePage >> isValid [
+CPBibFile >> isValid [
 	^ bibList notNil
 
 ]
 
 { #category : #testing }
-CPBibFilePage >> loadBibList [
+CPBibFile >> loadBibList [
 	bibList := nil.
 	error := ''.
 	(file filePath endsWith: '.bib') 
@@ -94,18 +94,18 @@ CPBibFilePage >> loadBibList [
 ]
 
 { #category : #querying }
-CPBibFilePage >> modificationTimePrintString [
+CPBibFile >> modificationTimePrintString [
 	<ignoreForCoverage>
 	^ (DateAndTime fromSeconds: timestamp) printString
 ]
 
 { #category : #accessing }
-CPBibFilePage >> timestamp [
+CPBibFile >> timestamp [
 	^ timestamp
 ]
 
 { #category : #accessing }
-CPBibFilePage >> viewComponentClass [
+CPBibFile >> viewComponentClass [
 	<ignoreForCoverage>
 	^ CPBibFileView
 ]

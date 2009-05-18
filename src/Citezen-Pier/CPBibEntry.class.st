@@ -9,7 +9,7 @@ I do not have a url of my own, so I am not a PRStructure. I can render myself, s
 "
 Class {
 	#name : #CPBibEntry,
-	#superclass : #WAComponent,
+	#superclass : #PRDefaultView,
 	#instVars : [
 		'text',
 		'entry'
@@ -60,7 +60,7 @@ CPBibEntry >> printOn: aStream [
 { #category : #rendering }
 CPBibEntry >> renderContentOn: html [ 
 	<ignoreForCoverage>
-	[(CZHtmlRenderer html: html) library: BibPhraseLibrary default;
+	[(CPHtmlRenderer html: html) library: BibPhraseLibrary default;
 		 render: self entry]
 		on: Error
 		do: [

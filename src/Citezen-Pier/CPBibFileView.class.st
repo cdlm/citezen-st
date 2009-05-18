@@ -14,13 +14,13 @@ Class {
 
 { #category : #accessing }
 CPBibFileView >> bibFile [
-	^ bibFile ifNil: [ bibFile := self find: CPBibFilePage ]
+	^ bibFile ifNil: [ bibFile := self find: CPBibFile ]
 ]
 
 { #category : #'initialize-release' }
 CPBibFileView >> initialize [
 	super initialize.
-	querySpec := CPBibQuerySpec default
+	querySpec := CPQuerySpec default
 ]
 
 { #category : #rendering }
@@ -52,10 +52,9 @@ CPBibFileView >> renderQueryOn: html [
 		form: [html text: 'Query: '.
 			html textInput on: #queryString of: querySpec.
 			html submitButton text: 'search';
-				callback: [queryResult := self bibFile bibList processQuery: querySpec].
+				callback: [queryResult := querySpec bibFile: self bibFile; processQuery].
 			html break; text: 'case sensitive'.
-			html checkbox on: #caseSensitive of: querySpec.
-				].
+			html checkbox on: #caseSensitive of: querySpec. ].
 	self renderQueryResultOn: html
 ]
 
@@ -64,6 +63,6 @@ CPBibFileView >> renderQueryResultOn: html [
 	"Need links to control output format, sort order etc"
 	queryResult
 		ifNotNil: [html heading: 'Query result: ' , '(' , queryResult entries size printString , ' results)'.
-			queryResult renderContentOn: html ]
+			html render: queryResult ]
 		"ifNil: [ html text: 'I have nothing to show you']"
 ]
