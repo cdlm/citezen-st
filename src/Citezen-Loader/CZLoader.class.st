@@ -60,29 +60,8 @@ CZLoader class >> loadWithSeaside [
 
 { #category : #load }
 CZLoader class >> updatePier [
-	Installer lukas project: 'magritte';
-		install: 'Magritte-Model';
-		install: 'Magritte-Seaside';
-		install: 'Magritte-Tests'.
-	Installer lukas project: 'pier';
-		install: 'Pier-Model';
-		install: 'Pier-Seaside';
-		install: 'Pier-Blog';
-		install: 'Pier-Security';
-		install: 'Pier-Squeak-Persistency';
-		install: 'Pier-Tests'.
-	Installer lukas project: 'pieraddons';
-		install: 'Pier-Setup';
-		install: 'Pier-Design';
-		install: 'Pier-Documents';
-		install: 'Pier-EditorEnh';
-		install: 'Pier-Google';
-		install: 'Pier-Randomizer';
-		install: 'Pier-TagCloud';
-		install: 'Pier-Titles';
-		install: 'ShoutPier'.
-	Installer ss project: 'Seaside';
-		install: 'Seaside2.8a1';
-		install: 'Scriptaculous'.
+	"self updatePier"
+	Installer lukas project: 'pieraddons'; install: 'Pier-Setup'.
+	PRDistribution update.
 
 ]
