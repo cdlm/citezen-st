@@ -26,6 +26,22 @@ CPBibList >> entries [
 	^ entries
 ]
 
+{ #category : #sorting }
+CPBibList >> extractSatisfying: aBlock from: entriesToRender [ 
+	| result |
+	result := entriesToRender select: [ :each | aBlock value: each ].
+	entriesToRender removeAllFoundIn: result.
+	^ result
+]
+
+{ #category : #sorting }
+CPBibList >> extractType: selector from: entriesToRender [ 
+	| result |
+	result := entriesToRender select: [ :each | each type = selector ].
+	entriesToRender removeAllFoundIn: result.
+	^ result
+]
+
 { #category : #initialization }
 CPBibList >> initializeEntries: someEntries [
 	entries := someEntries
@@ -35,7 +51,9 @@ CPBibList >> initializeEntries: someEntries [
 CPBibList >> initializeFrom: aString [ 
 	| separator |
 	separator := String lf , String lf.
-	entries := (separator split: aString) collect: [ :each | CPBibEntry from: each ]
+	entries := (separator split: aString)
+				select: [:each | each notEmpty] "extra blank lines in the bibtex file may produce empty entries"
+				thenCollect: [:each | CPBibEntry from: each]
 ]
 
 { #category : #rendering }
@@ -68,4 +86,25 @@ CPBibList >> selectEntriesByRegex: aRegex [
 { #category : #querying }
 CPBibList >> size [
 	^ self entries size
+]
+
+{ #category : #sorting }
+CPBibList >> sortEntriesByAuthor [
+	"Actually by key"
+	^ entries asSortedCollection: [:a :b | a key < b key]
+]
+
+{ #category : #sorting }
+CPBibList >> sortEntriesByYear [
+	^ entries asSortedCollection: [:a :b | a year < b year]
+]
+
+{ #category : #querying }
+CPBibList >> types [
+	<ignoreForCoverage>
+	"utility method for development"
+	^ (entries collect: [:each | each type]) asSet
+	
+	"scgbib returns:
+	a Set(#misc #mastersthesis #booklet #article #proceedings #manual #techreport #inbook #book #phdthesis #unpublished #inproceedings #incollection)"
 ]

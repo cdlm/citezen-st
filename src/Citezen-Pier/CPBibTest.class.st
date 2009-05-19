@@ -47,6 +47,7 @@ CPBibTest >> createBibFilePage [
 
 { #category : #'test data' }
 CPBibTest >> createTestBibFile [
+	"self new createTestBibFile"
 	(FileDirectory default newFileNamed: self bibFileName)
 		nextPutAll: (self scgbibSample copyReplaceAll: String cr with: String lf);
 		close
@@ -54,6 +55,7 @@ CPBibTest >> createTestBibFile [
 
 { #category : #'test data' }
 CPBibTest >> deleteBibFilePage [
+	"self new deleteBibFilePage"
 	| child |
 	child := PRKernel instances anyOne root lookupPath: '/', self bibFilePageName.
 	child remove
@@ -61,65 +63,18 @@ CPBibTest >> deleteBibFilePage [
 
 { #category : #'test data' }
 CPBibTest >> deleteTestBibFile [
+	"self new deleteTestBibFile"
 	FileDirectory default deleteFileNamed: self bibFileName
+]
+
+{ #category : #running }
+CPBibTest >> queryMatchingAll [
+	^ testSpec queryString: '='; processQuery.
 ]
 
 { #category : #'test data' }
 CPBibTest >> scgbibSample [
-	^ '@techreport{Ache98a,
-  Author       = {Franz Achermann},
-  Institution  = {IAM, U. Bern},
-  Keywords     = {olit scg-wp piccola},
-  Month	       = nov,
-  Title	       = {JPict --- a framework for pi Agents},
-  Type	       = {tech. note},
-  Url	       = {http://www.iam.unibe.ch/~scg/Research/Piccola/History/jpict.pdf},
-  Year	       = {1998}
-}
-
-@article{Duca06b,
-  Abstract     = {Inheritance is well-known and accepted as a
-                  mechanism for reuse in ob ject-oriented languages.
-                  Unfortunately, due to the coarse granularity of
-                  inheritance, it may be difficult to decompose an
-                  application into an optimal class hierarchy that
-                  maximizes software reuse. Existing schemes based on
-                  single inheritance, multiple inheritance, or mixins,
-                  all pose numerous problems for reuse. To overcome
-                  these problems we propose traits, pure units of
-                  reuse consisting only of methods. We develop a
-                  formal model of traits that establishes how traits
-                  can be composed, either to form other traits, or to
-                  form classes. We also outline an experimental
-                  validation in which we apply traits to refactor a
-                  non-trivial application into composable units.},
-  Annote       = {internationaljournal},
-  Author       = {St\''ephane Ducasse and Oscar Nierstrasz and
-                  Nathanael Sch{\"a}rli and Roel Wuyts and Andrew
-                  Black},
-  Cvs	       = {TraitsTOPLAS2005},
-  Doi	       = {10.1145/1119479.1119483},
-  Issn	       = {0164-0925},
-  Journal      = {ACM Transactions on Programming Languages and
-                  Systems (TOPLAS)},
-  Keywords     = {scg-pub stefPub snf05 snf06 jb06 toplas traits
-                  schaerli toplastraits},
-  Misc	       = {SCI impact factor 1.404 (2005)},
-  Miscmisc     = {was Duca05z},
-  Month	       = mar,
-  Number       = {2},
-  pages	       = {331--388},
-  aeres	       = {ACL},
-  aeresstatus  = {aeres08},
-  selectif     = {oui},
-  inria	       = {hors},
-  Title	       = {Traits: A Mechanism for fine-grained Reuse},
-  Url	       = {http://scg.unibe.ch/archive/papers/Duca06bTOPLASTraits.pdf},
-  Volume       = {28},
-  Year	       = {2006}
-}
-
-@inproceedings{Lien08b,
+	^ '@inproceedings{Lien08b,
   author       = {Adrian Lienhard and Tudor G\^irba and Oscar
                   Nierstrasz},
   title	       = {Practical Object-Oriented Back-in-Time Debugging},
@@ -204,6 +159,8 @@ CPBibTest >> scgbibSample [
   Year	       = {1997}
 }
 
+
+
 @misc{PetitPetri,
   Abstract     = {Petri nets are a well-known mathematical formalism for
 				modeling and reasoning about concurrency. This web page
@@ -223,6 +180,100 @@ CPBibTest >> scgbibSample [
   Url	       = {http://scg.unibe.ch/download/petitpetri},
   Year	       = {2005}
 }
+
+@mastersthesis{Reng06a,
+  Abstract     = {Developing applications that end users can customize
+                  is a challenge, since end users are domain experts
+                  but still have concrete requirements. In this master
+                  thesis we present how we used a meta-driven approach
+                  to support the end user customization of Web
+                  applications. We present Magritte, a recursive
+                  meta-data meta-model integrated into the Smalltalk
+                  reflective meta-model. The adaptive model of
+                  Magritte enables to not only describe existing
+                  classes but also let end users build their own
+                  meta-models on the fly. Further on we describe how
+                  meta-interpreters automatically build views,
+                  reports, validating editors and persistency
+                  mechanisms.  As a complete example of how we applied
+                  a meta-model to a Web application we present Pier,
+                  the second version of a fully object-oriented
+                  implementation of a content management system and
+                  Wiki engine. Pier is implemented with objects from
+                  the top to the bottom and is designed to be
+                  customizable to accommodate new needs. The
+                  integration of a powerful meta-description layer
+                  makes it a breeze to extend the running system with
+                  new functionality without having to patch the core
+                  engine.  We describe the lessons learned from using
+                  the Magritte meta-model to build applications. Both
+                  projects described in this thesis are open source
+                  and can be downloaded from the Web site of the
+                  author.},
+  Author       = {Lukas Renggli},
+  Keywords     = {scg-msc scg-pub skipdoi magritte pier jb06 fb06
+                  snf06},
+  Month	       = jun,
+  School       = {University of Bern},
+  Title	       = {{Magritte} --- Meta-Described Web Application
+                  Development},
+  Url	       = {http://scg.unibe.ch/archive/masters/Reng06a.pdf},
+  Year	       = {2006}
+}
+
+@techreport{Ache98a,
+  Author       = {Franz Achermann},
+  Institution  = {IAM, U. Bern},
+  Keywords     = {olit scg-wp piccola},
+  Month	       = nov,
+  Title	       = {JPict --- a framework for pi Agents},
+  Type	       = {tech. note},
+  Url	       = {http://www.iam.unibe.ch/~scg/Research/Piccola/History/jpict.pdf},
+  Year	       = {1998}
+}
+
+@article{Duca06b,
+  Abstract     = {Inheritance is well-known and accepted as a
+                  mechanism for reuse in ob ject-oriented languages.
+                  Unfortunately, due to the coarse granularity of
+                  inheritance, it may be difficult to decompose an
+                  application into an optimal class hierarchy that
+                  maximizes software reuse. Existing schemes based on
+                  single inheritance, multiple inheritance, or mixins,
+                  all pose numerous problems for reuse. To overcome
+                  these problems we propose traits, pure units of
+                  reuse consisting only of methods. We develop a
+                  formal model of traits that establishes how traits
+                  can be composed, either to form other traits, or to
+                  form classes. We also outline an experimental
+                  validation in which we apply traits to refactor a
+                  non-trivial application into composable units.},
+  Annote       = {internationaljournal},
+  Author       = {St\phane Ducasse and Oscar Nierstrasz and
+                  Nathanael Sch{\"a}rli and Roel Wuyts and Andrew
+                  Black},
+  Cvs	       = {TraitsTOPLAS2005},
+  Doi	       = {10.1145/1119479.1119483},
+  Issn	       = {0164-0925},
+  Journal      = {ACM Transactions on Programming Languages and
+                  Systems (TOPLAS)},
+  Keywords     = {scg-pub stefPub snf05 snf06 jb06 toplas traits
+                  schaerli toplastraits},
+  Misc	       = {SCI impact factor 1.404 (2005)},
+  Miscmisc     = {was Duca05z},
+  Month	       = mar,
+  Number       = {2},
+  pages	       = {331--388},
+  aeres	       = {ACL},
+  aeresstatus  = {aeres08},
+  selectif     = {oui},
+  inria	       = {hors},
+  Title	       = {Traits: A Mechanism for fine-grained Reuse},
+  Url	       = {http://scg.unibe.ch/archive/papers/Duca06bTOPLASTraits.pdf},
+  Volume       = {28},
+  Year	       = {2006}
+}
+
 '
 ]
 
@@ -257,7 +308,27 @@ CPBibTest >> testBibFileExpiry [
 
 { #category : #running }
 CPBibTest >> testBibListSize [
-	self assert: testPage bibList size = 6.
+	self assert: testPage bibList size = 7
+]
+
+{ #category : #running }
+CPBibTest >> testExtractJournals [
+	| testResult entries extracted |
+	testResult := self queryMatchingAll.
+	entries := testResult entries clone.
+	extracted := testResult extractType: #article from: entries.
+	self assert: extracted size = 1.
+	self assert: extracted first key = 'Duca06b'.
+]
+
+{ #category : #running }
+CPBibTest >> testExtractTheses [
+	| testResult entries  extracted |
+	testResult := self queryMatchingAll.
+	entries := testResult entries clone.
+	extracted := testResult extractSatisfying: [:entry | entry type = #mastersthesis or: [entry type = #phdthesis]] from: entries. 
+	self assert: extracted size = 2.
+	self assert: (extracted collect: [:each | each key]) asSet = #(Deri97a Reng06a) asSet.
 ]
 
 { #category : #running }
@@ -277,7 +348,7 @@ CPBibTest >> testKeywordQueryCaseSenstive [
 { #category : #running }
 CPBibTest >> testQueryResultExpiry [
 	| oldTimestamp queryResult |
-	queryResult := testSpec queryString: '='; processQuery.
+	queryResult := self queryMatchingAll.
 	oldTimestamp := queryResult timestamp.
 	self assert: queryResult isExpired not.
 	
@@ -314,6 +385,24 @@ CPBibTest >> testRegexQueryCaseSensitive [
 	| result |
 	result := testPage queryCaseSensitive: 'ach\w+ann'.
 	self assert: result size = 0
+]
+
+{ #category : #running }
+CPBibTest >> testSortByAuthor [
+	| testResult sorted |
+	testResult := self queryMatchingAll.
+	sorted := testResult sortEntriesByAuthor.
+	self assert: sorted first key = 'Ache98a'.
+	self assert: sorted last key = 'Reng06a'.
+]
+
+{ #category : #running }
+CPBibTest >> testSortByYear [
+	| testResult sorted |
+	testResult := self queryMatchingAll.
+	sorted := testResult sortEntriesByYear.
+	self assert: sorted first key = 'Deri97a'.
+	self assert: sorted last key = 'Bung09a'.
 ]
 
 { #category : #running }

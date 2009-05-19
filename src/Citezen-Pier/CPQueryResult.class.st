@@ -46,27 +46,105 @@ CPQueryResult >> querySpec: aQuerySpec [
 CPQueryResult >> renderByAuthorOn: html [ 
 	<ignoreForCoverage>
 	html
-		unorderedList: [self entries
+		unorderedList: [self sortEntriesByAuthor
 				do: [:each | html
 						listItem: [self renderEntry: each on: html]]]
 ]
 
 { #category : #rendering }
 CPQueryResult >> renderByCategoryOn: html [ 
+	| entriesToRender extracted |
 	<ignoreForCoverage>
-	html
-		unorderedList: [self entries
-				do: [:each | html
-						listItem: [self renderEntry: each on: html]]]
+	entriesToRender := self sortEntriesByAuthor.
+	extracted := self 
+		extractType: #article
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'Journal papers'
+		on: html.
+	extracted := self 
+		extractType: #book
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'Books'
+		on: html.
+	extracted := self 
+		extractType: #inproceedings
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'Conference / workshop papers'
+		on: html.
+	extracted := self 
+		extractType: #proceedings
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'Proceedings'
+		on: html.
+	extracted := self 
+		extractType: #incollection
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'Book chapters'
+		on: html.
+	extracted := self 
+		extractType: #inbook
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'Book chapters'
+		on: html.
+	extracted := self 
+		extractType: #phdthesis
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'PhD thesis'
+		on: html.
+	extracted := self 
+		extractType: #mastersthesis
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'Masters thesis'
+		on: html.
+	extracted := self 
+		extractType: #techreport
+		from: entriesToRender.
+	self 
+		renderSubList: extracted
+		named: 'Technical reports'
+		on: html.
+	self 
+		renderSubList: entriesToRender
+		named: 'Miscellaneous'
+		on: html
+
+
+	" #misc # #booklet  #manual #unpublished "
 ]
 
 { #category : #rendering }
 CPQueryResult >> renderByYearOn: html [ 
 	<ignoreForCoverage>
-	html
-		unorderedList: [self entries
-				do: [:each | html
-						listItem: [self renderEntry: each on: html]]]
+	| entriesToRender year thisEntry list |
+	entriesToRender := self sortEntriesByYear.
+	year := 0.
+	list := nil.
+	[entriesToRender notEmpty] whileTrue: [
+		thisEntry := entriesToRender removeFirst.
+		thisEntry year ~= year ifTrue: [
+			year := thisEntry year.
+			html heading: year printString
+			].
+		list := html unorderedList.
+		list add: [self renderEntry: thisEntry on: html].
+	]
+
 ]
 
 { #category : #rendering }
@@ -89,7 +167,7 @@ CPQueryResult >> renderControlsOn: html [
 	querySpec hideControls ifFalse: 
 		[ html paragraph: 
 			[ html form: 
-				[ self renderSortBy: html.
+				[ self renderSortedBy: html.
 				self renderDisplayOn: html.
 				self renderHideControlsOn: html ] ] ]
 ]
@@ -127,12 +205,25 @@ CPQueryResult >> renderHideControlsOn: html [
 ]
 
 { #category : #rendering }
-CPQueryResult >> renderSortBy: html [ 
+CPQueryResult >> renderSortedBy: html [ 
 	<ignoreForCoverage>
 	html text: ' Sort by: '.
-	html select list: querySpec sortList;
-		 on: #sortBy of: querySpec;
-		 beSubmitOnChange
+	html select
+		list: querySpec sortList;
+		on: #sortBy
+			of: querySpec;
+		beSubmitOnChange
+]
+
+{ #category : #rendering }
+CPQueryResult >> renderSubList: entryList named: heading on: html [ 
+	<ignoreForCoverage>
+	entryList notEmpty
+		ifTrue: [html heading: heading.
+			html
+				unorderedList: [entryList
+						do: [:each | html
+								listItem: [self renderEntry: each on: html]]]]
 ]
 
 { #category : #accessing }

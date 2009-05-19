@@ -12,7 +12,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'text',
-		'entry'
+		'entry',
+		'error'
 	],
 	#category : #'Citezen-Pier'
 }
@@ -30,20 +31,30 @@ CPBibEntry >> containsKeywords: keywordList caseSensitive: caseSensitive [
 
 { #category : #accessing }
 CPBibEntry >> entry [
-	"Needs some error checking.
-	What if:
-	- Parsing fails
-	- CZSet does not contain exactly 1 entry"
+	"If the entry is defective, then error will be set to a String description."
 	| czset |
-	^ entry ifNil: [
-		czset := CZBibParser parse: text.
-		entry := czset entries first.
-		]
+	entry
+		ifNil: [error ifNotNil: [^ nil].
+			[czset := CZBibParser parse: text.
+			czset entries isEmpty
+				ifTrue: [error := 'No bib entries found']
+				ifFalse: [czset entries size > 1
+						ifTrue: [error := 'Multiple bib entries found'].
+					"Only in this case we have a valid entry with an error"
+					entry := czset entries first]]
+				on: Error
+				do: [:ex | error := ex description]].
+	^ entry
 ]
 
 { #category : #initialization }
 CPBibEntry >> initializeText: aString [
 	text := aString
+]
+
+{ #category : #accessing }
+CPBibEntry >> key [
+	^ self entry ifNil: [#aaa] ifNotNil: [ self entry key ]
 ]
 
 { #category : #querying }
@@ -87,4 +98,15 @@ CPBibEntry >> renderSummaryOn: html [
 		on: Error
 		do: [html emphasis: Error description.
 			html preformatted: text]
+]
+
+{ #category : #accessing }
+CPBibEntry >> type [
+	^ self entry type
+]
+
+{ #category : #accessing }
+CPBibEntry >> year [
+	"If year is missing, we should try to extract it from the key"
+	^ self entry ifNil: [0] ifNotNil: [ (self entry at: #year) value ]
 ]

@@ -79,7 +79,7 @@ CPBibFile >> isValid [
 
 ]
 
-{ #category : #testing }
+{ #category : #loading }
 CPBibFile >> loadBibList [
 	bibList := nil.
 	error := ''.
