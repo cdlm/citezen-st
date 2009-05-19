@@ -401,8 +401,8 @@ CPBibTest >> testSortByYear [
 	| testResult sorted |
 	testResult := self queryMatchingAll.
 	sorted := testResult sortEntriesByYear.
-	self assert: sorted first key = 'Deri97a'.
-	self assert: sorted last key = 'Bung09a'.
+	self assert: sorted last key = 'Deri97a'.
+	self assert: sorted first key = 'Bung09a'.
 ]
 
 { #category : #running }

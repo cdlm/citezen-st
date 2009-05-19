@@ -43,8 +43,8 @@ CPBibList >> extractType: selector from: entriesToRender [
 ]
 
 { #category : #initialization }
-CPBibList >> initializeEntries: someEntries [
-	entries := someEntries
+CPBibList >> initializeEntries: newEntries [
+	entries := newEntries
 ]
 
 { #category : #initialization }
@@ -86,25 +86,4 @@ CPBibList >> selectEntriesByRegex: aRegex [
 { #category : #querying }
 CPBibList >> size [
 	^ self entries size
-]
-
-{ #category : #sorting }
-CPBibList >> sortEntriesByAuthor [
-	"Actually by key"
-	^ entries asSortedCollection: [:a :b | a key < b key]
-]
-
-{ #category : #sorting }
-CPBibList >> sortEntriesByYear [
-	^ entries asSortedCollection: [:a :b | a year < b year]
-]
-
-{ #category : #querying }
-CPBibList >> types [
-	<ignoreForCoverage>
-	"utility method for development"
-	^ (entries collect: [:each | each type]) asSet
-	
-	"scgbib returns:
-	a Set(#misc #mastersthesis #booklet #article #proceedings #manual #techreport #inbook #book #phdthesis #unpublished #inproceedings #incollection)"
 ]

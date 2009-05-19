@@ -23,7 +23,8 @@ Class {
 		'display',
 		'queryString',
 		'caseSensitive',
-		'hideControls'
+		'hideControls',
+		'maxResults'
 	],
 	#category : #'Citezen-Pier'
 }
@@ -33,22 +34,27 @@ CPQuerySpec class >> default [
 	^ self new setDefaults
 ]
 
-{ #category : #accessors }
+{ #category : #'instance creation' }
+CPQuerySpec class >> defaultMaxResults [
+	^ 500
+]
+
+{ #category : #accessing }
 CPQuerySpec >> bibFile [
 	^ bibFile
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> bibFile: aBibFile [
 	bibFile := aBibFile
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> caseSensitive [
 	^ caseSensitive
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> caseSensitive: aBoolean [
 	caseSensitive := aBoolean
 ]
@@ -58,27 +64,27 @@ CPQuerySpec >> compilesAsARegex [
 	^ [queryString asRegex. true ] on: RegexSyntaxError do: [ false ]
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> display [
 	^ display 
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> display: displayType [
 	display := displayType
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> displayList [
 	^ #(summary abstract bibtex)
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> hideControls [
 	^ hideControls
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> hideControls: aBoolean [ 
 	hideControls := aBoolean
 ]
@@ -93,6 +99,16 @@ CPQuerySpec >> looksLikeARegex [
 	^ queryString includesAnyOf: self regexChars
 ]
 
+{ #category : #accessing }
+CPQuerySpec >> maxResults [
+	^ maxResults
+]
+
+{ #category : #accessing }
+CPQuerySpec >> maxResults: anObject [
+	maxResults := anObject
+]
+
 { #category : #querying }
 CPQuerySpec >> processQuery [
 	^ CPQueryResult new
@@ -100,19 +116,19 @@ CPQuerySpec >> processQuery [
 		initializeEntries: self queryResultEntries
 ]
 
-{ #category : #querying }
+{ #category : #nil }
 CPQuerySpec >> queryResultEntries [
 	^ self useRegex
 		ifTrue: [self bibFile bibList selectEntriesByRegex: self regex]
 		ifFalse: [self bibFile bibList selectEntriesByKeywords: self keywords caseSensitive: self caseSensitive]
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> queryString [
 	^ queryString
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> queryString: aString [
 	queryString := aString
 ]
@@ -135,20 +151,21 @@ CPQuerySpec >> setDefaults [
 	self caseSensitive: false.
 	self sortBy: #author.
 	self display: #summary.
-	self hideControls: false
+	self hideControls: false.
+	self maxResults: self class defaultMaxResults. "will be set from bibFile"
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> sortBy [
 	^ sortBy 
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> sortBy: sortType [
 	sortBy := sortType
 ]
 
-{ #category : #accessors }
+{ #category : #accessing }
 CPQuerySpec >> sortList [
 	^ #(author year category)
 ]

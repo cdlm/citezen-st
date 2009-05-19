@@ -9,7 +9,8 @@ Class {
 	#superclass : #CPBibList,
 	#instVars : [
 		'querySpec',
-		'timestamp'
+		'timestamp',
+		'truncated'
 	],
 	#category : #'Citezen-Pier'
 }
@@ -22,8 +23,19 @@ CPQueryResult >> entries [
 ]
 
 { #category : #initialization }
-CPQueryResult >> initializeEntries: someEntries [
-	super initializeEntries: someEntries.
+CPQueryResult >> initialize [
+	super initialize.
+	truncated := false.
+]
+
+{ #category : #initialization }
+CPQueryResult >> initializeEntries: newEntries [
+	super initializeEntries: newEntries.
+	newEntries size > querySpec maxResults 
+		ifTrue: [
+			super initializeEntries: (newEntries copyFrom: 1 to: querySpec maxResults).
+			truncated := true.
+			].
 	timestamp := querySpec bibFile timestamp
 ]
 
@@ -46,9 +58,10 @@ CPQueryResult >> querySpec: aQuerySpec [
 CPQueryResult >> renderByAuthorOn: html [ 
 	<ignoreForCoverage>
 	html
-		unorderedList: [self sortEntriesByAuthor
+		orderedList: [self sortEntriesByAuthor
 				do: [:each | html
-						listItem: [self renderEntry: each on: html]]]
+						listItem: [self renderEntry: each on: html]]].
+	self renderTruncatedOn: html.
 ]
 
 { #category : #rendering }
@@ -77,9 +90,6 @@ CPQueryResult >> renderByCategoryOn: html [
 		renderSubList: extracted
 		named: 'Conference / workshop papers'
 		on: html.
-	extracted := self 
-		extractType: #proceedings
-		from: entriesToRender.
 	self 
 		renderSubList: extracted
 		named: 'Proceedings'
@@ -122,7 +132,9 @@ CPQueryResult >> renderByCategoryOn: html [
 	self 
 		renderSubList: entriesToRender
 		named: 'Miscellaneous'
-		on: html
+		on: html.
+
+	self renderTruncatedOn: html.
 
 
 	" #misc # #booklet  #manual #unpublished "
@@ -143,7 +155,9 @@ CPQueryResult >> renderByYearOn: html [
 			].
 		list := html unorderedList.
 		list add: [self renderEntry: thisEntry on: html].
-	]
+	].
+
+	self renderTruncatedOn: html.
 
 ]
 
@@ -152,7 +166,7 @@ CPQueryResult >> renderContentOn: html [
 	<ignoreForCoverage>
 	self renderControlsOn: html.
 	self entries
-		ifEmpty: [html heading: 'No matching entries found.']
+		ifEmpty: [html paragraph:[ html strong: 'No matching entries found.']]
 		ifNotEmpty: [querySpec sortBy = #author
 				ifTrue: [^ self renderByAuthorOn: html].
 			querySpec sortBy = #year
@@ -226,7 +240,36 @@ CPQueryResult >> renderSubList: entryList named: heading on: html [
 								listItem: [self renderEntry: each on: html]]]]
 ]
 
+{ #category : #rendering }
+CPQueryResult >> renderTruncatedOn: html [ 
+	<ignoreForCoverage>
+	truncated ifTrue: [
+		html paragraph: [html strong: 'Maximum results (', querySpec maxResults printString ,') exceeded']
+		]
+]
+
+{ #category : #sorting }
+CPQueryResult >> sortEntriesByAuthor [
+	"Actually by key"
+	^ entries asSortedCollection: [:a :b | a key < b key]
+]
+
+{ #category : #sorting }
+CPQueryResult >> sortEntriesByYear [
+	^ entries asSortedCollection: [:a :b | a year > b year]
+]
+
 { #category : #accessing }
 CPQueryResult >> timestamp [
 	^ timestamp
+]
+
+{ #category : #querying }
+CPQueryResult >> types [
+	<ignoreForCoverage>
+	"utility method for development"
+	^ (entries collect: [:each | each type]) asSet
+	
+	"scgbib returns:
+	a Set(#misc #mastersthesis #booklet #article #proceedings #manual #techreport #inbook #book #phdthesis #unpublished #inproceedings #incollection)"
 ]

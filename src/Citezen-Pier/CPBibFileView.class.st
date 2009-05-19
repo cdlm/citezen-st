@@ -66,9 +66,11 @@ CPBibFileView >> renderQueryResultOn: html [
 ]
 
 { #category : #seaside }
-CPBibFileView >> setContext: aContext [
+CPBibFileView >> setContext: aContext [ 
 	super setContext: aContext.
-	bibFile := aContext structure
+	(aContext structure isKindOf: CPBibFile)
+		ifTrue: [bibFile := aContext structure.
+			querySpec maxResults: bibFile maxResults]
 ]
 
 { #category : #seaside }

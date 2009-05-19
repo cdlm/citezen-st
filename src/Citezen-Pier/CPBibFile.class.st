@@ -14,7 +14,8 @@ Class {
 		'file',
 		'timestamp',
 		'bibList',
-		'error'
+		'error',
+		'maxResults'
 	],
 	#category : #'Citezen-Pier'
 }
@@ -23,11 +24,26 @@ Class {
 CPBibFile class >> descriptionFile [
 	<ignoreForCoverage>
 	^ MAFileDescription new
-		comment: 'Local path to .bib file to render.';
 		componentClass: MAServerFileChooserComponent;
+		priority: 10;
 		kind: MAReferenceFileModel;
 		selectorAccessor: #file;
 		label: 'BibTeX File';
+		beEditable;
+		yourself
+]
+
+{ #category : #'accessing-description' }
+CPBibFile class >> descriptionMaxResults [
+	<ignoreForCoverage>
+	^ MANumberDescription new
+		comment: 'The maximum number of results to return from a query';
+		accessor: #maxResults;
+		label: 'Max # results';
+		priority: 100;
+		default: CPQuerySpec defaultMaxResults;
+		beInteger;
+		bePositive;
 		beEditable;
 		yourself
 ]
@@ -91,6 +107,16 @@ CPBibFile >> loadBibList [
 					bibList := CPBibList from: file contents ]
 				ifFalse: [ error := file filePath , ' does not exist. ' ] ]
 		ifFalse: [ error := file filePath , ' does not appear to be a bibtex file. ' ]
+]
+
+{ #category : #accessing }
+CPBibFile >> maxResults [
+	^ maxResults
+]
+
+{ #category : #accessing }
+CPBibFile >> maxResults: anObject [
+	maxResults := anObject
 ]
 
 { #category : #querying }
