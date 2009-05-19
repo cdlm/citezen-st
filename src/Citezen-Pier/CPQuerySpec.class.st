@@ -97,12 +97,14 @@ CPQuerySpec >> looksLikeARegex [
 CPQuerySpec >> processQuery [
 	^ CPQueryResult new
 		querySpec: self;
-		initializeEntries: (self useRegex 
-			ifTrue: [ self bibFile bibList selectEntriesByRegex: self regex ]
-			ifFalse: 
-				[ self bibFile bibList 
-					selectEntriesByKeywords: self keywords
-					caseSensitive: self caseSensitive ])
+		initializeEntries: self queryResultEntries
+]
+
+{ #category : #querying }
+CPQuerySpec >> queryResultEntries [
+	^ self useRegex
+		ifTrue: [self bibFile bibList selectEntriesByRegex: self regex]
+		ifFalse: [self bibFile bibList selectEntriesByKeywords: self keywords caseSensitive: self caseSensitive]
 ]
 
 { #category : #accessors }
@@ -131,7 +133,7 @@ CPQuerySpec >> regexChars [
 CPQuerySpec >> setDefaults [
 	self queryString: ''.
 	self caseSensitive: false.
-	self sortBy: #category.
+	self sortBy: #author.
 	self display: #summary.
 	self hideControls: false
 ]

@@ -48,7 +48,7 @@ CPBibList >> printOn: aStream [
 CPBibList >> renderContentOn: html [
 	<ignoreForCoverage>
 	"Simple version -- QueryResult has the richer interface"
-	html unorderedList: [entries do: [:each | html listItem: [each renderContentOn: html]]]
+	html unorderedList: [entries do: [:each | html listItem: [html render: each]]]
 ]
 
 { #category : #querying }
@@ -67,5 +67,5 @@ CPBibList >> selectEntriesByRegex: aRegex [
 
 { #category : #querying }
 CPBibList >> size [
-	^ entries size
+	^ self entries size
 ]

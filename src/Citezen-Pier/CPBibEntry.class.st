@@ -9,7 +9,7 @@ I do not have a url of my own, so I am not a PRStructure. I can render myself, s
 "
 Class {
 	#name : #CPBibEntry,
-	#superclass : #WAComponent,
+	#superclass : #Object,
 	#instVars : [
 		'text',
 		'entry'
@@ -58,13 +58,33 @@ CPBibEntry >> printOn: aStream [
 ]
 
 { #category : #rendering }
-CPBibEntry >> renderContentOn: html [ 
+CPBibEntry >> renderAbstractOn: html [ 
+	<ignoreForCoverage>
+	self renderSummaryOn: html.
+	(self entry hasField: 'abstract')
+		ifTrue: [html break.
+			html strong: 'Abstract'.
+			html paragraph: [html emphasis: (self entry at: 'abstract') value]]
+]
+
+{ #category : #rendering }
+CPBibEntry >> renderBibtexOn: html [ 
+	<ignoreForCoverage>
+	html preformatted: text
+]
+
+{ #category : #rendering }
+CPBibEntry >> renderOn: html [ 
+	<ignoreForCoverage>
+	self renderSummaryOn: html
+]
+
+{ #category : #rendering }
+CPBibEntry >> renderSummaryOn: html [ 
 	<ignoreForCoverage>
 	[(CPHtmlRenderer html: html) library: BibPhraseLibrary default;
 		 render: self entry]
 		on: Error
-		do: [
-			html text: Error description.
-			html text: text.
-			]
+		do: [html emphasis: Error description.
+			html preformatted: text]
 ]

@@ -5,24 +5,23 @@ Class {
 	#name : #CPBibTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'testPage'
+		'testPage',
+		'testSpec'
 	],
 	#category : #'Citezen-Pier'
 }
 
 { #category : #'as yet unclassified' }
 CPBibTest class >> classNamesNotUnderTest [
-	^ #( "Not part of PierBib:"
-	'CZBibEntry' 'CZBibEntryHtmlView' 'CZBibList' 'CZBibListHtmlView' 'CZBibliographyComponent' 'CZBibWidget'
-	'CZFileLibrary' 'CZHtmlRenderer' 'MAServerFileChooserComponent' 'PRVisitor' 'PRViewRenderer'
+	^ #(
 	"Don't test rendering classes"
-	'CZPierBibFileView'
+	'CPBibFileView' 'CPHtmlRenderer' 
 	)
 ]
 
 { #category : #'as yet unclassified' }
 CPBibTest class >> packageNamesUnderTest [
-	^ #('Citezen-Seaside')
+	^ #('Citezen-Pier')
 ]
 
 { #category : #'test data' }
@@ -231,7 +230,8 @@ CPBibTest >> scgbibSample [
 CPBibTest >> setUp [
 	"self new setUp"
 	self createTestBibFile.
-	testPage := self createBibFilePage
+	testPage := self createBibFilePage.
+	testSpec := CPQuerySpec default bibFile: testPage.
 ]
 
 { #category : #'test data' }
@@ -242,54 +242,89 @@ CPBibTest >> tearDown [
 ]
 
 { #category : #running }
-CPBibTest >> testBibFileKeywordQuery [
-	| result |
-	result := testPage query: 'scg-pub oscar'.
-	self assert: result size = 2.
-]
+CPBibTest >> testBibFileExpiry [
+	| oldTimestamp |
+	self assert: testPage isExpired not.
+	oldTimestamp := testPage timestamp.
 
-{ #category : #running }
-CPBibTest >> testBibFileKeywordQueryCaseSenstive [
-	| result |
-	result := testPage queryCaseSensitive: 'scg-pub oscar'.
-	self assert: result size = 0.
-]
+	self touchTestBibFile.
 
-{ #category : #running }
-CPBibTest >> testBibFileRegexQuery [
-	| result |
-	result := testPage query: 'ach\w+ann'.
-	self assert: result size = 1.
-]
-
-{ #category : #running }
-CPBibTest >> testBibFileRegexQueryCaseSensitive [
-	| result |
-	result := testPage queryCaseSensitive: 'ach\w+ann'.
-	self assert: result size = 0.
+	self assert: testPage isExpired.
+	self assert: testPage bibList notNil.	"triggers reload"
+	self assert: testPage isExpired not.
+	self assert: oldTimestamp < testPage timestamp
 ]
 
 { #category : #running }
 CPBibTest >> testBibListSize [
-	self assert: testPage bibList size = 6
+	self assert: testPage bibList size = 6.
 ]
 
 { #category : #running }
-CPBibTest >> testExpiry [
-	| oldTimestamp |
-	self assert: testPage isExpired not.
-	oldTimestamp := testPage timestamp.
-	self deleteTestBibFile.
-	(Delay forSeconds: 1) wait.
-	self createTestBibFile.
-	self assert: testPage isExpired.
-	self assert: testPage bibList notNil. "triggers reload"
-	self assert: testPage isExpired not.
-	self assert: oldTimestamp < testPage timestamp.
+CPBibTest >> testKeywordQuery [
+	| result |
+	result := testPage query: 'scg-pub oscar'.
+	self assert: result size = 2
+]
+
+{ #category : #running }
+CPBibTest >> testKeywordQueryCaseSenstive [
+	| result |
+	result := testPage queryCaseSensitive: 'scg-pub oscar'.
+	self assert: result size = 0
+]
+
+{ #category : #running }
+CPBibTest >> testQueryResultExpiry [
+	| oldTimestamp queryResult |
+	queryResult := testSpec queryString: '='; processQuery.
+	oldTimestamp := queryResult timestamp.
+	self assert: queryResult isExpired not.
+	
+	self touchTestBibFile.
+	
+	self assert: queryResult isExpired.
+	self assert: queryResult entries notEmpty.	"triggers reload"
+	self assert: queryResult isExpired not.
+	self assert: oldTimestamp < queryResult timestamp
+]
+
+{ #category : #running }
+CPBibTest >> testQuerySpecDefaults [
+	self assert: testSpec sortBy = #author.
+	self assert: (testSpec sortList includes: testSpec sortBy).
+	self assert: testSpec display = #summary.
+	self assert: (testSpec displayList includes: testSpec display).
+	self assert: testSpec caseSensitive not.
+	self assert: testSpec hideControls not.
+	self assert: testSpec queryString isEmpty.
+	self assert: testSpec bibFile = testPage.
+	
+]
+
+{ #category : #running }
+CPBibTest >> testRegexQuery [
+	| result |
+	result := testPage query: 'ach\w+ann'.
+	self assert: result size = 1
+]
+
+{ #category : #running }
+CPBibTest >> testRegexQueryCaseSensitive [
+	| result |
+	result := testPage queryCaseSensitive: 'ach\w+ann'.
+	self assert: result size = 0
 ]
 
 { #category : #running }
 CPBibTest >> testValidity [
 	self assert: testPage isValid.
 	self assert: testPage error isEmpty.
+]
+
+{ #category : #private }
+CPBibTest >> touchTestBibFile [
+	self deleteTestBibFile.
+	(Delay forSeconds: 1) wait.
+	self createTestBibFile.
 ]
