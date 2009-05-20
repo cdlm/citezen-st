@@ -26,6 +26,16 @@ CPBibList class >> from: aString [
 	^ self new initializeFrom: aString
 ]
 
+{ #category : #composing }
+CPBibList >> + aBibList [
+	^ self class entries: (entries clone addAll: aBibList entries; yourself)
+]
+
+{ #category : #composing }
+CPBibList >> - aBibList [
+	^ self class entries: (entries clone removeAll: aBibList entries; yourself)
+]
+
 { #category : #accessing }
 CPBibList >> entries [
 	^ entries
@@ -45,6 +55,11 @@ CPBibList >> extractType: selector [
 	result := entries select: [ :each | each type = selector ].
 	entries removeAllFoundIn: result.
 	^ self class entries: result
+]
+
+{ #category : #initialization }
+CPBibList >> initialize [
+	self initializeEntries: OrderedCollection new
 ]
 
 { #category : #initialization }

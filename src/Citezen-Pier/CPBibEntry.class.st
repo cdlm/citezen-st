@@ -25,6 +25,11 @@ CPBibEntry class >> from: aString [
 ]
 
 { #category : #querying }
+CPBibEntry >> containsKeyword: aString [
+	^ self containsKeywords: (Array with: aString) caseSensitive: false
+]
+
+{ #category : #querying }
 CPBibEntry >> containsKeywords: keywordList caseSensitive: caseSensitive [
 	^ keywordList allSatisfy: [:kwd | text includesSubstring: kwd caseSensitive: caseSensitive ]
 ]

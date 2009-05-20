@@ -68,58 +68,65 @@ CPQueryResult >> renderByAuthorOn: html [
 ]
 
 { #category : #rendering }
-CPQueryResult >> renderByCategoryOn: html [
-	"Needs to be refined -- should separate conference and workshop papers; peer-reviewed etc"
-	| bibListToRender extracted |
+CPQueryResult >> renderByCategoryOn: html [ 
+	| papers extracted drafts articles journalpapers inproceedings conferencepapers tooldemos |
 	<ignoreForCoverage>
-	bibListToRender := bibList sortByAuthor.
-	extracted := bibListToRender extractType: #article.
-	self 
-		renderSubList: extracted
-		named: 'Journal papers'
-		on: html.
-	extracted := bibListToRender extractType: #book.
-	self 
-		renderSubList: extracted
-		named: 'Books'
-		on: html.
-	extracted := bibListToRender extractType: #inproceedings.
-	self 
-		renderSubList: extracted
-		named: 'Conference / workshop papers'
-		on: html.
-	self 
-		renderSubList: extracted
-		named: 'Proceedings'
-		on: html.
-	extracted := bibListToRender extractType: #incollection.
-	self 
-		renderSubList: extracted
-		named: 'Book chapters'
-		on: html.
-	extracted := bibListToRender extractType: #inbook.
-	self 
-		renderSubList: extracted
-		named: 'Book chapters'
-		on: html.
-	extracted := bibListToRender extractSatisfying: [:entry | entry type = #mastersthesis or: [entry type = #phdthesis]].
-	self 
-		renderSubList: extracted
-		named: 'Theses'
-		on: html.
-	extracted := bibListToRender extractType: #techreport.
-	self 
-		renderSubList: extracted
-		named: 'Technical reports'
-		on: html.
-	self 
-		renderSubList: bibListToRender
-		named: 'Miscellaneous'
-		on: html.
+
+	papers := bibList sortByAuthor.
+	
+	"Attempt to extract edited volumes using the queryString"
+	"This cannot work as the other views do not make use of the same magic"
+"	[ edited := papers extractSatisfying: [ :entry |
+		(entry matchesRegex: ('author\s*=') asRegexIgnoringCase) not and:
+			[entry matchesRegex: ('editor\s*=[^=]*', querySpec queryString) asRegexIgnoringCase] ]]
+		on: Error
+		do: [].
+
+	[ others := papers extractSatisfying: [ :entry |
+		(entry matchesRegex: ('author\s*=[^=]*', querySpec queryString) asRegexIgnoringCase) not ] ]
+		on: Error
+		do: []."
+
+	drafts := CPBibList new.
+	drafts := drafts + (papers extractSatisfying: [ :entry | entry containsKeyword: 'scg-wp' ]).
+	drafts := drafts + (papers extractSatisfying: [ :entry | entry containsKeyword: 'scg-sub' ]).
+
+	extracted := papers extractSatisfying: [ :entry | entry containsKeyword: 'invited' ].
+	self renderSubList: extracted named: 'Invited Papers' on: html.
+
+	articles := papers extractType: #article.
+	journalpapers := articles extractSatisfying: [ :entry | entry containsKeyword: 'internationaljournal' ].
+	self renderSubList: journalpapers named: 'Refereed Papers in International Journals' on: html.
+	self renderSubList: articles named: 'Other Articles' on: html.
+
+	inproceedings := papers extractType: #inproceedings.
+	conferencepapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalconference' ].
+	tooldemos := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'tooldemo' ].
+	self renderSubList: conferencepapers named: 'Refereed Papers in International Conferences' on: html.
+	self renderSubList: tooldemos named: 'Tool demos' on: html.
+	self renderSubList: inproceedings named: 'Refereed Papers in International Workshops' on: html.
+
+	extracted := papers extractType: #book.
+	self renderSubList: extracted named: 'Books' on: html.
+
+	extracted := papers extractType: #incollection.
+	self renderSubList: extracted named: 'Book Chapters' on: html.
+
+	extracted := papers extractType: #techreport.
+	self renderSubList: extracted named: 'Technical Reports' on: html.
+
+	extracted := papers extractSatisfying:  [ :entry |  entry type = #mastersthesis or: [ entry type = #phdthesis ] ].
+	self renderSubList: extracted named: 'Theses' on: html.
+
+	"edited ifNotNil: [self renderSubList: edited named: 'Edited Volumes' on: html]."
+
+	self renderSubList: papers named: 'Other publications' on: html.
+	
+	self renderSubList: drafts named: 'Drafts' on: html.
+
 	self renderTruncatedOn: html
 
-
-	" #misc # #booklet  #manual #unpublished "
+	" #misc # #booklet  #inbook #manual #unpublished "
 ]
 
 { #category : #rendering }
@@ -223,7 +230,7 @@ CPQueryResult >> renderSubList: aBibList named: heading on: html [
 	<ignoreForCoverage>
 	aBibList entries notEmpty
 		ifTrue: [html heading: heading.
-			html orderedList: [aBibList entries
+			html orderedList: [aBibList sortByYear entries
 						do: [:each | html listItem: [self renderEntry: each on: html]]]]
 ]
 

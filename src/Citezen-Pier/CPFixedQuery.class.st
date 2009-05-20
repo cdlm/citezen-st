@@ -147,7 +147,7 @@ CPFixedQuery >> renderContentOn: html [
 
 { #category : #rendering }
 CPFixedQuery >> renderErrorOn: html [
-	html heading: 'Invalid query'.
+	html heading: 'Incomplete Specification. Please edit.'.
 	html paragraph: 'Error: "', self errorString, '"'
 ]
 
