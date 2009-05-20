@@ -39,6 +39,11 @@ CPBibFileView >> processQuery [
 
 ]
 
+{ #category : #'as yet unclassified' }
+CPBibFileView >> queryString: aString [
+	querySpec queryString: aString
+]
+
 { #category : #rendering }
 CPBibFileView >> renderContentOn: html [ 
 	bibFile isValid

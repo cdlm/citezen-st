@@ -139,7 +139,7 @@ CPFixedQuery >> queryResult [
 
 { #category : #rendering }
 CPFixedQuery >> renderContentOn: html [ 
-	self updateQuerySpec.
+
 	self queryResult
 		ifNil: [self renderErrorOn: html]
 		ifNotNil: [self renderQueryOn: html]
@@ -154,6 +154,13 @@ CPFixedQuery >> renderErrorOn: html [
 { #category : #rendering }
 CPFixedQuery >> renderQueryOn: html [
 	html render: self queryResult
+]
+
+{ #category : #initialization }
+CPFixedQuery >> setOwner: aStructure [
+	"Called whenever the setting are changed"
+	super setOwner: aStructure.
+	self updateQuerySpec
 ]
 
 { #category : #initialization }
