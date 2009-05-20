@@ -68,7 +68,8 @@ CPQueryResult >> renderByAuthorOn: html [
 ]
 
 { #category : #rendering }
-CPQueryResult >> renderByCategoryOn: html [ 
+CPQueryResult >> renderByCategoryOn: html [
+	"Needs to be refined -- should separate conference and workshop papers; peer-reviewed etc"
 	| bibListToRender extracted |
 	<ignoreForCoverage>
 	bibListToRender := bibList sortByAuthor.
@@ -101,15 +102,10 @@ CPQueryResult >> renderByCategoryOn: html [
 		renderSubList: extracted
 		named: 'Book chapters'
 		on: html.
-	extracted := bibListToRender extractType: #phdthesis.
+	extracted := bibListToRender extractSatisfying: [:entry | entry type = #mastersthesis or: [entry type = #phdthesis]].
 	self 
 		renderSubList: extracted
-		named: 'PhD thesis'
-		on: html.
-	extracted := bibListToRender extractType: #mastersthesis.
-	self 
-		renderSubList: extracted
-		named: 'Masters thesis'
+		named: 'Theses'
 		on: html.
 	extracted := bibListToRender extractType: #techreport.
 	self 
@@ -128,21 +124,21 @@ CPQueryResult >> renderByCategoryOn: html [
 
 { #category : #rendering }
 CPQueryResult >> renderByYearOn: html [ 
-	| entriesToRender year thisEntry list |
+	| entriesToRender thisYearsEntries year thisEntry list |
 	<ignoreForCoverage>
 	entriesToRender := bibList sortByYear entries.
+	thisYearsEntries := OrderedCollection new.
 	year := 0.
 	list := nil.
-	[ entriesToRender notEmpty ] whileTrue: 
-		[ thisEntry := entriesToRender removeFirst.
-		thisEntry year ~= year ifTrue: 
-			[ year := thisEntry year.
-			html heading: year printString ].
-		list := html unorderedList.
-		list add: 
-			[ self 
-				renderEntry: thisEntry
-				on: html ] ].
+	[entriesToRender notEmpty]
+		whileTrue: [thisEntry := entriesToRender removeFirst.
+			thisEntry year ~= year
+				ifTrue: [
+					self renderEntries: thisYearsEntries forYear: year on: html.
+					thisYearsEntries := OrderedCollection new.
+					year := thisEntry year].
+			thisYearsEntries addLast: thisEntry].
+	self renderEntries: thisYearsEntries forYear: year on: html.
 	self renderTruncatedOn: html
 ]
 
@@ -179,6 +175,14 @@ CPQueryResult >> renderDisplayOn: html [
 		on: #display
 			of: querySpec;
 		beSubmitOnChange
+]
+
+{ #category : #'as yet unclassified' }
+CPQueryResult >> renderEntries: entries forYear: year on: html [ 
+	<ignoreForCoverage>
+	entries ifNotEmpty: 
+		[ html heading: year printString.
+		html orderedList: [ entries do: [ :each | html listItem: [self renderEntry: each on: html] ] ] ]
 ]
 
 { #category : #rendering }
@@ -218,10 +222,8 @@ CPQueryResult >> renderSubList: aBibList named: heading on: html [
 	<ignoreForCoverage>
 	aBibList entries notEmpty
 		ifTrue: [html heading: heading.
-			html
-				unorderedList: [aBibList entries
-						do: [:each | html
-								listItem: [self renderEntry: each on: html]]]]
+			html orderedList: [aBibList entries
+						do: [:each | html listItem: [self renderEntry: each on: html]]]]
 ]
 
 { #category : #rendering }

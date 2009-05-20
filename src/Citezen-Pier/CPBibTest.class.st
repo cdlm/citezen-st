@@ -15,7 +15,7 @@ Class {
 CPBibTest class >> classNamesNotUnderTest [
 	^ #(
 	"Don't test rendering classes"
-	'CPBibFileView' 'CPHtmlRenderer' 'CPFixedQuery'
+	'CPBibFileView' 'CPHtmlRenderer' 'CPFixedQuery' 'CPQueryBox'
 	)
 ]
 

@@ -44,7 +44,6 @@ CPQueryBox >> query: queryString [
 
 { #category : #rendering }
 CPQueryBox >> renderContentOn: html [ 
-
 	html form: [
 		html textInput
 			callback: [: queryString |

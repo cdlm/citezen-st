@@ -108,5 +108,5 @@ CPBibFileView >> states [
 CPBibFileView >> updateUrl: anUrl [
 	"Override to customize the URL used to display this command."
 
-	anUrl addParameter: 'query' value: querySpec queryString
+	anUrl addParameter: 'query' value: querySpec queryString.
 ]
