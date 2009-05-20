@@ -17,14 +17,24 @@ CPBibFileView >> children [
 	^ Array with: queryResult
 ]
 
+{ #category : #private }
+CPBibFileView >> defaultSymbolFor: aSelector [
+	"self new defaultSymbolFor: #hello"
+	^ ('default' , aSelector asString first asUppercase asString , aSelector asString allButFirst) asSymbol
+]
+
 { #category : #seaside }
 CPBibFileView >> initialRequest: aRequest [ 
 	"Override this to extract additional data from the request. This is only
 	called for requests that don't have a valid session yet.'"
-	aRequest fields
-		at: 'query'
-		ifPresent: [:qs | querySpec queryString: qs.
-			self processQuery ]
+
+	aRequest fields at: 'caseSensitive' ifPresent: [:val | querySpec caseSensitive: val = 'true' ].
+	aRequest fields at: 'sortBy' ifPresent: [:val | querySpec sortBy: val asSymbol ].
+	aRequest fields at: 'display' ifPresent: [:val | querySpec display: val asSymbol ].
+	aRequest fields at: 'hideControls' ifPresent: [:val | querySpec hideControls: val = 'true' ].
+	aRequest fields at: 'maxResults' ifPresent: [:val | querySpec maxResults: val asNumber ].
+
+	aRequest fields at: 'query' ifPresent: [:val | querySpec queryString: val. self processQuery ]
 ]
 
 { #category : #'initialize-release' }
@@ -105,8 +115,33 @@ CPBibFileView >> states [
 ]
 
 { #category : #seaside }
-CPBibFileView >> updateUrl: anUrl [
-	"Override to customize the URL used to display this command."
+CPBibFileView >> updateIfNotDefault: paramSelector url: anUrl [ 
+	| paramValue |
+	paramValue := querySpec perform: paramSelector.
+	paramValue ~= (CPQuerySpec perform: (self defaultSymbolFor: paramSelector)) ifTrue: 
+		[ anUrl 
+			addParameter: paramSelector asString
+			value: paramValue ]
+]
 
-	anUrl addParameter: 'query' value: querySpec queryString.
+{ #category : #seaside }
+CPBibFileView >> updateUrl: anUrl [ 
+	anUrl 
+		addParameter: 'query'
+		value: querySpec queryString.
+	self 
+		updateIfNotDefault: #caseSensitive
+		url: anUrl.
+	self 
+		updateIfNotDefault: #sortBy
+		url: anUrl.
+	self 
+		updateIfNotDefault: #display
+		url: anUrl.
+	self 
+		updateIfNotDefault: #hideControls
+		url: anUrl.
+	self 
+		updateIfNotDefault: #maxResults
+		url: anUrl
 ]

@@ -185,7 +185,7 @@ CPQuerySpec >> setDefaults [
 	self sortBy: self class defaultSortBy.
 	self display: self class defaultDisplay.
 	self hideControls: self class defaultHideControls .
-	self maxResults: self class defaultMaxResults. "will be set from bibFile"
+	self maxResults: self class defaultMaxResults.
 ]
 
 { #category : #accessing }
