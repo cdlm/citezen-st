@@ -19,12 +19,12 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'bibFile',
-		'sortBy',
-		'display',
 		'queryString',
 		'caseSensitive',
-		'hideControls',
-		'maxResults'
+		'maxResults',
+		'sortBy',
+		'display',
+		'hideControls'
 	],
 	#category : #'Citezen-Pier'
 }
@@ -35,8 +35,43 @@ CPQuerySpec class >> default [
 ]
 
 { #category : #'instance creation' }
+CPQuerySpec class >> defaultCaseSensitive [
+	^ false
+]
+
+{ #category : #'instance creation' }
+CPQuerySpec class >> defaultDisplay [
+	^ #summary
+]
+
+{ #category : #'instance creation' }
+CPQuerySpec class >> defaultHideControls [
+	^ false
+]
+
+{ #category : #'instance creation' }
 CPQuerySpec class >> defaultMaxResults [
 	^ 500
+]
+
+{ #category : #'instance creation' }
+CPQuerySpec class >> defaultQueryString [
+	^ ''
+]
+
+{ #category : #'instance creation' }
+CPQuerySpec class >> defaultSortBy [
+	^ #author
+]
+
+{ #category : #'instance creation' }
+CPQuerySpec class >> displayList [
+	^ #(summary abstract bibtex)
+]
+
+{ #category : #'instance creation' }
+CPQuerySpec class >> sortList [
+	^ #(author year category)
 ]
 
 { #category : #accessing }
@@ -75,11 +110,6 @@ CPQuerySpec >> display: displayType [
 ]
 
 { #category : #accessing }
-CPQuerySpec >> displayList [
-	^ #(summary abstract bibtex)
-]
-
-{ #category : #accessing }
 CPQuerySpec >> hideControls [
 	^ hideControls
 ]
@@ -105,22 +135,25 @@ CPQuerySpec >> maxResults [
 ]
 
 { #category : #accessing }
-CPQuerySpec >> maxResults: anObject [
-	maxResults := anObject
+CPQuerySpec >> maxResults: positiveInteger [
+	maxResults := positiveInteger
 ]
 
 { #category : #querying }
-CPQuerySpec >> processQuery [
+CPQuerySpec >> queryResult [
 	^ CPQueryResult new
 		querySpec: self;
-		initializeEntries: self queryResultEntries
+		bibList: self queryResultAsBibList
 ]
 
-{ #category : #nil }
-CPQuerySpec >> queryResultEntries [
-	^ self useRegex
-		ifTrue: [self bibFile bibList selectEntriesByRegex: self regex]
-		ifFalse: [self bibFile bibList selectEntriesByKeywords: self keywords caseSensitive: self caseSensitive]
+{ #category : #querying }
+CPQuerySpec >> queryResultAsBibList [
+	^ self useRegex 
+		ifTrue: [ self bibFile bibList selectByRegex: self regex ]
+		ifFalse: 
+			[ self bibFile bibList 
+				selectByKeywords: self keywords
+				caseSensitive: self caseSensitive ]
 ]
 
 { #category : #accessing }
@@ -147,11 +180,11 @@ CPQuerySpec >> regexChars [
 
 { #category : #'initialize-release' }
 CPQuerySpec >> setDefaults [
-	self queryString: ''.
-	self caseSensitive: false.
-	self sortBy: #author.
-	self display: #summary.
-	self hideControls: false.
+	self queryString: self class defaultQueryString.
+	self caseSensitive: self class defaultCaseSensitive.
+	self sortBy: self class defaultSortBy.
+	self display: self class defaultDisplay.
+	self hideControls: self class defaultHideControls .
 	self maxResults: self class defaultMaxResults. "will be set from bibFile"
 ]
 
@@ -163,11 +196,6 @@ CPQuerySpec >> sortBy [
 { #category : #accessing }
 CPQuerySpec >> sortBy: sortType [
 	sortBy := sortType
-]
-
-{ #category : #accessing }
-CPQuerySpec >> sortList [
-	^ #(author year category)
 ]
 
 { #category : #querying }

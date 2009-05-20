@@ -14,8 +14,8 @@ Class {
 		'file',
 		'timestamp',
 		'bibList',
-		'error',
-		'maxResults'
+		'maxResults',
+		'errorString'
 	],
 	#category : #'Citezen-Pier'
 }
@@ -61,8 +61,8 @@ CPBibFile >> bibList [
 ]
 
 { #category : #accessing }
-CPBibFile >> error [
-	^ error
+CPBibFile >> errorString [
+	^ errorString 
 ]
 
 { #category : #accessing }
@@ -81,10 +81,16 @@ CPBibFile >> file: aFileModel [
 CPBibFile >> initialize [
 	super initialize.
 	timestamp := 0.
-	error := 'The bibtex file has not been defined. Please edit this page and define it. '
+	errorString := 'The bibtex file has not been defined. Please edit this page and define it. '
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
+CPBibFile >> isBibFile [
+	<ignoreForCoverage>
+	^ true
+]
+
+{ #category : #testing }
 CPBibFile >> isExpired [
 	^ self isValid and: [file modificationTime > timestamp]
 ]
@@ -98,24 +104,27 @@ CPBibFile >> isValid [
 { #category : #loading }
 CPBibFile >> loadBibList [
 	bibList := nil.
-	error := ''.
+	errorString := ''.
 	(file filePath endsWith: '.bib') 
 		ifTrue: 
 			[ file exists 
 				ifTrue: 
 					[ timestamp := file modificationTime.
 					bibList := CPBibList from: file contents ]
-				ifFalse: [ error := file filePath , ' does not exist. ' ] ]
-		ifFalse: [ error := file filePath , ' does not appear to be a bibtex file. ' ]
+				ifFalse: [ errorString := file filePath , ' does not exist. ' ] ]
+		ifFalse: 
+			[ errorString := file filePath , ' does not appear to be a bibtex file. ' ]
 ]
 
 { #category : #accessing }
 CPBibFile >> maxResults [
+	<ignoreForCoverage>
 	^ maxResults
 ]
 
 { #category : #accessing }
 CPBibFile >> maxResults: anObject [
+	<ignoreForCoverage>
 	maxResults := anObject
 ]
 
@@ -130,7 +139,7 @@ CPBibFile >> query: queryString [
 	^ CPQuerySpec default
 			queryString: queryString;
 			bibFile: self;
-			processQuery
+			queryResult
 ]
 
 { #category : #querying }
@@ -139,7 +148,7 @@ CPBibFile >> queryCaseSensitive: queryString [
 			queryString: queryString;
 			caseSensitive: true;
 			bibFile: self;
-			processQuery
+			queryResult
 ]
 
 { #category : #accessing }

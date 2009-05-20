@@ -15,7 +15,7 @@ Class {
 CPBibTest class >> classNamesNotUnderTest [
 	^ #(
 	"Don't test rendering classes"
-	'CPBibFileView' 'CPHtmlRenderer' 
+	'CPBibFileView' 'CPHtmlRenderer' 'CPFixedQuery'
 	)
 ]
 
@@ -69,7 +69,7 @@ CPBibTest >> deleteTestBibFile [
 
 { #category : #running }
 CPBibTest >> queryMatchingAll [
-	^ testSpec queryString: '='; processQuery.
+	^ testSpec queryString: '='; queryResult.
 ]
 
 { #category : #'test data' }
@@ -313,36 +313,41 @@ CPBibTest >> testBibListSize [
 
 { #category : #running }
 CPBibTest >> testExtractJournals [
-	| testResult entries extracted |
+	| testResult extracted |
 	testResult := self queryMatchingAll.
-	entries := testResult entries clone.
-	extracted := testResult extractType: #article from: entries.
+	extracted := testResult bibList extractType: #article.
 	self assert: extracted size = 1.
-	self assert: extracted first key = 'Duca06b'.
+	self assert: extracted entries first key = 'Duca06b'.
 ]
 
 { #category : #running }
 CPBibTest >> testExtractTheses [
-	| testResult entries  extracted |
+	| testResult  extracted |
 	testResult := self queryMatchingAll.
-	entries := testResult entries clone.
-	extracted := testResult extractSatisfying: [:entry | entry type = #mastersthesis or: [entry type = #phdthesis]] from: entries. 
+	extracted := testResult bibList extractSatisfying: [:entry | entry type = #mastersthesis or: [entry type = #phdthesis]]. 
 	self assert: extracted size = 2.
-	self assert: (extracted collect: [:each | each key]) asSet = #(Deri97a Reng06a) asSet.
+	self assert: (extracted entries collect: [:each | each key]) asSet = #(Deri97a Reng06a) asSet.
 ]
 
 { #category : #running }
 CPBibTest >> testKeywordQuery [
 	| result |
 	result := testPage query: 'scg-pub oscar'.
-	self assert: result size = 2
+	self assert: result bibList size = 2
 ]
 
 { #category : #running }
 CPBibTest >> testKeywordQueryCaseSenstive [
 	| result |
 	result := testPage queryCaseSensitive: 'scg-pub oscar'.
-	self assert: result size = 0
+	self assert: result bibList size = 0
+]
+
+{ #category : #running }
+CPBibTest >> testMaxResults [
+	| result |
+	result := testSpec queryString: '='; maxResults: 2; queryResult.
+	self assert: result size = 2
 ]
 
 { #category : #running }
@@ -363,9 +368,9 @@ CPBibTest >> testQueryResultExpiry [
 { #category : #running }
 CPBibTest >> testQuerySpecDefaults [
 	self assert: testSpec sortBy = #author.
-	self assert: (testSpec sortList includes: testSpec sortBy).
+	self assert: (CPQuerySpec sortList includes: testSpec sortBy).
 	self assert: testSpec display = #summary.
-	self assert: (testSpec displayList includes: testSpec display).
+	self assert: (CPQuerySpec displayList includes: testSpec display).
 	self assert: testSpec caseSensitive not.
 	self assert: testSpec hideControls not.
 	self assert: testSpec queryString isEmpty.
@@ -391,24 +396,24 @@ CPBibTest >> testRegexQueryCaseSensitive [
 CPBibTest >> testSortByAuthor [
 	| testResult sorted |
 	testResult := self queryMatchingAll.
-	sorted := testResult sortEntriesByAuthor.
-	self assert: sorted first key = 'Ache98a'.
-	self assert: sorted last key = 'Reng06a'.
+	sorted := testResult bibList sortByAuthor.
+	self assert: sorted entries first key = 'Ache98a'.
+	self assert: sorted entries last key = 'Reng06a'.
 ]
 
 { #category : #running }
 CPBibTest >> testSortByYear [
 	| testResult sorted |
 	testResult := self queryMatchingAll.
-	sorted := testResult sortEntriesByYear.
-	self assert: sorted last key = 'Deri97a'.
-	self assert: sorted first key = 'Bung09a'.
+	sorted := testResult bibList sortByYear.
+	self assert: sorted entries last key = 'Deri97a'.
+	self assert: sorted entries first key = 'Bung09a'.
 ]
 
 { #category : #running }
 CPBibTest >> testValidity [
 	self assert: testPage isValid.
-	self assert: testPage error isEmpty.
+	self assert: testPage errorString isEmpty.
 ]
 
 { #category : #private }

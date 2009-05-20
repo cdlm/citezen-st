@@ -9,12 +9,17 @@ I represent either the result of a query, or the entire list of entries in the f
 "
 Class {
 	#name : #CPBibList,
-	#superclass : #WAComponent,
+	#superclass : #Object,
 	#instVars : [
 		'entries'
 	],
 	#category : #'Citezen-Pier'
 }
+
+{ #category : #'instance-creation' }
+CPBibList class >> entries: newEntries [
+	^ self new initializeEntries: newEntries
+]
 
 { #category : #'instance-creation' }
 CPBibList class >> from: aString [
@@ -27,19 +32,19 @@ CPBibList >> entries [
 ]
 
 { #category : #sorting }
-CPBibList >> extractSatisfying: aBlock from: entriesToRender [ 
+CPBibList >> extractSatisfying: aBlock [
 	| result |
-	result := entriesToRender select: [ :each | aBlock value: each ].
-	entriesToRender removeAllFoundIn: result.
-	^ result
+	result := entries select: [ :each | aBlock value: each ].
+	entries removeAllFoundIn: result.
+	^ self class entries: result
 ]
 
 { #category : #sorting }
-CPBibList >> extractType: selector from: entriesToRender [ 
+CPBibList >> extractType: selector [
 	| result |
-	result := entriesToRender select: [ :each | each type = selector ].
-	entriesToRender removeAllFoundIn: result.
-	^ result
+	result := entries select: [ :each | each type = selector ].
+	entries removeAllFoundIn: result.
+	^ self class entries: result
 ]
 
 { #category : #initialization }
@@ -51,39 +56,43 @@ CPBibList >> initializeEntries: newEntries [
 CPBibList >> initializeFrom: aString [ 
 	| separator |
 	separator := String lf , String lf.
-	entries := (separator split: aString)
-				select: [:each | each notEmpty] "extra blank lines in the bibtex file may produce empty entries"
-				thenCollect: [:each | CPBibEntry from: each]
+	self initializeEntries: ((separator split: aString)
+				select: [:each | each notEmpty ]
+				thenCollect: [:each | CPBibEntry from: each])
 ]
 
-{ #category : #rendering }
+{ #category : #printing }
 CPBibList >> printOn: aStream [
 	<ignoreForCoverage>
 	entries printOn: aStream
 ]
 
-{ #category : #rendering }
-CPBibList >> renderContentOn: html [
-	<ignoreForCoverage>
-	"Simple version -- QueryResult has the richer interface"
-	html unorderedList: [entries do: [:each | html listItem: [html render: each]]]
+{ #category : #querying }
+CPBibList >> selectByKeywords: keywordList caseSensitive: caseSensitive [ 
+	^ self class entries: (entries select: 
+			[ :each | 
+			each 
+				containsKeywords: keywordList
+				caseSensitive: caseSensitive ])
 ]
 
 { #category : #querying }
-CPBibList >> selectEntriesByKeywords: keywordList caseSensitive: caseSensitive [ 
-	^ entries select: 
-		[ :each | 
-		each 
-			containsKeywords: keywordList
-			caseSensitive: caseSensitive ]
-]
-
-{ #category : #querying }
-CPBibList >> selectEntriesByRegex: aRegex [ 
-	^ entries select: [ :each | each matchesRegex: aRegex ]
+CPBibList >> selectByRegex: aRegex [ 
+	^ self class entries: (entries select: [ :each | each matchesRegex: aRegex ])
 ]
 
 { #category : #querying }
 CPBibList >> size [
 	^ self entries size
+]
+
+{ #category : #sorting }
+CPBibList >> sortByAuthor [
+	"Actually by key"
+	^ self class entries: (entries asSortedCollection: [:a :b | a key < b key])
+]
+
+{ #category : #sorting }
+CPBibList >> sortByYear [
+	^ self class entries: (entries asSortedCollection: [:a :b | a year > b year])
 ]

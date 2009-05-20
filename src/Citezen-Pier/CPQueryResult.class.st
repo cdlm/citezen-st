@@ -6,37 +6,40 @@ I also know the BibFile that I come from so I know when I need to be refreshed.
 "
 Class {
 	#name : #CPQueryResult,
-	#superclass : #CPBibList,
+	#superclass : #WAComponent,
 	#instVars : [
 		'querySpec',
 		'timestamp',
-		'truncated'
+		'truncated',
+		'bibList'
 	],
 	#category : #'Citezen-Pier'
 }
 
 { #category : #accessing }
+CPQueryResult >> bibList [
+	self isExpired ifTrue: [ self bibList: querySpec queryResultAsBibList ].
+	^ bibList
+]
+
+{ #category : #accessing }
+CPQueryResult >> bibList: aBibList [ 
+	bibList := aBibList.
+	bibList size > querySpec maxResults
+		ifTrue: [bibList initializeEntries: (bibList entries copyFrom: 1 to: querySpec maxResults).
+			truncated := true].
+	timestamp := querySpec bibFile timestamp
+]
+
+{ #category : #accessing }
 CPQueryResult >> entries [
-	self isExpired
-		ifTrue: [ self initializeEntries: querySpec queryResultEntries ].
-	^ entries
+	^ self bibList entries
 ]
 
 { #category : #initialization }
 CPQueryResult >> initialize [
 	super initialize.
 	truncated := false.
-]
-
-{ #category : #initialization }
-CPQueryResult >> initializeEntries: newEntries [
-	super initializeEntries: newEntries.
-	newEntries size > querySpec maxResults 
-		ifTrue: [
-			super initializeEntries: (newEntries copyFrom: 1 to: querySpec maxResults).
-			truncated := true.
-			].
-	timestamp := querySpec bibFile timestamp
 ]
 
 { #category : #updating }
@@ -58,7 +61,7 @@ CPQueryResult >> querySpec: aQuerySpec [
 CPQueryResult >> renderByAuthorOn: html [ 
 	<ignoreForCoverage>
 	html
-		orderedList: [self sortEntriesByAuthor
+		orderedList: [bibList sortByAuthor entries
 				do: [:each | html
 						listItem: [self renderEntry: each on: html]]].
 	self renderTruncatedOn: html.
@@ -66,26 +69,20 @@ CPQueryResult >> renderByAuthorOn: html [
 
 { #category : #rendering }
 CPQueryResult >> renderByCategoryOn: html [ 
-	| entriesToRender extracted |
+	| bibListToRender extracted |
 	<ignoreForCoverage>
-	entriesToRender := self sortEntriesByAuthor.
-	extracted := self 
-		extractType: #article
-		from: entriesToRender.
+	bibListToRender := bibList sortByAuthor.
+	extracted := bibListToRender extractType: #article.
 	self 
 		renderSubList: extracted
 		named: 'Journal papers'
 		on: html.
-	extracted := self 
-		extractType: #book
-		from: entriesToRender.
+	extracted := bibListToRender extractType: #book.
 	self 
 		renderSubList: extracted
 		named: 'Books'
 		on: html.
-	extracted := self 
-		extractType: #inproceedings
-		from: entriesToRender.
+	extracted := bibListToRender extractType: #inproceedings.
 	self 
 		renderSubList: extracted
 		named: 'Conference / workshop papers'
@@ -94,47 +91,36 @@ CPQueryResult >> renderByCategoryOn: html [
 		renderSubList: extracted
 		named: 'Proceedings'
 		on: html.
-	extracted := self 
-		extractType: #incollection
-		from: entriesToRender.
+	extracted := bibListToRender extractType: #incollection.
 	self 
 		renderSubList: extracted
 		named: 'Book chapters'
 		on: html.
-	extracted := self 
-		extractType: #inbook
-		from: entriesToRender.
+	extracted := bibListToRender extractType: #inbook.
 	self 
 		renderSubList: extracted
 		named: 'Book chapters'
 		on: html.
-	extracted := self 
-		extractType: #phdthesis
-		from: entriesToRender.
+	extracted := bibListToRender extractType: #phdthesis.
 	self 
 		renderSubList: extracted
 		named: 'PhD thesis'
 		on: html.
-	extracted := self 
-		extractType: #mastersthesis
-		from: entriesToRender.
+	extracted := bibListToRender extractType: #mastersthesis.
 	self 
 		renderSubList: extracted
 		named: 'Masters thesis'
 		on: html.
-	extracted := self 
-		extractType: #techreport
-		from: entriesToRender.
+	extracted := bibListToRender extractType: #techreport.
 	self 
 		renderSubList: extracted
 		named: 'Technical reports'
 		on: html.
 	self 
-		renderSubList: entriesToRender
+		renderSubList: bibListToRender
 		named: 'Miscellaneous'
 		on: html.
-
-	self renderTruncatedOn: html.
+	self renderTruncatedOn: html
 
 
 	" #misc # #booklet  #manual #unpublished "
@@ -142,23 +128,22 @@ CPQueryResult >> renderByCategoryOn: html [
 
 { #category : #rendering }
 CPQueryResult >> renderByYearOn: html [ 
-	<ignoreForCoverage>
 	| entriesToRender year thisEntry list |
-	entriesToRender := self sortEntriesByYear.
+	<ignoreForCoverage>
+	entriesToRender := bibList sortByYear entries.
 	year := 0.
 	list := nil.
-	[entriesToRender notEmpty] whileTrue: [
-		thisEntry := entriesToRender removeFirst.
-		thisEntry year ~= year ifTrue: [
-			year := thisEntry year.
-			html heading: year printString
-			].
+	[ entriesToRender notEmpty ] whileTrue: 
+		[ thisEntry := entriesToRender removeFirst.
+		thisEntry year ~= year ifTrue: 
+			[ year := thisEntry year.
+			html heading: year printString ].
 		list := html unorderedList.
-		list add: [self renderEntry: thisEntry on: html].
-	].
-
-	self renderTruncatedOn: html.
-
+		list add: 
+			[ self 
+				renderEntry: thisEntry
+				on: html ] ].
+	self renderTruncatedOn: html
 ]
 
 { #category : #rendering }
@@ -178,12 +163,11 @@ CPQueryResult >> renderContentOn: html [
 { #category : #rendering }
 CPQueryResult >> renderControlsOn: html [ 
 	<ignoreForCoverage>
-	querySpec hideControls ifFalse: 
-		[ html paragraph: 
-			[ html form: 
-				[ self renderSortedBy: html.
-				self renderDisplayOn: html.
-				self renderHideControlsOn: html ] ] ]
+	querySpec hideControls
+		ifFalse: [html
+				paragraph: [html
+						form: [self renderSortedBy: html.
+							self renderDisplayOn: html]]]
 ]
 
 { #category : #rendering }
@@ -191,7 +175,7 @@ CPQueryResult >> renderDisplayOn: html [
 	<ignoreForCoverage>
 	html text: ' Display: '.
 	html select
-		list: querySpec displayList;
+		list: CPQuerySpec displayList;
 		on: #display
 			of: querySpec;
 		beSubmitOnChange
@@ -223,19 +207,19 @@ CPQueryResult >> renderSortedBy: html [
 	<ignoreForCoverage>
 	html text: ' Sort by: '.
 	html select
-		list: querySpec sortList;
+		list: CPQuerySpec sortList;
 		on: #sortBy
 			of: querySpec;
 		beSubmitOnChange
 ]
 
 { #category : #rendering }
-CPQueryResult >> renderSubList: entryList named: heading on: html [ 
+CPQueryResult >> renderSubList: aBibList named: heading on: html [ 
 	<ignoreForCoverage>
-	entryList notEmpty
+	aBibList entries notEmpty
 		ifTrue: [html heading: heading.
 			html
-				unorderedList: [entryList
+				unorderedList: [aBibList entries
 						do: [:each | html
 								listItem: [self renderEntry: each on: html]]]]
 ]
@@ -248,15 +232,9 @@ CPQueryResult >> renderTruncatedOn: html [
 		]
 ]
 
-{ #category : #sorting }
-CPQueryResult >> sortEntriesByAuthor [
-	"Actually by key"
-	^ entries asSortedCollection: [:a :b | a key < b key]
-]
-
-{ #category : #sorting }
-CPQueryResult >> sortEntriesByYear [
-	^ entries asSortedCollection: [:a :b | a year > b year]
+{ #category : #querying }
+CPQueryResult >> size [
+	^ self bibList size
 ]
 
 { #category : #accessing }

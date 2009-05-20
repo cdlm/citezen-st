@@ -33,10 +33,10 @@ CPBibFileView >> initialize [
 	querySpec := CPQuerySpec default
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #querying }
 CPBibFileView >> processQuery [
-	queryResult := querySpec bibFile: bibFile;
-				 processQuery
+	queryResult := querySpec bibFile: bibFile; queryResult
+
 ]
 
 { #category : #rendering }
@@ -57,7 +57,7 @@ CPBibFileView >> renderDebugInfoOn: html [
 { #category : #rendering }
 CPBibFileView >> renderErrorOn: html [
 	html heading: 'Invalid bibtex file'.
-	html text: bibFile error.
+	html text: bibFile errorString.
 
 ]
 
@@ -74,12 +74,11 @@ CPBibFileView >> renderQueryOn: html [
 			html break; text: 'case sensitive'.
 			html checkbox on: #caseSensitive of: querySpec.
 		]].
+
 	self renderQueryResultOn: html.
 
-	"TimeProfileBrowser spyOn: [self renderQueryResultOn: html] timeToRun." "does not work :-("
+	"TimeProfileBrowser spyOn: [self renderQueryResultOn: html]. "
 
-	"time := [self renderQueryResultOn: html] timeToRun.
-	html paragraph: [ html emphasis: 'Time to render: ', (time/1000) asFloat printString, ' sec.']"
 ]
 
 { #category : #rendering }
