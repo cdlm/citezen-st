@@ -163,7 +163,8 @@ CPQueryResult >> renderControlsOn: html [
 		ifFalse: [html
 				paragraph: [html
 						form: [self renderSortedBy: html.
-							self renderDisplayOn: html]]]
+							self renderDisplayOn: html.
+							self renderHideControlsOn: html ]]]
 ]
 
 { #category : #rendering }

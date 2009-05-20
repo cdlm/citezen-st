@@ -57,8 +57,10 @@ CPBibFileView >> queryString: aString [
 { #category : #rendering }
 CPBibFileView >> renderContentOn: html [ 
 	bibFile isValid
-		ifTrue: [self renderQueryOn: html]
+		ifTrue: [self renderQueryOn: html.
+			self renderQueryResultOn: html]
 		ifFalse: [self renderErrorOn: html]
+	
 ]
 
 { #category : #rendering }
@@ -77,28 +79,27 @@ CPBibFileView >> renderErrorOn: html [
 ]
 
 { #category : #rendering }
-CPBibFileView >> renderQueryOn: html [ 
-	"self renderDebugInfoOn: html."
-	| |
-	html paragraph:
-	[html
-		form: [html strong: 'Query: '.
-			html textInput on: #queryString of: querySpec.
-			html submitButton text: 'search';
-				callback: [self processQuery].
-			html break; text: 'case sensitive'.
-			html checkbox on: #caseSensitive of: querySpec.
-		]].
+CPBibFileView >> renderQueryOn: html [
+	querySpec hideControls
+		ifFalse: [html
+				paragraph: [html
+						form: [html strong: 'Query: '.
+							html textInput on: #queryString of: querySpec.
+							html submitButton text: 'search';
+								callback: [self processQuery].
+							html break; text: 'case sensitive'.
+							html checkbox on: #caseSensitive of: querySpec;
+								submitOnClick]]]
 
-	self renderQueryResultOn: html.
-
-	"TimeProfileBrowser spyOn: [self renderQueryResultOn: html]. "
-
+	"Why does submitOnClick not work for the caseSensitive checkbox?"
 ]
 
 { #category : #rendering }
 CPBibFileView >> renderQueryResultOn: html [
 	queryResult ifNotNil: [ html render: queryResult ]
+
+	"TimeProfileBrowser spyOn: [html render: queryResult]"
+	
 ]
 
 { #category : #seaside }
@@ -129,19 +130,11 @@ CPBibFileView >> updateUrl: anUrl [
 	anUrl 
 		addParameter: 'query'
 		value: querySpec queryString.
-	self 
-		updateIfNotDefault: #caseSensitive
-		url: anUrl.
-	self 
-		updateIfNotDefault: #sortBy
-		url: anUrl.
-	self 
-		updateIfNotDefault: #display
-		url: anUrl.
-	self 
-		updateIfNotDefault: #hideControls
-		url: anUrl.
-	self 
-		updateIfNotDefault: #maxResults
-		url: anUrl
+
+	self updateIfNotDefault: #caseSensitive url: anUrl.
+	self updateIfNotDefault: #sortBy url: anUrl.
+	self updateIfNotDefault: #display url: anUrl.
+	self updateIfNotDefault: #hideControls url: anUrl.
+	
+	"self updateIfNotDefault: #maxResults url: anUrl"
 ]
