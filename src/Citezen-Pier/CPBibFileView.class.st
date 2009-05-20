@@ -17,10 +17,26 @@ CPBibFileView >> children [
 	^ Array with: queryResult
 ]
 
+{ #category : #seaside }
+CPBibFileView >> initialRequest: aRequest [ 
+	"Override this to extract additional data from the request. This is only
+	called for requests that don't have a valid session yet.'"
+	aRequest fields
+		at: 'query'
+		ifPresent: [:qs | querySpec queryString: qs.
+			self processQuery ]
+]
+
 { #category : #'initialize-release' }
 CPBibFileView >> initialize [
 	super initialize.
 	querySpec := CPQuerySpec default
+]
+
+{ #category : #'as yet unclassified' }
+CPBibFileView >> processQuery [
+	queryResult := querySpec bibFile: bibFile;
+				 processQuery
 ]
 
 { #category : #rendering }
@@ -48,16 +64,22 @@ CPBibFileView >> renderErrorOn: html [
 { #category : #rendering }
 CPBibFileView >> renderQueryOn: html [ 
 	"self renderDebugInfoOn: html."
+	| |
 	html paragraph:
 	[html
 		form: [html strong: 'Query: '.
 			html textInput on: #queryString of: querySpec.
 			html submitButton text: 'search';
-				callback: [queryResult := querySpec bibFile: bibFile; processQuery].
+				callback: [self processQuery].
 			html break; text: 'case sensitive'.
 			html checkbox on: #caseSensitive of: querySpec.
 		]].
-	self renderQueryResultOn: html
+	self renderQueryResultOn: html.
+
+	"TimeProfileBrowser spyOn: [self renderQueryResultOn: html] timeToRun." "does not work :-("
+
+	"time := [self renderQueryResultOn: html] timeToRun.
+	html paragraph: [ html emphasis: 'Time to render: ', (time/1000) asFloat printString, ' sec.']"
 ]
 
 { #category : #rendering }
@@ -76,4 +98,11 @@ CPBibFileView >> setContext: aContext [
 { #category : #seaside }
 CPBibFileView >> states [
 	^ Array with: querySpec
+]
+
+{ #category : #seaside }
+CPBibFileView >> updateUrl: anUrl [
+	"Override to customize the URL used to display this command."
+
+	anUrl addParameter: 'query' value: querySpec queryString
 ]
