@@ -12,7 +12,7 @@ Class {
 { #category : #'accessing-description' }
 CPFixedQuery class >> descriptionBibFile [
 	^ PRStructureDescription new
-		addCondition: (MACondition selector: #isKindOf: argument: #CPBibFile)
+		addCondition: (MACondition selector: #isKindOf: argument: CPBibFile)
 			labelled: 'Select an existing Bib File';
 		accessor: #bibFile;
 		label: 'Bib File';
