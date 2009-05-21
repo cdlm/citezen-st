@@ -10,7 +10,8 @@ Class {
 		'phrases'
 	],
 	#classInstVars : [
-		'defaultInstance'
+		'defaultInstance',
+		'monthMappings'
 	],
 	#category : #'Citezen-Rendering'
 }
@@ -236,6 +237,17 @@ BibPhraseLibrary class >> misc [
 		addBlockWithField: #note;
 		separatorText: '. ';
 		terminatorText: '.'
+]
+
+{ #category : #'formats-fields' }
+BibPhraseLibrary class >> month: aField [
+	^ BibLiteralPhrase text: (self monthMappings at: aField value ifAbsent: aField value).
+]
+
+{ #category : #'instance creation' }
+BibPhraseLibrary class >> monthMappings [
+	"monthMappings := nil"
+	^ monthMappings ifNil: [monthMappings := Dictionary newFromPairs: #(jan January feb February mar March apr April may May jun June jul July aug August sep September oct October nov November dec December)]
 ]
 
 { #category : #'phrases-partial' }
