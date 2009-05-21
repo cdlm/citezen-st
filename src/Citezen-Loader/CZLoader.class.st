@@ -25,9 +25,9 @@ CZLoader class >> loadCitezen [
 
 { #category : #load }
 CZLoader class >> loadCitezenPier [
+	self loadPierRequirements.
 	Installer ss project: 'SplitJoin';
 		 install: 'SplitJoin'.
-	self updatePier.
 	Installer ss project: 'Citezen';
 		 install: 'Citezen-Magritte';
 		 install: 'Citezen-Pier'
@@ -38,6 +38,20 @@ CZLoader class >> loadCitezenSeaside [
 	Installer ss project: 'Citezen';
 		 install: 'Citezen-Magritte';
 		 install: 'Citezen-Seaside'
+]
+
+{ #category : #load }
+CZLoader class >> loadPierRequirements [
+	"Need PRStructure>>lookupPath:"
+	Installer lukas project: 'pier';
+		 install: 'Pier-Model'.
+	"Need PRPierFrame>>structureFrom:"
+	Installer lukas project: 'pier';
+		 install: 'Pier-Seaside'.
+	"Need MAExternalFileModel>>urlFor:"
+	"Installer lukas project: 'magritte'; install: 'Magritte-Model'."
+	Installer lukas project: 'magritte';
+		 install: 'Magritte-Seaside'
 ]
 
 { #category : #load }
