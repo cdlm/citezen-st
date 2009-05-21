@@ -23,49 +23,7 @@ Class {
 }
 
 { #category : #'class initialization' }
-CPHtmlRenderer class >> extendLatexToHtmlReplacements [
-	| re newkey |
-	re := '(\\\W)(\w)' asRegex.
-	latexToHtmlReplacements keys
-		do: [:key | (re matches: key)
-				ifTrue: [newkey := (re subexpression: 2)
-								, '{'
-								, (re subexpression: 3) , '}'.
-					latexToHtmlReplacements
-						at: newkey
-						put: (latexToHtmlReplacements at: key)]]
-]
-
-{ #category : #'instance creation' }
-CPHtmlRenderer class >> html: anHtmlCanvas [
-	^ (self new)
-		html: anHtmlCanvas;
-		yourself
-]
-
-{ #category : #conversion }
-CPHtmlRenderer class >> htmlOutOfLatexString: aString [
-	"Probably could use a TeX to unicode TextConverter?
-	
-	Removing the curly braces last enforces accents like {\c c} instead of \c{c}. I think it makes more sense than the reverse since curly braces are also used to group stuff and prevent BibTeX to tamper with it."
-	| text |
-	text := aString asString.
-	latexToHtmlReplacements keysAndValuesDo: [:pattern :replacement |
-		text := text copyReplaceAll: pattern with: replacement asTokens: false ].
-	text := text reject: [:each | each = ${ or: [each = $}]].
-	^text
-]
-
-{ #category : #'class initialization' }
-CPHtmlRenderer class >> initialize [
-	super initialize.
-	self initializeLatexToHtmlReplacements
-]
-
-{ #category : #'class initialization' }
-CPHtmlRenderer class >> initializeLatexToHtmlReplacements [
-	" self initializeLatexToHtmlReplacements"
-	latexToHtmlReplacements := Dictionary new.
+CPHtmlRenderer class >> addAccentReplacements [
 	latexToHtmlReplacements at: '\''a' put: '&aacute;';
 		 at: '\''e' put: '&eacute;';
 		 at: '\''i' put: '&iacute;';
@@ -120,6 +78,7 @@ CPHtmlRenderer class >> initializeLatexToHtmlReplacements [
 		 at: '\"Y' put: '&Yuml;';
 		 at: '\~n' put: '&ntilde;';
 		 at: '\~N' put: '&Ntilde;';
+		 at: '\cc' put: '&ccedil;';
 		 at: '\c c' put: '&ccedil;';
 		 at: '\c{c}' put: '&ccedil;';
 		 at: '\c C' put: '&Ccedil;';
@@ -129,9 +88,71 @@ CPHtmlRenderer class >> initializeLatexToHtmlReplacements [
 		 at: '\oe' put: '&oelig;';
 		 at: '\OE' put: '&OElig;';
 		 at: '\ss' put: '&szlig;';
+		 at: '\/o' put: '&oslash;';
+		 at: '\/O' put: '&Oslash;';
+		 at: '\''c' put: '&#263;';
+		 at: '\v{C}' put: '&#268;';
+		 at: '\v{c}' put: '&#269;';
+		 at: '\vC' put: '&#268;';
+		 at: '\vc' put: '&#269;';
+		 at: '$\pi$' put: '&pi;';
+		 at: '$\lambda$' put: '&lambda;';
+		 at: '$\sim$' put: '~';
+		 at: '\-' put: '';
+		 at: '\_' put: '_';
+		 at: '\#' put: '#';
+		 at: '\$' put: '$';
+		 at: '\&' put: '&amp;';
 		 at: '--' put: '&ndash;';
-		 at: '---' put: '&mdash;'.
-	self extendLatexToHtmlReplacements
+		 at: '---' put: '&mdash;'
+]
+
+{ #category : #'class initialization' }
+CPHtmlRenderer class >> addBracedAccentReplacements [
+	| re newkey |
+	re := '(\\\W)(\w)' asRegex.
+	latexToHtmlReplacements keys
+		do: [:key | (re matches: key)
+				ifTrue: [newkey := (re subexpression: 2)
+								, '{'
+								, (re subexpression: 3) , '}'.
+					latexToHtmlReplacements
+						at: newkey
+						put: (latexToHtmlReplacements at: key)]]
+]
+
+{ #category : #'instance creation' }
+CPHtmlRenderer class >> html: anHtmlCanvas [
+	^ (self new)
+		html: anHtmlCanvas;
+		yourself
+]
+
+{ #category : #conversion }
+CPHtmlRenderer class >> htmlOutOfLatexString: aString [
+	"Probably could use a TeX to unicode TextConverter?
+	
+	Removing the curly braces last enforces accents like {\c c} instead of \c{c}. I think it makes more sense than the reverse since curly braces are also used to group stuff and prevent BibTeX to tamper with it."
+	| text |
+	text := aString asString.
+	latexToHtmlReplacements keysAndValuesDo: [:pattern :replacement |
+		text := text copyReplaceAll: pattern with: replacement asTokens: false ].
+	text := text reject: [:each | each = ${ or: [each = $}]].
+	^text
+]
+
+{ #category : #'class initialization' }
+CPHtmlRenderer class >> initialize [
+	super initialize.
+	self initializeLatexToHtmlReplacements
+]
+
+{ #category : #'class initialization' }
+CPHtmlRenderer class >> initializeLatexToHtmlReplacements [
+	"self initializeLatexToHtmlReplacements"
+	latexToHtmlReplacements := Dictionary new.
+	self addAccentReplacements.
+	self addBracedAccentReplacements.
 ]
 
 { #category : #accessing }
@@ -175,7 +196,7 @@ CPHtmlRenderer >> visitEntry: anEntry [
 
 { #category : #'visiting-phrases' }
 CPHtmlRenderer >> visitFieldRef: aFieldRef [
-	| field format |
+	| field format re url |
 	field := currentEntry at: aFieldRef fieldName.
 	field ifNil: [^ self].
 	
@@ -185,7 +206,16 @@ CPHtmlRenderer >> visitFieldRef: aFieldRef [
 			self html anchor
 				url: (currentEntry at: #url) value;
 				with: [self visit: format]]
-		ifFalse: [ self visit: format ]
+		ifFalse: [ 
+			re := '\\url\{([^}]*)}' asRegexIgnoringCase .
+			(field key = #note and: [re search: field rawValue])
+				ifTrue: [
+					url := (self class htmlOutOfLatexString: (re subexpression: 2)).
+					self html anchor
+						url: url;
+						with: url
+					]
+				ifFalse: [self visit: format] ]
 ]
 
 { #category : #'visiting-phrases' }
