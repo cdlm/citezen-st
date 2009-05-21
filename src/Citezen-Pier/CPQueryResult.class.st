@@ -74,25 +74,15 @@ CPQueryResult >> renderByCategoryOn: html [
 
 	papers := bibList sortByAuthor.
 	
-	"Attempt to extract edited volumes using the queryString"
-	"This cannot work as the other views do not make use of the same magic"
-"	[ edited := papers extractSatisfying: [ :entry |
-		(entry matchesRegex: ('author\s*=') asRegexIgnoringCase) not and:
-			[entry matchesRegex: ('editor\s*=[^=]*', querySpec queryString) asRegexIgnoringCase] ]]
-		on: Error
-		do: [].
-
-	[ others := papers extractSatisfying: [ :entry |
-		(entry matchesRegex: ('author\s*=[^=]*', querySpec queryString) asRegexIgnoringCase) not ] ]
-		on: Error
-		do: []."
-
 	drafts := CPBibList new.
 	drafts := drafts + (papers extractSatisfying: [ :entry | entry containsKeyword: 'scg-wp' ]).
 	drafts := drafts + (papers extractSatisfying: [ :entry | entry containsKeyword: 'scg-sub' ]).
 
 	extracted := papers extractSatisfying: [ :entry | entry containsKeyword: 'invited' ].
 	self renderSubList: extracted named: 'Invited Papers' on: html.
+
+	extracted := papers extractType: #book.
+	self renderSubList: extracted named: 'Books' on: html.
 
 	articles := papers extractType: #article.
 	journalpapers := articles extractSatisfying: [ :entry | entry containsKeyword: 'internationaljournal' ].
@@ -103,30 +93,32 @@ CPQueryResult >> renderByCategoryOn: html [
 	conferencepapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalconference' ].
 	tooldemos := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'tooldemo' ].
 	self renderSubList: conferencepapers named: 'Refereed Papers in International Conferences' on: html.
-	self renderSubList: tooldemos named: 'Tool demos' on: html.
 	self renderSubList: inproceedings named: 'Refereed Papers in International Workshops' on: html.
-
-	extracted := papers extractType: #book.
-	self renderSubList: extracted named: 'Books' on: html.
+	"self renderSubList: tooldemos named: 'Tool demos' on: html."
 
 	extracted := papers extractType: #incollection.
 	self renderSubList: extracted named: 'Book Chapters' on: html.
 
-	extracted := papers extractType: #techreport.
-	self renderSubList: extracted named: 'Technical Reports' on: html.
-
 	extracted := papers extractSatisfying:  [ :entry |  entry type = #mastersthesis or: [ entry type = #phdthesis ] ].
 	self renderSubList: extracted named: 'Theses' on: html.
 
-	"edited ifNotNil: [self renderSubList: edited named: 'Edited Volumes' on: html]."
+	extracted := papers extractType: #techreport.
+	self renderSubList: extracted named: 'Technical Reports' on: html.
 
+	" #misc # #booklet  #inbook #manual #unpublished"
 	self renderSubList: papers named: 'Other publications' on: html.
 	
-	self renderSubList: drafts named: 'Drafts' on: html.
+	"self renderSubList: drafts named: 'Drafts' on: html."
 
 	self renderTruncatedOn: html
 
-	" #misc # #booklet  #inbook #manual #unpublished "
+
+	"[ edited := papers extractSatisfying: [ :entry |
+		(entry matchesRegex: ('author\s*=') asRegexIgnoringCase) not ]]
+		on: Error
+		do: [].
+	edited ifNotNil: [self renderSubList: edited named: 'Edited Volumes' on: html]."
+
 ]
 
 { #category : #rendering }
