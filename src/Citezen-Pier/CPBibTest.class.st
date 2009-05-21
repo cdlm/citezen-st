@@ -333,7 +333,8 @@ CPBibTest >> testExtractTheses [
 CPBibTest >> testKeywordQuery [
 	| result |
 	result := testPage query: 'scg-pub oscar'.
-	self assert: result bibList size = 2
+	self assert: result bibList size = 2.
+	self assert: (result bibList entries first containsKeyword: 'oscar')
 ]
 
 { #category : #running }
@@ -348,6 +349,15 @@ CPBibTest >> testMaxResults [
 	| result |
 	result := testSpec queryString: '='; maxResults: 2; queryResult.
 	self assert: result size = 2
+]
+
+{ #category : #running }
+CPBibTest >> testOperators [
+	| all some |
+	all := self queryMatchingAll bibList.
+	some := (testPage query: 'scg-pub oscar') bibList.
+	self assert: ((all - some) size + some size) = all size.
+	self assert: (((all - some) + some) size) = all size.
 ]
 
 { #category : #running }

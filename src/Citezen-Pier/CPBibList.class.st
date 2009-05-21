@@ -28,12 +28,12 @@ CPBibList class >> from: aString [
 
 { #category : #composing }
 CPBibList >> + aBibList [
-	^ self class entries: (entries clone addAll: aBibList entries; yourself)
+	^ self class entries: (entries copyWithAll: aBibList entries)
 ]
 
 { #category : #composing }
 CPBibList >> - aBibList [
-	^ self class entries: (entries clone removeAll: aBibList entries; yourself)
+	^ self class entries: (entries copyWithoutAll: aBibList entries)
 ]
 
 { #category : #accessing }
