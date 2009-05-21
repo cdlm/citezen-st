@@ -75,6 +75,11 @@ BibPhraseLibrary class >> book [
 		terminatorText: '.'
 ]
 
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> booklet [
+	^ self book
+]
+
 { #category : #'phrases-partial' }
 BibPhraseLibrary class >> containmentIn: containerField [
 	^ BibSequencePhrase new
@@ -140,6 +145,11 @@ BibPhraseLibrary class >> formatFor: aField [
 ]
 
 { #category : #'phrases-entries' }
+BibPhraseLibrary class >> inbook [
+	^ self incollection
+]
+
+{ #category : #'phrases-entries' }
 BibPhraseLibrary class >> incollection [
 	^ (BibSequencePhrase new)
 		addBlockWithField: #author;
@@ -199,6 +209,11 @@ BibPhraseLibrary class >> locationMonthYear [
 		add: (BibSequencePhrase new
 			separatorText: ' ';
 			addFields: #(month year))
+]
+
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> manual [
+	^ self techreport
 ]
 
 { #category : #'phrases-entries' }
@@ -267,6 +282,11 @@ BibPhraseLibrary class >> phraseFor: anEntry [
 	^ ((self class allMethodsInCategory: 'phrases-entries') includes: selector)
 		ifTrue: [(self perform: selector) named: selector]
 		ifFalse: [self errorPhrase: anEntry]
+]
+
+{ #category : #'phrases-entries' }
+BibPhraseLibrary class >> proceedings [
+	^ self book
 ]
 
 { #category : #'phrases-partial' }
