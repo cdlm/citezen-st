@@ -85,12 +85,6 @@ CPBibFile >> initialize [
 ]
 
 { #category : #testing }
-CPBibFile >> isBibFile [
-	<ignoreForCoverage>
-	^ true
-]
-
-{ #category : #testing }
 CPBibFile >> isExpired [
 	^ self isValid and: [file modificationTime > timestamp]
 ]

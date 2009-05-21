@@ -7,7 +7,7 @@ Class {
 { #category : #'access-description' }
 CPQueryBox class >> descriptionBibFile [
 	^ PRStructureDescription new
-		addCondition: (MACondition selector: #isBibFile)
+		addCondition: (MACondition selector: #isKindOf: argument: #CPBibFile)
 			labelled: 'Select an existing Bib File';
 		accessor: #bibFile;
 		label: 'Bib File';
