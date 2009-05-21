@@ -1,3 +1,11 @@
+"
+I am a fixed query which can be embedded in other documents.
+
+I represent an alternative interface to a BibFile.
+
+Instead of presenting a dynmaic interface to compose a query, the query is configured once with the help of Magritte.
+
+"
 Class {
 	#name : #CPFixedQuery,
 	#superclass : #PRWidget,
@@ -40,6 +48,7 @@ CPFixedQuery class >> descriptionDisplay [
 	<ignoreForCoverage>
 	^ MASingleOptionDescription new
 		comment: 'How to display the entries';
+		parameterName: 'display';
 		accessor: #display;
 		label: 'Display';
 		priority: 60;
@@ -54,6 +63,7 @@ CPFixedQuery class >> descriptionHideControls [
 	<ignoreForCoverage>
 	^ MABooleanDescription new
 		comment: 'Hide display and sort controls';
+		parameterName: 'hideControls';
 		accessor: #hideControls;
 		label: 'Hide controls';
 		priority: 100;
@@ -67,6 +77,7 @@ CPFixedQuery class >> descriptionQueryString [
 	<ignoreForCoverage>
 	^ MAStringDescription new
 		comment: 'The fixed query string';
+		parameterName: 'query';
 		accessor: #queryString;
 		label: 'Query';
 		priority: 20;
@@ -81,6 +92,7 @@ CPFixedQuery class >> descriptionSortBy [
 	<ignoreForCoverage>
 	^ MASingleOptionDescription new
 		comment: 'How to sort the query results';
+		parameterName: 'sortBy';
 		accessor: #sortBy;
 		label: 'Sort by';
 		priority: 50;

@@ -5,7 +5,7 @@ I read the file and split it up into strings represented individual [CP]BibEntry
 
 I remember the timestamp of the last time the file was read. Every time I am accessed, I check the timestamp, and reload the file only if I have been invalidated.
 
-I can be queried, yielding a BibList of BibEntry instances.
+I can be queried, yielding a QueryResult pointing to a BibList of BibEntry instances.
 "
 Class {
 	#name : #CPBibFile,

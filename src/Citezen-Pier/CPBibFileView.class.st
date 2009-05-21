@@ -1,5 +1,12 @@
 "
-I render a [CP]BibFilePage
+I render a [CP]BibFilePage.
+
+I present an interface to compose a query and parameters for displaying the result. I squirrel away everything in a QuerySpec object, which is responsiblke for processing the query.
+
+I display the query parameters in my url, and read them back if the url is reused.
+
+I am a View, hence cannot be embedded.
+
 "
 Class {
 	#name : #CPBibFileView,

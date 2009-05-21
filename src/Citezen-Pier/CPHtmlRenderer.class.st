@@ -1,14 +1,15 @@
 "
-""Render bibliographic entries to HTML using Seaside's canvas.
+I render bibliographic entries to HTML using Seaside's canvas.
 
 NB. Both BibHtmlRenderer and the canvas know about the stream, so using #setStream: after #html: will break stuff.
 
-This class is a clone of CZHtmlRender (by Damien Pollet) in the Citezen-Seaside package.
+I am a clone of CZHtmlRender (by Damien Pollet) in the Citezen-Seaside package.
 
 CHANGES:
 - Fixed latexToHtmlReplacements to handle chars in curly braces
+- Added a number of further latex translation
+- Added activation of urls within notes
 
-""
 "
 Class {
 	#name : #CPHtmlRenderer,

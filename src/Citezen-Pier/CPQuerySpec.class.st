@@ -1,17 +1,18 @@
 "
-I hold all the information relevant to either an ad hoc query or a fixed query.
+I hold all the information needed to process either an ad hoc query or a fixed query.
 
-I can be used to parse query information hiding in a URL, I can generate the query part ofa URL, and I can be used to store the spec of a fixed query.
+I decide whether the queryString should be interpreted as a Regex or a list of keywords to match.
 
-I am consulted by a [CP]BibList or a BibEntry so they know how to render themselves (sort order etc.).
+I use my parameters to tell BibLists how to sort themselves and BibEntries how to display themselves
 
-I am basically a data holder with just a few smarts.
-
-- ignoreCase = y/n
-- useRegex = n/y [auto-recognize regexes containing: []*^$\ ]
+These are the parameters that I store:
+- bibFile
+- queryString = ''
+- caseSensitive = n/y
+- maxResults = 500
 - sortBy = author/year/category
 - display = plain/abstract/bibtex
-- showControls = y/n
+- hideControls = n/y
 
 "
 Class {

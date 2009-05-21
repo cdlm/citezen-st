@@ -2,10 +2,8 @@
 I am a single bibtex entry in a [CP]BibList.
 
 I hold the text string for the bibtex entry, and possibly a parsed BibEntry, which is lazily computed.
-
-I do not have a url of my own, so I am not a PRStructure. I can render myself, so I am a WAComponent.
-
-* Should I be some kind of Pier entity? (e.g., PRViewComponent?)
+I can answer whether I contain keywords or match a regex.
+I can render myself as html, plain bibtex, or with an abstract.
 "
 Class {
 	#name : #CPBibEntry,

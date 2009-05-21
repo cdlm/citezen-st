@@ -1,3 +1,6 @@
+"
+I offer an embeddable query box that forwards queries to a BibFile.
+"
 Class {
 	#name : #CPQueryBox,
 	#superclass : #PRWidget,

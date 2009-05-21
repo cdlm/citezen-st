@@ -1,11 +1,11 @@
 "
-I am a list of [CP]BibEntry bibtex entries. I originate from from BibFile.
+I am a list of [CP]BibEntry bibtex entries that originate from a BibFile.
 
-I do not have a fixed url, so I am not a PRStructure. I know how to render myself so I am a WAComponent.
+I do not have a fixed url, so I am not a PRStructure.
 
 I represent either the result of a query, or the entire list of entries in the file.
 
-* Should I be a some kind of Pier entity? (PRViewComponent?)
+I provide various methods to query, filter or compose lists of entries.
 "
 Class {
 	#name : #CPBibList,
