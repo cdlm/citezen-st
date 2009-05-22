@@ -3,7 +3,8 @@ Class {
 	#superclass : #PRWidget,
 	#instVars : [
 		'timestamp',
-		'modificationTime'
+		'modificationTime',
+		'queryResult'
 	],
 	#category : #'Citezen-Pier'
 }
@@ -58,6 +59,11 @@ CPWhatsNew >> bibFile [
 	^ self read: #descriptionBibFile
 ]
 
+{ #category : #seaside }
+CPWhatsNew >> children [
+	^ Array with: queryResult
+]
+
 { #category : #initialization }
 CPWhatsNew >> initialize [
 	super initialize.
@@ -71,33 +77,37 @@ CPWhatsNew >> initializeTimestamp [
 	"timestamp := (Rio new: self class glamour) modificationTime."
 ]
 
-{ #category : #evaluation }
-CPWhatsNew >> newPdfs [
-	| lastTimestamp pdfs newFilenames entries |
-	lastTimestamp := timestamp.
-	"uncomment this when deployed:"
-	"self updateTimestamp."
-	pdfs := (Rio new: self class archiveDir) beRecursive
-		select: [:pdf |
-				"(pdf fileName endsWith: 'dummy.pdf') ifTrue: [self halt]."
-				pdf isFile
-				and: [pdf fileName endsWith: '.pdf']
-				and: [pdf modificationTime > lastTimestamp]].
-	newFilenames := pdfs collect: [:pdf | pdf fileName].
-	entries := (self bibFile bibList entries
-				select: [:entry | newFilenames
-						anySatisfy: [:fileName | entry containsKeyword: fileName]]).
-	^ CPQueryResult new
-		querySpec: (CPQuerySpec default bibFile: self bibFile);
-		bibList: (CPBibList entries: entries) 
-]
-
 { #category : #seaside }
-CPWhatsNew >> renderContentOn: html [
-	html render: self newPdfs
+CPWhatsNew >> renderContentOn: html [ 
+	html form: 
+		[ html submitButton
+			text: 'update';
+			callback: [ queryResult := self whatsNew ].
+		html submitButton
+			text: 'reset timeStamp';
+			callback: [ self initializeTimestamp. queryResult := nil ] ].
+	queryResult ifNotNil: [ html render: queryResult ]
 ]
 
 { #category : #initialization }
 CPWhatsNew >> updateTimestamp [
 	timestamp := TimeStamp now.
+]
+
+{ #category : #evaluation }
+CPWhatsNew >> whatsNew [
+	| lastTimestamp pdfs newFilenames entries |
+	lastTimestamp := timestamp.
+	self updateTimestamp.
+	pdfs := (Rio new: self class archiveDir) beRecursive select: 
+		[ :pdf |  pdf isFile 
+			and: [ pdf fileName endsWith: '.pdf' ]
+			and: [ pdf modificationTime > lastTimestamp ] ].
+	newFilenames := pdfs collect: [ :pdf | pdf fileName ].
+	entries := self bibFile bibList entries select: 
+		[ :entry | 
+		newFilenames anySatisfy: [ :fileName | entry containsKeyword: fileName ] ].
+	^ CPQueryResult new
+		querySpec: (CPQuerySpec default bibFile: self bibFile);
+		bibList: (CPBibList entries: entries)
 ]
