@@ -1,3 +1,8 @@
+"
+I list the new papers in the archive since the last timestamp.
+
+The results should be posted to a blog ... [TO BE DONE]
+"
 Class {
 	#name : #CPWhatsNew,
 	#superclass : #PRWidget,
