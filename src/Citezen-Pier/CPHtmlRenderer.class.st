@@ -104,8 +104,8 @@ CPHtmlRenderer class >> addAccentReplacements [
 		 at: '\#' put: '#';
 		 at: '\$' put: '$';
 		 at: '\&' put: '&amp;';
-		 at: '--' put: '&ndash;';
-		 at: '---' put: '&mdash;'
+		 at: '---' put: '&mdash;';
+		 at: '--' put: '&mdash;'
 ]
 
 { #category : #'class initialization' }

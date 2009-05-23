@@ -20,6 +20,21 @@ CPWhatsNew class >> archiveDir [
 ]
 
 { #category : #accessing }
+CPWhatsNew class >> descriptionAuthor [
+	<ignoreForCoverage>
+	^ MAStringDescription new
+		comment: 'The news author';
+		parameterName: 'author';
+		accessor: #author;
+		label: 'Author';
+		priority: 30;
+		default: '';
+		beEditable;
+		beRequired;
+		yourself
+]
+
+{ #category : #accessing }
 CPWhatsNew class >> descriptionBibFile [
 	^ PRStructureDescription new
 		addCondition: (MACondition selector: #isKindOf: argument: CPBibFile)
@@ -27,6 +42,19 @@ CPWhatsNew class >> descriptionBibFile [
 		accessor: #bibFile;
 		label: 'Bib File';
 		priority: 10;
+		beEditable;
+		beRequired;
+		yourself
+]
+
+{ #category : #accessing }
+CPWhatsNew class >> descriptionBlog [
+	^ PRStructureDescription new
+		addCondition: (MACondition selector: #isKindOf: argument: PBBlog)
+			labelled: 'Select a Blog';
+		accessor: #blog;
+		label: 'Blog';
+		priority: 20;
 		beEditable;
 		beRequired;
 		yourself
@@ -59,14 +87,44 @@ CPWhatsNew class >> label [
 	^ 'What''s new blog'
 ]
 
+{ #category : #news }
+CPWhatsNew >> author [
+	^ self read: #descriptionAuthor
+]
+
 { #category : #accessing }
 CPWhatsNew >> bibFile [
 	^ self read: #descriptionBibFile
 ]
 
+{ #category : #news }
+CPWhatsNew >> blog [
+	^ self read: #descriptionBlog
+]
+
 { #category : #seaside }
 CPWhatsNew >> children [
 	^ Array with: queryResult
+]
+
+{ #category : #news }
+CPWhatsNew >> generateNewsItems [
+	| post |
+	queryResult := self whatsNew.
+	queryResult bibList entries do: [: entry |
+		post := PBPost named: (TimeStamp now printYYMMDDHHSS: '-'), entry key asString.
+		post title: entry title;
+			contents: '!!Authors
+',
+			entry author, '
+!!Abstract
+',
+			entry abstract;
+			publication: TimeStamp now;
+			author: self author.
+		self flag: 'Add abstract and url to bibquery result'.
+		self blog addChild: post.
+		]
 ]
 
 { #category : #initialization }
@@ -83,15 +141,20 @@ CPWhatsNew >> initializeTimestamp [
 ]
 
 { #category : #seaside }
-CPWhatsNew >> renderContentOn: html [ 
+CPWhatsNew >> renderContentOn: html [
+	html paragraph: [ html text: 'Last timestamp: ', timestamp printString ].
 	html form: 
 		[ html submitButton
 			text: 'update';
 			callback: [ queryResult := self whatsNew ].
 		html submitButton
+			text: 'generate news';
+			callback: [ self generateNewsItems ].
+		html submitButton
 			text: 'reset timeStamp';
 			callback: [ self initializeTimestamp. queryResult := nil ] ].
-	queryResult ifNotNil: [ html render: queryResult ]
+	queryResult ifNotNil: [ html render: queryResult ].
+	
 ]
 
 { #category : #initialization }

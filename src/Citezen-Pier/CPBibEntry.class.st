@@ -22,6 +22,23 @@ CPBibEntry class >> from: aString [
 
 ]
 
+{ #category : #accessing }
+CPBibEntry >> abstract [
+	^ (self entry at: #abstract) value
+]
+
+{ #category : #accessing }
+CPBibEntry >> author [
+	"^ (self entry at: #author) value"
+	"^ BibPhraseLibrary author: (self entry at: #author)"
+	| stream phrase |
+	phrase := BibPhraseLibrary author: (self entry at: #author).
+	stream := WriteStream on: String new.
+	phrase
+		do: [:each | stream nextPutAll: each text].
+	^ stream contents
+]
+
 { #category : #querying }
 CPBibEntry >> containsKeyword: aString [
 	^ self containsKeywords: (Array with: aString) caseSensitive: false
@@ -101,6 +118,12 @@ CPBibEntry >> renderSummaryOn: html [
 		on: Error
 		do: [html emphasis: Error description.
 			html preformatted: text]
+]
+
+{ #category : #accessing }
+CPBibEntry >> title [
+	self flag: 'Clean up result -- translate tabs, CRs etc'.
+	^ (self entry at: #title) value
 ]
 
 { #category : #accessing }
