@@ -1,3 +1,7 @@
+"
+I implement the specialized query needed to produce the query result for an AuthorPage.
+See queryResultAsBibList.
+"
 Class {
 	#name : #CPAuthorQuerySpec,
 	#superclass : #CPQuerySpec,
