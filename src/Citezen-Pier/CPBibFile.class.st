@@ -56,6 +56,7 @@ CPBibFile class >> isAbstract [
 
 { #category : #accessing }
 CPBibFile class >> singleInstanceOrNil [
+	<ignoreForCoverage>
 	^ self allInstances ifNotEmptyDo: [: all | all size = 1 ifTrue: [all first]].
 ]
 

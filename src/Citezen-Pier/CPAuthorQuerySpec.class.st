@@ -37,3 +37,9 @@ CPAuthorQuerySpec >> queryResultAsBibList [
 		do: [ ^ super queryResultAsBibList ].
 	^ authored + edited
 ]
+
+{ #category : #'initialize-release' }
+CPAuthorQuerySpec >> setDefaults [
+	super setDefaults.
+	self authorRegex: self class defaultAuthorRegex
+]

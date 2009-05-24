@@ -1,7 +1,11 @@
 "
 I list the new papers in the archive since the last timestamp.
 
-The results should be posted to a blog ... [TO BE DONE]
+Results are posted to the blog.
+
+TO DO:
+- run periodically as a sort of cron job
+
 "
 Class {
 	#name : #CPWhatsNew,
@@ -64,8 +68,14 @@ CPWhatsNew class >> descriptionBlog [
 
 { #category : #constants }
 CPWhatsNew class >> evolvingObjects [
-	"There shoould be at least 4 newer pdfs than this one"
+	"March 2009"
 	^ '/home/scg/scg.unibe.ch/web/archive/papers/Deza08bEvolvingObjects.pdf'
+]
+
+{ #category : #constants }
+CPWhatsNew class >> gabyThesis [
+	"When the old news started!"
+	^ '/home/scg/scg.unibe.ch/web/archive/phd/arevalo-phd.pdf'
 ]
 
 { #category : #constants }
@@ -112,15 +122,21 @@ CPWhatsNew >> children [
 { #category : #news }
 CPWhatsNew >> generateNewsItems [
 	| post |
+	
+	self flag: 'This should be run periodically as a sort of cron job.'.
+	
 	queryResult := self whatsNew.
-	queryResult bibList entries do: [: entry |
-		post := PBPost named: (TimeStamp now printYYMMDDHHSS: '-'), entry key asString.
-		post title: entry title;
+	queryResult bibList entries do: 
+		[ :entry | 
+		post := PBPost named: (TimeStamp now printYYMMDDHHSS: '-') , entry key asString.
+		post
+			title: (entry plainField: #title);
 			contents: entry pierContents;
 			publication: TimeStamp now;
 			author: self author.
-		self blog addChild: post.
-		]
+		self blog addChild: post ].
+	
+
 ]
 
 { #category : #initialization }
@@ -130,10 +146,20 @@ CPWhatsNew >> initialize [
 ]
 
 { #category : #initialization }
-CPWhatsNew >> initializeTimestamp [
+CPWhatsNew >> initializeBackTo2005 [
+	"for testing"
+	timestamp := (Rio new: self class gabyThesis) modificationTime.
+]
+
+{ #category : #initialization }
+CPWhatsNew >> initializeBackToMarch2005 [
 	"for testing"
 	timestamp := (Rio new: self class evolvingObjects) modificationTime.
-	"timestamp := (Rio new: self class glamour) modificationTime."
+]
+
+{ #category : #initialization }
+CPWhatsNew >> initializeTimestamp [
+	timestamp := (Rio new: self class glamour) modificationTime.
 ]
 
 { #category : #testing }
@@ -155,16 +181,22 @@ CPWhatsNew >> renderContentOn: html [
 
 { #category : #seaside }
 CPWhatsNew >> renderFormOn: html [
+	html heading: 'Test interface (not for deployment)'.
 	html form: 
-		[ html submitButton
+		[
+		"html submitButton
 			text: 'update';
-			callback: [ queryResult := self whatsNew ].
+			callback: [ queryResult := self whatsNew ]."
 		html submitButton
 			text: 'generate news';
 			callback: [ self generateNewsItems ].
 		html submitButton
-			text: 'reset timeStamp';
-			callback: [ self initializeTimestamp. queryResult := nil ] ].
+			text: 'back to March 2009';
+			callback: [ self initializeBackToMarch2005. queryResult := nil ].
+		"html submitButton
+			text: 'back to 2005';
+			callback: [ self initializeBackTo2005. queryResult := nil ]"
+			].
 ]
 
 { #category : #initialization }

@@ -22,23 +22,6 @@ CPBibEntry class >> from: aString [
 
 ]
 
-{ #category : #pier }
-CPBibEntry >> abstract [
-	self flag: 'the rendere should do this ...'.
-	^ (self entry at: #abstract) value
-]
-
-{ #category : #pier }
-CPBibEntry >> author [
-	| stream phrase |
-	self flag: 'ugly -- we should ask the rendere to do this for us'.
-	phrase := BibPhraseLibrary author: (self entry at: #author).
-	stream := WriteStream on: String new.
-	phrase
-		do: [:each | stream nextPutAll: each text].
-	^ stream contents
-]
-
 { #category : #querying }
 CPBibEntry >> containsKeyword: aString [
 	^ self containsKeywords: (Array with: aString) caseSensitive: false
@@ -83,8 +66,24 @@ CPBibEntry >> matchesRegex: aRegex [
 ]
 
 { #category : #pier }
+CPBibEntry >> pierAbstract [
+	^ '!!Abstract', String cr,
+		(self pierField: #abstract)
+]
+
+{ #category : #pier }
 CPBibEntry >> pierContents [
-	^ (CPPierRenderer new render: self entry) contents
+	^ (CPPlainPierRenderer new render: self entry) contents, String cr, self pierAbstract
+]
+
+{ #category : #pier }
+CPBibEntry >> pierField: aFieldSelector [ 
+	^ ((CPPierRenderer forField: aFieldSelector) visit: self entry) contents
+]
+
+{ #category : #pier }
+CPBibEntry >> plainField: aFieldSelector [ 
+	^ ((CPPlainPierRenderer forField: aFieldSelector) visit: self entry) contents
 ]
 
 { #category : #rendering }
@@ -123,12 +122,6 @@ CPBibEntry >> renderSummaryOn: html [
 		on: Error
 		do: [html emphasis: Error description.
 			html preformatted: text]
-]
-
-{ #category : #pier }
-CPBibEntry >> title [
-	self flag: 'Clean up result -- translate tabs, CRs etc; the renderer should do this for us'.
-	^ (self entry at: #title) value
 ]
 
 { #category : #accessing }

@@ -34,3 +34,9 @@ CPMissingInfoQuerySpec >> requiredInfoRegex [
 CPMissingInfoQuerySpec >> requiredInfoRegex: aRegexString [
 	requiredInfoRegex := aRegexString
 ]
+
+{ #category : #'initialize-release' }
+CPMissingInfoQuerySpec >> setDefaults [
+	super setDefaults.
+	self requiredInfoRegex: self class defaultRequiredInfoRegex
+]

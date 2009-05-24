@@ -15,7 +15,7 @@ Class {
 CPBibTest class >> classNamesNotUnderTest [
 	^ #(
 	"Don't test rendering classes"
-	'CPBibFileView' 'CPHtmlRenderer' 'CPFixedQuery' 'CPQueryBox' 'CPWhatsNew'
+	'CPBibFileView' 'CPHtmlRenderer' 'CPFixedQuery' 'CPAuthorPage' 'CPMissingInfoPage' 'CPQueryBox' 'CPWhatsNew'
 	)
 ]
 
@@ -40,6 +40,7 @@ CPBibTest >> createBibFilePage [
 	| parent child |
 	parent := PRKernel instances anyOne root lookupPath: '/'.
 	child := CPBibFile named: self bibFilePageName.
+	child maxResults: CPQuerySpec defaultMaxResults.
 	child file: (MAReferenceFileModel fromRio: (Rio new: self bibFileName)).
 	parent addChild: child.
 	^ child
@@ -146,6 +147,19 @@ CPBibTest >> scgbibSample [
   Year	       = {2009}
 }
 
+
+@book{Huch05a,
+  Annote       = {editor proceedings},
+  Editor       = {Marianne Huchard and St\''ephane Ducasse and Oscar Nierstrasz},
+  Isbn	       = {2-7462-1125-4},
+  Keywords     = {book scglib stefPub},
+  Publisher    = {Lavoisier},
+  Series       = {L''objet},
+  Title	       = {Langages et Mod\`eles \`a Objets LMO''05},
+  Volume       = {11},
+  Year	       = {2005}
+}
+
 @phdthesis{Deri97a,
   Author       = {Luca Deri},
   Keywords     = {snf-none olit scg-pub skipdoi skip-abstract
@@ -174,7 +188,7 @@ CPBibTest >> scgbibSample [
   Author       = {Oscar Nierstrasz and Markus Gaelli},
   Keywords     = {scg-misc skipdoi petri nets etoys jb-none gaelli},
   Month	       = sep,
-  Note	       = {http://scg.unibe.ch/download/petitpetri},
+  Note	       = {\url{http://scg.unibe.ch/download/petitpetri}},
   Title	       = {Petit{Petri} --- A {Petri} Net Editor built with
                   {Etoys}},
   Url	       = {http://scg.unibe.ch/download/petitpetri},
@@ -293,6 +307,14 @@ CPBibTest >> tearDown [
 ]
 
 { #category : #running }
+CPBibTest >> testAuthorQuery [
+	| query result |
+	query := CPAuthorQuerySpec default bibFile: testPage; queryString: 'Ducasse'; authorRegex: 'Ducasse'.
+	result := query queryResult.
+	self assert: result size = 2
+]
+
+{ #category : #running }
 CPBibTest >> testBibFileExpiry [
 	| oldTimestamp |
 	self assert: testPage isExpired not.
@@ -308,7 +330,8 @@ CPBibTest >> testBibFileExpiry [
 
 { #category : #running }
 CPBibTest >> testBibListSize [
-	self assert: testPage bibList size = 7
+	self assert: testPage invariant.
+	self assert: testPage bibList size = 8
 ]
 
 { #category : #running }
@@ -327,6 +350,16 @@ CPBibTest >> testExtractTheses [
 	extracted := testResult bibList extractSatisfying: [:entry | entry type = #mastersthesis or: [entry type = #phdthesis]]. 
 	self assert: extracted size = 2.
 	self assert: (extracted entries collect: [:each | each key]) asSet = #(Deri97a Reng06a) asSet.
+]
+
+{ #category : #running }
+CPBibTest >> testHighLightedUrl [
+	| entry |
+	entry := (testPage query: 'PetitPetri') bibList entries first.
+	self assert: entry key = 'PetitPetri'.
+	"Not very pretty, but this is what we get:"
+	self assert: (entry plainField: #note) = '\urlhttp://scg.unibe.ch/download/petitpetri'.
+	self assert: ((entry pierField: #note) includes: $*).
 ]
 
 { #category : #running }
@@ -352,12 +385,31 @@ CPBibTest >> testMaxResults [
 ]
 
 { #category : #running }
+CPBibTest >> testMissingInfo [
+	| query result |
+	query := CPMissingInfoQuerySpec default bibFile: testPage; queryString: 'Acherman'; requiredInfoRegex: 'abstract\s+='.
+	result := query queryResult.
+	self assert: result size = 1
+]
+
+{ #category : #running }
 CPBibTest >> testOperators [
 	| all some |
 	all := self queryMatchingAll bibList.
 	some := (testPage query: 'scg-pub oscar') bibList.
 	self assert: ((all - some) size + some size) = all size.
 	self assert: (((all - some) + some) size) = all size.
+]
+
+{ #category : #running }
+CPBibTest >> testPierFields [
+	| entry |
+	entry := (testPage query: 'Bung09a') bibList entries first.
+	self assert: entry key = 'Bung09a'.
+	self assert: (entry plainField: #title) = 'Scripting Browsers with Glamour'.
+	self assert: ((entry pierField: #title) includes: $*).
+	self assert: (entry pierAbstract beginsWith: '!!').
+	self assert: (entry pierContents indexOfSubCollection: '!!' startingAt: 0) > 0.
 ]
 
 { #category : #running }
