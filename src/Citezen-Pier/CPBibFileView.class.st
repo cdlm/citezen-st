@@ -63,7 +63,7 @@ CPBibFileView >> queryString: aString [
 
 { #category : #rendering }
 CPBibFileView >> renderContentOn: html [ 
-	bibFile isValid
+	bibFile invariant
 		ifTrue: [self renderQueryOn: html.
 			self renderQueryResultOn: html]
 		ifFalse: [self renderErrorOn: html]
@@ -80,7 +80,7 @@ CPBibFileView >> renderDebugInfoOn: html [
 
 { #category : #rendering }
 CPBibFileView >> renderErrorOn: html [
-	html heading: 'Invalid bibtex file'.
+	html heading: 'Invalid configuration'.
 	html text: bibFile errorString.
 
 ]

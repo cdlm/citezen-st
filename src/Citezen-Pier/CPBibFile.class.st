@@ -55,6 +55,11 @@ CPBibFile class >> isAbstract [
 ]
 
 { #category : #accessing }
+CPBibFile class >> singleInstanceOrNil [
+	^ self allInstances ifNotEmptyDo: [: all | all size = 1 ifTrue: [all first]].
+]
+
+{ #category : #accessing }
 CPBibFile >> bibList [
 	self isExpired ifTrue: [ self loadBibList ].
 	^ bibList
@@ -85,6 +90,11 @@ CPBibFile >> initialize [
 ]
 
 { #category : #testing }
+CPBibFile >> invariant [
+	^ self file notNil and: [self maxResults isInteger] and: [self isValid]
+]
+
+{ #category : #testing }
 CPBibFile >> isExpired [
 	^ self isValid and: [file modificationTime > timestamp]
 ]
@@ -92,7 +102,6 @@ CPBibFile >> isExpired [
 { #category : #testing }
 CPBibFile >> isValid [
 	^ bibList notNil
-
 ]
 
 { #category : #loading }

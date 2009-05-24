@@ -42,6 +42,7 @@ CPWhatsNew class >> descriptionBibFile [
 		accessor: #bibFile;
 		label: 'Bib File';
 		priority: 10;
+		default: CPBibFile singleInstanceOrNil;
 		beEditable;
 		beRequired;
 		yourself
@@ -55,6 +56,7 @@ CPWhatsNew class >> descriptionBlog [
 		accessor: #blog;
 		label: 'Blog';
 		priority: 20;
+		default: (PBBlog allInstances ifNotEmptyDo: [: all | all size = 1 ifTrue: [all first]]);
 		beEditable;
 		beRequired;
 		yourself
@@ -87,7 +89,7 @@ CPWhatsNew class >> label [
 	^ 'What''s new blog'
 ]
 
-{ #category : #news }
+{ #category : #accessing }
 CPWhatsNew >> author [
 	^ self read: #descriptionAuthor
 ]
@@ -97,7 +99,7 @@ CPWhatsNew >> bibFile [
 	^ self read: #descriptionBibFile
 ]
 
-{ #category : #news }
+{ #category : #accessing }
 CPWhatsNew >> blog [
 	^ self read: #descriptionBlog
 ]
@@ -114,15 +116,9 @@ CPWhatsNew >> generateNewsItems [
 	queryResult bibList entries do: [: entry |
 		post := PBPost named: (TimeStamp now printYYMMDDHHSS: '-'), entry key asString.
 		post title: entry title;
-			contents: '!!Authors
-',
-			entry author, '
-!!Abstract
-',
-			entry abstract;
+			contents: entry pierContents;
 			publication: TimeStamp now;
 			author: self author.
-		self flag: 'Add abstract and url to bibquery result'.
 		self blog addChild: post.
 		]
 ]
@@ -140,9 +136,25 @@ CPWhatsNew >> initializeTimestamp [
 	"timestamp := (Rio new: self class glamour) modificationTime."
 ]
 
+{ #category : #testing }
+CPWhatsNew >> invariant [
+	^ self bibFile notNil and: [self blog notNil] and: [self author notEmpty]
+]
+
 { #category : #seaside }
 CPWhatsNew >> renderContentOn: html [
 	html paragraph: [ html text: 'Last timestamp: ', timestamp printString ].
+	self invariant
+		ifTrue: [
+			self renderFormOn: html.
+			queryResult ifNotNil: [ html render: queryResult ]]
+		ifFalse: [
+			html paragraph: [html strong: 'Required fields undefined. Please edit and and save.']]
+	
+]
+
+{ #category : #seaside }
+CPWhatsNew >> renderFormOn: html [
 	html form: 
 		[ html submitButton
 			text: 'update';
@@ -153,8 +165,6 @@ CPWhatsNew >> renderContentOn: html [
 		html submitButton
 			text: 'reset timeStamp';
 			callback: [ self initializeTimestamp. queryResult := nil ] ].
-	queryResult ifNotNil: [ html render: queryResult ].
-	
 ]
 
 { #category : #initialization }

@@ -25,6 +25,7 @@ CPFixedQuery class >> descriptionBibFile [
 		accessor: #bibFile;
 		label: 'Bib File';
 		priority: 10;
+		default: CPBibFile singleInstanceOrNil;
 		beEditable;
 		beRequired;
 		yourself
@@ -150,8 +151,7 @@ CPFixedQuery >> queryResult [
 ]
 
 { #category : #rendering }
-CPFixedQuery >> renderContentOn: html [ 
-
+CPFixedQuery >> renderContentOn: html [
 	self queryResult
 		ifNil: [self renderErrorOn: html]
 		ifNotNil: [self renderQueryOn: html]

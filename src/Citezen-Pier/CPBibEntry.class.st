@@ -22,16 +22,16 @@ CPBibEntry class >> from: aString [
 
 ]
 
-{ #category : #accessing }
+{ #category : #pier }
 CPBibEntry >> abstract [
+	self flag: 'the rendere should do this ...'.
 	^ (self entry at: #abstract) value
 ]
 
-{ #category : #accessing }
+{ #category : #pier }
 CPBibEntry >> author [
-	"^ (self entry at: #author) value"
-	"^ BibPhraseLibrary author: (self entry at: #author)"
 	| stream phrase |
+	self flag: 'ugly -- we should ask the rendere to do this for us'.
 	phrase := BibPhraseLibrary author: (self entry at: #author).
 	stream := WriteStream on: String new.
 	phrase
@@ -82,6 +82,11 @@ CPBibEntry >> matchesRegex: aRegex [
 	^ aRegex search: text
 ]
 
+{ #category : #pier }
+CPBibEntry >> pierContents [
+	^ (CPPierRenderer new render: self entry) contents
+]
+
 { #category : #rendering }
 CPBibEntry >> printOn: aStream [
 	<ignoreForCoverage>
@@ -120,9 +125,9 @@ CPBibEntry >> renderSummaryOn: html [
 			html preformatted: text]
 ]
 
-{ #category : #accessing }
+{ #category : #pier }
 CPBibEntry >> title [
-	self flag: 'Clean up result -- translate tabs, CRs etc'.
+	self flag: 'Clean up result -- translate tabs, CRs etc; the renderer should do this for us'.
 	^ (self entry at: #title) value
 ]
 

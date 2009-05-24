@@ -15,6 +15,7 @@ CPQueryBox class >> descriptionBibFile [
 		accessor: #bibFile;
 		label: 'Bib File';
 		priority: 10;
+		default: CPBibFile singleInstanceOrNil;
 		beEditable;
 		beRequired;
 		yourself

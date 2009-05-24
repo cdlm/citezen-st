@@ -181,15 +181,6 @@ CPHtmlRenderer >> text: aString [
 ]
 
 { #category : #'visiting-bibsets' }
-CPHtmlRenderer >> visitBibSet: aBibSet [
-	aBibSet do: [:each |
-		self html listItem
-			class: 'entry';
-			with: [self visit: each]
-	]
-]
-
-{ #category : #'visiting-bibsets' }
 CPHtmlRenderer >> visitEntry: anEntry [
 	self html anchor name: anEntry key.
 	super visitEntry: anEntry
@@ -220,7 +211,7 @@ CPHtmlRenderer >> visitFieldRef: aFieldRef [
 ]
 
 { #category : #'visiting-phrases' }
-CPHtmlRenderer >> visitNamedPhrase: aPhrase [ 
+CPHtmlRenderer >> visitNamedPhrase: aPhrase [
 	self html span
 		class: aPhrase name;
 		with: [super visitNamedPhrase: aPhrase]

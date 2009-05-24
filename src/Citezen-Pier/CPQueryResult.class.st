@@ -94,7 +94,6 @@ CPQueryResult >> renderByCategoryOn: html [
 	tooldemos := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'tooldemo' ].
 	self renderSubList: conferencepapers named: 'Refereed Papers in International Conferences' on: html.
 	self renderSubList: inproceedings named: 'Refereed Papers in International Workshops' on: html.
-	"self renderSubList: tooldemos named: 'Tool demos' on: html."
 
 	extracted := papers extractType: #incollection.
 	self renderSubList: extracted named: 'Book Chapters' on: html.
@@ -108,16 +107,10 @@ CPQueryResult >> renderByCategoryOn: html [
 	" #misc # #booklet  #inbook #manual #unpublished"
 	self renderSubList: papers named: 'Other publications' on: html.
 	
+	"self renderSubList: tooldemos named: 'Tool demos' on: html."
 	"self renderSubList: drafts named: 'Drafts' on: html."
 
 	self renderTruncatedOn: html
-
-
-	"[ edited := papers extractSatisfying: [ :entry |
-		(entry matchesRegex: ('author\s*=') asRegexIgnoringCase) not ]]
-		on: Error
-		do: [].
-	edited ifNotNil: [self renderSubList: edited named: 'Edited Volumes' on: html]."
 
 ]
 

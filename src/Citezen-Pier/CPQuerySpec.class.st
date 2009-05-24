@@ -30,47 +30,47 @@ Class {
 	#category : #'Citezen-Pier'
 }
 
-{ #category : #'instance creation' }
+{ #category : #defaults }
 CPQuerySpec class >> default [
 	^ self new setDefaults
 ]
 
-{ #category : #'instance creation' }
+{ #category : #defaults }
 CPQuerySpec class >> defaultCaseSensitive [
 	^ false
 ]
 
-{ #category : #'instance creation' }
+{ #category : #defaults }
 CPQuerySpec class >> defaultDisplay [
 	^ #summary
 ]
 
-{ #category : #'instance creation' }
+{ #category : #defaults }
 CPQuerySpec class >> defaultHideControls [
 	^ false
 ]
 
-{ #category : #'instance creation' }
+{ #category : #defaults }
 CPQuerySpec class >> defaultMaxResults [
 	^ 500
 ]
 
-{ #category : #'instance creation' }
+{ #category : #defaults }
 CPQuerySpec class >> defaultQueryString [
 	^ ''
 ]
 
-{ #category : #'instance creation' }
+{ #category : #defaults }
 CPQuerySpec class >> defaultSortBy [
 	^ #author
 ]
 
-{ #category : #'instance creation' }
+{ #category : #values }
 CPQuerySpec class >> displayList [
 	^ #(summary abstract bibtex)
 ]
 
-{ #category : #'instance creation' }
+{ #category : #values }
 CPQuerySpec class >> sortList [
 	^ #(author year category)
 ]
