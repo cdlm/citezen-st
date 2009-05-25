@@ -92,13 +92,12 @@ CPBibFileView >> renderQueryOn: html [
 				paragraph: [html
 						form: [html strong: 'Query: '.
 							html textInput on: #queryString of: querySpec.
-							html submitButton text: 'search';
-								callback: [self processQuery].
+							html submitButton text: 'search'.
 							html break; text: 'case sensitive'.
 							html checkbox on: #caseSensitive of: querySpec;
-								submitOnClick]]]
+								submitOnClick.
+							html hiddenInput callback: [: val | self processQuery]]]]
 
-	"Why does submitOnClick not work for the caseSensitive checkbox?"
 ]
 
 { #category : #rendering }
