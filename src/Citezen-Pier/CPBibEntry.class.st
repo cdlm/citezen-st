@@ -73,7 +73,7 @@ CPBibEntry >> pierAbstract [
 
 { #category : #pier }
 CPBibEntry >> pierContents [
-	^ (CPPlainPierRenderer new render: self entry) contents, String cr, self pierAbstract
+	^ (CPPierRenderer new render: self entry) contents, String cr, self pierAbstract
 ]
 
 { #category : #pier }
