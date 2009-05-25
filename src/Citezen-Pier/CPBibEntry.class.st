@@ -67,8 +67,9 @@ CPBibEntry >> matchesRegex: aRegex [
 
 { #category : #pier }
 CPBibEntry >> pierAbstract [
-	^ '!!Abstract', String cr,
-		(self pierField: #abstract)
+	^ (self entry hasField: #abstract)
+		ifTrue: ['!!Abstract', String cr, (self pierField: #abstract)]
+		ifFalse: ['']
 ]
 
 { #category : #pier }
