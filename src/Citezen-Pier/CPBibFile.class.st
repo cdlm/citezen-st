@@ -20,6 +20,12 @@ Class {
 	#category : #'Citezen-Pier'
 }
 
+{ #category : #accessing }
+CPBibFile class >> defaultFile [
+	^ MAReferenceFileModel
+		fromRio: (Rio new: '/home/scg/scgbib/scg.bib')
+]
+
 { #category : #'accessing-description' }
 CPBibFile class >> descriptionFile [
 	<ignoreForCoverage>
@@ -29,6 +35,7 @@ CPBibFile class >> descriptionFile [
 		kind: MAReferenceFileModel;
 		selectorAccessor: #file;
 		label: 'BibTeX File';
+		default: self defaultFile;
 		beEditable;
 		yourself
 ]

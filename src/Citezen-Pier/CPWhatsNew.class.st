@@ -23,6 +23,12 @@ CPWhatsNew class >> archiveDir [
 	^ '/home/scg/scg.unibe.ch/web/archive'
 ]
 
+{ #category : #nil }
+CPWhatsNew class >> defaultTimeStampFile [
+	^ MAReferenceFileModel
+		fromRio: (Rio new: '/home/scg/scg.unibe.ch/web/archive/papers/Deza08bEvolvingObjects.pdf')
+]
+
 { #category : #accessing }
 CPWhatsNew class >> descriptionAuthor [
 	<ignoreForCoverage>
@@ -75,27 +81,10 @@ CPWhatsNew class >> descriptionTimeStampFile [
 		kind: MAReferenceFileModel;
 		selectorAccessor: #file;
 		label: 'Initial timestamp File';
+		default: self defaultTimeStampFile;
 		beEditable;
 		beRequired;
 		yourself
-]
-
-{ #category : #constants }
-CPWhatsNew class >> evolvingObjects [
-	"March 2009"
-	^ '/home/scg/scg.unibe.ch/web/archive/papers/Deza08bEvolvingObjects.pdf'
-]
-
-{ #category : #constants }
-CPWhatsNew class >> gabyThesis [
-	"When the old news started!"
-	^ '/home/scg/scg.unibe.ch/web/archive/phd/arevalo-phd.pdf'
-]
-
-{ #category : #constants }
-CPWhatsNew class >> glamour [
-	"The last pdf added to the old feed"
-	^ '/home/scg/scg.unibe.ch/web/archive/masters/Bung09a.pdf'
 ]
 
 { #category : #accessing }
@@ -159,25 +148,17 @@ CPWhatsNew >> initialize [
 ]
 
 { #category : #initialization }
-CPWhatsNew >> initializeBackTo2005 [
-	"for testing"
-	timestamp := (Rio new: self class gabyThesis) modificationTime.
-]
-
-{ #category : #initialization }
-CPWhatsNew >> initializeBackToMarch2005 [
-	"for testing"
-	timestamp := (Rio new: self class evolvingObjects) modificationTime.
-]
-
-{ #category : #initialization }
 CPWhatsNew >> initializeTimestamp [
 	timestamp ifNil: [timestamp := self timestampFile modificationTime]
 ]
 
 { #category : #testing }
 CPWhatsNew >> invariant [
-	^ self bibFile notNil and: [self timestampFile exists] and: [self blog notNil] and: [self author notEmpty]
+	^ self bibFile notNil
+		and: [self timestampFile notNil]
+		and: [self timestampFile exists]
+		and: [self blog notNil]
+		and: [self author notEmpty]
 ]
 
 { #category : #seaside }
@@ -195,7 +176,6 @@ CPWhatsNew >> renderContentOn: html [
 
 { #category : #seaside }
 CPWhatsNew >> renderFormOn: html [
-	html heading: 'Test interface (not for deployment)'.
 	html form: 
 		[
 		"html submitButton
