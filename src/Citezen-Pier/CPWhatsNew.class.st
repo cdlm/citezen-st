@@ -15,6 +15,9 @@ Class {
 		'modificationTime',
 		'queryResult'
 	],
+	#classVars : [
+		'WhatsNewTimeStamp'
+	],
 	#category : #'Citezen-Pier'
 }
 
@@ -25,8 +28,10 @@ CPWhatsNew class >> archiveDir [
 
 { #category : #nil }
 CPWhatsNew class >> defaultTimeStampFile [
-	^ MAReferenceFileModel
-		fromRio: (Rio new: '/home/scg/scg.unibe.ch/web/archive/papers/Deza08bEvolvingObjects.pdf')
+	^ WhatsNewTimeStamp
+		ifNil:
+			[WhatsNewTimeStamp := MAReferenceFileModel
+				fromRio: (Rio new: '/home/scg/scg.unibe.ch/web/archive/papers/Deza08bEvolvingObjects.pdf')]
 ]
 
 { #category : #accessing }
