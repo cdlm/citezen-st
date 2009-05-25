@@ -28,10 +28,8 @@ CPWhatsNew class >> archiveDir [
 
 { #category : #nil }
 CPWhatsNew class >> defaultTimeStampFile [
-	^ WhatsNewTimeStamp
-		ifNil:
-			[WhatsNewTimeStamp := MAReferenceFileModel
-				fromRio: (Rio new: '/home/scg/scg.unibe.ch/web/archive/papers/Deza08bEvolvingObjects.pdf')]
+	^ MAReferenceFileModel
+		fromRio: (Rio new: '/home/scg/scg.unibe.ch/web/archive/papers/Deza08bEvolvingObjects.pdf')
 ]
 
 { #category : #accessing }
@@ -152,11 +150,6 @@ CPWhatsNew >> initialize [
 	super initialize.
 ]
 
-{ #category : #initialization }
-CPWhatsNew >> initializeTimestamp [
-	timestamp ifNil: [timestamp := self timestampFile modificationTime]
-]
-
 { #category : #testing }
 CPWhatsNew >> invariant [
 	^ self bibFile notNil
@@ -170,8 +163,7 @@ CPWhatsNew >> invariant [
 CPWhatsNew >> renderContentOn: html [
 	self invariant
 		ifTrue: [
-			self initializeTimestamp.
-			html paragraph: [ html text: 'Last timestamp: ', timestamp printString ].
+			html paragraph: [ html text: 'Last timestamp: ', self timestamp printString ].
 			self renderFormOn: html.
 			queryResult ifNotNil: [ html render: queryResult ]]
 		ifFalse: [
@@ -198,6 +190,12 @@ CPWhatsNew >> renderFormOn: html [
 			].
 ]
 
+{ #category : #initialization }
+CPWhatsNew >> timestamp [
+	^ WhatsNewTimeStamp ifNil:
+		[ WhatsNewTimeStamp := self timestampFile modificationTime ]
+]
+
 { #category : #accessing }
 CPWhatsNew >> timestampFile [
 	^ Rio new: (self read: #descriptionTimeStampFile) filePath
@@ -205,13 +203,13 @@ CPWhatsNew >> timestampFile [
 
 { #category : #initialization }
 CPWhatsNew >> updateTimestamp [
-	timestamp := TimeStamp now.
+	WhatsNewTimeStamp := TimeStamp now.
 ]
 
 { #category : #evaluation }
 CPWhatsNew >> whatsNew [
 	| lastTimestamp pdfs newFilenames entries |
-	lastTimestamp := timestamp.
+	lastTimestamp := self timestamp.
 	self updateTimestamp.
 	pdfs := (Rio new: self class archiveDir) beRecursive select: 
 		[ :pdf |  pdf isFile 
