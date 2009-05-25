@@ -26,6 +26,8 @@ CZLoader class >> loadCitezen [
 { #category : #load }
 CZLoader class >> loadCitezenPier [
 	self loadPierRequirements.
+	Installer ss project: 'Pharo';
+		install: 'Collections-Unordered'.
 	Installer ss project: 'SplitJoin';
 		 install: 'SplitJoin'.
 	Installer ss project: 'Citezen';
