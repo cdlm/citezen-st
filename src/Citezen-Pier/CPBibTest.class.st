@@ -38,7 +38,7 @@ CPBibTest >> bibFilePageName [
 CPBibTest >> createBibFilePage [
 	"self new createBibFilePage"
 	| parent child |
-	parent := PRKernel instances anyOne root lookupPath: '/'.
+	parent := PRKernel defaultRoot.
 	child := CPBibFile named: self bibFilePageName.
 	child maxResults: CPQuerySpec defaultMaxResults.
 	child file: (MAReferenceFileModel fromRio: (Rio new: self bibFileName)).
@@ -52,14 +52,6 @@ CPBibTest >> createTestBibFile [
 	(FileDirectory default newFileNamed: self bibFileName)
 		nextPutAll: (self scgbibSample copyReplaceAll: String cr with: String lf);
 		close
-]
-
-{ #category : #'test data' }
-CPBibTest >> deleteBibFilePage [
-	"self new deleteBibFilePage"
-	| child |
-	child := PRKernel instances anyOne root lookupPath: '/', self bibFilePageName.
-	child remove
 ]
 
 { #category : #'test data' }
@@ -302,8 +294,7 @@ CPBibTest >> setUp [
 { #category : #'test data' }
 CPBibTest >> tearDown [
 	"self new tearDown"
-	self deleteTestBibFile.
-	self deleteBibFilePage
+	self deleteTestBibFile
 ]
 
 { #category : #running }
