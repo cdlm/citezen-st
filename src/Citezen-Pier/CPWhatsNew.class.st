@@ -163,9 +163,9 @@ CPWhatsNew >> invariant [
 
 { #category : #seaside }
 CPWhatsNew >> renderContentOn: html [
-	html paragraph: [ html text: 'Last timestamp: ', timestamp printString ].
 	self invariant
 		ifTrue: [
+			html paragraph: [ html text: 'Last timestamp: ', timestamp printString ].
 			self initializeTimestamp.
 			self renderFormOn: html.
 			queryResult ifNotNil: [ html render: queryResult ]]
