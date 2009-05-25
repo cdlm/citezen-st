@@ -131,7 +131,7 @@ CPWhatsNew >> generateNewsItems [
 	queryResult := self whatsNew.
 	queryResult bibList entries do: 
 		[ :entry | 
-		post := PBPost named: (TimeStamp now printYYMMDDHHSS: '-') , entry key asString.
+		post := PBPost named: (TimeStamp now asSortableString) , entry key asString.
 		post
 			title: (entry plainField: #title);
 			contents: entry pierContents;
@@ -165,8 +165,8 @@ CPWhatsNew >> invariant [
 CPWhatsNew >> renderContentOn: html [
 	self invariant
 		ifTrue: [
-			html paragraph: [ html text: 'Last timestamp: ', timestamp printString ].
 			self initializeTimestamp.
+			html paragraph: [ html text: 'Last timestamp: ', timestamp printString ].
 			self renderFormOn: html.
 			queryResult ifNotNil: [ html render: queryResult ]]
 		ifFalse: [
