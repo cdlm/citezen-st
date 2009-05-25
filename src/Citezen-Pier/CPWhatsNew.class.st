@@ -31,7 +31,7 @@ CPWhatsNew class >> descriptionAuthor [
 		parameterName: 'author';
 		accessor: #author;
 		label: 'Author';
-		priority: 30;
+		priority: 40;
 		default: '';
 		beEditable;
 		beRequired;
@@ -61,6 +61,20 @@ CPWhatsNew class >> descriptionBlog [
 		label: 'Blog';
 		priority: 20;
 		default: (PBBlog allInstances ifNotEmptyDo: [: all | all size = 1 ifTrue: [all first]]);
+		beEditable;
+		beRequired;
+		yourself
+]
+
+{ #category : #accessing }
+CPWhatsNew class >> descriptionTimeStampFile [
+	<ignoreForCoverage>
+	^ MAFileDescription new
+		componentClass: MAServerFileChooserComponent;
+		priority: 30;
+		kind: MAReferenceFileModel;
+		selectorAccessor: #file;
+		label: 'Initial timestamp File';
 		beEditable;
 		beRequired;
 		yourself
@@ -142,7 +156,6 @@ CPWhatsNew >> generateNewsItems [
 { #category : #initialization }
 CPWhatsNew >> initialize [
 	super initialize.
-	self initializeTimestamp.
 ]
 
 { #category : #initialization }
@@ -159,12 +172,12 @@ CPWhatsNew >> initializeBackToMarch2005 [
 
 { #category : #initialization }
 CPWhatsNew >> initializeTimestamp [
-	timestamp := (Rio new: self class glamour) modificationTime.
+	timestamp ifNil: [timestamp := self timestampFile modificationTime]
 ]
 
 { #category : #testing }
 CPWhatsNew >> invariant [
-	^ self bibFile notNil and: [self blog notNil] and: [self author notEmpty]
+	^ self bibFile notNil and: [self timestampFile exists] and: [self blog notNil] and: [self author notEmpty]
 ]
 
 { #category : #seaside }
@@ -172,6 +185,7 @@ CPWhatsNew >> renderContentOn: html [
 	html paragraph: [ html text: 'Last timestamp: ', timestamp printString ].
 	self invariant
 		ifTrue: [
+			self initializeTimestamp.
 			self renderFormOn: html.
 			queryResult ifNotNil: [ html render: queryResult ]]
 		ifFalse: [
@@ -190,13 +204,18 @@ CPWhatsNew >> renderFormOn: html [
 		html submitButton
 			text: 'generate news';
 			callback: [ self generateNewsItems ].
-		html submitButton
+		"html submitButton
 			text: 'back to March 2009';
-			callback: [ self initializeBackToMarch2005. queryResult := nil ].
+			callback: [ self initializeBackToMarch2005. queryResult := nil ]."
 		"html submitButton
 			text: 'back to 2005';
 			callback: [ self initializeBackTo2005. queryResult := nil ]"
 			].
+]
+
+{ #category : #accessing }
+CPWhatsNew >> timestampFile [
+	^ Rio new: (self read: #descriptionTimeStampFile) filePath
 ]
 
 { #category : #initialization }
