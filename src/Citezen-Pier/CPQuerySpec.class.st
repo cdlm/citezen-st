@@ -176,7 +176,7 @@ CPQuerySpec >> regex [
 
 { #category : #private }
 CPQuerySpec >> regexChars [
-	^ '[]*?\'
+	^ '|[]*?\'
 ]
 
 { #category : #'initialize-release' }
