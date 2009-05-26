@@ -145,6 +145,12 @@ CPFixedQuery >> initialize [
 	errorString := self initialError
 ]
 
+{ #category : #initialization }
+CPFixedQuery >> initializeOwner: aStructure link: anInternalLink [
+	super initializeOwner: aStructure link: anInternalLink.
+	self updateQuerySpec
+]
+
 { #category : #accessing }
 CPFixedQuery >> queryResult [
 	^ queryResult
@@ -152,7 +158,7 @@ CPFixedQuery >> queryResult [
 
 { #category : #rendering }
 CPFixedQuery >> renderContentOn: html [
-	self updateQuerySpec.
+	"self updateQuerySpec."
 	self queryResult
 		ifNil: [self renderErrorOn: html]
 		ifNotNil: [self renderQueryOn: html]
