@@ -104,7 +104,17 @@ CPBibEntry >> renderAbstractOn: html [
 ]
 
 { #category : #rendering }
-CPBibEntry >> renderBibtexOn: html [ 
+CPBibEntry >> renderAbstractOn: html for: aQueryResult [
+	<ignoreForCoverage>
+	self renderSummaryOn: html for: aQueryResult.
+	(self entry hasField: 'abstract')
+		ifTrue: [html break.
+			html strong: 'Abstract'.
+			html paragraph: [html emphasis: (self entry at: 'abstract') value]]
+]
+
+{ #category : #rendering }
+CPBibEntry >> renderBibtexOn: html [
 	<ignoreForCoverage>
 	html preformatted: text
 ]
@@ -116,10 +126,27 @@ CPBibEntry >> renderOn: html [
 ]
 
 { #category : #rendering }
+CPBibEntry >> renderOn: html for: aQueryResult [
+	<ignoreForCoverage>
+	self renderSummaryOn: html for: aQueryResult
+]
+
+{ #category : #rendering }
 CPBibEntry >> renderSummaryOn: html [ 
 	<ignoreForCoverage>
 	[(CPHtmlRenderer html: html) library: BibPhraseLibrary default;
 		 render: self entry]
+		on: Error
+		do: [html emphasis: Error description.
+			html preformatted: text]
+]
+
+{ #category : #rendering }
+CPBibEntry >> renderSummaryOn: html for: aQueryResult [
+	<ignoreForCoverage>
+	[(CPHtmlRenderer html: html) library: BibPhraseLibrary default;
+		render: self entry.
+		aQueryResult renderLinkTo: self on: html ]
 		on: Error
 		do: [html emphasis: Error description.
 			html preformatted: text]

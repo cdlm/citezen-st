@@ -179,12 +179,12 @@ CPQueryResult >> renderEntries: entries forYear: year on: html [
 ]
 
 { #category : #rendering }
-CPQueryResult >> renderEntry: entry on: html [ 
+CPQueryResult >> renderEntry: entry on: html [
 	<ignoreForCoverage>
 	querySpec display = #summary
-		ifTrue: [^ html render: entry].
+		ifTrue: [^ entry renderOn: html for: self].
 	querySpec display = #abstract
-		ifTrue: [^ entry renderAbstractOn: html].
+		ifTrue: [^ entry renderAbstractOn: html for: self].
 	querySpec display = #bibtex
 		ifTrue: [^ entry renderBibtexOn: html]
 ]
@@ -197,6 +197,21 @@ CPQueryResult >> renderHideControlsOn: html [
 		on: #hideControls
 			of: querySpec;
 		submitOnClick
+]
+
+{ #category : #rendering }
+CPQueryResult >> renderLinkTo: entry on: html [
+	<ignoreForCoverage>
+	"html space.
+	html anchor
+		url: self querySpec bibFile absolutePath, '?query=', self querySpec queryString;
+		with: 'bib'"
+	| newContext |
+	
+	newContext := self context structure: self querySpec bibFile.
+	newContext command viewComponent queryString: entry key.
+	html space.
+	html anchor goto: newContext; with: [html html: '&rarr;']	
 ]
 
 { #category : #rendering }

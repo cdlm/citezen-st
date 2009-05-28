@@ -37,21 +37,15 @@ CPQueryBox class >> label [
 ]
 
 { #category : #rendering }
-CPQueryBox >> query: queryString [
+CPQueryBox >> query: queryString [ 
 	| newContext |
 	newContext := self context structure: (self read: #descriptionBibFile).
-	
-	newContext command viewComponent queryString: queryString; processQuery.
-
-	self context: newContext 
+	newContext command viewComponent queryString: queryString.
+	self context: newContext
 ]
 
 { #category : #rendering }
 CPQueryBox >> renderContentOn: html [ 
-	html form: [
-		html textInput
-			callback: [: queryString |
-				self query: queryString
-				]
-		]
+	html form: [html textInput
+				callback: [:queryString | self query: queryString]]
 ]

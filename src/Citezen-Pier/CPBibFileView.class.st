@@ -41,7 +41,7 @@ CPBibFileView >> initialRequest: aRequest [
 	aRequest fields at: 'hideControls' ifPresent: [:val | querySpec hideControls: val = 'true' ].
 	aRequest fields at: 'maxResults' ifPresent: [:val | querySpec maxResults: val asNumber ].
 
-	aRequest fields at: 'query' ifPresent: [:val | querySpec queryString: val. self processQuery ]
+	aRequest fields at: 'query' ifPresent: [:val | self queryString: val ]
 ]
 
 { #category : #'initialize-release' }
@@ -50,15 +50,10 @@ CPBibFileView >> initialize [
 	querySpec := CPQuerySpec default
 ]
 
-{ #category : #querying }
-CPBibFileView >> processQuery [
-	queryResult := querySpec bibFile: bibFile; queryResult
-
-]
-
 { #category : #'as yet unclassified' }
 CPBibFileView >> queryString: aString [
-	querySpec queryString: aString
+	querySpec queryString: aString.
+	queryResult := nil
 ]
 
 { #category : #rendering }
@@ -96,16 +91,19 @@ CPBibFileView >> renderQueryOn: html [
 							html break; text: 'case sensitive'.
 							html checkbox on: #caseSensitive of: querySpec;
 								submitOnClick.
-							html hiddenInput callback: [: val | self processQuery]]]]
+							html hiddenInput callback: [: val | queryResult := nil ]
+							"html hiddenInput callback: [: val | self processQuery]"
+							]]]
 
 ]
 
 { #category : #rendering }
 CPBibFileView >> renderQueryResultOn: html [
-	queryResult ifNotNil: [ html render: queryResult ]
+	querySpec queryString notEmpty
+		ifTrue:
+			[queryResult ifNil: [queryResult := querySpec bibFile: bibFile; queryResult].
+			html render: queryResult.]
 
-	"TimeProfileBrowser spyOn: [html render: queryResult]"
-	
 ]
 
 { #category : #seaside }
