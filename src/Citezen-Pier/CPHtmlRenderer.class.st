@@ -161,6 +161,11 @@ CPHtmlRenderer >> contents [
 ]
 
 { #category : #accessing }
+CPHtmlRenderer >> currentEntryUrl [
+	^ ('\s+' asRegex split: (currentEntry at: #url) value) first
+]
+
+{ #category : #accessing }
 CPHtmlRenderer >> html [
 	^ html ifNil: [
 		html := WAStaticHtmlCanvas document:
@@ -195,7 +200,7 @@ CPHtmlRenderer >> visitFieldRef: aFieldRef [
 	(field key = #title and: [currentEntry hasField: #url])
 		ifTrue: [
 			self html anchor
-				url: (currentEntry at: #url) value;
+				url: self currentEntryUrl;
 				with: [self visit: format]]
 		ifFalse: [ 
 			re := '\\url\{([^}]*)}' asRegexIgnoringCase .

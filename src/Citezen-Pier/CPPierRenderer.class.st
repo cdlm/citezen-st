@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'visiting-phrases' }
+CPPierRenderer >> currentEntryUrl [
+	^ ('\s+' asRegex split: (currentEntry at: #url) value) first
+]
+
+{ #category : #'visiting-phrases' }
 CPPierRenderer >> highlightUrlInField: field for: format [
 	| re url |
 	re := '\\url\{([^}]*)}' asRegexIgnoringCase.
@@ -16,12 +21,12 @@ CPPierRenderer >> highlightUrlInField: field for: format [
 ]
 
 { #category : #'visiting-phrases' }
-CPPierRenderer >> linkFor: format [ 
+CPPierRenderer >> linkFor: format [
 	self
 		text: '*';
 		visit: format;
 		text: '>';
-		text: (currentEntry at: #url) value;
+		text: self currentEntryUrl;
 		text: '*'
 ]
 
