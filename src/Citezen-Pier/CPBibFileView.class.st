@@ -50,6 +50,14 @@ CPBibFileView >> initialize [
 	querySpec := CPQuerySpec default
 ]
 
+{ #category : #'initialize-release' }
+CPBibFileView >> initializeBibFileFrom: aContext [
+	bibFile ifNil:[
+		bibFile := aContext structure.
+		querySpec bibFile: bibFile.
+		querySpec maxResults: bibFile maxResults ]
+]
+
 { #category : #'as yet unclassified' }
 CPBibFileView >> queryString: aString [
 	querySpec queryString: aString.
@@ -101,7 +109,7 @@ CPBibFileView >> renderQueryOn: html [
 CPBibFileView >> renderQueryResultOn: html [
 	querySpec queryString notEmpty
 		ifTrue:
-			[queryResult ifNil: [queryResult := querySpec bibFile: bibFile; queryResult].
+			[queryResult ifNil: [queryResult := querySpec queryResult].
 			html render: queryResult.]
 
 ]
@@ -110,8 +118,7 @@ CPBibFileView >> renderQueryResultOn: html [
 CPBibFileView >> setContext: aContext [ 
 	super setContext: aContext.
 	(aContext structure isKindOf: CPBibFile)
-		ifTrue: [bibFile := aContext structure.
-			querySpec maxResults: bibFile maxResults]
+		ifTrue: [self initializeBibFileFrom: aContext]
 ]
 
 { #category : #seaside }
