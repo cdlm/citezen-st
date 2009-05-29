@@ -79,7 +79,9 @@ CPBibEntry >> pierContents [
 
 { #category : #pier }
 CPBibEntry >> pierContentsFor: aQueryResult [
-	^ (CPPierRenderer new render: self entry) contents, ' ', (aQueryResult pierLinkTo: entry), String cr, self pierAbstract
+	self flag: 'Here we want to include a link to the scgbib entry -- how?'.
+	^ (CPPierRenderer new render: self entry) contents, String cr, self pierAbstract
+	"^ (CPPierRenderer new render: self entry) contents, ' ', (aQueryResult pierLinkTo: entry), String cr, self pierAbstract"
 ]
 
 { #category : #pier }
