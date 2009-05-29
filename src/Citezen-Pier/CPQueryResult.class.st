@@ -49,7 +49,7 @@ CPQueryResult >> isExpired [
 
 { #category : #pier }
 CPQueryResult >> pierLinkTo: entry [
-	^ '*Details.>', self querySpec bibFile absolutePath, '?query=', entry key, '*'
+	^ '*Details.>', self querySpec bibFile absolutePath, '|query=', entry key, '*'
 ]
 
 { #category : #accessing }
