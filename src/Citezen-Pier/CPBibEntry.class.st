@@ -94,20 +94,10 @@ CPBibEntry >> printOn: aStream [
 ]
 
 { #category : #rendering }
-CPBibEntry >> renderAbstractOn: html [ 
-	<ignoreForCoverage>
-	self renderSummaryOn: html.
-	(self entry hasField: 'abstract')
-		ifTrue: [html break.
-			html strong: 'Abstract'.
-			html paragraph: [html emphasis: (self entry at: 'abstract') value]]
-]
-
-{ #category : #rendering }
 CPBibEntry >> renderAbstractOn: html for: aQueryResult [
 	<ignoreForCoverage>
 	self renderSummaryOn: html for: aQueryResult.
-	(self entry hasField: 'abstract')
+	(self entry hasField: #abstract)
 		ifTrue: [html break.
 			html strong: 'Abstract'.
 			html paragraph: [html emphasis: (self entry at: 'abstract') value]]
@@ -120,9 +110,11 @@ CPBibEntry >> renderBibtexOn: html [
 ]
 
 { #category : #rendering }
-CPBibEntry >> renderOn: html [ 
+CPBibEntry >> renderDoiOn: html [ 
 	<ignoreForCoverage>
-	self renderSummaryOn: html
+	(self entry hasField: #doi)
+		ifTrue: [ html space.
+			html anchor url: (self plainField: #doi); with: 'DOI' ]
 ]
 
 { #category : #rendering }
@@ -132,24 +124,32 @@ CPBibEntry >> renderOn: html for: aQueryResult [
 ]
 
 { #category : #rendering }
-CPBibEntry >> renderSummaryOn: html [ 
+CPBibEntry >> renderSummaryOn: html for: aQueryResult [
 	<ignoreForCoverage>
 	[(CPHtmlRenderer html: html) library: BibPhraseLibrary default;
-		 render: self entry]
+			render: self entry.
+			self renderDoiOn: html.
+			self renderUrlsOn: html.
+			aQueryResult renderLinkTo: self on: html ]
 		on: Error
 		do: [html emphasis: Error description.
 			html preformatted: text]
 ]
 
 { #category : #rendering }
-CPBibEntry >> renderSummaryOn: html for: aQueryResult [
+CPBibEntry >> renderUrlsOn: html [ 
 	<ignoreForCoverage>
-	[(CPHtmlRenderer html: html) library: BibPhraseLibrary default;
-		render: self entry.
-		aQueryResult renderLinkTo: self on: html ]
-		on: Error
-		do: [html emphasis: Error description.
-			html preformatted: text]
+	| urls anchor |
+	(self entry hasField: #url)
+		ifTrue: [
+			urls := '\s+' asRegex split: (self plainField: #url).
+			urls copyWithoutFirst do: [: each |
+				html space.
+				anchor := html anchor url: each.
+				(each endsWith: '.pdf')
+					ifTrue: [ anchor with: 'PDF']
+					ifFalse: [ anchor with: 'URL'] ] ]
+
 ]
 
 { #category : #accessing }
