@@ -47,6 +47,11 @@ CPQueryResult >> isExpired [
 	^ self querySpec bibFile isExpired or: [timestamp < querySpec bibFile timestamp]
 ]
 
+{ #category : #pier }
+CPQueryResult >> pierLinkTo: entry [
+	^ '*Details.>', self querySpec bibFile absolutePath, '?query=', entry key, '*'
+]
+
 { #category : #accessing }
 CPQueryResult >> querySpec [
 	^ querySpec

@@ -137,7 +137,7 @@ CPWhatsNew >> generateNewsItems [
 		post := PBPost named: (TimeStamp now asSortableString) , entry key asString.
 		post
 			title: (entry plainField: #title);
-			contents: entry pierContents;
+			contents: (entry pierContentsFor: queryResult);
 			publication: TimeStamp now;
 			author: self author.
 		self blog addChild: post ].
@@ -175,18 +175,12 @@ CPWhatsNew >> renderContentOn: html [
 CPWhatsNew >> renderFormOn: html [
 	html form: 
 		[
-		"html submitButton
-			text: 'update';
-			callback: [ queryResult := self whatsNew ]."
+		html submitButton
+			text: 'reset timestamp';
+			callback: [ WhatsNewTimeStamp := nil ].
 		html submitButton
 			text: 'generate news';
 			callback: [ self generateNewsItems ].
-		"html submitButton
-			text: 'back to March 2009';
-			callback: [ self initializeBackToMarch2005. queryResult := nil ]."
-		"html submitButton
-			text: 'back to 2005';
-			callback: [ self initializeBackTo2005. queryResult := nil ]"
 			].
 ]
 

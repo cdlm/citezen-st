@@ -78,6 +78,11 @@ CPBibEntry >> pierContents [
 ]
 
 { #category : #pier }
+CPBibEntry >> pierContentsFor: aQueryResult [
+	^ (CPPierRenderer new render: self entry) contents, ' ', (aQueryResult pierLinkTo: entry), String cr, self pierAbstract
+]
+
+{ #category : #pier }
 CPBibEntry >> pierField: aFieldSelector [ 
 	^ ((CPPierRenderer forField: aFieldSelector) visit: self entry) contents
 ]
@@ -114,7 +119,7 @@ CPBibEntry >> renderDoiOn: html [
 	<ignoreForCoverage>
 	(self entry hasField: #doi)
 		ifTrue: [ html space.
-			html anchor url: (self plainField: #doi); with: 'DOI' ]
+			html anchor url: 'http://dx.doi.org/', (self plainField: #doi); with: 'DOI' ]
 ]
 
 { #category : #rendering }
@@ -143,7 +148,7 @@ CPBibEntry >> renderUrlsOn: html [
 	(self entry hasField: #url)
 		ifTrue: [
 			urls := '\s+' asRegex split: (self plainField: #url).
-			urls copyWithoutFirst do: [: each |
+			urls do: [: each |
 				html space.
 				anchor := html anchor url: each.
 				(each endsWith: '.pdf')
