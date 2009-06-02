@@ -19,7 +19,21 @@ Class {
 	#category : #'Citezen-Pier'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing-description' }
+CPBibFileView class >> descriptionCaseSensitive [
+	<ignoreForCoverage>
+	^ MABooleanDescription new
+		comment: 'Queries are case sensitive';
+		parameterName: 'caseSensitive';
+		accessor: #caseSensitive;
+		label: 'Case sensitive';
+		priority: 30;
+		default: CPQuerySpec defaultCaseSensitive;
+		beEditable;
+		yourself
+]
+
+{ #category : #'accessing-description' }
 CPBibFileView class >> descriptionDisplay [
 	<ignoreForCoverage>
 	^ MASingleOptionDescription new
@@ -34,7 +48,21 @@ CPBibFileView class >> descriptionDisplay [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing-description' }
+CPBibFileView class >> descriptionHideControls [
+	<ignoreForCoverage>
+	^ MABooleanDescription new
+		comment: 'Hide display and sort controls';
+		parameterName: 'hideControls';
+		accessor: #hideControls;
+		label: 'Hide controls';
+		priority: 100;
+		default: CPQuerySpec defaultHideControls ;
+		beEditable;
+		yourself
+]
+
+{ #category : #'accessing-description' }
 CPBibFileView class >> descriptionQueryString [
 	<ignoreForCoverage>
 	^ MAStringDescription new
@@ -47,6 +75,27 @@ CPBibFileView class >> descriptionQueryString [
 		beEditable;
 		beOptional;
 		yourself
+]
+
+{ #category : #'accessing-description' }
+CPBibFileView class >> descriptionSortBy [
+	<ignoreForCoverage>
+	^ MASingleOptionDescription new
+		comment: 'How to sort the query results';
+		parameterName: 'sortBy';
+		accessor: #sortBy;
+		label: 'Sort by';
+		priority: 50;
+		options: CPQuerySpec sortList;
+		default: CPQuerySpec defaultSortBy  ;
+		beEditable;
+		yourself
+]
+
+{ #category : #accessing }
+CPBibFileView >> caseSensitive: aBoolean [
+	querySpec caseSensitive: aBoolean.
+	queryResult := nil
 ]
 
 { #category : #seaside }
@@ -63,6 +112,12 @@ CPBibFileView >> defaultSymbolFor: aSelector [
 { #category : #accessing }
 CPBibFileView >> display: displayType [
 	querySpec display: displayType.
+	queryResult := nil
+]
+
+{ #category : #accessing }
+CPBibFileView >> hideControls: aBoolean [
+	querySpec hideControls: aBoolean.
 	queryResult := nil
 ]
 
@@ -163,6 +218,12 @@ CPBibFileView >> setContext: aContext [
 		ifTrue: [self initializeBibFileFrom: aContext]
 ]
 
+{ #category : #accessing }
+CPBibFileView >> sortBy: sortType [
+	querySpec sortBy: sortType.
+	queryResult := nil
+]
+
 { #category : #seaside }
 CPBibFileView >> states [
 	^ Array with: querySpec
@@ -181,8 +242,13 @@ CPBibFileView >> updateIfNotDefault: paramSelector url: anUrl [
 { #category : #'initialize-release' }
 CPBibFileView >> updateQuerySpec [
 	querySpec queryString ~= (self read: #descriptionQueryString) ifTrue: 
-		[ self queryString: (self read: #descriptionQueryString) ].
+		[ self queryString: (self read: #descriptionQueryString) ].	
+	
+	querySpec caseSensitive: (self read: #descriptionCaseSensitive).
+	querySpec sortBy: (self read: #descriptionSortBy).
 	querySpec display: (self read: #descriptionDisplay).
+	querySpec hideControls: (self read: #descriptionHideControls).
+
 ]
 
 { #category : #seaside }
