@@ -47,12 +47,6 @@ CPQueryResult >> isExpired [
 	^ self querySpec bibFile isExpired or: [timestamp < querySpec bibFile timestamp]
 ]
 
-{ #category : #pier }
-CPQueryResult >> pierLinkTo: entry [
-	self flag: 'This does not work because a bibFile does not pick up its parameters'.
-	^ '*Details.>', self querySpec bibFile absolutePath, '|query=', entry key, '*'
-]
-
 { #category : #accessing }
 CPQueryResult >> querySpec [
 	^ querySpec

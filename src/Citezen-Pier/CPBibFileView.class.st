@@ -19,6 +19,21 @@ Class {
 	#category : #'Citezen-Pier'
 }
 
+{ #category : #'as yet unclassified' }
+CPBibFileView class >> descriptionQueryString [
+	<ignoreForCoverage>
+	^ MAStringDescription new
+		comment: 'The fixed query string';
+		parameterName: 'query';
+		accessor: #queryString;
+		label: 'Query';
+		priority: 20;
+		default: CPQuerySpec defaultQueryString;
+		beEditable;
+		beOptional;
+		yourself
+]
+
 { #category : #seaside }
 CPBibFileView >> children [
 	^ Array with: queryResult
@@ -58,7 +73,13 @@ CPBibFileView >> initializeBibFileFrom: aContext [
 		querySpec maxResults: bibFile maxResults ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'initialize-release' }
+CPBibFileView >> initializeOwner: aStructure link: anInternalLink [
+	super initializeOwner: aStructure link: anInternalLink.
+	self updateQuerySpec
+]
+
+{ #category : #accessing }
 CPBibFileView >> queryString: aString [
 	querySpec queryString: aString.
 	queryResult := nil
@@ -134,6 +155,12 @@ CPBibFileView >> updateIfNotDefault: paramSelector url: anUrl [
 		[ anUrl 
 			addParameter: paramSelector asString
 			value: paramValue ]
+]
+
+{ #category : #'initialize-release' }
+CPBibFileView >> updateQuerySpec [
+	querySpec queryString ~= (self read: #descriptionQueryString) ifTrue: 
+		[ self queryString: (self read: #descriptionQueryString) ].
 ]
 
 { #category : #seaside }

@@ -78,15 +78,20 @@ CPBibEntry >> pierContents [
 ]
 
 { #category : #pier }
-CPBibEntry >> pierContentsFor: aQueryResult [
-	self flag: 'Here we want to include a link to the scgbib entry -- how?'.
-	^ (CPPierRenderer new render: self entry) contents, String cr, self pierAbstract
-	"^ (CPPierRenderer new render: self entry) contents, ' ', (aQueryResult pierLinkTo: entry), String cr, self pierAbstract"
+CPBibEntry >> pierContentsFor: aQueryResult [ 
+	^ (CPPierRenderer new render: self entry) contents , ' ', 
+		(self pierLinkFor: aQueryResult),
+		self pierAbstract
 ]
 
 { #category : #pier }
 CPBibEntry >> pierField: aFieldSelector [ 
 	^ ((CPPierRenderer forField: aFieldSelector) visit: self entry) contents
+]
+
+{ #category : #pier }
+CPBibEntry >> pierLinkFor: aQueryResult [
+	^ '*Details.>', aQueryResult querySpec bibFile absolutePath, '|query=', self key, '*', String cr
 ]
 
 { #category : #pier }
