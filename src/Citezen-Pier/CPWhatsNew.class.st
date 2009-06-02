@@ -208,6 +208,7 @@ CPWhatsNew >> whatsNew [
 	pdfs := (Rio new: self class archiveDir) beRecursive select: 
 		[ :pdf |  pdf isFile 
 			and: [ pdf fileName endsWith: '.pdf' ]
+			and: [ (pdf parent asString endsWith: 'drafts') not ]
 			and: [ pdf modificationTime > lastTimestamp ] ].
 	newFilenames := pdfs collect: [ :pdf | pdf fileName ].
 	entries := self bibFile bibList entries select: 
