@@ -20,6 +20,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CPBibFileView class >> descriptionDisplay [
+	<ignoreForCoverage>
+	^ MASingleOptionDescription new
+		comment: 'How to display the entries';
+		parameterName: 'display';
+		accessor: #display;
+		label: 'Display';
+		priority: 60;
+		options: CPQuerySpec displayList;
+		default: CPQuerySpec defaultDisplay;
+		beEditable;
+		yourself
+]
+
+{ #category : #'as yet unclassified' }
 CPBibFileView class >> descriptionQueryString [
 	<ignoreForCoverage>
 	^ MAStringDescription new
@@ -43,6 +58,12 @@ CPBibFileView >> children [
 CPBibFileView >> defaultSymbolFor: aSelector [
 	"self new defaultSymbolFor: #hello"
 	^ ('default' , aSelector asString first asUppercase asString , aSelector asString allButFirst) asSymbol
+]
+
+{ #category : #accessing }
+CPBibFileView >> display: displayType [
+	querySpec display: displayType.
+	queryResult := nil
 ]
 
 { #category : #seaside }
@@ -161,6 +182,7 @@ CPBibFileView >> updateIfNotDefault: paramSelector url: anUrl [
 CPBibFileView >> updateQuerySpec [
 	querySpec queryString ~= (self read: #descriptionQueryString) ifTrue: 
 		[ self queryString: (self read: #descriptionQueryString) ].
+	querySpec display: (self read: #descriptionDisplay).
 ]
 
 { #category : #seaside }

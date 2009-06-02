@@ -53,8 +53,8 @@ CPFixedQuery class >> descriptionDisplay [
 		accessor: #display;
 		label: 'Display';
 		priority: 60;
-		options: CPQuerySpec displayList ;
-		default: CPQuerySpec defaultDisplay   ;
+		options: CPQuerySpec displayList;
+		default: CPQuerySpec defaultDisplay;
 		beEditable;
 		yourself
 ]

@@ -202,14 +202,10 @@ CPQueryResult >> renderHideControlsOn: html [
 { #category : #rendering }
 CPQueryResult >> renderLinkTo: entry on: html [
 	<ignoreForCoverage>
-	"html space.
-	html anchor
-		url: self querySpec bibFile absolutePath, '?query=', self querySpec queryString;
-		with: 'bib'"
 	| newContext |
-	
 	newContext := self context structure: self querySpec bibFile.
 	newContext command viewComponent queryString: entry key.
+	newContext command viewComponent display: #abstract.
 	html space.
 	html anchor goto: newContext; with: [html html: '&rarr;']	
 ]

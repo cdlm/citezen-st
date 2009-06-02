@@ -91,7 +91,7 @@ CPBibEntry >> pierField: aFieldSelector [
 
 { #category : #pier }
 CPBibEntry >> pierLinkFor: aQueryResult [
-	^ '*Details.>', aQueryResult querySpec bibFile absolutePath, '|query=', self key, '*', String cr
+	^ '*Details.>', aQueryResult querySpec bibFile absolutePath, '|query=', self key, '|display=abstract*', String cr
 ]
 
 { #category : #pier }

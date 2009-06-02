@@ -128,9 +128,7 @@ CPWhatsNew >> children [
 { #category : #news }
 CPWhatsNew >> generateNewsItems [
 	| post |
-	
 	self flag: 'This should be run periodically as a sort of cron job.'.
-	
 	queryResult := self whatsNew.
 	queryResult bibList entries do: 
 		[ :entry | 
