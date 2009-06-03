@@ -36,6 +36,7 @@ CPFixedQuery class >> descriptionCaseSensitive [
 	<ignoreForCoverage>
 	^ MABooleanDescription new
 		comment: 'Queries are case sensitive';
+		parameterName: 'caseSensitive';
 		accessor: #caseSensitive;
 		label: 'Case sensitive';
 		priority: 30;
@@ -161,7 +162,7 @@ CPFixedQuery >> renderContentOn: html [
 	"self updateQuerySpec."
 	self queryResult
 		ifNil: [self renderErrorOn: html]
-		ifNotNil: [self renderQueryOn: html]
+		ifNotNil: [self renderQueryResultOn: html]
 ]
 
 { #category : #rendering }
@@ -171,7 +172,7 @@ CPFixedQuery >> renderErrorOn: html [
 ]
 
 { #category : #rendering }
-CPFixedQuery >> renderQueryOn: html [
+CPFixedQuery >> renderQueryResultOn: html [
 	html render: self queryResult
 ]
 
