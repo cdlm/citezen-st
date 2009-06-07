@@ -9,11 +9,14 @@ TO DO:
 "
 Class {
 	#name : #CPWhatsNew,
-	#superclass : #PRWidget,
+	#superclass : #PRStructure,
 	#instVars : [
 		'timestamp',
 		'modificationTime',
-		'queryResult'
+		'archive',
+		'author',
+		'bibFile',
+		'blog'
 	],
 	#classVars : [
 		'WhatsNewTimeStamp'
@@ -22,17 +25,28 @@ Class {
 }
 
 { #category : #constants }
-CPWhatsNew class >> archiveDir [
-	^ '/home/scg/scg.unibe.ch/web/archive'
-]
-
-{ #category : #nil }
-CPWhatsNew class >> defaultTimeStampFile [
+CPWhatsNew class >> defaultArchiveDir [
 	^ MAReferenceFileModel
-		fromRio: (Rio new: '/home/scg/scg.unibe.ch/web/archive/papers/Deza08bEvolvingObjects.pdf')
+		fromRio: (Rio new: '/home/scg/scg.unibe.ch/web/archive')
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing-description' }
+CPWhatsNew class >> descriptionArchive [
+	<ignoreForCoverage>
+	self flag: 'is it a file or a directory?'.
+	^ MAFileDescription new
+		componentClass: MAServerFileChooserComponent;
+		priority: 30;
+		kind: MAReferenceFileModel;
+		selectorAccessor: #archive;
+		label: 'Archive directory to search';
+		default: self defaultArchiveDir;
+		beEditable;
+		beRequired;
+		yourself
+]
+
+{ #category : #'accessing-description' }
 CPWhatsNew class >> descriptionAuthor [
 	<ignoreForCoverage>
 	^ MAStringDescription new
@@ -47,7 +61,7 @@ CPWhatsNew class >> descriptionAuthor [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing-description' }
 CPWhatsNew class >> descriptionBibFile [
 	^ PRStructureDescription new
 		addCondition: (MACondition selector: #isKindOf: argument: CPBibFile)
@@ -61,7 +75,7 @@ CPWhatsNew class >> descriptionBibFile [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing-description' }
 CPWhatsNew class >> descriptionBlog [
 	^ PRStructureDescription new
 		addCondition: (MACondition selector: #isKindOf: argument: PBBlog)
@@ -75,62 +89,76 @@ CPWhatsNew class >> descriptionBlog [
 		yourself
 ]
 
-{ #category : #accessing }
-CPWhatsNew class >> descriptionTimeStampFile [
+{ #category : #'accessing-description' }
+CPWhatsNew class >> descriptionTimeStamp [
 	<ignoreForCoverage>
-	^ MAFileDescription new
-		componentClass: MAServerFileChooserComponent;
+	self flag: 'what should the kind be?'.
+	^ MATimeStampDescription new
+		componentClass: MATimeStampInputComponent;
 		priority: 30;
-		kind: MAReferenceFileModel;
-		selectorAccessor: #file;
-		label: 'Initial timestamp File';
-		default: self defaultTimeStampFile;
+		"kind: MAReferenceFileModel;" "what should this be?"
+		selectorAccessor: #timestamp;
+		label: 'Initial timestamp';
+		default: TimeStamp now;
 		beEditable;
 		beRequired;
 		yourself
 ]
 
-{ #category : #accessing }
-CPWhatsNew class >> groupLabel [
-	^ 'Pier Bibliography'
-]
-
-{ #category : #accessing }
+{ #category : #testing }
 CPWhatsNew class >> isAbstract [
 	^ false
 ]
 
 { #category : #accessing }
-CPWhatsNew class >> label [
-	^ 'What''s new blog'
+CPWhatsNew >> archive [
+	^ archive
+]
+
+{ #category : #accessing }
+CPWhatsNew >> archive: dir [
+	archive := dir
 ]
 
 { #category : #accessing }
 CPWhatsNew >> author [
-	^ self read: #descriptionAuthor
+	^ author
+]
+
+{ #category : #accessing }
+CPWhatsNew >> author: aString [
+	author := aString
 ]
 
 { #category : #accessing }
 CPWhatsNew >> bibFile [
-	^ self read: #descriptionBibFile
+	^ bibFile
+]
+
+{ #category : #accessing }
+CPWhatsNew >> bibFile: aBibFile [
+	bibFile := aBibFile
 ]
 
 { #category : #accessing }
 CPWhatsNew >> blog [
-	^ self read: #descriptionBlog
+	^ blog
 ]
 
-{ #category : #seaside }
-CPWhatsNew >> children [
-	^ Array with: queryResult
+{ #category : #accessing }
+CPWhatsNew >> blog: aBlog [
+	blog := aBlog
 ]
 
 { #category : #news }
-CPWhatsNew >> generateNewsItems [
+CPWhatsNew >> generateNews [
+	^ self generateNewsFor: self newItems
+]
+
+{ #category : #news }
+CPWhatsNew >> generateNewsFor: queryResult [
 	| post |
-	self flag: 'This should be run periodically as a sort of cron job.'.
-	queryResult := self whatsNew.
-	queryResult bibList entries do: 
+	queryResult bibList entries do:
 		[ :entry | 
 		post := PBPost named: (TimeStamp now asSortableString) , entry key asString.
 		post
@@ -139,71 +167,26 @@ CPWhatsNew >> generateNewsItems [
 			publication: TimeStamp now;
 			author: self author.
 		self blog addChild: post ].
+	^ queryResult
 	
 
-]
-
-{ #category : #initialization }
-CPWhatsNew >> initialize [
-	super initialize.
 ]
 
 { #category : #testing }
 CPWhatsNew >> invariant [
 	^ self bibFile notNil
-		and: [self timestampFile notNil]
-		and: [self timestampFile exists]
+		and: [self timestamp notNil]
+		and: [self archive notNil]
 		and: [self blog notNil]
 		and: [self author notEmpty]
 ]
 
-{ #category : #seaside }
-CPWhatsNew >> renderContentOn: html [
-	self invariant
-		ifTrue: [
-			html paragraph: [ html text: 'Last timestamp: ', self timestamp printString ].
-			self renderFormOn: html.
-			queryResult ifNotNil: [ html render: queryResult ]]
-		ifFalse: [
-			html paragraph: [html strong: 'Required fields undefined. Please edit and and save.']]
-	
-]
-
-{ #category : #seaside }
-CPWhatsNew >> renderFormOn: html [
-	html form: 
-		[
-		html submitButton
-			text: 'reset timestamp';
-			callback: [ WhatsNewTimeStamp := nil ].
-		html submitButton
-			text: 'generate news';
-			callback: [ self generateNewsItems ].
-			].
-]
-
-{ #category : #initialization }
-CPWhatsNew >> timestamp [
-	^ WhatsNewTimeStamp ifNil:
-		[ WhatsNewTimeStamp := self timestampFile modificationTime ]
-]
-
-{ #category : #accessing }
-CPWhatsNew >> timestampFile [
-	^ Rio new: (self read: #descriptionTimeStampFile) filePath
-]
-
-{ #category : #initialization }
-CPWhatsNew >> updateTimestamp [
-	WhatsNewTimeStamp := TimeStamp now.
-]
-
-{ #category : #evaluation }
-CPWhatsNew >> whatsNew [
+{ #category : #news }
+CPWhatsNew >> newItems [
 	| lastTimestamp pdfs newFilenames entries |
 	lastTimestamp := self timestamp.
 	self updateTimestamp.
-	pdfs := (Rio new: self class archiveDir) beRecursive select: 
+	pdfs := (Rio new: self archive filePath) beRecursive select: 
 		[ :pdf |  pdf isFile 
 			and: [ pdf fileName endsWith: '.pdf' ]
 			and: [ (pdf parent asString endsWith: 'drafts') not ]
@@ -215,4 +198,26 @@ CPWhatsNew >> whatsNew [
 	^ CPQueryResult new
 		querySpec: (CPQuerySpec default bibFile: self bibFile);
 		bibList: (CPBibList entries: entries)
+]
+
+{ #category : #accessing }
+CPWhatsNew >> timestamp [
+	^ timestamp
+]
+
+{ #category : #accessing }
+CPWhatsNew >> timestamp: aTimeStamp [
+	timestamp := aTimeStamp
+
+]
+
+{ #category : #news }
+CPWhatsNew >> updateTimestamp [
+	timestamp := TimeStamp now.
+]
+
+{ #category : #accessing }
+CPWhatsNew >> viewComponentClass [
+	<ignoreForCoverage>
+	^ CPWhatsNewView
 ]
