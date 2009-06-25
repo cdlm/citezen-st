@@ -67,7 +67,7 @@ BibPhraseLibrary class >> book [
 							add: (self containmentIn: #series);
 							add: self publisherAddress;
 							add: self locationMonthYear;
-							initiatorText: 'In ';
+							"initiatorText: 'In ';" "This makes sense for a chapter in a book, not a book itself -- on"
 							separatorText: ', ';
 							yourself)) 
 						blockNamed: 'publishing');
