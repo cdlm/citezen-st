@@ -107,8 +107,8 @@ CPQueryResult >> renderByCategoryOn: html [
 	" #misc # #booklet  #inbook #manual #unpublished"
 	self renderSubList: papers named: 'Other publications' on: html.
 	
-	"self renderSubList: tooldemos named: 'Tool demos' on: html."
-	"self renderSubList: drafts named: 'Drafts' on: html."
+	self renderSubList: tooldemos named: 'Tool demos' on: html.
+	self renderSubList: drafts named: 'Drafts' on: html.
 
 	self renderTruncatedOn: html
 
