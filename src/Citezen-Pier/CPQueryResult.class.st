@@ -63,7 +63,7 @@ CPQueryResult >> renderByAuthorOn: html [
 	html
 		orderedList: [bibList sortByAuthor entries
 				do: [:each | html
-						listItem class: 'entry'; with: [self renderEntry: each on: html]]].
+						listItem: [self renderEntry: each on: html]]].
 	self renderTruncatedOn: html.
 ]
 
@@ -175,7 +175,7 @@ CPQueryResult >> renderEntries: entries forYear: year on: html [
 	<ignoreForCoverage>
 	entries ifNotEmpty: 
 		[ html heading: year printString.
-		html orderedList: [ entries do: [ :each | html listItem class: 'entry'; with: [self renderEntry: each on: html] ] ] ]
+		html orderedList: [ entries do: [ :each | html listItem: [self renderEntry: each on: html] ] ] ]
 ]
 
 { #category : #rendering }
@@ -227,7 +227,7 @@ CPQueryResult >> renderSubList: aBibList named: heading on: html [
 	aBibList entries notEmpty
 		ifTrue: [html heading: heading.
 			html orderedList: [aBibList sortByYear entries
-						do: [:each | html listItem class: 'entry'; with: [self renderEntry: each on: html]]]]
+						do: [:each | html listItem: [self renderEntry: each on: html]]]]
 ]
 
 { #category : #rendering }
