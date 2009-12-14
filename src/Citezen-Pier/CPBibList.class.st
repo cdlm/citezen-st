@@ -109,5 +109,9 @@ CPBibList >> sortByAuthor [
 
 { #category : #sorting }
 CPBibList >> sortByYear [
-	^ self class entries: (entries asSortedCollection: [:a :b | a year > b year])
+	^ self class
+		entries: (entries
+				asSortedCollection: [:a :b | a year > b year
+						or: [a year == b year
+								and: [a key < b key]]])
 ]
