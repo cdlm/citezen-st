@@ -26,10 +26,11 @@ CZLoader class >> loadCitezen [
 { #category : #load }
 CZLoader class >> loadCitezenPier [
 	self loadPierRequirements.
-	Installer ss project: 'Pharo';
+	"Not needed with latext Pharo/Pier images"
+	"Installer ss project: 'Pharo';
 		install: 'Collections-Unordered'.
 	Installer ss project: 'SplitJoin';
-		 install: 'SplitJoin'.
+		 install: 'SplitJoin'."
 	Installer ss project: 'Citezen';
 		 install: 'Citezen-Magritte';
 		 install: 'Citezen-Pier'
