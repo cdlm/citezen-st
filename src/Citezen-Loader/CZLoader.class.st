@@ -6,10 +6,10 @@ Class {
 
 { #category : #load }
 CZLoader class >> load [
-	
+	"self load"
 	ScriptLoader new installingInstaller.
 	ScriptLoader new installingUniverse.
-	Installer ss project: 'Rio'; install: 'Rio-Kernel'; install: 'Rio-Grande'.
+	Smalltalk at: #Installer ifPresent: [:each | each ss project: 'Rio'; install: 'Rio-Kernel'; install: 'Rio-Grande'].
 	self loadSmacc.
 	self loadCitezen
 ]
