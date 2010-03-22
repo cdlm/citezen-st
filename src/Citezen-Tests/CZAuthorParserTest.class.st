@@ -63,6 +63,17 @@ CZAuthorParserTest >> testMultiParticleName [
 ]
 
 { #category : #testing }
+CZAuthorParserTest >> testSingleAuthor [
+	"self debug: #testSingleAuthor"
+	
+	| authorString authors |
+	authorString := 'Stéphane Ducasse'.
+	authors := CZAuthorParser parse: authorString.
+	self assert: (authors at: 1) firstNames asArray = #('Stéphane' ).
+	self assert: (authors at: 1) lastNames asArray = #('Ducasse' )
+]
+
+{ #category : #testing }
 CZAuthorParserTest >> testTwoAuthors [
 	| authorString authors |
 	authorString := 'Oscar Nierstrasz and St\''ephane Ducasse'.

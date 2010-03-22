@@ -11,6 +11,8 @@ CZTextTest >> rendererClass [
 
 { #category : #'as yet unclassified' }
 CZTextTest >> testArticle [
+	"self debug: #testArticle"
+
 	super testArticle.
 	self assert: result = 'A. T. In J, 4.
 
