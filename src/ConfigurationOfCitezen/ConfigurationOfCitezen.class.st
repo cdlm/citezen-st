@@ -130,6 +130,56 @@ ConfigurationOfCitezen >> baseline01: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfCitezen >> baseline02: spec [
+	<version: '0.2-baseline'>
+
+	spec for: #common do: [
+		spec blessing: #baseline.
+		spec description: 'A set of tools to work with BibTeX bibliographies.'.
+		spec author: 'DamienPollet'.
+		spec repository: 'http://www.squeaksource.com/Citezen'.
+		
+		spec
+			project: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfSeaside28';
+					file: 'ConfigurationOfSeaside28';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Magritte' with: [
+				spec
+					className: 'ConfigurationOfMagritte';
+					file: 'ConfigurationOfMagritte';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Pier' with: [
+				spec
+					className: 'ConfigurationOfPier';
+					file: 'ConfigurationOfPier';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'SmaCC' with: [
+				spec
+					className: 'ConfigurationOfSmaCC';
+					file: 'ConfigurationOfSmaCC';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+
+		spec
+			package: 'Citezen-Model';
+			package: 'Citezen-Parsers' with: [ spec requires: #('Citezen-Model' 'SmaCC')];
+			package: 'Citezen-Rendering' with: [ spec requires: 'Citezen-Model' ];
+			"package: 'Citezen-Scripts' with: [ spec requires: 'Core' ];"
+			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside') ];
+			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
+			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Citezen-Seaside' 'Citezen-Magritte') ];
+			package: 'Citezen-Tests' with: [ spec requires: 'Core' ].
+			
+		spec
+			group: 'default' with: #('Core');
+			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering');
+			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
+			group: 'Tests' with: #('Citezen-Tests')
+	]
+]
+
 { #category : #accessing }
 ConfigurationOfCitezen >> project [
 
@@ -152,5 +202,17 @@ ConfigurationOfCitezen >> version01: spec [
 			blessing: #development;
 			author: 'DamienPollet';
 			description: 'First Metacello configuration'
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version02: spec [
+	<version: '0.2' imports: #('0.2-baseline')>
+	
+	spec for: #common do: [
+		spec
+			blessing: #development;
+			author: 'DamienPollet';
+			description: 'Depend on SmaCC too'
 	]
 ]
