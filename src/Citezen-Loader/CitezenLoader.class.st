@@ -15,10 +15,19 @@ CitezenLoader class >> load [
 CitezenLoader class >> loadForPier12Image [
 	"self loadForPier12Image"
 
+	Gofer new
+		squeaksource: 'Pharo';
+		load: 'Gofer-Core'; execute.
+		
+
 	Gofer new 
 		squeaksource: 'Rio'; 
-		version: 'Rio-Kernel-razavi_acm_org.89'; 
-		version: 'Rio-Grande-kph.45'; load.
+		"version: 'Rio-Kernel-razavi_acm_org.89'; 
+		version: 'Rio-Grande-kph.45'; 
+		"
+		package: 'Rio-Kernel';
+		package: 'Rio-Grande';
+		load.
 	Gofer
 		new
 		squeaksource: 'SmaccDevelopment';
