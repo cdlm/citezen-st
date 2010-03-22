@@ -6,12 +6,9 @@ Class {
 
 { #category : #'as yet unclassified' }
 CitezenLoader class >> load [
-	"self load"
-	ScriptLoader new installingInstaller.
-	ScriptLoader new installingUniverse.
-	Smalltalk at: #Installer ifPresent: [:each | each ss project: 'Rio'; install: 'Rio-Kernel'; install: 'Rio-Grande'].
-	self loadSmacc.
-	self loadCitezen
+
+	self loadForPier12Image
+	
 ]
 
 { #category : #'as yet unclassified' }
