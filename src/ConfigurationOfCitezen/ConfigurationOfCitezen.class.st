@@ -1,3 +1,12 @@
+"
+There are no released versions yet, so this is needed to load anything:
+
+	(ConfigurationOfCitezen project latestVersion: #development) load
+
+This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
+
+	ConfigurationOfSmacc project latestVersion load: 'Tools'
+"
 Class {
 	#name : #ConfigurationOfCitezen,
 	#superclass : #Object,
