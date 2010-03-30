@@ -181,7 +181,7 @@ ConfigurationOfCitezen >> baseline02: spec [
 			"package: 'Citezen-Scripts' with: [ spec requires: 'Core' ];"
 			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside') ];
 			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
-			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Citezen-Seaside' 'Citezen-Magritte' 'Magritte-Seaside') ];
+			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte' 'Magritte-Seaside') ];
 			package: 'Citezen-Tests' with: [ spec requires: 'Core' ].
 			
 		spec
