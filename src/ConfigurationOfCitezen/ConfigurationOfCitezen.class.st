@@ -159,7 +159,10 @@ ConfigurationOfCitezen >> baseline02: spec [
 				spec
 					className: 'ConfigurationOfMagritte';
 					file: 'ConfigurationOfMagritte';
-					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+					repository: 'http://www.squeaksource.com/MetacelloRepository'];
+			project: 'Magritte-Seaside' 
+				copyFrom: 'Magritte' 
+				with: [ spec loads: #('Magritte-Seaside') ];
 			project: 'Pier' with: [
 				spec
 					className: 'ConfigurationOfPier';
@@ -178,11 +181,11 @@ ConfigurationOfCitezen >> baseline02: spec [
 			"package: 'Citezen-Scripts' with: [ spec requires: 'Core' ];"
 			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside') ];
 			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
-			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Citezen-Seaside' 'Citezen-Magritte') ];
+			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Citezen-Seaside' 'Citezen-Magritte' 'Magritte-Seaside') ];
 			package: 'Citezen-Tests' with: [ spec requires: 'Core' ].
 			
 		spec
-			group: 'default' with: #('Core');
+			group: 'default' with: #('Core' 'Web' 'Tests');
 			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering');
 			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
 			group: 'Tests' with: #('Citezen-Tests')
