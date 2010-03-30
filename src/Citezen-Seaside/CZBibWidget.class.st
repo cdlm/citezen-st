@@ -68,6 +68,6 @@ CZBibWidget >> renderRestOn: html [
 
 	self
 		renderEntries: bibEntries
-		withTitle: 'Miscelaneous'
+		withTitle: 'Miscellaneous'
 		on: html
 ]
