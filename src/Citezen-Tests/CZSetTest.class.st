@@ -17,6 +17,13 @@ CZSetTest >> setUp [
 	bibset := CZTestResource current bibset
 ]
 
+{ #category : #running }
+CZSetTest >> testEntryAtKey [
+	"self debug: #testEntryAtKey"
+	
+	self assert: (bibset entryAt: #meuh) class = CZEntry
+]
+
 { #category : #testing }
 CZSetTest >> testGroupedBy [
 	| groups groupedItemCount |
