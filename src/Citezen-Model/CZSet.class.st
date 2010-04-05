@@ -76,7 +76,17 @@ CZSet >> addMacro: aField [
 
 { #category : #cleanup }
 CZSet >> checkDuplicates [
-	self notYetImplemented
+	| withoutDuplicates |
+	
+	withoutDuplicates := OrderedCollection new.
+	
+	1 to:entries size do: 
+		[ :each | (self existsDuplicateFor: (entries at:each) startingAt: each) ifFalse:
+			[ withoutDuplicates add:(entries at:each) ]].
+	
+	entries := withoutDuplicates
+	
+  	
 ]
 
 { #category : #enumerating }
@@ -118,6 +128,16 @@ CZSet >> entryAt: aKey put: anEntry [
 	^ index = 0
 		ifTrue: [entries add: anEntry]
 		ifFalse: [entries at: index put: anEntry]
+]
+
+{ #category : #'as yet unclassified' }
+CZSet >> existsDuplicateFor: entry startingAt: index [
+	"search a duplicate for entry from entries at: index to the end of entries"
+
+	index to: entries size do:
+		[ :each | ((entries at:each) = entry) ifTrue:
+			[ ^ true ] ].
+	^ false.
 ]
 
 { #category : #'arranging - combining' }
@@ -190,7 +210,7 @@ CZSet >> merge: aCZSet [
 	aCZSet entries do: [:each | self entryAt: each key put: each]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 CZSet >> printOn: aStream [
 	super printOn: aStream.
 	aStream nextPut: $(.
@@ -240,7 +260,7 @@ CZSet >> sortBy: aSortBlock [
 
 { #category : #'arranging - combining' }
 CZSet >> sortByAuthor [
-	self notYetImplemented
+	self sortBy: [:x :y | (x at: #author) rawValue <= (y at: #author) rawValue]
 ]
 
 { #category : #'arranging - combining' }
