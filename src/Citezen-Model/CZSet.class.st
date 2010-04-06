@@ -78,14 +78,23 @@ CZSet >> addMacro: aField [
 CZSet >> checkDuplicates [
 	| withoutDuplicates |
 	
+	entries := self checkDuplicatesFor: entries.
+	macros := self checkDuplicatesFor: macros.
+  	
+]
+
+{ #category : #cleanup }
+CZSet >> checkDuplicatesFor: list [
+	| withoutDuplicates |
+	
 	withoutDuplicates := OrderedCollection new.
 	
-	1 to:entries size do: 
-		[ :each | (self existsDuplicateFor: (entries at:each) startingAt: each) ifFalse:
-			[ withoutDuplicates add:(entries at:each) ]].
+	1 to:list size do: 
+		[ :each | (self existsDuplicateFor: (list at:each) startingAt: each in: list) ifFalse:
+			[ withoutDuplicates add:(list at:each) ]].
 	
-	entries := withoutDuplicates
-	
+	^ withoutDuplicates.
+
   	
 ]
 
@@ -131,11 +140,11 @@ CZSet >> entryAt: aKey put: anEntry [
 ]
 
 { #category : #'as yet unclassified' }
-CZSet >> existsDuplicateFor: entry startingAt: index [
+CZSet >> existsDuplicateFor: entry startingAt: index in: list [
 	"search a duplicate for entry from entries at: index to the end of entries"
 
-	index to: entries size do:
-		[ :each | ((entries at:each) equalsButDifferent: entry) ifTrue:
+	index to: list size do:
+		[ :each | ((list at:each) equalsButDifferent: entry) ifTrue:
 			[ ^ true ] ].
 	^ false.
 ]

@@ -54,6 +54,12 @@ CZField >> addToBibSet: aBibSet [
 	aBibSet addMacro: self
 ]
 
+{ #category : #'as yet unclassified' }
+CZField >> equalsButDifferent: aField [
+	(self == aField) ifTrue: [ ^ false ].
+	^ (self key = aField key) & (self rawValue = aField rawValue)
+]
+
 { #category : #accessing }
 CZField >> isUndefined [
 	^ false
