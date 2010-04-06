@@ -57,7 +57,6 @@ CZTestResource class >> myBibFile [
 
 %% Saved with string encoding Unicode (UTF-8) 
 
-
 @string{acm = {ACM Press}}
 
 @string{aw = {Addison-Wesley}}
