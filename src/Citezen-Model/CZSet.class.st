@@ -135,7 +135,7 @@ CZSet >> existsDuplicateFor: entry startingAt: index [
 	"search a duplicate for entry from entries at: index to the end of entries"
 
 	index to: entries size do:
-		[ :each | ((entries at:each) = entry) ifTrue:
+		[ :each | ((entries at:each) equalsButDifferent: entry) ifTrue:
 			[ ^ true ] ].
 	^ false.
 ]

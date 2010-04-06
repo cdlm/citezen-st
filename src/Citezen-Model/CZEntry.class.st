@@ -17,22 +17,6 @@ CZEntry class >> type: entryType [
 	^ self new type: entryType; yourself
 ]
 
-{ #category : #'as yet unclassified' }
-CZEntry >> = anEntry [
-	"test the equality between two DIFFERENT entries"
-	
-	(self == anEntry) ifTrue: [ ^ false ].
-	
-	((key = anEntry key) or: [ (type = anEntry type) ]) ifFalse: [^ false].
-
-	fields do: 
-		[:each | ((anEntry at: each key) rawValue = each rawValue) 
-			ifFalse:
-				[ ^ false ]].
-	
-	^ true.
-]
-
 { #category : #'visitor-double dispatch' }
 CZEntry >> acceptVisitor: aVisitor [
 	^ aVisitor visitEntry: self
@@ -77,14 +61,27 @@ CZEntry >> do: aBlock [
 	fields do: aBlock
 ]
 
+{ #category : #'as yet unclassified' }
+CZEntry >> equalsButDifferent: anEntry [
+	"test the equality between two DIFFERENT entries"
+	
+	(self == anEntry) ifTrue: [ ^ false ].
+	
+	((key = anEntry key) and: [ (type = anEntry type) ]) ifFalse: [ ^ false ].
+
+	(self size = anEntry size) ifFalse: [ ^ false ].
+
+	fields do: 
+		[:each | ((anEntry at: each key) rawValue = each rawValue) 
+			ifFalse:
+				[ ^ false ]].
+	
+	^ true.
+]
+
 { #category : #accessing }
 CZEntry >> hasField: fieldName [
 	^ fields anySatisfy: [:each | each key = fieldName]
-]
-
-{ #category : #'as yet unclassified' }
-CZEntry >> hash [
-	^ fields hash
 ]
 
 { #category : #'initialize-release' }
