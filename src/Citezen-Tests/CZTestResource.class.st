@@ -46,6 +46,20 @@ CZTestResource class >> bibFile [
 ]
 
 { #category : #'test data' }
+CZTestResource class >> bibTest [
+	^ ' 
+	@string{macro = {MACRO}}
+	
+	@unpublished{testUnpublished,
+	Author = {Barreau, Adrien},
+	Title = {Entry test for citezen},
+	Pages = {1},
+	Year = 2007,
+	Annotation = MACRO}
+	'
+]
+
+{ #category : #'test data' }
 CZTestResource class >> myBibFile [
 	^ '
 %% This BibTeX bibliography file was created using BibDesk.

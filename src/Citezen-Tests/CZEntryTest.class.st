@@ -8,24 +8,11 @@ Class {
 	#category : #'Citezen-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-CZEntryTest class >> bibTest [
-	^ ' 
-	@string{macro = {MACRO}}
-	
-	@unpublished{testUnpublished,
-	Author = {Barreau, Adrien},
-	Title = {Entry test for citezen},
-	Pages = {1},
-	Annotation = MACRO}
-	'
-]
-
 { #category : #running }
 CZEntryTest >> setUp [
 
-	entry := (CZBibParser parse: self class bibTest) entries at:1.
-	duplicateEntry := (CZBibParser parse: self class bibTest) entries at:1
+	entry := (CZBibParser parse: CZTestResource bibTest) entries at:1.
+	duplicateEntry := (CZBibParser parse: CZTestResource bibTest) entries at:1
 
 ]
 
