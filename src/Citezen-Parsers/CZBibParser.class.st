@@ -38,7 +38,9 @@ BodyContents :
 	<name> ("","" Field)* { '1' value asSymbol -> ('2' collect: [:each | each at: 2]) };
 
 Field :
-	<name> ""="" Value { CZField key: '1' value asSymbol rawValue: '3' };
+	<name> ""="" Value { ('3' isKindOf: CZValue)
+		ifTrue: [ CZField key: '1' value asSymbol value: '3' ]
+		ifFalse: [ CZField key: '1' value asSymbol rawValue: '3' ]};
 
 Value :
 	SimpleValue ( ""#"" SimpleValue )*
@@ -52,7 +54,7 @@ SimpleValue :
 	<quotedString> { '1' value allButFirst allButLast }
 	| <bracedString> { '1' value allButFirst allButLast }
 	| <number> { '1' value asNumber }
-	| <name> { '1' value asSymbol };
+	| <name> { CZMacroReference with: '1' value asSymbol };
 "
 ]
 
@@ -93,114 +95,114 @@ CZBibParser >> buildMacro: tokens [
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForBibfile1: nodes [ 
+CZBibParser >> reduceActionForBibfile1: nodes [
 	^ CZSet fromDeclarations: ((nodes at: 1) reject: [ :it | it isNil ])
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForBodyContents1: nodes [ 
+CZBibParser >> reduceActionForBodyContents1: nodes [
 	^ (nodes at: 1) value asSymbol -> ((nodes at: 2) collect: [ :each | each at: 2 ])
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForCommentDeclaration1: nodes [ 
+CZBibParser >> reduceActionForCommentDeclaration1: nodes [
 	^ nil
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForField1: nodes [ 
-	^ CZField 
-		key: (nodes at: 1) value asSymbol
-		rawValue: (nodes at: 3)
+CZBibParser >> reduceActionForField1: nodes [
+	^ ((nodes at: 3) isKindOf: CZValue)
+		ifTrue: [ CZField key: (nodes at: 1) value asSymbol value: (nodes at: 3) ]
+		ifFalse: [ CZField key: (nodes at: 1) value asSymbol rawValue: (nodes at: 3) ]
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1: nodes [
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2: nodes [
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration3: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration3: nodes [
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX1: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX1: nodes [
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX2: nodes [ 
+CZBibParser >> reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX2: nodes [
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1: nodes [
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2: nodes [
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXField1: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXField1: nodes [
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXField2: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXField2: nodes [
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue1: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue1: nodes [
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue2: nodes [ 
+CZBibParser >> reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue2: nodes [
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForSimpleValue1: nodes [ 
+CZBibParser >> reduceActionForSimpleValue1: nodes [
 	^ (nodes at: 1) value allButFirst allButLast
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForSimpleValue2: nodes [ 
+CZBibParser >> reduceActionForSimpleValue2: nodes [
 	^ (nodes at: 1) value allButFirst allButLast
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForSimpleValue3: nodes [ 
+CZBibParser >> reduceActionForSimpleValue3: nodes [
 	^ (nodes at: 1) value asNumber
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForSimpleValue4: nodes [ 
-	^ (nodes at: 1) value asSymbol
+CZBibParser >> reduceActionForSimpleValue4: nodes [
+	^ CZMacroReference with: (nodes at: 1) value asSymbol
 ]
 
 { #category : #'generated-reduction actions' }
-CZBibParser >> reduceActionForValue1: nodes [ 
-	^ (nodes at: 2) isEmpty 
+CZBibParser >> reduceActionForValue1: nodes [
+	^ (nodes at: 2) isEmpty
 		ifTrue: [ nodes at: 1 ]
-		ifFalse: 
-			[ (CZCompositeValue with: (nodes at: 1))
+		ifFalse: [ 
+			(CZCompositeValue with: (nodes at: 1))
 				addAll: ((nodes at: 2) collect: [ :subcoll | subcoll at: 2 ]);
 				yourself ]
 ]
@@ -239,56 +241,56 @@ CZBibParser >> reduceTable [
 { #category : #'generated-tables' }
 CZBibParser >> transitionTable [
 	^#(
-#(3 22 1 22 10 22 11 21 16 22 28 25 31)
-#(3 22 1 22 10 22 11 21 16 22 28 29 31)
-#(3 33 8 37 27)
-#(3 41 8 45 26)
-#(3 49 1 53 10 57 11 61 14 65 18 69 19 102 28 73 30)
-#(2 0 28)
-#(2 0 28)
-#(3 50 2 77 21 50 28)
-#(2 0 28)
-#(2 81 4)
-#(2 0 28)
-#(2 85 8)
-#(3 89 12 93 13 97 17)
-#(3 89 12 93 13 101 17)
-#(2 26 1 10 11 28)
-#(2 10 1 10 11 28)
-#(2 6 1 10 11 28)
-#(2 14 1 10 11 28)
-#(3 105 2 109 20 94 28)
-#(3 113 7 117 8 121 9 125 12 129 22 133 23)
-#(3 89 12 93 13 137 17)
-#(2 34 1 10 11 28)
-#(2 30 1 10 11 28)
-#(2 38 1 10 11 28)
-#(2 42 1 10 11 28)
-#(3 141 8 145 26)
-#(2 54 2 28)
-#(2 70 3 28)
-#(2 74 3 28)
-#(2 62 3 28)
-#(2 66 3 28)
-#(2 90 28)
-#(3 82 3 149 25 82 28)
-#(2 98 1 10 11 28)
-#(2 153 4)
-#(2 46 2 28)
-#(3 157 3 161 24 58 28)
-#(3 165 7 169 8 173 9 177 12 181 22 185 23)
-#(3 113 7 117 8 121 9 125 12 189 23)
-#(2 86 3 28)
-#(2 70 2 3 28)
-#(2 74 2 3 28)
-#(2 62 2 3 28)
-#(2 66 2 3 28)
-#(2 90 2 28)
-#(3 82 2 82 3 193 25 82 28)
-#(2 78 3 28)
-#(3 58 2 197 3 201 24 58 28)
-#(3 165 7 169 8 173 9 177 12 205 23)
-#(2 86 2 3 28)
-#(2 78 2 3 28)
+#[1 0 22 0 1 0 22 0 10 0 22 0 11 0 21 0 16 0 22 0 28 0 25 0 31]
+#[1 0 22 0 1 0 22 0 10 0 22 0 11 0 21 0 16 0 22 0 28 0 29 0 31]
+#[1 0 33 0 8 0 37 0 27]
+#[1 0 41 0 8 0 45 0 26]
+#[1 0 49 0 1 0 53 0 10 0 57 0 11 0 61 0 14 0 65 0 18 0 69 0 19 0 102 0 28 0 73 0 30]
+#[0 0 0 0 28]
+#[0 0 0 0 28]
+#[1 0 50 0 2 0 77 0 21 0 50 0 28]
+#[0 0 0 0 28]
+#[0 0 81 0 4]
+#[0 0 0 0 28]
+#[0 0 85 0 8]
+#[1 0 89 0 12 0 93 0 13 0 97 0 17]
+#[1 0 89 0 12 0 93 0 13 0 101 0 17]
+#[0 0 26 0 1 0 10 0 11 0 28]
+#[0 0 10 0 1 0 10 0 11 0 28]
+#[0 0 6 0 1 0 10 0 11 0 28]
+#[0 0 14 0 1 0 10 0 11 0 28]
+#[1 0 105 0 2 0 109 0 20 0 94 0 28]
+#[1 0 113 0 7 0 117 0 8 0 121 0 9 0 125 0 12 0 129 0 22 0 133 0 23]
+#[1 0 89 0 12 0 93 0 13 0 137 0 17]
+#[0 0 34 0 1 0 10 0 11 0 28]
+#[0 0 30 0 1 0 10 0 11 0 28]
+#[0 0 38 0 1 0 10 0 11 0 28]
+#[0 0 42 0 1 0 10 0 11 0 28]
+#[1 0 141 0 8 0 145 0 26]
+#[0 0 54 0 2 0 28]
+#[0 0 70 0 3 0 28]
+#[0 0 74 0 3 0 28]
+#[0 0 62 0 3 0 28]
+#[0 0 66 0 3 0 28]
+#[0 0 90 0 28]
+#[1 0 82 0 3 0 149 0 25 0 82 0 28]
+#[0 0 98 0 1 0 10 0 11 0 28]
+#[0 0 153 0 4]
+#[0 0 46 0 2 0 28]
+#[1 0 157 0 3 0 161 0 24 0 58 0 28]
+#[1 0 165 0 7 0 169 0 8 0 173 0 9 0 177 0 12 0 181 0 22 0 185 0 23]
+#[1 0 113 0 7 0 117 0 8 0 121 0 9 0 125 0 12 0 189 0 23]
+#[0 0 86 0 3 0 28]
+#[0 0 70 0 2 0 3 0 28]
+#[0 0 74 0 2 0 3 0 28]
+#[0 0 62 0 2 0 3 0 28]
+#[0 0 66 0 2 0 3 0 28]
+#[0 0 90 0 2 0 28]
+#[1 0 82 0 2 0 82 0 3 0 193 0 25 0 82 0 28]
+#[0 0 78 0 3 0 28]
+#[1 0 58 0 2 0 197 0 3 0 201 0 24 0 58 0 28]
+#[1 0 165 0 7 0 169 0 8 0 173 0 9 0 177 0 12 0 205 0 23]
+#[0 0 86 0 2 0 3 0 28]
+#[0 0 78 0 2 0 3 0 28]
 )
 ]
