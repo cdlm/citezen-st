@@ -5,7 +5,7 @@ There are no released versions yet, so this is needed to load anything:
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
 
-	ConfigurationOfSmacc project latestVersion load: 'Tools'
+	ConfigurationOfSmaCC project latestVersion load: 'Tools'
 "
 Class {
 	#name : #ConfigurationOfCitezen,
