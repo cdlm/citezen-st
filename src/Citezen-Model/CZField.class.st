@@ -99,7 +99,11 @@ CZField >> rawValueWithBibtexSyntax [
 { #category : #'initialize-release' }
 CZField >> setKey: aSymbol rawValue: valueFromParser [
 	key := aSymbol.
-	value := self valueClass with: valueFromParser.
+"	value := self valueClass with: valueFromParser. "
+	value := ((valueFromParser isKindOf: Number) 
+			ifTrue: [CZInteger] 
+			ifFalse: [CZString]) 
+		with: valueFromParser.
 	value scope: self
 ]
 
