@@ -140,6 +140,22 @@ CZSet >> entryAt: aKey put: anEntry [
 ]
 
 { #category : #'as yet unclassified' }
+CZSet >> equalsButDifferent: aSet [
+	(entries size = aSet entries size) ifFalse: [ ^ false ].
+	(macros size = aSet macros size) ifFalse: [ ^ false ].
+	
+	1 to: entries size do: [ :cpt | 
+		((entries at: cpt) equalsButDifferent: (aSet entries at: cpt)) 
+			ifFalse: [ ^ false ]].
+	
+	1 to: macros size do: [ :cpt |
+		((macros at: cpt) equalsButDifferent: (aSet macros at: cpt))
+			ifFalse: [ ^ false ]].
+	
+	^ true
+]
+
+{ #category : #'as yet unclassified' }
 CZSet >> existsDuplicateFor: entry startingAt: index in: list [
 	"search a duplicate for entry from entries at: index to the end of entries"
 
