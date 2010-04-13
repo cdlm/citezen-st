@@ -23,6 +23,11 @@ CZPeople >> expanded [
 ]
 
 { #category : #'as yet unclassified' }
+CZPeople >> rawValueWithBibtexSyntax [ 
+	^ '{',self notExpanded,'}'
+]
+
+{ #category : #'as yet unclassified' }
 CZPeople >> setValue: aValue [
 	super setValue: aValue.
 	people := nil

@@ -42,6 +42,11 @@ CZValue >> notExpanded [
 ]
 
 { #category : #'as yet unclassified' }
+CZValue >> rawValueWithBibtexSyntax [
+	^ value asString
+]
+
+{ #category : #'as yet unclassified' }
 CZValue >> setValue: aValue [
 	value := aValue
 ]

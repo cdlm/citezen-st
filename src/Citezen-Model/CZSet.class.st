@@ -59,7 +59,7 @@ CZSet >> \ aCZSet [
 
 { #category : #'visitor-double dispatch' }
 CZSet >> acceptVisitor: aVisitor [
-	^ aVisitor visitBibSet: self
+	aVisitor visitBibSet: self
 ]
 
 { #category : #adding }

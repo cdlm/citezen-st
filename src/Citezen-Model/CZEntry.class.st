@@ -19,7 +19,7 @@ CZEntry class >> type: entryType [
 
 { #category : #'visitor-double dispatch' }
 CZEntry >> acceptVisitor: aVisitor [
-	^ aVisitor visitEntry: self
+	aVisitor visitEntry: self
 ]
 
 { #category : #accessing }
@@ -77,6 +77,11 @@ CZEntry >> equalsButDifferent: anEntry [
 				[ ^ false ]].
 	
 	^ true.
+]
+
+{ #category : #'as yet unclassified' }
+CZEntry >> fields [
+	^ fields 
 ]
 
 { #category : #accessing }

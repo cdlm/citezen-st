@@ -49,6 +49,11 @@ CZField class >> valueClasses [
 	^ valueClasses ifNil: [self initializeValueClasses]
 ]
 
+{ #category : #'as yet unclassified' }
+CZField >> acceptVisitor: aVisitor [
+	aVisitor visitField: self
+]
+
 { #category : #bibset }
 CZField >> addToBibSet: aBibSet [
 	aBibSet addMacro: self
@@ -84,6 +89,11 @@ CZField >> printOn: aStream [
 { #category : #accessing }
 CZField >> rawValue [
 	^ value notExpanded
+]
+
+{ #category : #'as yet unclassified' }
+CZField >> rawValueWithBibtexSyntax [ 
+	^ value rawValueWithBibtexSyntax 
 ]
 
 { #category : #'initialize-release' }
