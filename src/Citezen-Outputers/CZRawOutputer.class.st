@@ -22,8 +22,8 @@ CZRawOutputer >> initialize [
 CZRawOutputer >> setFieldsToExclude: aCollection [
 	filter := (aCollection 
 		collect: [ :each | 
-			(each isKindOf: Number) 
-				ifFalse: [each asSymbol asLowercase ]] 
+			(each isNil & each isKindOf: Number) 
+				ifFalse: [each asString asSymbol asLowercase ]] 
 		thenSelect: [ :each | each isNil not])
 ]
 
