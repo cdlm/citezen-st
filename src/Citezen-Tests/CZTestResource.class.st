@@ -55,7 +55,8 @@ CZTestResource class >> bibTest [
 	Title = {Entry test for citezen},
 	Pages = {1},
 	Year = 2007,
-	Annotation = MACRO}
+	Annotation = macro # "macro",
+	Note = macro}
 	'
 ]
 
