@@ -15,7 +15,7 @@ CZRawOutputer class >> withoutThisFields: aCollection [
 { #category : #'as yet unclassified' }
 CZRawOutputer >> initialize [ 
 	super initialize.
-	filter = #()
+	filter := #()
 ]
 
 { #category : #'as yet unclassified' }

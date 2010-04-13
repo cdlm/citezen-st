@@ -2,6 +2,8 @@ Class {
 	#name : #CZVisitor,
 	#superclass : #Object,
 	#instVars : [
+		'fileName',
+		'lastOutput',
 		'outputStream'
 	],
 	#category : #'Citezen-Outputers'
@@ -9,21 +11,34 @@ Class {
 
 { #category : #'as yet unclassified' }
 CZVisitor >> getLastOutput [
-	^ outputStream contents
+	^ lastOutput 
 ]
 
 { #category : #'as yet unclassified' }
 CZVisitor >> getOutputFor: aSet [
-	outputStream reset.
+	(fileName isNil) 
+		ifTrue: [ outputStream := WriteStream on: String new ]
+		ifFalse: [ outputStream := FileStream newFileNamed: fileName ].
+
 	self visitSet: aSet.
 	
-	^ outputStream contents 
+	lastOutput := outputStream contents.
+	outputStream close.
+	outputStream := nil.
+	
+	^ lastOutput 
+	
 ]
 
 { #category : #'as yet unclassified' }
 CZVisitor >> initialize [
 	super initialize.
-	outputStream := WriteStream on: String new
+	fileName := nil
+]
+
+{ #category : #'as yet unclassified' }
+CZVisitor >> setOutputFile: path [	
+	fileName := path
 ]
 
 { #category : #'as yet unclassified' }
