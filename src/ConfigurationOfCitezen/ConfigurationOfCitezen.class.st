@@ -178,6 +178,8 @@ ConfigurationOfCitezen >> baseline02: spec [
 			package: 'Citezen-Model';
 			package: 'Citezen-Parsers' with: [ spec requires: #('Citezen-Model' 'SmaCC')];
 			package: 'Citezen-Rendering' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Outputers' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Query' with: [ spec requires: 'Citezen-Model'];
 			"package: 'Citezen-Scripts' with: [ spec requires: 'Core' ];"
 			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside') ];
 			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
@@ -186,7 +188,7 @@ ConfigurationOfCitezen >> baseline02: spec [
 			
 		spec
 			group: 'default' with: #('Core' 'Web' 'Tests');
-			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering');
+			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query');
 			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
 			group: 'Tests' with: #('Citezen-Tests')
 	]
