@@ -28,6 +28,12 @@ CZRawOutputer >> setFieldsToExclude: aCollection [
 ]
 
 { #category : #'as yet unclassified' }
+CZRawOutputer >> visitCompositeValue: aCZCompositeValue [
+	aCZCompositeValue do: 
+		[ :each | each acceptVisitor: self] separatedBy: [ outputStream nextPutAll: ' # ' ].
+]
+
+{ #category : #'as yet unclassified' }
 CZRawOutputer >> visitEntry: anEntry [
 	| fields |
 	fields := anEntry fields reject: [ :each | filter includes: each key ].
@@ -42,8 +48,23 @@ CZRawOutputer >> visitEntry: anEntry [
 { #category : #'as yet unclassified' }
 CZRawOutputer >> visitField: aField [
 	outputStream nextPutAll: aField key;
-		nextPutAll: ' = ';
-		nextPutAll: aField rawValueWithBibtexSyntax 
+		nextPutAll: ' = '.
+	aField getStoredValue acceptVisitor: self
+]
+
+{ #category : #'as yet unclassified' }
+CZRawOutputer >> visitInteger: aCZInteger [
+	outputStream nextPutAll: aCZInteger notExpanded asString 
+]
+
+{ #category : #'as yet unclassified' }
+CZRawOutputer >> visitMacroReference: aCZMacroReference [
+	outputStream nextPutAll: aCZMacroReference notExpanded 
+]
+
+{ #category : #'as yet unclassified' }
+CZRawOutputer >> visitPeople: aCZPeople [
+	outputStream nextPut: ${; nextPutAll: aCZPeople notExpanded; nextPut: $}
 ]
 
 { #category : #'as yet unclassified' }
@@ -64,4 +85,9 @@ CZRawOutputer >> visitSet: aSet [
 		outputStream cr; nextPut: $}; cr; cr.
 		].
 	
+]
+
+{ #category : #'as yet unclassified' }
+CZRawOutputer >> visitString: aCZString [
+	outputStream nextPut: ${; nextPutAll: aCZString notExpanded; nextPut: $}
 ]

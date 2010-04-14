@@ -20,11 +20,12 @@ CZVisitor >> getOutputFor: aSet [
 		ifTrue: [ outputStream := WriteStream on: String new ]
 		ifFalse: [ outputStream := FileStream newFileNamed: fileName ].
 
-	self visitSet: aSet.
-	
-	lastOutput := outputStream contents.
-	outputStream close.
-	outputStream := nil.
+	[self visitSet: aSet.
+		
+	 lastOutput := outputStream contents] 
+		ensure: [
+			outputStream close.
+			outputStream := nil ].
 	
 	^ lastOutput 
 	
