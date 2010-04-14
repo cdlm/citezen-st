@@ -18,13 +18,13 @@ CZPeople class >> fieldsOfThisFormat [
 ]
 
 { #category : #'as yet unclassified' }
-CZPeople >> expanded [
-	^ people ifNil: [ people := CZAuthorParser parse: value ]
+CZPeople >> acceptVisitor: aVisitor [
+	aVisitor visitPeople: self
 ]
 
 { #category : #'as yet unclassified' }
-CZPeople >> rawValueWithBibtexSyntax [ 
-	^ '{',self notExpanded,'}'
+CZPeople >> expanded [
+	^ people ifNil: [ people := CZAuthorParser parse: value ]
 ]
 
 { #category : #'as yet unclassified' }

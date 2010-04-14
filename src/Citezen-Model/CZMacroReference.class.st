@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CZMacroReference >> acceptVisitor: aVisitor [
+	aVisitor visitMacroReference: self
+]
+
+{ #category : #'as yet unclassified' }
 CZMacroReference >> do: aBlock [
 	value do: aBlock 
 ]

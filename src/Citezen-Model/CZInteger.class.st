@@ -15,6 +15,11 @@ CZInteger class >> fieldsOfThisFormat [
 ]
 
 { #category : #'as yet unclassified' }
+CZInteger >> acceptVisitor: aVisitor [
+	aVisitor visitInteger: self
+]
+
+{ #category : #'as yet unclassified' }
 CZInteger >> expanded [
 	^ value asInteger
 ]

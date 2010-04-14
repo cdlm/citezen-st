@@ -66,6 +66,11 @@ CZField >> equalsButDifferent: aField [
 ]
 
 { #category : #accessing }
+CZField >> getStoredValue [
+	^ value
+]
+
+{ #category : #accessing }
 CZField >> isUndefined [
 	^ false
 ]
@@ -89,11 +94,6 @@ CZField >> printOn: aStream [
 { #category : #accessing }
 CZField >> rawValue [
 	^ value notExpanded
-]
-
-{ #category : #'as yet unclassified' }
-CZField >> rawValueWithBibtexSyntax [ 
-	^ value rawValueWithBibtexSyntax 
 ]
 
 { #category : #'initialize-release' }

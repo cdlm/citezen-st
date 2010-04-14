@@ -12,6 +12,11 @@ CZCompositeValue class >> with: aValue [
 	^ self new add: aValue
 ]
 
+{ #category : #'initialize-release' }
+CZCompositeValue >> acceptVisitor: aVisitor [
+	aVisitor visitCompositeValue: self
+]
+
 { #category : #adding }
 CZCompositeValue >> add: aValue [
 	| realValueToAdd |
@@ -30,6 +35,11 @@ CZCompositeValue >> add: aValue [
 { #category : #adding }
 CZCompositeValue >> addAll: aCollection [
 	aCollection do: [ :each | self add: each].
+]
+
+{ #category : #'initialize-release' }
+CZCompositeValue >> do: aBlock [
+	value do: aBlock
 ]
 
 { #category : #'initialize-release' }
@@ -92,14 +102,4 @@ CZCompositeValue >> printOn: aStream [
 			[aStream nextPutAll: ' # '].
 		
 	aStream nextPut: $)
-]
-
-{ #category : #'as yet unclassified' }
-CZCompositeValue >> rawValueWithBibtexSyntax [ 
-	| stream |
-	stream := WriteStream on: String new.
-	
-	value do: [ :each | stream nextPutAll: each rawValueWithBibtexSyntax ] separatedBy: [ stream nextPutAll: ' # ' ].
-	
-	^ stream contents 
 ]

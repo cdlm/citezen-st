@@ -10,6 +10,11 @@ CZString class >> defaultValue [
 ]
 
 { #category : #'as yet unclassified' }
+CZString >> acceptVisitor: aVisitor [
+	aVisitor visitString: self
+]
+
+{ #category : #'as yet unclassified' }
 CZString >> expanded [
 	(value class = CZCompositeValue)
 		ifTrue:[ ^ value expanded ].
@@ -23,9 +28,4 @@ CZString >> notExpanded [
 		ifTrue:[ ^ value notExpanded ].
 	
 	^ super notExpanded.
-]
-
-{ #category : #'as yet unclassified' }
-CZString >> rawValueWithBibtexSyntax [ 
-	^ '{',value,'}'
 ]

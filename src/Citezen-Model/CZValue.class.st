@@ -27,6 +27,11 @@ CZValue class >> with: aValue [
 ]
 
 { #category : #'as yet unclassified' }
+CZValue >> acceptVisitor: aVisitor [
+	self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
 CZValue >> expanded [
 	^ value
 ]
@@ -39,11 +44,6 @@ CZValue >> isComposite [
 { #category : #'as yet unclassified' }
 CZValue >> notExpanded [
 	^ value
-]
-
-{ #category : #'as yet unclassified' }
-CZValue >> rawValueWithBibtexSyntax [
-	^ value asString
 ]
 
 { #category : #'as yet unclassified' }
