@@ -1,21 +1,24 @@
 Class {
-	#name : #CZVisitor,
+	#name : #CZOutputer,
 	#superclass : #Object,
 	#instVars : [
 		'fileName',
 		'lastOutput',
 		'outputStream'
 	],
+	#classInstVars : [
+		'blackList'
+	],
 	#category : #'Citezen-Outputers'
 }
 
 { #category : #'as yet unclassified' }
-CZVisitor >> getLastOutput [
+CZOutputer >> getLastOutput [
 	^ lastOutput 
 ]
 
 { #category : #'as yet unclassified' }
-CZVisitor >> getOutputFor: aSet [
+CZOutputer >> getOutputFor: aSet [
 	(fileName isNil) 
 		ifTrue: [ outputStream := WriteStream on: String new ]
 		ifFalse: [ outputStream := FileStream newFileNamed: fileName ].
@@ -32,27 +35,27 @@ CZVisitor >> getOutputFor: aSet [
 ]
 
 { #category : #'as yet unclassified' }
-CZVisitor >> initialize [
+CZOutputer >> initialize [
 	super initialize.
 	fileName := nil
 ]
 
 { #category : #'as yet unclassified' }
-CZVisitor >> setOutputFile: path [	
+CZOutputer >> setOutputFile: path [	
 	fileName := path
 ]
 
 { #category : #'as yet unclassified' }
-CZVisitor >> visitEntry: anEntry [
+CZOutputer >> visitEntry: anEntry [
 	self subclassResponsibility 
 ]
 
 { #category : #'as yet unclassified' }
-CZVisitor >> visitField: aField [
+CZOutputer >> visitField: aField [
 	self subclassResponsibility 
 ]
 
 { #category : #'as yet unclassified' }
-CZVisitor >> visitSet: aSet [
+CZOutputer >> visitSet: aSet [
 	self subclassResponsibility 
 ]

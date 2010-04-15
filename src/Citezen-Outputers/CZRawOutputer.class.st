@@ -1,6 +1,6 @@
 Class {
 	#name : #CZRawOutputer,
-	#superclass : #CZVisitor,
+	#superclass : #CZOutputer,
 	#instVars : [
 		'filter'
 	],
@@ -49,7 +49,7 @@ CZRawOutputer >> visitEntry: anEntry [
 CZRawOutputer >> visitField: aField [
 	outputStream nextPutAll: aField key;
 		nextPutAll: ' = '.
-	aField getStoredValue acceptVisitor: self
+	aField dispatchVisitor: self
 ]
 
 { #category : #'as yet unclassified' }
@@ -82,8 +82,7 @@ CZRawOutputer >> visitSet: aSet [
 			nextPutAll: each key;
 			nextPut: $,; cr.
 		each acceptVisitor: self.
-		outputStream cr; nextPut: $}; cr; cr.
-		].
+		outputStream cr; nextPut: $}; cr; cr.].
 	
 ]
 
