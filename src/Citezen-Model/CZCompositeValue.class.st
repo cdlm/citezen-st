@@ -43,6 +43,13 @@ CZCompositeValue >> do: aBlock [
 ]
 
 { #category : #'initialize-release' }
+CZCompositeValue >> do: aBlock separatedBy: aSecondBlock [
+	value do: aBlock separatedBy: aSecondBlock 
+	
+
+]
+
+{ #category : #'initialize-release' }
 CZCompositeValue >> expanded [
 	"evaluate recursively and concatenate"
 	| aStream |

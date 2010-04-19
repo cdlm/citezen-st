@@ -25,6 +25,17 @@ CZField class >> initializeValueClasses [
 
 { #category : #'instance creation' }
 CZField class >> key: aSymbol rawValue: valueFromParser [
+	"have to test it, because there is no syntax to detect an author (example :)
+		@type{key,
+			author = {Barreau, Adrien}, -> should be CZPeople
+			title = {Acomma, astring}   -> should be CZString}"
+
+	(#(author editor) includes: aSymbol asLowercase) 
+		ifTrue: [
+			^ self 
+				key: aSymbol 
+				value: ((CZPeople new) setValue: valueFromParser )].
+	
 	^ self new
 		setKey: aSymbol asLowercase asSymbol
 		rawValue: valueFromParser
@@ -60,14 +71,14 @@ CZField >> addToBibSet: aBibSet [
 ]
 
 { #category : #'as yet unclassified' }
+CZField >> dispatchVisitor: aVisitor [
+	value acceptVisitor: aVisitor 
+]
+
+{ #category : #'as yet unclassified' }
 CZField >> equalsButDifferent: aField [
 	(self == aField) ifTrue: [ ^ false ].
 	^ (self key = aField key) & (self rawValue = aField rawValue)
-]
-
-{ #category : #accessing }
-CZField >> getStoredValue [
-	^ value
 ]
 
 { #category : #accessing }

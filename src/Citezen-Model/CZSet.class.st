@@ -115,6 +115,11 @@ CZSet >> entries [
 	^ entries
 ]
 
+{ #category : #'as yet unclassified' }
+CZSet >> entries: aCollection [
+	entries := aCollection 
+]
+
 { #category : #accessing }
 CZSet >> entryAt: aKey [
 	"Return the local entry definition, if known."
