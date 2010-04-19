@@ -12,6 +12,11 @@ CZBibNot >> = aBibquery [
 	^ self class = aBibquery class and: [ self query = aBibquery query ]
 ]
 
+{ #category : #'as yet unclassified' }
+CZBibNot >> field: aSymbol [
+	query field: aSymbol 
+]
+
 { #category : #accessing }
 CZBibNot >> query [
 	^ query

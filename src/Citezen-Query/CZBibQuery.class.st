@@ -50,6 +50,11 @@ CZBibQuery >> OR: aQuery [
 		yourself
 ]
 
+{ #category : #public }
+CZBibQuery >> field: aSymbol [
+	"does nothing; dispatch in CZBibAll, CZBibOr, CZBibNot; overload in CZBibFieldCompare and CZBibFieldMatches"
+]
+
 { #category : #printing }
 CZBibQuery >> printOn: aStream [
 	^ aStream nextPutAll: self queryString

@@ -13,6 +13,12 @@ CZBibAnd >> = aBibquery [
 	^ self class = aBibquery class and: [ self leftAnd = aBibquery leftAnd and: [ self rightAnd = aBibquery rightAnd ] ]
 ]
 
+{ #category : #'as yet unclassified' }
+CZBibAnd >> field: aSymbol [
+	leftAnd field: aSymbol.
+	rightAnd field: aSymbol 
+]
+
 { #category : #'accessing-private' }
 CZBibAnd >> leftAnd [
 	^ leftAnd

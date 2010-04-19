@@ -13,6 +13,12 @@ CZBibOr >> = aBibquery [
 	^ self class = aBibquery class and: [ self leftOr = aBibquery leftOr and: [ self rightOr = aBibquery rightOr ] ]
 ]
 
+{ #category : #'as yet unclassified' }
+CZBibOr >> field: aSymbol [
+	leftOr field: aSymbol.
+	rightOr field: aSymbol 
+]
+
 { #category : #accessing }
 CZBibOr >> leftOr [
 	^ leftOr
