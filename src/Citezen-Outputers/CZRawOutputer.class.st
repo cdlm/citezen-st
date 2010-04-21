@@ -47,7 +47,9 @@ CZRawOutputer >> visitEntry: anEntry [
 
 { #category : #'as yet unclassified' }
 CZRawOutputer >> visitField: aField [
-	outputStream nextPutAll: aField key;
+	outputStream 
+		nextPutAll: '  ';
+		nextPutAll: aField key;
 		nextPutAll: ' = '.
 	aField dispatchVisitor: self
 ]
