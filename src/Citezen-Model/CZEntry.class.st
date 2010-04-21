@@ -128,6 +128,11 @@ CZEntry >> printOn: aStream [
 		nextPut: $)
 ]
 
+{ #category : #'as yet unclassified' }
+CZEntry >> removeFields: aList [
+	fields := fields reject: [ :each | aList includes: each key]
+]
+
 { #category : #accessing }
 CZEntry >> size [
 	^ fields size
