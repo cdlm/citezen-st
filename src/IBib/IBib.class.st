@@ -123,21 +123,24 @@ IBib >> renderContentOn: html [
 		
 		html div class: 'main' ; with: [
 			
-			html div class: 'subtitle' ; with: [ html text: 'Publications' ] .
+			html div class: 'subtitle' ; with: [ html span: 'Publications' ] .
 			
-			self renderSortBarOn: html .
-			
-			html anchor
-				callback: [ self askAndCreateBibentry ] ;
-				with: 'Add a new entry' .
-			
-			html table cellpadding: 10 ; class: 'table-main' ; with: [
-				html tableRow: [
-					html tableData id: 'td-border' ;verticalAlign: 'top' ; with: [ self renderTableListOn: html ] .
-					html tableData verticalAlign: 'top' ; with: [ html render: editor . ]
-				] .
-			] .
-		] .
+			html div class: 'submain' ; with: [
+					
+				self renderSortBarOn: html .
+				
+				html anchor
+					callback: [ self askAndCreateBibentry ] ;
+					with: 'Add a new entry' .
+				
+				html table cellpadding: 10 ; class: 'table-main' ; with: [
+					html tableRow: [
+						html tableData id: 'td-border' ;verticalAlign: 'top' ; with: [ self renderTableListOn: html ] .
+						html tableData verticalAlign: 'top' ; with: [ html render: editor . ]
+					]
+				]
+			]
+		]
 ]
 
 { #category : #rendering }
@@ -250,20 +253,30 @@ IBib >> style [
 	
 	.subtitle {
 		color: #111;
+		width: 600px;
 		font-size: 2em;
 		font-weight: normal;
-		margin-bottom: 0.5em;
+		padding: 10px;
+		background-color: #EEE;
+		border-radius: 0 30px;
+	}
+	
+	.subtitle span {
+		margin-left: 20px;
 	}
 	
 	.main {
-		margin: 10px;
-		padding: 10px;
+		margin: 20px;
+		padding: 0px;
+		border-left: 1px #EEE solid;
 	}
 	
-	.table-main {  }
+	.submain {
+		margin: 10px;
+	}
 	
 	.table-main #td-border {
-		border-right: 1px #A8A8A8 solid;
+		border-right: 1px #EEE solid;
 	}
 	
 	.table-list {
