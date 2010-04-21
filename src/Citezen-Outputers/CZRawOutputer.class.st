@@ -8,11 +8,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CZRawOutputer class >> withoutThisFields: aCollection [
-	^ (self new) setFieldsToExclude: aCollection 
-]
-
-{ #category : #'as yet unclassified' }
 CZRawOutputer >> initialize [ 
 	super initialize.
 	filter := #()
