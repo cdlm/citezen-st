@@ -1,6 +1,6 @@
 Class {
 	#name : #CZUsefullScripts,
-	#superclass : #CZPersonalScript,
+	#superclass : #Object,
 	#category : #'Citezen-Script'
 }
 

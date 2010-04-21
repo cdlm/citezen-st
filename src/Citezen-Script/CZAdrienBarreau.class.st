@@ -1,6 +1,6 @@
 Class {
 	#name : #CZAdrienBarreau,
-	#superclass : #CZPersonalScript,
+	#superclass : #Object,
 	#category : #'Citezen-Script'
 }
 
