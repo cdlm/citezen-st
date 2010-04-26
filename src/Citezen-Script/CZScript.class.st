@@ -9,7 +9,10 @@ Class {
 		'fieldsToRemove',
 		'sortCollection',
 		'displayOrder',
-		'query'
+		'query',
+		'displayPattern',
+		'separatorsCollection',
+		'defaultSeparator'
 	],
 	#classInstVars : [
 		'exportTypeMatching',
@@ -39,10 +42,17 @@ CZScript class >> fieldSortBlock: aSymbol [
 ]
 
 { #category : #'as yet unclassified' }
+CZScript class >> htmlExporterEncoding [
+	^ #html
+]
+
+{ #category : #'as yet unclassified' }
 CZScript class >> initializeExportTypeMatching [
 	exportTypeMatching := Dictionary new.
 	exportTypeMatching 
-		add: (self bibExporterEncoding) -> CZRawOutputer 
+		add: (self bibExporterEncoding) -> CZRawOutputer;
+		add: (self htmlExporterEncoding) -> CZHtmlOutputer 
+		
 ]
 
 { #category : #'as yet unclassified' }
@@ -101,52 +111,80 @@ CZScript >> defaultOutputPath [
 ]
 
 { #category : #'as yet unclassified' }
+CZScript >> defaultSeparator: aString [
+	self halt. 
+	(separatorsCollection isNil not) ifTrue: [
+		separatorsCollection do: [ :each | 
+			each at: 1 put: aString. each at: (each size) put: aString]].
+	
+	defaultSeparator := aString.
+
+]
+
+{ #category : #'as yet unclassified' }
 CZScript >> displayOrder: aList [
 	| collection |
 	sortCollection addFirst: self class typeSymbol.
 	collection := aList asOrderedCollection.
-	(collection includes: #*) ifFalse: [ collection add: #* ].
+"	(collection includes: #*) ifFalse: [ collection add: #* ]."
 	displayOrder := collection
 		
 	
 ]
 
 { #category : #'as yet unclassified' }
+CZScript >> displayPattern: aCZDisplayPattern [
+"	(aCZDisplayPattern fields includes: #*) ifFalse: [ aCZDisplayPattern field: #* ]."
+	displayPattern := aCZDisplayPattern 
+]
+
+{ #category : #'as yet unclassified' }
 CZScript >> displayWithDisplayOrder: aDictionary in: aCollection [
-	| keys printedKeys currentKey index|
-	
+	| keys printedKeys currentKey index aBoolean |
 	keys := aDictionary keys.
 	currentKey := displayOrder at: (index := 1).
+	aBoolean := displayOrder includes: #*. 
 	
-	"Before the * wildcard"
-	[currentKey ~= '*'] whileTrue: 
-		[ (keys includes: currentKey) ifTrue:
-			[ aCollection addAll: (aDictionary at: currentKey).
-			  keys remove: currentKey ].
-		 	currentKey := displayOrder at: (index := index + 1) ].
-	
-	"The * wildcard"
-	printedKeys := OrderedCollection new.	
-	keys do: [ :each | (displayOrder includes: each) 
+	aBoolean
 		ifFalse: [ 
-			aCollection addAll: (aDictionary at: each).
-			printedKeys add: each ]].
-	keys := (keys select: [ :each | (printedKeys includes: each) not]).
-	
-	"After the * wildcard"
-	index := index + 1.
-	[index > displayOrder size] whileFalse: [
-		currentKey := displayOrder at: index.
-		(keys includes: currentKey) ifTrue: 
-			[ aCollection addAll: (aDictionary at: currentKey)].
-		index := index + 1
-	]
-	
+			aDictionary keys
+				do: [ :each | 
+					(displayOrder includes: each)
+						ifTrue: [ aCollection addAll: (aDictionary at: each) ] ] ]
+		ifTrue: [ 
+			"Before the * wildcard"
+			[ currentKey ~= '*' ]
+				whileTrue: [ 
+					(keys includes: currentKey)
+						ifTrue: [ 
+							aCollection addAll: (aDictionary at: currentKey).
+							keys remove: currentKey ].
+					currentKey := displayOrder at: (index := index + 1) ].	"The * wildcard"
+			printedKeys := OrderedCollection new.
+			keys
+				do: [ :each | 
+					(displayOrder includes: each)
+						ifFalse: [ 
+							aCollection addAll: (aDictionary at: each).
+							printedKeys add: each ] ].
+			keys := keys select: [ :each | (printedKeys includes: each) not ].	"After the * wildcard"
+			index := index + 1.
+			[ index > displayOrder size ]
+				whileFalse: [ 
+					currentKey := displayOrder at: index.
+					(keys includes: currentKey)
+						ifTrue: [ aCollection addAll: (aDictionary at: currentKey) ].
+					index := index + 1 ] ]
 ]
 
 { #category : #'as yet unclassified' }
 CZScript >> exportAsBib [
 	self exportType: self class bibExporterEncoding
+]
+
+{ #category : #'as yet unclassified' }
+CZScript >> exportAsHtml [
+	self exportType: self class htmlExporterEncoding
 ]
 
 { #category : #'as yet unclassified' }
@@ -172,26 +210,33 @@ CZScript >> generate [
 		filter;
 		sort.
 	
-	(outputer ifNil: [ self class defaultOutputer ])
+	(outputer ifNil: [ (self class defaultOutputer) new])
+		separators: separatorsCollection;
 		setOutputFile: (outputFile ifNil: [ self defaultOutputPath ]);
 		getOutputFor: bibset
 ]
 
 { #category : #'as yet unclassified' }
 CZScript >> initialize [
+	super initialize.
+	
 	bibset := nil.
 	outputer := nil.
 	outputFile := self defaultOutputPath.
 	blackList := #().
+	fieldsToRemove := #().
 	sortCollection := OrderedCollection new.
 	displayOrder := nil.
+	displayPattern := nil.
 	query := nil.
+	defaultSeparator := ' '.
 
 ]
 
 { #category : #'as yet unclassified' }
 CZScript >> inputFile: path [
-	bibset := CZBibParser parse: ((FileStream readOnlyFileNamed: path) contents)
+	bibset := CZBibParser parse: ((FileStream readOnlyFileNamed: path) contents).
+	bibset scope: CZSet standardDefinitions 
 ]
 
 { #category : #'as yet unclassified' }
@@ -218,10 +263,38 @@ CZScript >> remove [
 
 { #category : #'as yet unclassified' }
 CZScript >> sort [
+	| fieldsBeforeWildcard beforeWildcard afterWildcard fieldsInWilcard tempSeparatorsCollection hasWildcard|
+	
+	"Sort entries by type"
 	(sortCollection isEmpty)
 		ifFalse: [
 			bibset entries: (self sortStartingAt: 1 value: bibset entries)].
+	
+	"Sort fields and create the separators collection"
+	separatorsCollection := OrderedCollection new.	
+	fieldsBeforeWildcard := 0.
+	hasWildcard := true.
+	displayPattern fields detect: [ :each | (each = #*)
+		ifFalse: [ fieldsBeforeWildcard := fieldsBeforeWildcard + 1. false ]
+		ifTrue: [ true ]] ifNone: [ hasWildcard  := false ].
 		
+	beforeWildcard := OrderedCollection new.
+	afterWildcard := OrderedCollection new.
+	1 to: (fieldsBeforeWildcard + 1) do: [ :each | beforeWildcard add: (displayPattern separators at: each) ].
+	
+	(hasWildcard) ifTrue:[ 
+		(fieldsBeforeWildcard + 2) to: (displayPattern separators size) do: [ :each | afterWildcard add: (displayPattern separators at: each) ]]. 
+	
+	(displayPattern isNil)
+		ifFalse: [
+			bibset entries do: [ :each | 
+				fieldsInWilcard := each sortFields: displayPattern fields.
+				tempSeparatorsCollection := OrderedCollection new.
+				tempSeparatorsCollection addAll: beforeWildcard.
+				(hasWildcard) ifTrue: [
+					(fieldsInWilcard - 1)timesRepeat: [ tempSeparatorsCollection add: defaultSeparator ].
+					tempSeparatorsCollection addAll: afterWildcard ].
+				separatorsCollection add: tempSeparatorsCollection]].
 ]
 
 { #category : #'as yet unclassified' }
