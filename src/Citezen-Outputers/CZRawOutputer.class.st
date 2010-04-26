@@ -1,26 +1,8 @@
 Class {
 	#name : #CZRawOutputer,
 	#superclass : #CZOutputer,
-	#instVars : [
-		'filter'
-	],
 	#category : #'Citezen-Outputers'
 }
-
-{ #category : #'as yet unclassified' }
-CZRawOutputer >> initialize [ 
-	super initialize.
-	filter := #()
-]
-
-{ #category : #'as yet unclassified' }
-CZRawOutputer >> setFieldsToExclude: aCollection [
-	filter := (aCollection 
-		collect: [ :each | 
-			(each isNil & each isKindOf: Number) 
-				ifFalse: [each asString asSymbol asLowercase ]] 
-		thenSelect: [ :each | each isNil not])
-]
 
 { #category : #'as yet unclassified' }
 CZRawOutputer >> visitCompositeValue: aCZCompositeValue [
@@ -29,11 +11,8 @@ CZRawOutputer >> visitCompositeValue: aCZCompositeValue [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitEntry: anEntry [
-	| fields |
-	fields := anEntry fields reject: [ :each | filter includes: each key ].
-	
-	fields do: [ :each |
+CZRawOutputer >> visitEntry: anEntry [	
+	anEntry fields do: [ :each |
 		each acceptVisitor: self.
 		(each == (anEntry fields at: anEntry size))
 			ifFalse: [outputStream nextPut: $,; cr]]
@@ -66,6 +45,8 @@ CZRawOutputer >> visitPeople: aCZPeople [
 
 { #category : #'as yet unclassified' }
 CZRawOutputer >> visitSet: aSet [	
+	lastEntryVisited := 0.
+	
 	aSet macros do: [ :each | 
 		outputStream nextPutAll: '@string {'.
 		each acceptVisitor: self.

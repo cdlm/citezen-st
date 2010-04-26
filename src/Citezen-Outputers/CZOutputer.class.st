@@ -4,7 +4,10 @@ Class {
 	#instVars : [
 		'fileName',
 		'lastOutput',
-		'outputStream'
+		'outputStream',
+		'separators',
+		'lastEntryVisited',
+		'defaultSeparator'
 	],
 	#classInstVars : [
 		'blackList'
@@ -37,7 +40,13 @@ CZOutputer >> getOutputFor: aSet [
 { #category : #'as yet unclassified' }
 CZOutputer >> initialize [
 	super initialize.
-	fileName := nil
+	fileName := nil.
+	separators := #()
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> separators: aCollection [
+	separators := aCollection 
 ]
 
 { #category : #'as yet unclassified' }
@@ -56,6 +65,26 @@ CZOutputer >> visitField: aField [
 ]
 
 { #category : #'as yet unclassified' }
+CZOutputer >> visitInteger: aCZInteger [
+	self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> visitMacroReference: aCZMacroReference [
+	self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> visitPeople: aCZPeople [
+	self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
 CZOutputer >> visitSet: aSet [
+	self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> visitString: aCZString [
 	self subclassResponsibility 
 ]
