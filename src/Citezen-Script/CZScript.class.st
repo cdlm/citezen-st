@@ -82,7 +82,7 @@ CZScript class >> matchType: aString [
 
 { #category : #'as yet unclassified' }
 CZScript class >> sortByField: aCollection fieldToSort: aSymbol [
-	^ aCollection groupBy: [ :each | each at: aSymbol ] having: [ :each | true ]
+	^ aCollection groupBy: [ :each | (each at: aSymbol) value ] having: [ :each | ((each at:1) at: aSymbol) class ~= CZUndefinedField ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -101,6 +101,12 @@ CZScript class >> typeSymbol [
 ]
 
 { #category : #'as yet unclassified' }
+CZScript >> bibsetInput: aCZSet [
+	bibset := aCZSet.
+	aCZSet scope: CZSet standardDefinitions 
+]
+
+{ #category : #Interface }
 CZScript >> blackList: aList [
 	blackList := aList 
 ]
@@ -110,9 +116,9 @@ CZScript >> defaultOutputPath [
 	^ 'default.bib'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> defaultSeparator: aString [
-	self halt. 
+
 	(separatorsCollection isNil not) ifTrue: [
 		separatorsCollection do: [ :each | 
 			each at: 1 put: aString. each at: (each size) put: aString]].
@@ -121,20 +127,18 @@ CZScript >> defaultSeparator: aString [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> displayOrder: aList [
 	| collection |
 	sortCollection addFirst: self class typeSymbol.
 	collection := aList asOrderedCollection.
-"	(collection includes: #*) ifFalse: [ collection add: #* ]."
 	displayOrder := collection
 		
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> displayPattern: aCZDisplayPattern [
-"	(aCZDisplayPattern fields includes: #*) ifFalse: [ aCZDisplayPattern field: #* ]."
 	displayPattern := aCZDisplayPattern 
 ]
 
@@ -177,12 +181,12 @@ CZScript >> displayWithDisplayOrder: aDictionary in: aCollection [
 					index := index + 1 ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> exportAsBib [
 	self exportType: self class bibExporterEncoding
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> exportAsHtml [
 	self exportType: self class htmlExporterEncoding
 ]
@@ -192,7 +196,7 @@ CZScript >> exportType: aString [
 	outputer := (self class matchType: aString) new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> fieldsToRemove: aList [
 	fieldsToRemove := aList 
 ]
@@ -203,48 +207,48 @@ CZScript >> filter [
 		bibset entries: (bibset entries select: [ :each | query value: each])]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> generate [
 	self 
 		remove;
 		filter;
 		sort.
 	
-	(outputer ifNil: [ (self class defaultOutputer) new])
+	^ (outputer ifNil: [ (self class defaultOutputer) new])
 		separators: separatorsCollection;
-		setOutputFile: (outputFile ifNil: [ self defaultOutputPath ]);
+		setOutputFile: outputFile;
 		getOutputFor: bibset
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 CZScript >> initialize [
 	super initialize.
 	
 	bibset := nil.
 	outputer := nil.
-	outputFile := self defaultOutputPath.
+	"outputFile := self defaultOutputPath."
 	blackList := #().
 	fieldsToRemove := #().
 	sortCollection := OrderedCollection new.
 	displayOrder := nil.
-	displayPattern := nil.
+	displayPattern := CZDisplayPattern new field: #*.
 	query := nil.
 	defaultSeparator := ' '.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> inputFile: path [
 	bibset := CZBibParser parse: ((FileStream readOnlyFileNamed: path) contents).
 	bibset scope: CZSet standardDefinitions 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> outputFile: path [
 	outputFile := path
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> query: aQuery [
 	query := aQuery 
 ]
@@ -297,19 +301,19 @@ CZScript >> sort [
 				separatorsCollection add: tempSeparatorsCollection]].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> sortByField: aSymbol [
-	(sortCollection includes: self class typeSymbol) not ifTrue: [
+	(sortCollection includes: aSymbol) not ifTrue: [
 		sortCollection add: aSymbol]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> sortByKey [
 	(sortCollection includes: self class typeSymbol) not ifTrue: [
 		sortCollection add: self class keySymbol]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #Interface }
 CZScript >> sortByType [
 	(sortCollection includes: self class typeSymbol) not ifTrue: [
 		sortCollection add: self class typeSymbol]
