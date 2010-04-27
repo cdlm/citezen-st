@@ -2,169 +2,174 @@ Class {
 	#name : #CZQueryTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'entry'
+		'bibset'
 	],
 	#category : #'Citezen-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 CZQueryTest >> setUp [
-	entry := (CZBibParser parse: CZTestResource bibTest) entries at:1
+		bibset := CZBibParser parse: 
+	'
+	@article { a1,
+		author = {Barreau, Adrien},
+		title = {title1}
+	}
+	
+	@article { a3,
+		author = {Barreau, Adrien},
+		title = {title2},
+		year = 2003
+	}
+	
+	@article { a2,
+		author = {Toto, Robert},
+		title = {title3},
+		year = 2005
+	}
+	
+	@unpublished { u1,
+		author = {Barreau, Adrien},
+		title = {titleUn1},
+		year = 2005
+	}
+	
+	@misc { m1,
+		author = {Toto, Robert},
+		title = {title4},
+		year = 2000
+	}
+	'
 ]
 
-{ #category : #'as yet unclassified' }
-CZQueryTest >> testAND [
-	| query1 query2 queryAnd |
-	query1 := (CZBibHasField new) field: #author.
-	query2 := (CZBibHasField new) field: #author.
-	queryAnd := query1 AND: query2.
+{ #category : #tests }
+CZQueryTest >> testBibAndQuery [
+	| query query1 query2 collection index |
+	query1 := CZBibFieldQuery named: #year checks: [ :each | each > 2004 ].
+	query2 := CZBibFieldQuery named: #year checks: [ :each | each < 2006 ].
+	query := query1 AND: query2.
 	
-	self assert: queryAnd class = CZBibAnd.
+	collection := bibset entries select: [ :each | query value: each ].
 	
-	self assert: (query1 value: entry).
-	self assert: (query2 value: entry).
-	self assert: (queryAnd value: entry).
+	self assert: (collection size = 2).
 	
-	query2 field: #toto.
-	self deny: (query2 value: entry).
-	self deny: (queryAnd value: entry)
+	index := 0.
+	bibset entries do: [ :each | ((each at: #year ifAbsent: 2006) value = 2005) ifTrue: 
+		[ index := index + 1. 
+		  self assert: ((collection at: index) = each) ]]
 ]
 
-{ #category : #'as yet unclassified' }
-CZQueryTest >> testCZBibFieldMatches [
-	| query |
+{ #category : #tests }
+CZQueryTest >> testBibFieldCompareQuery [
+	| query collection index |
+	query := CZBibFieldQuery named: #year checks: [ :each | each <= 2005].
 	
-	query := ((CZBibFieldMatches new) pattern: '*test*') field: #title.
-	self assert: (query value: entry).	
+	collection := bibset entries select: [ :each | query value: each ].
 	
-	query pattern: 'test'.
-	self deny: (query value: entry).
+	self assert: (collection size = 4).
 	
-	query pattern: '*test*'; field: #toto.
-	self deny: (query value: entry).
+	index := 0.
+	bibset entries do: [ :each | ((each at: #year ifAbsent: 2006) value <= 2005) ifTrue: 
+		[ index := index + 1. 
+		  self assert: ((collection at: index) = each) ]]
 ]
 
-{ #category : #'as yet unclassified' }
-CZQueryTest >> testCZBibHasField [
-	| query |
-	query := (CZBibHasField new) field: #author.
+{ #category : #tests }
+CZQueryTest >> testBibFieldMatchQuery [
+	| query collection index |
+	query := CZBibFieldQuery named: #author checks: [ :each | '*toto*' match: each ].
 	
-	self assert: (query value: entry).
-	query field: #toto.
-	self deny: (query value: entry)
+	collection := bibset entries select: [ :each | query value: each ].
+	
+	self assert: (collection size = 2).
+	
+	index := 0.
+	bibset entries do: [ :each | ('*toto*' match: (each at: #author) rawValue) ifTrue: 
+		[ index := index + 1. 
+		  self assert: ((collection at: index) = each) ]]
 ]
 
-{ #category : #'as yet unclassified' }
-CZQueryTest >> testCZBibKeyMatches [
-	| query |
+{ #category : #tests }
+CZQueryTest >> testBibFieldQuery [
+	| query collection index |
+	query := CZBibFieldQuery named: #year checks: [ :each | each = 2005].
 	
-	query := (CZBibKeyMatches new) pattern: '*un*'.
-	self assert: (query value: entry).	
+	collection := bibset entries select: [ :each | query value: each ].
 	
-	query pattern: 'un*'.
-	self deny: (query value: entry).
+	self assert: (collection size = 2).
+	
+	index := 0.
+	bibset entries do: [ :each | ((each at: #year ifAbsent: 2006) value = 2005) ifTrue: 
+		[ index := index + 1. 
+		  self assert: ((collection at: index) = each) ]]
 ]
 
-{ #category : #'as yet unclassified' }
-CZQueryTest >> testCZBibTypeMatches [
-	| query |
+{ #category : #tests }
+CZQueryTest >> testBibFieldQueryWithBadField [
+	| query collection |
+	query := CZBibFieldQuery named: #yar checks: [ :each | each = 2005].
 	
-	query := (CZBibTypeMatches new) pattern: 'un*'.
-	self assert: (query value: entry).	
+	collection := bibset entries select: [ :each | query value: each ].
 	
-	query pattern: ''.
-	self deny: (query value: entry).
+	self assert: (collection size = 0).
 ]
 
-{ #category : #'as yet unclassified' }
-CZQueryTest >> testEquality [
-	"test the = overloads"
-	| query1 query2 |
-
-	"CZBibAll"	
-	self assert: (CZBibAll new) = (CZBibAll new).
-
-	"CZBibAnd"
-	query1 := ((CZBibAnd new) leftAnd: (CZBibAll new)) rightAnd: (CZBibAll new).
-	query2 := ((CZBibAnd new) leftAnd: (CZBibAll new)) rightAnd: (CZBibAll new).
-	self assert: query1 = query2.
-	query2 := (CZBibAnd new).
-	self deny: query1 = query2.
+{ #category : #tests }
+CZQueryTest >> testBibKeyQuery [
+	| query collection |
+	query := CZBibKeyQuery checks: [ :each | each = #a1].
 	
-	"CZBibHasField"
-	query1 := ((CZBibHasField new) field: #author).
-	query2 := ((CZBibHasField new) field: #author).
-	self assert: query1 = query2.
-	query2 field: #changed.
-	self deny: query1 = query2.
+	collection := bibset entries select: [ :each | query value: each ].
 	
-	"CZBibMatches"
-	query1 := ((CZBibMatches new) pattern: '*abc*').
-	query2 := ((CZBibMatches new) pattern: '*abc*').
-	self assert: query1 = query2.
-	query2 pattern: '*changed*'.
-	self deny: query1 = query2.
+	self assert: (collection size = 1).
 	
-	"CZBibFieldMatches"
-	query1 := (((CZBibFieldMatches new) pattern: '*abc*') field: #author).
-	query2 := (((CZBibFieldMatches new) pattern: '*abc*') field: #author).
-	self assert: query1 = query2.
-	query2 field: #changed.
-	self deny: query1 = query2.
-	
-	"CZBibNot"
-	query1 := ((CZBibNot new) query: (CZBibAll new)).
-	query2 := ((CZBibNot new) query: (CZBibAll new)).
-	self assert: query1 = query2.
-	query2 query: (CZBibNot new).
-	self deny: query1 = query2.
-
-	"CZBibOr"
-	query1 := (((CZBibOr new) leftOr: (CZBibAll new)) rightOr: (CZBibAll new)).
-	query2 := (((CZBibOr new) leftOr: (CZBibAll new)) rightOr: (CZBibAll new)).
-	self assert: query1 = query2.
-	query2 leftOr: (CZBibOr new).
-	self deny: query1 = query2.
-	query2 leftOr: (CZBibAll new).
-	query2 rightOr: (CZBibOr new).
-	self deny: query1 = query2.
-	
+	(collection at:1) key = #a1
 ]
 
-{ #category : #'as yet unclassified' }
-CZQueryTest >> testNOT [
-	| query queryNot |
-	query := (CZBibHasField new) field: #author.
-	queryNot := query NOT.
+{ #category : #tests }
+CZQueryTest >> testBibNotQuery [
+	| query collection index |
+	query := CZBibTypeQuery checks: [ :each | each = #article].
+	query := query NOT.
 	
-	self assert: queryNot class = CZBibNot.
+	collection := bibset entries select: [ :each | query value: each ].
 	
-	self assert: (query value: entry).
-	self deny: (queryNot value: entry).
+	self assert: (collection size = 2).
 	
-	query field: #toto.
-	self assert: (queryNot value: entry).
-	
+	index := 0.
+	bibset entries do: [ :each | (each type ~= #article) ifTrue: 
+		[ index := index + 1. 
+		  self assert: ((collection at: index) = each) ]]
 ]
 
-{ #category : #'as yet unclassified' }
-CZQueryTest >> testOR [
-	| query1 query2 queryOr |
-	query1 := (CZBibHasField new) field: #author.
-	query2 := (CZBibHasField new) field: #author.
-	queryOr := query1 OR: query2.
+{ #category : #tests }
+CZQueryTest >> testBibOrQuery [
+	| query query1 query2 collection index |
+	query1 := CZBibFieldQuery named: #year checks: [ :each | each = 2005 ].
+	query2 := CZBibFieldQuery named: #year checks: [ :each | each < 2005 ].
+	query := query1 OR: query2.
 	
-	self assert: queryOr class = CZBibOr.
+	collection := bibset entries select: [ :each | query value: each ].
 	
-	self assert: (query1 value: entry).
-	self assert: (query2 value: entry).
-	self assert: (queryOr value: entry).
+	self assert: (collection size = 4).
 	
-	query2 field: #toto.
-	self deny: (query2 value: entry).
-	self assert: (queryOr value: entry).
+	index := 0.
+	bibset entries do: [ :each | ((each at: #year ifAbsent: 2006) value <= 2005) ifTrue: 
+		[ index := index + 1. 
+		  self assert: ((collection at: index) = each) ]]
+]
+
+{ #category : #tests }
+CZQueryTest >> testBibTypeQuery [
+	| query collection index |
+	query := CZBibTypeQuery checks: [ :each | each = #article].
 	
-	query1 field: #toto.
-	self deny: (query1 value: entry).
-	self deny: (queryOr value: entry)
+	collection := bibset entries select: [ :each | query value: each ].
+	
+	self assert: (collection size = 3).
+	
+	index := 0.
+	bibset entries do: [ :each | (each type = #article) ifTrue: 
+		[ index := index + 1. 
+		  self assert: ((collection at: index) = each) ]]
 ]
