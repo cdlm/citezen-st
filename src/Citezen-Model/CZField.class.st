@@ -52,7 +52,7 @@ CZField class >> key: aSymbol value: aValue [
 CZField class >> undefined: aSymbol [
 	^ CZUndefinedField
 		key: aSymbol
-		value: (valueClasses at: aSymbol ifAbsent: [CZValue]) defaultValue
+		value: ("valueClasses at: aSymbol ifAbsent: ["CZValue) defaultValue
 ]
 
 { #category : #'instance creation' }
