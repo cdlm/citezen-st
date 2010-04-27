@@ -20,5 +20,6 @@ CZBibGeneralQuery >> block: aBlock [
 { #category : #'as yet unclassified' }
 CZBibGeneralQuery >> value: aValue [
 	block isNil ifTrue: [ ^ true ].
+	(aValue = '') ifTrue: [ ^ false ].
 	^ block value: aValue 
 ]
