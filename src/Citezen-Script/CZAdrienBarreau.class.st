@@ -7,14 +7,14 @@ Class {
 { #category : #script }
 CZAdrienBarreau class >> bib [
 	^ (CZScript new)
-		sortByField: #annote;
+		"sortByField: #annote;"
 		exportAsBib;
 	"	query: ((field named: #year checks: (fieldValue <= 2005 OR: (fieldValue > 2005))) AND: (field named: #annote matches: '*ot*'));"
 "		query: self myquery;"
-		blackList: #(u2); 
-		displayOrder: #(unpublished * article); 
-		displayPattern: (CZDisplayPattern new field: #*; separator: ', '; field: #annote)
-	"	fieldsToRemove: #(year)"
+		"blackList: #(u2); "
+		"displayOrder: #(unpublished); "
+		displayPattern: (CZDisplayPattern new field: #year)
+		"fieldsToRemove: #(year)"
 ]
 
 { #category : #script }

@@ -147,14 +147,10 @@ CZScript >> displayWithDisplayOrder: aDictionary in: aCollection [
 	| keys printedKeys currentKey index aBoolean |
 	keys := aDictionary keys.
 	currentKey := displayOrder at: (index := 1).
-	aBoolean := displayOrder includes: #*. 
+	aBoolean := displayOrder includes: #*.
 	
 	aBoolean
-		ifFalse: [ 
-			aDictionary keys
-				do: [ :each | 
-					(displayOrder includes: each)
-						ifTrue: [ aCollection addAll: (aDictionary at: each) ] ] ]
+		ifFalse: [ aDictionary keys do: [ :each | aCollection addAll: (aDictionary at: each) ] ]
 		ifTrue: [ 
 			"Before the * wildcard"
 			[ currentKey ~= '*' ]
@@ -163,7 +159,9 @@ CZScript >> displayWithDisplayOrder: aDictionary in: aCollection [
 						ifTrue: [ 
 							aCollection addAll: (aDictionary at: currentKey).
 							keys remove: currentKey ].
-					currentKey := displayOrder at: (index := index + 1) ].	"The * wildcard"
+					currentKey := displayOrder at: (index := index + 1) ].	
+			
+			"The * wildcard"
 			printedKeys := OrderedCollection new.
 			keys
 				do: [ :each | 
@@ -171,7 +169,9 @@ CZScript >> displayWithDisplayOrder: aDictionary in: aCollection [
 						ifFalse: [ 
 							aCollection addAll: (aDictionary at: each).
 							printedKeys add: each ] ].
-			keys := keys select: [ :each | (printedKeys includes: each) not ].	"After the * wildcard"
+			keys := keys select: [ :each | (printedKeys includes: each) not ].	
+				
+			"After the * wildcard"
 			index := index + 1.
 			[ index > displayOrder size ]
 				whileFalse: [ 
@@ -210,9 +210,10 @@ CZScript >> filter [
 { #category : #Interface }
 CZScript >> generate [
 	self 
-		remove;
+		removeEntries;
 		filter;
-		sort.
+		sort;
+		removeFields.
 	
 	^ (outputer ifNil: [ (self class defaultOutputer) new])
 		separators: separatorsCollection;
@@ -226,11 +227,10 @@ CZScript >> initialize [
 	
 	bibset := nil.
 	outputer := nil.
-	"outputFile := self defaultOutputPath."
 	blackList := #().
 	fieldsToRemove := #().
 	sortCollection := OrderedCollection new.
-	displayOrder := nil.
+	displayOrder := #().
 	displayPattern := CZDisplayPattern new field: #*.
 	query := nil.
 	defaultSeparator := ' '.
@@ -254,19 +254,51 @@ CZScript >> query: aQuery [
 ]
 
 { #category : #'as yet unclassified' }
-CZScript >> remove [ 
+CZScript >> removeEntries [ 
+	"This method removes all the entries which match at least one of these two cases :
+		- To be in the blackListBlock 
+		- To have a type whiwh is not include in the displayOrder"
+
+	| trueBlock blackListBlock displayOrderBlock condition |
+
+	trueBlock := [ :entry | true ].
+	blackListBlock := 
+		((blackList isEmptyOrNil) 
+			ifTrue: [ trueBlock ]	
+			ifFalse: [[ :entry | (blackList includes: entry key) not ]]).
+	displayOrderBlock := 
+		(((displayOrder isEmptyOrNil) | (displayOrder includes: #*)) 
+			ifTrue: [ trueBlock ] 
+			ifFalse: [[ :entry | displayOrder includes: entry type ]]).
+	
+	condition := [ :entry | (blackListBlock value: entry) & (displayOrderBlock value: entry) ].
+	
+	bibset entries: ( 
+		bibset entries select: [ :each | 
+			condition value: each ]).
+		
+
+]
+
+{ #category : #'as yet unclassified' }
+CZScript >> removeFields [
+	"Remove all fields listed in fieldsToRemove from all the entries"
+	
 	| newEntries |
 	newEntries := OrderedCollection new.
 	
-	bibset entries do: [ :each | 
-		(blackList includes: each key) 
-			ifFalse: [ newEntries add: (each removeFields: fieldsToRemove) ]].
-		
-	bibset entries: newEntries 
+	bibset entries do: [ :each | each removeFields: fieldsToRemove ]
 ]
 
 { #category : #'as yet unclassified' }
 CZScript >> sort [
+	"Big method which do this :
+		- First, if there is at least on element in the sortCollection, the entries are sorted
+		- Then, the separatorsCollection is created and the fields are sorted in all the entries. A few details :
+			-- First we search the * wildcard in the displayPattern
+			-- Then the separators are divided in two collections : before and after the wildcard ; the 'after' collection is empty if there is no wildcard
+			-- The last step is to iterate on the entries, sort them, then create the collections of separators for these entries, and fill them"
+
 	| fieldsBeforeWildcard beforeWildcard afterWildcard fieldsInWilcard tempSeparatorsCollection hasWildcard|
 	
 	"Sort entries by type"
@@ -286,19 +318,21 @@ CZScript >> sort [
 	afterWildcard := OrderedCollection new.
 	1 to: (fieldsBeforeWildcard + 1) do: [ :each | beforeWildcard add: (displayPattern separators at: each) ].
 	
-	(hasWildcard) ifTrue:[ 
-		(fieldsBeforeWildcard + 2) to: (displayPattern separators size) do: [ :each | afterWildcard add: (displayPattern separators at: each) ]]. 
+	(hasWildcard) 
+		ifTrue: [ 
+			(fieldsBeforeWildcard + 2) to: (displayPattern separators size) do: [ :each | afterWildcard add: (displayPattern separators at: each) ]. 
 	
-	(displayPattern isNil)
-		ifFalse: [
 			bibset entries do: [ :each | 
 				fieldsInWilcard := each sortFields: displayPattern fields.
 				tempSeparatorsCollection := OrderedCollection new.
 				tempSeparatorsCollection addAll: beforeWildcard.
-				(hasWildcard) ifTrue: [
-					(fieldsInWilcard - 1)timesRepeat: [ tempSeparatorsCollection add: defaultSeparator ].
-					tempSeparatorsCollection addAll: afterWildcard ].
-				separatorsCollection add: tempSeparatorsCollection]].
+				(fieldsInWilcard - 1)timesRepeat: [ tempSeparatorsCollection add: defaultSeparator ].
+				tempSeparatorsCollection addAll: afterWildcard .
+				separatorsCollection add: tempSeparatorsCollection]]
+		ifFalse: [
+			bibset entries do: [ :each | 
+				fieldsInWilcard := each sortFields: displayPattern fields.
+				separatorsCollection add: (OrderedCollection new addAll: beforeWildcard; yourself)]]
 ]
 
 { #category : #Interface }
@@ -335,7 +369,7 @@ CZScript >> sortStartingAt: anIndex value: value [
 	collection := OrderedCollection new.
 	keys := dictionary keysSortedSafely.
 	
-	(anIndex = 1 & (displayOrder isNil not))
+	(anIndex = 1 & (displayOrder isEmptyOrNil not))
 		ifTrue: [ self displayWithDisplayOrder: dictionary in: collection ]
 		ifFalse: [ keys do: 
 			[ :each | collection addAll: (dictionary at: each) ]].
