@@ -83,7 +83,7 @@ CZScript class >> matchType: aString [
 { #category : #'as yet unclassified' }
 CZScript class >> sortByField: aCollection fieldToSort: aSymbol [
 	^ (aCollection 
-			groupBy: [ :each | (each at: aSymbol) value ] 
+			groupBy: [ :each | (each at: aSymbol) rawValue ] 
 			having: [ :each | ((each at:1) at: aSymbol) class ~= CZUndefinedField ]
 		) associations 
 ]
@@ -162,7 +162,7 @@ CZScript >> displayOrder: aList [
 
 { #category : #interface }
 CZScript >> displayPattern: aCZDisplayPattern [
-	displayPattern := (aCZDisplayPattern ifNil: [CZDisplayPattern new])
+	displayPattern := (aCZDisplayPattern ifNil: [CZDisplayPattern new field: #*])
 ]
 
 { #category : #private }
@@ -403,7 +403,7 @@ CZScript >> sortStartingAt: anIndex value: value [
 
 	| sortAssociation anArray sortedValues |
 
-	sortAssociation := sortCollection at: anIndex.
+	sortAssociation := sortCollection at: anIndex. 
 	anArray := (self class matchSort: sortAssociation key) value: value.
 	
 	anArray sort.
