@@ -7,13 +7,14 @@ Class {
 { #category : #script }
 CZAdrienBarreau class >> bib [
 	^ (CZScript new)
-		"sortByField: #annote;"
-		exportAsBib;
+		sortByField: #year;
+		reversedSortByField: #annote;
+		exportAsBib
 	"	query: ((field named: #year checks: (fieldValue <= 2005 OR: (fieldValue > 2005))) AND: (field named: #annote matches: '*ot*'));"
-"		query: self myquery;"
+		"query: self myquery;"
 		"blackList: #(u2); "
-		"displayOrder: #(unpublished); "
-		displayPattern: (CZDisplayPattern new field: #year)
+		"displayOrder: #(article *)" 
+		"displayPattern: (CZDisplayPattern new field: #year)"
 		"fieldsToRemove: #(year)"
 ]
 
@@ -30,13 +31,13 @@ CZAdrienBarreau class >> bib2 [
 { #category : #script }
 CZAdrienBarreau class >> html [
 	^ (CZScript new)
-		sortByField: #annote;
+"		sortByField: #annote;"
 		exportAsHtml;
 	"	query: ((field named: #year checks: (fieldValue <= 2005 OR: (fieldValue > 2005))) AND: (field named: #annote matches: '*ot*'));"
-"		query: self myquery;"
-		blackList: #(u2); 
-		displayOrder: #(unpublished *); 
-		displayPattern: (CZDisplayPattern new field: #annote; beginWith: ' -> '; endWith: ' <- ')
+		query: self myquery;
+"		blackList: #(u2); "
+"		displayOrder: #(unpublished *); "
+		displayPattern: (CZDisplayPattern new field: #author ; field: #title ; separator: ', In' ; field: #journal ; field: #year; defaultSeparator: ', ')
 	"	fieldsToRemove: #(year)"
 ]
 
@@ -57,6 +58,6 @@ CZAdrienBarreau class >> me [
 { #category : #'as yet unclassified' }
 CZAdrienBarreau class >> myquery [
 	^
-	(CZBibTypeQuery checks: [:each | each = 'unpublished']) AND: 
-	(CZBibFieldQuery named: #annote checks: [:each | 't*' match: each])
+	(CZBibFieldQuery named: #journal checks: [:each | each ~= '']) AND: 
+	(CZBibFieldQuery named: #author checks: [:each | '*ducasse*' match: each])
 ]

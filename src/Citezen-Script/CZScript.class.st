@@ -82,17 +82,26 @@ CZScript class >> matchType: aString [
 
 { #category : #'as yet unclassified' }
 CZScript class >> sortByField: aCollection fieldToSort: aSymbol [
-	^ aCollection groupBy: [ :each | (each at: aSymbol) value ] having: [ :each | ((each at:1) at: aSymbol) class ~= CZUndefinedField ]
+	^ (aCollection 
+			groupBy: [ :each | (each at: aSymbol) value ] 
+			having: [ :each | ((each at:1) at: aSymbol) class ~= CZUndefinedField ]
+		) associations 
 ]
 
 { #category : #'as yet unclassified' }
 CZScript class >> sortByKey: aCollection [
-	^ aCollection groupBy: [ :each | each key] having: [ :each | true ]
+	^ (aCollection 
+			groupBy: [ :each | each key] 
+			having: [ :each | true ]
+		) associations 
 ]
 
 { #category : #'as yet unclassified' }
 CZScript class >> sortByType: aCollection [
-	^ aCollection groupBy: [ :each | each type] having: [ :each | true ]
+	^ (aCollection 
+			groupBy: [ :each | each type] 
+			having: [ :each | true ]
+		) associations
 ]
 
 { #category : #'as yet unclassified' }
@@ -100,64 +109,82 @@ CZScript class >> typeSymbol [
 	^ '_type' asSymbol
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
+CZScript >> addSort: aSymbol reversed: aBoolean [
+	(aSymbol isNil not) ifTrue: [
+		(sortCollection includes: aSymbol) not ifTrue: [
+			sortCollection add: (aSymbol -> aBoolean) ] ]
+]
+
+{ #category : #private }
 CZScript >> bibsetInput: aCZSet [
 	bibset := aCZSet.
 	aCZSet scope: CZSet standardDefinitions 
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> blackList: aList [
-	blackList := aList 
+	blackList := (aList ifNil: [#()])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CZScript >> defaultOutputPath [
 	^ 'default.bib'
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> defaultSeparator: aString [
 
-	(separatorsCollection isNil not) ifTrue: [
-		separatorsCollection do: [ :each | 
-			each at: 1 put: aString. each at: (each size) put: aString]].
+	(aString isNil not)
+		ifTrue: [
+			(separatorsCollection isNil not) ifTrue: [
+				separatorsCollection do: [ :each | 
+					each at: 1 put: aString. each at: (each size) put: aString]].
 	
-	defaultSeparator := aString.
-
+			defaultSeparator := aString. ]
+		ifFalse: [ defaultSeparator := '']
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> displayOrder: aList [
 	| collection |
-	sortCollection addFirst: self class typeSymbol.
-	collection := aList asOrderedCollection.
-	displayOrder := collection
+	
+	(aList isNil not) 
+		ifTrue: [
+			sortCollection addFirst: (self class typeSymbol -> false).
+			collection := aList asOrderedCollection.
+			displayOrder := collection ]
+		ifFalse: [ displayOrder := #() ]
+		
 		
 	
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> displayPattern: aCZDisplayPattern [
-	displayPattern := aCZDisplayPattern 
+	displayPattern := (aCZDisplayPattern ifNil: [CZDisplayPattern new])
 ]
 
-{ #category : #'as yet unclassified' }
-CZScript >> displayWithDisplayOrder: aDictionary in: aCollection [
-	| keys printedKeys currentKey index aBoolean |
-	keys := aDictionary keys.
+{ #category : #private }
+CZScript >> displayWithDisplayOrder: anArray in: aCollection [
+	| dictKeyIndex keys printedKeys currentKey index aBoolean |
+	
+	dictKeyIndex := Dictionary new.
+	1 to: anArray size do: [ :cpt | dictKeyIndex at: (anArray at: cpt) key put: cpt ].
+	keys := dictKeyIndex keys.
+	
 	currentKey := displayOrder at: (index := 1).
 	aBoolean := displayOrder includes: #*.
 	
 	aBoolean
-		ifFalse: [ aDictionary keys do: [ :each | aCollection addAll: (aDictionary at: each) ] ]
+		ifFalse: [ keys do: [ :each | aCollection addAll: (anArray at: (dictKeyIndex at: each)) value ] ]
 		ifTrue: [ 
 			"Before the * wildcard"
 			[ currentKey ~= '*' ]
 				whileTrue: [ 
 					(keys includes: currentKey)
 						ifTrue: [ 
-							aCollection addAll: (aDictionary at: currentKey).
+							aCollection addAll: (anArray at: (dictKeyIndex at: currentKey)) value.
 							keys remove: currentKey ].
 					currentKey := displayOrder at: (index := index + 1) ].	
 			
@@ -167,7 +194,7 @@ CZScript >> displayWithDisplayOrder: aDictionary in: aCollection [
 				do: [ :each | 
 					(displayOrder includes: each)
 						ifFalse: [ 
-							aCollection addAll: (aDictionary at: each).
+							aCollection addAll: (anArray at: (dictKeyIndex at: each)) value.
 							printedKeys add: each ] ].
 			keys := keys select: [ :each | (printedKeys includes: each) not ].	
 				
@@ -177,37 +204,37 @@ CZScript >> displayWithDisplayOrder: aDictionary in: aCollection [
 				whileFalse: [ 
 					currentKey := displayOrder at: index.
 					(keys includes: currentKey)
-						ifTrue: [ aCollection addAll: (aDictionary at: currentKey) ].
+						ifTrue: [ aCollection addAll: (anArray at: (dictKeyIndex at: currentKey)) value ].
 					index := index + 1 ] ]
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> exportAsBib [
 	self exportType: self class bibExporterEncoding
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> exportAsHtml [
 	self exportType: self class htmlExporterEncoding
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CZScript >> exportType: aString [
 	outputer := (self class matchType: aString) new
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> fieldsToRemove: aList [
-	fieldsToRemove := aList 
+	fieldsToRemove := (aList ifNil: [ #() ])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CZScript >> filter [
 	(query isNil not) ifTrue: [
 		bibset entries: (bibset entries select: [ :each | query value: each])]
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> generate [
 	self 
 		removeEntries;
@@ -237,23 +264,23 @@ CZScript >> initialize [
 
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> inputFile: path [
 	bibset := CZBibParser parse: ((FileStream readOnlyFileNamed: path) contents).
 	bibset scope: CZSet standardDefinitions 
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> outputFile: path [
 	outputFile := path
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> query: aQuery [
 	query := aQuery 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CZScript >> removeEntries [ 
 	"This method removes all the entries which match at least one of these two cases :
 		- To be in the blackListBlock 
@@ -280,7 +307,7 @@ CZScript >> removeEntries [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CZScript >> removeFields [
 	"Remove all fields listed in fieldsToRemove from all the entries"
 	
@@ -290,7 +317,22 @@ CZScript >> removeFields [
 	bibset entries do: [ :each | each removeFields: fieldsToRemove ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #interface }
+CZScript >> reversedSortByField: aSymbol [
+	self addSort: aSymbol reversed: true
+]
+
+{ #category : #interface }
+CZScript >> reversedSortByKey [
+	self addSort: (self class keySymbol) reversed: true
+]
+
+{ #category : #interface }
+CZScript >> reversedSortByType [
+	self addSort: (self class typeSymbol) reversed: true
+]
+
+{ #category : #private }
 CZScript >> sort [
 	"Big method which do this :
 		- First, if there is at least on element in the sortCollection, the entries are sorted
@@ -335,45 +377,51 @@ CZScript >> sort [
 				separatorsCollection add: (OrderedCollection new addAll: beforeWildcard; yourself)]]
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> sortByField: aSymbol [
-	(sortCollection includes: aSymbol) not ifTrue: [
-		sortCollection add: aSymbol]
+	self addSort: aSymbol reversed: false
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> sortByKey [
-	(sortCollection includes: self class typeSymbol) not ifTrue: [
-		sortCollection add: self class keySymbol]
+	self addSort: (self class keySymbol) reversed: false
 ]
 
-{ #category : #Interface }
+{ #category : #interface }
 CZScript >> sortByType [
-	(sortCollection includes: self class typeSymbol) not ifTrue: [
-		sortCollection add: self class typeSymbol]
+	self addSort: (self class typeSymbol) reversed: false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CZScript >> sortStartingAt: anIndex value: value [
-	| dictionary collection keys |
-	dictionary := (self class matchSort: (sortCollection at: anIndex)) value: value.
+	"Recursive method which do this :
+		- First, we look for a sort block and compute it with value
+		- Then 
+			-- The collection returned by the block is sorted, can be reverted
+			-- If there is another sort option in sortCollection, then recursive call
+		- If anIndex = 1 and if there is a displayOrder, call displayWithDisplayOrder:in:"
+
+	| sortAssociation anArray sortedValues |
+
+	sortAssociation := sortCollection at: anIndex.
+	anArray := (self class matchSort: sortAssociation key) value: value.
+	
+	anArray sort.
+	(sortAssociation value) ifTrue: [
+		anArray := anArray reversed ].
 	
 	(anIndex < sortCollection size)
 		ifTrue: [
-			dictionary keys
-			  do: [ :key | 
-				dictionary  
-					at: (key)
-					put: (self sortStartingAt: (anIndex+1) value: (dictionary at: (key))) ]].
+			anArray do: [ :each |  
+				each value: (self sortStartingAt: (anIndex+1) value: (each value)) ] ].
 			
-	collection := OrderedCollection new.
-	keys := dictionary keysSortedSafely.
+	sortedValues := OrderedCollection new.
 	
 	(anIndex = 1 & (displayOrder isEmptyOrNil not))
-		ifTrue: [ self displayWithDisplayOrder: dictionary in: collection ]
-		ifFalse: [ keys do: 
-			[ :each | collection addAll: (dictionary at: each) ]].
+		ifTrue: [ self displayWithDisplayOrder: anArray in: sortedValues ]
+		ifFalse: [ anArray do: 
+			[ :each | sortedValues addAll: (each value) ]].
 	
-	^ collection asOrderedCollection
+	^ sortedValues 
 
 ]
