@@ -236,16 +236,55 @@ CZScript >> filter [
 
 { #category : #interface }
 CZScript >> generate [
+	| collection separators fieldsTmp fieldTmp fields index hasWildcard fieldKeys |
+	
 	self 
 		removeEntries;
 		filter;
-		sort;
-		removeFields.
+		sort.
+		
+	collection := OrderedCollection new.
+	separatorsCollection := OrderedCollection new.
+	hasWildcard := displayPattern fields includes: #*.
 	
-	^ (outputer ifNil: [ (self class defaultOutputer) new])
-		separators: separatorsCollection;
-		setOutputFile: outputFile;
-		getOutputFor: bibset
+	bibset entries do: [ :entry | 
+		fields := OrderedCollection new.
+		separators := OrderedCollection new.
+		fieldsTmp := displayPattern fields.
+		fieldKeys := entry fields collect: [ :each | each key ].
+		
+		separators add: 	displayPattern begin.		
+		hasWildcard 
+			ifFalse: [ 
+				collection add: (fieldsTmp collect: [ :each | fieldKeys includes: each ] ).
+				
+				1 to: collection size do: [ :cpt | 
+					separators add: (displayPattern separators at: cpt ifAbsent: displayPattern defaultSeparator ) ].
+			]
+			ifTrue: [
+				fieldTmp := fieldsTmp at: (index := 1).
+				
+				[fieldTmp = #*] whileFalse: [ 
+					(fieldKeys includes: fieldTmp) ifTrue: [
+						fields add: (fieldTmp).
+						separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ]. 
+					fieldTmp := fieldsTmp at: (index := index + 1) ].
+				
+				entry fields do: [ :each |
+					(fieldsTmp includes: each key) ifFalse: [ 
+						fields add: each key.
+						separators add: displayPattern defaultSeparator ] ].
+				
+				index := index + 1.
+				index to: fieldsTmp size do: [ :each | (fieldKeys includes: each) ifTrue: [
+					fields add: each.
+					separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ] ].
+				collection add: (entry key -> fields).
+			].
+		separators add: displayPattern end.
+		separatorsCollection add: separators ].
+	self halt.
+	^ collection
 ]
 
 { #category : #initialization }
@@ -261,6 +300,7 @@ CZScript >> initialize [
 	displayPattern := CZDisplayPattern new field: #*.
 	query := nil.
 	defaultSeparator := ' '.
+	separatorsCollection := OrderedCollection new.
 
 ]
 
@@ -311,9 +351,6 @@ CZScript >> removeEntries [
 CZScript >> removeFields [
 	"Remove all fields listed in fieldsToRemove from all the entries"
 	
-	| newEntries |
-	newEntries := OrderedCollection new.
-	
 	bibset entries do: [ :each | each removeFields: fieldsToRemove ]
 ]
 
@@ -334,47 +371,11 @@ CZScript >> reversedSortByType [
 
 { #category : #private }
 CZScript >> sort [
-	"Big method which do this :
-		- First, if there is at least on element in the sortCollection, the entries are sorted
-		- Then, the separatorsCollection is created and the fields are sorted in all the entries. A few details :
-			-- First we search the * wildcard in the displayPattern
-			-- Then the separators are divided in two collections : before and after the wildcard ; the 'after' collection is empty if there is no wildcard
-			-- The last step is to iterate on the entries, sort them, then create the collections of separators for these entries, and fill them"
-
-	| fieldsBeforeWildcard beforeWildcard afterWildcard fieldsInWilcard tempSeparatorsCollection hasWildcard|
-	
-	"Sort entries by type"
 	(sortCollection isEmpty)
 		ifFalse: [
-			bibset entries: (self sortStartingAt: 1 value: bibset entries)].
+			bibset entries: (self sortStartingAt: 1 value: bibset entries) ].
 	
-	"Sort fields and create the separators collection"
-	separatorsCollection := OrderedCollection new.	
-	fieldsBeforeWildcard := 0.
-	hasWildcard := true.
-	displayPattern fields detect: [ :each | (each = #*)
-		ifFalse: [ fieldsBeforeWildcard := fieldsBeforeWildcard + 1. false ]
-		ifTrue: [ true ]] ifNone: [ hasWildcard  := false ].
-		
-	beforeWildcard := OrderedCollection new.
-	afterWildcard := OrderedCollection new.
-	1 to: (fieldsBeforeWildcard + 1) do: [ :each | beforeWildcard add: (displayPattern separators at: each) ].
-	
-	(hasWildcard) 
-		ifTrue: [ 
-			(fieldsBeforeWildcard + 2) to: (displayPattern separators size) do: [ :each | afterWildcard add: (displayPattern separators at: each) ]. 
-	
-			bibset entries do: [ :each | 
-				fieldsInWilcard := each sortFields: displayPattern fields.
-				tempSeparatorsCollection := OrderedCollection new.
-				tempSeparatorsCollection addAll: beforeWildcard.
-				(fieldsInWilcard - 1)timesRepeat: [ tempSeparatorsCollection add: defaultSeparator ].
-				tempSeparatorsCollection addAll: afterWildcard .
-				separatorsCollection add: tempSeparatorsCollection]]
-		ifFalse: [
-			bibset entries do: [ :each | 
-				fieldsInWilcard := each sortFields: displayPattern fields.
-				separatorsCollection add: (OrderedCollection new addAll: beforeWildcard; yourself)]]
+
 ]
 
 { #category : #interface }
