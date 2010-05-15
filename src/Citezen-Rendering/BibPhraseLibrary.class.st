@@ -265,7 +265,7 @@ BibPhraseLibrary class >> numberedReportFrom: institution type: aString [
 					addField: #address;
 					add: self locationMonthYear;
 					separatorText: ', ';
-					yourself) blockNamed: 'publishing');
+					yourself) blockNamed: #publishing);
 		addBlockWithField: #note;
 		separatorText: '. ';
 		terminatorText: '.'
@@ -351,7 +351,7 @@ BibPhraseLibrary class >> volumeNumber [
 
 { #category : #'formats-fields' }
 BibPhraseLibrary class >> year: aField [
-	^ BibLiteralPhrase text: aField value printString
+	^ BibLiteralPhrase text: aField value displayString
 ]
 
 { #category : #querying }
