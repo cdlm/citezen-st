@@ -25,12 +25,33 @@ author :
 
 { #category : #'generated-accessing' }
 CZAuthorParser class >> scannerClass [
-	^ CZAuthorScanner
+	^CZAuthorScanner
 ]
 
 { #category : #'generated-starting states' }
 CZAuthorParser class >> startingStateForauthorList [
 	^1
+]
+
+{ #category : #'generated-comments' }
+CZAuthorParser class >> symbolComment [
+
+	"
+1. "",""
+2. <whitespace>
+3. <and>
+4. <name>
+5. Repeat: Group:  | <and> author
+6. authorList
+7. author
+8. Group:  | <and> author
+9. Repeat Multiple: <name>
+10. Group:  | "","" Repeat Multiple: <name>
+11. Optional: Group:  | "","" Repeat Multiple: <name>
+12. E O F
+13. error
+14. B e g i n
+"
 ]
 
 { #category : #'private-building' }
@@ -47,43 +68,43 @@ CZAuthorParser >> buildAuthor: tokens [
 ]
 
 { #category : #'generated-reduction actions' }
-CZAuthorParser >> reduceActionForOptionalXXGroupXXXXXXXXXRepeatXMultipleXXXnameX1: nodes [ 
+CZAuthorParser >> reduceActionForOptionalXXGroupXXXXXXXXXRepeatXMultipleXXXnameX1: nodes [
 	^ nil
 ]
 
 { #category : #'generated-reduction actions' }
-CZAuthorParser >> reduceActionForOptionalXXGroupXXXXXXXXXRepeatXMultipleXXXnameX2: nodes [ 
+CZAuthorParser >> reduceActionForOptionalXXGroupXXXXXXXXXRepeatXMultipleXXXnameX2: nodes [
 	^ nodes at: 1
 ]
 
 { #category : #'generated-reduction actions' }
-CZAuthorParser >> reduceActionForRepeatXMultipleXXXnameX1: nodes [ 
+CZAuthorParser >> reduceActionForRepeatXMultipleXXXnameX1: nodes [
 	^ OrderedCollection with: (nodes at: 1)
 ]
 
 { #category : #'generated-reduction actions' }
-CZAuthorParser >> reduceActionForRepeatXMultipleXXXnameX2: nodes [ 
+CZAuthorParser >> reduceActionForRepeatXMultipleXXXnameX2: nodes [
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-CZAuthorParser >> reduceActionForRepeatXXGroupXXXXXXandXXauthor1: nodes [ 
+CZAuthorParser >> reduceActionForRepeatXXGroupXXXXXXandXXauthor1: nodes [
 	^ OrderedCollection new
 ]
 
 { #category : #'generated-reduction actions' }
-CZAuthorParser >> reduceActionForRepeatXXGroupXXXXXXandXXauthor2: nodes [ 
+CZAuthorParser >> reduceActionForRepeatXXGroupXXXXXXandXXauthor2: nodes [
 	^ (nodes at: 1)
 		add: (nodes at: 2);
 		yourself
 ]
 
 { #category : #'generated-reduction actions' }
-CZAuthorParser >> reduceActionForauthorList1: nodes [ 
+CZAuthorParser >> reduceActionForauthorList1: nodes [
 	^ (OrderedCollection with: (nodes at: 1))
-		addAll: ((nodes at: 2) collect: [:subcoll | subcoll at: 2]);
+		addAll: ((nodes at: 2) collect: [ :subcoll | subcoll at: 2 ]);
 		yourself
 ]
 
@@ -107,20 +128,25 @@ CZAuthorParser >> reduceTable [
 { #category : #'generated-tables' }
 CZAuthorParser >> transitionTable [
 	^#(
-#(3 9 4 13 6 17 7 21 9)
-#(2 26 1 3 4 12)
-#(2 0 12)
-#(3 6 3 25 5 6 12)
-#(3 29 1 38 3 33 4 37 10 41 11 38 12)
-#(3 45 3 49 8 14 12)
-#(3 9 4 53 9)
-#(2 30 1 3 4 12)
-#(2 42 1 3 12)
-#(3 29 1 38 3 37 10 57 11 38 12)
-#(3 9 4 61 7 21 9)
-#(2 10 3 12)
-#(3 34 1 34 3 33 4 34 12)
-#(2 18 3 12)
-#(2 22 3 12)
+#[1 0 9 0 4 0 13 0 6 0 17 0 7 0 21 0 9]
+#[0 0 26 0 1 0 3 0 4 0 12]
+#[0 0 0 0 12]
+#[1 0 6 0 3 0 25 0 5 0 6 0 12]
+#[1 0 29 0 1 0 38 0 3 0 33 0 4 0 37 0 10 0 41 0 11 0 38 0 12]
+#[1 0 45 0 3 0 49 0 8 0 14 0 12]
+#[1 0 9 0 4 0 53 0 9]
+#[0 0 30 0 1 0 3 0 4 0 12]
+#[0 0 42 0 1 0 3 0 12]
+#[1 0 57 0 1 0 38 0 3 0 61 0 10 0 65 0 11 0 38 0 12]
+#[1 0 9 0 4 0 69 0 7 0 21 0 9]
+#[0 0 10 0 3 0 12]
+#[1 0 34 0 1 0 34 0 3 0 33 0 4 0 34 0 12]
+#[1 0 73 0 4 0 77 0 9]
+#[0 0 42 0 3 0 12]
+#[0 0 18 0 3 0 12]
+#[0 0 22 0 3 0 12]
+#[0 0 26 0 3 0 4 0 12]
+#[1 0 34 0 3 0 81 0 4 0 34 0 12]
+#[0 0 30 0 3 0 4 0 12]
 )
 ]
