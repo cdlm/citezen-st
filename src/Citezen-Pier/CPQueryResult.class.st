@@ -60,8 +60,9 @@ CPQueryResult >> querySpec: aQuerySpec [
 { #category : #rendering }
 CPQueryResult >> renderByAuthorOn: html [ 
 	<ignoreForCoverage>
-	html
-		orderedList: [bibList sortByAuthor entries
+	html orderedList
+		class: 'bibliography';
+		with: [bibList sortByAuthor entries
 				do: [:each | html
 						listItem class: 'entry'; with: [self renderEntry: each on: html]]].
 	self renderTruncatedOn: html.
@@ -170,12 +171,14 @@ CPQueryResult >> renderDisplayOn: html [
 		beSubmitOnChange
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 CPQueryResult >> renderEntries: entries forYear: year on: html [ 
 	<ignoreForCoverage>
 	entries ifNotEmpty: 
 		[ html heading: year printString.
-		html orderedList: [ entries do: [ :each | html listItem class: 'entry'; with: [self renderEntry: each on: html] ] ] ]
+		html orderedList
+				class: 'bibliography';
+				with: [ entries do: [ :each | html listItem class: 'entry'; with: [self renderEntry: each on: html] ] ] ]
 ]
 
 { #category : #rendering }
@@ -226,7 +229,9 @@ CPQueryResult >> renderSubList: aBibList named: heading on: html [
 	<ignoreForCoverage>
 	aBibList entries notEmpty
 		ifTrue: [html heading: heading.
-			html orderedList: [aBibList sortByYear entries
+			html orderedList
+				class: 'bibliography';
+				with: [aBibList sortByYear entries
 						do: [:each | html listItem class: 'entry'; with: [self renderEntry: each on: html]]]]
 ]
 
