@@ -11,35 +11,27 @@ CZFileLibrary >> bibCss [
 	Copyright (c) 2007 Damien Pollet
 */
 
-#bibliography { }
+.bibliography .entry {
+	margin-bottom: 1ex;
+}
+
+.bibliography .entry > a {
+	margin-left: 0.5em;
+}
+
+.bibliography .entry a:first-child { margin: 0; }
 
 /* entries */
-
-#bibliography span.inproceedings,
-#bibliography span.misc,
-#bibliography span.phdthesis {
-	display: block;
-	margin-bottom: 1em;
-}
+/* .bibliography .inproceedings {} etc */
 
 /* blocks */
 
-#bibliography .author {
-	display: inline;
-}
-
-#bibliography .title {
-	display: inline;
+.bibliography .title {
 	font-weight: bold;
 }
 
-#bibliography .publishing {
-	display: inline;
-}
-
-#bibliography .note {
-	margin-right: 2em;
-	margin-left: 2em;
+.bibliography .note {
+	margin-left: .5em;
 	font-style: italic;
 }
 '

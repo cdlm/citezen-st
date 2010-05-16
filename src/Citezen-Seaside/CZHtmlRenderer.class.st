@@ -101,13 +101,16 @@ CZHtmlRenderer class >> initializeLatexToHtmlReplacements [
 		 at: '\~N' put: '&Ntilde;';
 		 at: '\c c' put: '&ccedil;';
 		 at: '\c{c}' put: '&ccedil;';
+		 at: '{\c c}' put: '&ccedil;';
 		 at: '\c C' put: '&Ccedil;';
 		 at: '\c{C}' put: '&Ccedil;';
+		 at: '{\c C}' put: '&Ccedil;';
 		 at: '\ae' put: '&aelig;';
 		 at: '\AE' put: '&AElig;';
 		 at: '\oe' put: '&oelig;';
 		 at: '\OE' put: '&OElig;';
 		 at: '\ss' put: '&szlig;';
+		 at: '\&' put: '&amp;';
 		 at: '--' put: '&ndash;';
 		 at: '---' put: '&mdash;'
 ]
@@ -119,14 +122,19 @@ CZHtmlRenderer >> contents [
 
 { #category : #accessing }
 CZHtmlRenderer >> html [
-	^ html ifNil: [
-		html := WAStaticHtmlCanvas document:
-			(WAHtmlStreamDocument new stream: (String new writeStream))]
+	^ html
 ]
 
 { #category : #accessing }
 CZHtmlRenderer >> html: anHtmlCanvas [
 	html := anHtmlCanvas
+]
+
+{ #category : #rendering }
+CZHtmlRenderer >> render: anObject [
+	WAHtmlCanvas builder render: [ :builder |
+		self html: builder.
+		super render: anObject ]
 ]
 
 { #category : #rendering }
