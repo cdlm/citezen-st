@@ -12,18 +12,18 @@ Class {
 	#category : #IBib
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #database }
 Bibentry class >> addBibentry: aBibentry [
 	self bibentries add: aBibentry
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #database }
 Bibentry class >> bibentries [
 	self createDatabase .
 	^ Database ifNil: [ Database := self createDatabase ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #database }
 Bibentry class >> createDatabase [
 	^ OrderedCollection new
 		add: ( self title: 'A first entry' author: 'Rascal' year: '2010' ) ;
@@ -31,12 +31,42 @@ Bibentry class >> createDatabase [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #descriptions }
+Bibentry class >> descriptionAuthor [
+	^ (MAStringDescription new)
+		selectorAccessor: #author;
+		label: 'Author';
+		beRequired ;
+		priority: 1000;
+		yourself
+]
+
+{ #category : #descriptions }
+Bibentry class >> descriptionTitle [
+	^ (MAStringDescription new)
+		selectorAccessor: #title;
+		label: 'Title';
+		beRequired ;
+		priority: 1000;
+		yourself
+]
+
+{ #category : #descriptions }
+Bibentry class >> descriptionYear [
+	^ (MAStringDescription new)
+		selectorAccessor: #year;
+		label: 'Year';
+		beRequired ;
+		priority: 1000;
+		yourself
+]
+
+{ #category : #database }
 Bibentry class >> removeBibentry: aBibentry [
 	self bibentries remove: aBibentry
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #database }
 Bibentry class >> title: titleString author: authorString year: yearString [
 	^ self new
 		title: titleString ;
