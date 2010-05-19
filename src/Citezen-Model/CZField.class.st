@@ -133,7 +133,10 @@ CZField >> value [
 
 { #category : #accessing }
 CZField >> valueClass [
-	^ self class valueClasses
-		at: self key
-		ifAbsent: [CZString]
+	^ value class
+]
+
+{ #category : #'as yet unclassified' }
+CZField >> valueObject [
+	^ value
 ]

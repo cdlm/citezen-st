@@ -9,12 +9,120 @@ Class {
 		'key',
 		'fields'
 	],
+	#classInstVars : [
+		'fieldsDictionary'
+	],
 	#category : #'Citezen-Model'
 }
+
+{ #category : #metadata }
+CZEntry class >> article [
+	^ #article
+]
+
+{ #category : #metadata }
+CZEntry class >> book [
+	^ #book
+]
+
+{ #category : #metadata }
+CZEntry class >> booklet [
+	^ #booklet
+]
+
+{ #category : #metadata }
+CZEntry class >> conference [
+	^ #conference
+]
+
+{ #category : #metadata }
+CZEntry class >> inbook [
+	^ #inbook
+]
+
+{ #category : #metadata }
+CZEntry class >> incollection [
+	^ #incollection
+]
+
+{ #category : #metadata }
+CZEntry class >> initialize [
+	"self initialize"
+	fieldsDictionary := Dictionary new.
+	
+	fieldsDictionary 
+		at: #article put: #(author title journal year);
+		at: #book put: #(author editor title publisher year);
+		at: #booklet put: #(title);
+		at: #conference put: #(author title booktitle year);
+		at: #inbook put: #(author editor title chapter pages publisher year);
+		at: #incollection put: #(author title booktitle year);
+		at: #inproceedings put: #(author title booktitle year);
+		at: #manual put: #(title);
+		at: #mastersthesis put: #(author title school year);
+		at: #misc put: #();
+		at: #phdthesis put: #(author title school year);
+		at: #proceedings put: #(title year);
+		at: #techreport put: #(author title institution year);
+		at: #unpublished put: #(author title note)
+		
+	
+]
+
+{ #category : #metadata }
+CZEntry class >> inproceedings [
+	^ #inproceedings
+]
+
+{ #category : #metadata }
+CZEntry class >> manual [
+	^ #manual
+]
+
+{ #category : #metadata }
+CZEntry class >> mastersthesis [
+	^ #mastersthesis
+]
+
+{ #category : #metadata }
+CZEntry class >> misc [
+	^ #misc
+]
+
+{ #category : #metadata }
+CZEntry class >> phdthesis [
+	^ #phdthesis
+]
+
+{ #category : #metadata }
+CZEntry class >> proceedings [
+	^ #proceedings
+]
+
+{ #category : #metadata }
+CZEntry class >> requiredFieldsFor: aSymbol [
+
+	^ fieldsDictionary at: aSymbol ifAbsent: #()
+]
+
+{ #category : #metadata }
+CZEntry class >> techreport [
+	^ #techreport
+]
 
 { #category : #'instance creation' }
 CZEntry class >> type: entryType [
 	^ self new type: entryType; yourself
+]
+
+{ #category : #metadata }
+CZEntry class >> types [
+	^ #(article book booklet conference inbook incollection inproceedings manual mastersthesis misc phdthesis proceedings techreport unpublished)
+]
+
+{ #category : #metadata }
+CZEntry class >> unpublished [
+	^ #unpublished
 ]
 
 { #category : #'visitor-double dispatch' }
@@ -84,6 +192,11 @@ CZEntry >> fields [
 	^ fields 
 ]
 
+{ #category : #'as yet unclassified' }
+CZEntry >> fields: aCollection [
+	fields := aCollection 
+]
+
 { #category : #accessing }
 CZEntry >> hasField: fieldName [
 	^ fields anySatisfy: [:each | each key = fieldName]
@@ -126,11 +239,6 @@ CZEntry >> printOn: aStream [
 		nextPut: $(;
 		nextPutAll: self key;
 		nextPut: $)
-]
-
-{ #category : #'as yet unclassified' }
-CZEntry >> removeFields: aList [
-	fields := fields reject: [ :each | aList includes: each key]
 ]
 
 { #category : #accessing }
