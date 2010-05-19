@@ -1,33 +1,66 @@
 Class {
 	#name : #CZHtmlOutputer,
 	#superclass : #CZOutputer,
+	#instVars : [
+		'accentuateCharChercker'
+	],
 	#category : #'Citezen-Outputers'
 }
 
 { #category : #'as yet unclassified' }
-CZHtmlOutputer >> footer [
-	^ '
-</body>
-</html>
-	'
+CZHtmlOutputer >> defaultFooter [
+	^ '</body>
+</html>'
 ]
 
 { #category : #'as yet unclassified' }
-CZHtmlOutputer >> header [
+CZHtmlOutputer >> defaultHeader [
+	| title |
+	
+	title := 
+		(fileName isEmptyOrNil)
+			ifTrue: [ 'default.html' ]
+			ifFalse: [ fileName ].
+	
 	^ '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 	<head>
-		<title>Bib -> Html</title>
+		<title>',title,'</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	</head>
 <body>
-	'
+
+'
+]
+
+{ #category : #'as yet unclassified' }
+CZHtmlOutputer >> visitComment: aCZCommentElement [
+	outputStream 
+		nextPutAll: '<!-- ';
+		nextPutAll: aCZCommentElement comment;
+		nextPutAll: ' -->';
+		cr
 ]
 
 { #category : #'as yet unclassified' }
 CZHtmlOutputer >> visitCompositeValue: aCZCompositeValue [
 	aCZCompositeValue do: 
 		[ :each | each acceptVisitor: self] separatedBy: [ outputStream nextPutAll: ' ' ].
+]
+
+{ #category : #'as yet unclassified' }
+CZHtmlOutputer >> visitDocument: aCZDocument [
+	aCZDocument getWithoutHeaderAndFooter ifFalse: [
+		(aCZDocument header isNil not)
+			ifTrue: [ outputStream nextPutAll: aCZDocument header ]
+			ifFalse: [ outputStream nextPutAll: self defaultHeader ] ].
+	
+	aCZDocument elements do: [ :each | each acceptVisitor: self ].
+	
+	aCZDocument getWithoutHeaderAndFooter ifFalse: [
+		(aCZDocument footer isNil not)
+			ifTrue: [ outputStream nextPutAll: aCZDocument footer ]
+			ifFalse: [ outputStream nextPutAll: self defaultFooter ] ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -47,7 +80,9 @@ CZHtmlOutputer >> visitEntry: anEntry [
 
 { #category : #'as yet unclassified' }
 CZHtmlOutputer >> visitField: aField [
+	outputStream nextPutAll: '<span class="',aField key,'">'.
 	aField dispatchVisitor: self.
+	outputStream nextPutAll: '</span>'.
 ]
 
 { #category : #'as yet unclassified' }
@@ -62,7 +97,39 @@ CZHtmlOutputer >> visitMacroReference: aCZMacroReference [
 
 { #category : #'as yet unclassified' }
 CZHtmlOutputer >> visitPeople: aCZPeople [
-	outputStream nextPutAll: aCZPeople notExpanded
+	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople notExpanded)
+]
+
+{ #category : #'as yet unclassified' }
+CZHtmlOutputer >> visitScript: aCZScript [
+	| list beginList endList entry fields sep |
+	
+	aCZScript generate.
+	
+	list := aCZScript document listIndex.
+	(list = 0)
+		ifTrue: [ beginList := '<ul>'. endList := '</ul>' ]
+		ifFalse: [ beginList := '<ol start="', list asString, '">'. endList := '</ol>'].
+		
+	outputStream nextPutAll: beginList; cr.
+	
+	aCZScript generatingCollection do: [ :assoc |
+		entry := assoc key.
+		fields := assoc value key.
+		sep := assoc value value.
+		
+		outputStream nextPutAll: '<li>'.
+		1 to: fields size do: [ :cpt | 
+			outputStream nextPutAll: (sep at: cpt).
+			(entry at: (fields at: cpt)) acceptVisitor: self ].
+		outputStream nextPutAll: '</li>';cr
+	].
+	
+	outputStream nextPutAll: endList; cr; cr.
+	
+	(list = 0) ifFalse: [
+	aCZScript document addEntriesDisplayed: aCZScript generatingCollection size ]
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -88,5 +155,19 @@ CZHtmlOutputer >> visitSet: aSet [
 
 { #category : #'as yet unclassified' }
 CZHtmlOutputer >> visitString: aCZString [
-	outputStream nextPutAll: aCZString notExpanded
+	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZString notExpanded)
+]
+
+{ #category : #'as yet unclassified' }
+CZHtmlOutputer >> visitTitle: aCZTitleElement [
+	outputStream 
+		nextPutAll: '<h'; 
+		nextPutAll: aCZTitleElement htmlLevel asString;
+		nextPutAll: '>';
+		nextPutAll: aCZTitleElement title;
+		nextPutAll: '</h';
+		nextPutAll: aCZTitleElement htmlLevel asString;
+		nextPutAll: '>';
+		cr;
+		cr
 ]

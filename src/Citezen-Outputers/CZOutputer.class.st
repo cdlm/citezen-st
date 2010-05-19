@@ -5,7 +5,6 @@ Class {
 		'fileName',
 		'lastOutput',
 		'outputStream',
-		'separators',
 		'lastEntryVisited',
 		'defaultSeparator'
 	],
@@ -21,12 +20,12 @@ CZOutputer >> getLastOutput [
 ]
 
 { #category : #'as yet unclassified' }
-CZOutputer >> getOutputFor: aSet [
+CZOutputer >> getOutputFor: aCZDocument [
 	(fileName isNil) 
 		ifTrue: [ outputStream := WriteStream on: String new ]
 		ifFalse: [ outputStream := FileStream newFileNamed: fileName ].
 
-	[self visitSet: aSet.
+	[self visitDocument: aCZDocument.
 		
 	 lastOutput := outputStream contents] 
 		ensure: [
@@ -38,20 +37,23 @@ CZOutputer >> getOutputFor: aSet [
 ]
 
 { #category : #'as yet unclassified' }
-CZOutputer >> initialize [
-	super initialize.
-	fileName := nil.
-	separators := #()
-]
-
-{ #category : #'as yet unclassified' }
-CZOutputer >> separators: aCollection [
-	separators := aCollection 
-]
-
-{ #category : #'as yet unclassified' }
 CZOutputer >> setOutputFile: path [	
 	fileName := path
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> visitComment: aCZCommentElement [
+	self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> visitCompositeValue: aCZCompositeValue [
+	self subclassResponsibility
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> visitDocument: aCZDocument [
+	self subclassResponsibility 
 ]
 
 { #category : #'as yet unclassified' }
@@ -80,11 +82,21 @@ CZOutputer >> visitPeople: aCZPeople [
 ]
 
 { #category : #'as yet unclassified' }
+CZOutputer >> visitScript: aCZScript [
+	self subclassResponsibility
+]
+
+{ #category : #'as yet unclassified' }
 CZOutputer >> visitSet: aSet [
 	self subclassResponsibility 
 ]
 
 { #category : #'as yet unclassified' }
 CZOutputer >> visitString: aCZString [
+	self subclassResponsibility 
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> visitTitle: aCZTitleElement [
 	self subclassResponsibility 
 ]
