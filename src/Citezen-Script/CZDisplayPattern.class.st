@@ -7,7 +7,8 @@ Class {
 		'separators',
 		'defaultSeparator',
 		'begin',
-		'end'
+		'end',
+		'changed'
 	],
 	#category : #'Citezen-Script'
 }
@@ -44,6 +45,8 @@ CZDisplayPattern >> endWith: aString [
 
 { #category : #'as yet unclassified' }
 CZDisplayPattern >> field: aSymbol [
+	(changed) ifFalse: [ changed := true. fields := OrderedCollection new].
+	
 	(aSymbol isNil) ifFalse: [
 		lastAddWasField ifTrue: [
 			separators add: defaultSeparator].
@@ -59,7 +62,8 @@ CZDisplayPattern >> fields [
 { #category : #'as yet unclassified' }
 CZDisplayPattern >> initialize [
 	lastAddWasField := false.
-	fields := OrderedCollection new.
+	changed := false.
+	fields := OrderedCollection new add: #*; yourself.
 	separators := OrderedCollection new.
 	begin := end := defaultSeparator := ' '
 ]

@@ -19,10 +19,9 @@ CZUsefullScripts class >> notWrittenBy: aString [
 { #category : #'as yet unclassified' }
 CZUsefullScripts class >> withoutInriaFields [
 	^ (CZScript new)
-		exportAsHtml;
 		"displayPattern: (CZDisplayPattern new beginWith:'<br />&nbsp;&nbsp;Infos : '; endWith: '.'; defaultSeparator: ', '; field: #year; separator: '  ->  ';field: #author);"
 		"displayPattern: (CZDisplayPattern new field: #*; defaultSeparator: '::');"
-		fieldsToRemove: #(aeres aeresstatus selectif inria hal misc rate keywords x-pays x-country x-editorial-board x-proceedings x-international-audience type_rapport doi)
+		fieldsToRemove: #(aeres aeresstatus selectif inria hal misc rate keywords x-pays x-country x-editorial-board x-proceedings x-international-audience type_rapport)
 ]
 
 { #category : #'as yet unclassified' }

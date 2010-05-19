@@ -11,48 +11,19 @@ Class {
 		'displayOrder',
 		'query',
 		'displayPattern',
-		'separatorsCollection',
-		'defaultSeparator'
+		'defaultSeparator',
+		'generatingCollection',
+		'document'
 	],
 	#classInstVars : [
-		'exportTypeMatching',
 		'sortMatching'
 	],
 	#category : #'Citezen-Script'
 }
 
 { #category : #'as yet unclassified' }
-CZScript class >> bibExporterEncoding [
-	^ #bib
-]
-
-{ #category : #'as yet unclassified' }
-CZScript class >> defaultExportType [ 
-	^ self bibExporterEncoding 
-]
-
-{ #category : #'as yet unclassified' }
-CZScript class >> defaultOutputer [ 
-	^ self matchType: self defaultExportType 
-]
-
-{ #category : #'as yet unclassified' }
 CZScript class >> fieldSortBlock: aSymbol [ 
 	^ ([ :value | self sortByField: value fieldToSort: aSymbol ])
-]
-
-{ #category : #'as yet unclassified' }
-CZScript class >> htmlExporterEncoding [
-	^ #html
-]
-
-{ #category : #'as yet unclassified' }
-CZScript class >> initializeExportTypeMatching [
-	exportTypeMatching := Dictionary new.
-	exportTypeMatching 
-		add: (self bibExporterEncoding) -> CZRawOutputer;
-		add: (self htmlExporterEncoding) -> CZHtmlOutputer 
-		
 ]
 
 { #category : #'as yet unclassified' }
@@ -72,12 +43,6 @@ CZScript class >> keySymbol [
 CZScript class >> matchSort: aSymbol [
 	sortMatching ifNil: [ self initializeSortMatching ].
 	^ sortMatching at: aSymbol ifAbsent: [ self fieldSortBlock: aSymbol ]
-]
-
-{ #category : #'as yet unclassified' }
-CZScript class >> matchType: aString [
-	exportTypeMatching ifNil: [ self initializeExportTypeMatching ].
-	^ exportTypeMatching at: aString ifAbsent: self defaultExportType
 ]
 
 { #category : #'as yet unclassified' }
@@ -110,6 +75,11 @@ CZScript class >> typeSymbol [
 ]
 
 { #category : #private }
+CZScript >> acceptVisitor: aVisitor [
+	aVisitor visitScript: self
+]
+
+{ #category : #private }
 CZScript >> addSort: aSymbol reversed: aBoolean [
 	(aSymbol isNil not) ifTrue: [
 		(sortCollection includes: aSymbol) not ifTrue: [
@@ -130,19 +100,6 @@ CZScript >> blackList: aList [
 { #category : #private }
 CZScript >> defaultOutputPath [
 	^ 'default.bib'
-]
-
-{ #category : #interface }
-CZScript >> defaultSeparator: aString [
-
-	(aString isNil not)
-		ifTrue: [
-			(separatorsCollection isNil not) ifTrue: [
-				separatorsCollection do: [ :each | 
-					each at: 1 put: aString. each at: (each size) put: aString]].
-	
-			defaultSeparator := aString. ]
-		ifFalse: [ defaultSeparator := '']
 ]
 
 { #category : #interface }
@@ -208,19 +165,14 @@ CZScript >> displayWithDisplayOrder: anArray in: aCollection [
 					index := index + 1 ] ]
 ]
 
-{ #category : #interface }
-CZScript >> exportAsBib [
-	self exportType: self class bibExporterEncoding
-]
-
-{ #category : #interface }
-CZScript >> exportAsHtml [
-	self exportType: self class htmlExporterEncoding
+{ #category : #private }
+CZScript >> document [ 
+	^ document 
 ]
 
 { #category : #private }
-CZScript >> exportType: aString [
-	outputer := (self class matchType: aString) new
+CZScript >> document: aCZDocument [
+	document := aCZDocument 
 ]
 
 { #category : #interface }
@@ -236,29 +188,31 @@ CZScript >> filter [
 
 { #category : #interface }
 CZScript >> generate [
-	| collection separators fieldsTmp fieldTmp fields index hasWildcard fieldKeys |
+	| separators fieldsTmp fieldTmp fields index hasWildcard fieldKeys fieldsToDisplay |
+	
+	self bibsetInput: document requestBibset.
 	
 	self 
 		removeEntries;
 		filter;
 		sort.
 		
-	collection := OrderedCollection new.
-	separatorsCollection := OrderedCollection new.
+	generatingCollection := OrderedCollection new.
 	hasWildcard := displayPattern fields includes: #*.
+	fieldsTmp := displayPattern fields.
 	
 	bibset entries do: [ :entry | 
 		fields := OrderedCollection new.
 		separators := OrderedCollection new.
-		fieldsTmp := displayPattern fields.
 		fieldKeys := entry fields collect: [ :each | each key ].
 		
 		separators add: 	displayPattern begin.		
 		hasWildcard 
 			ifFalse: [ 
-				collection add: (fieldsTmp collect: [ :each | fieldKeys includes: each ] ).
+				fieldsToDisplay := displayPattern fields select: [ :each | fieldKeys includes: each ].
+				fields addAll: (fieldsToDisplay copyTwoLevel).
 				
-				1 to: collection size do: [ :cpt | 
+				1 to: fieldsToDisplay size do: [ :cpt | 
 					separators add: (displayPattern separators at: cpt ifAbsent: displayPattern defaultSeparator ) ].
 			]
 			ifTrue: [
@@ -275,16 +229,18 @@ CZScript >> generate [
 						fields add: each key.
 						separators add: displayPattern defaultSeparator ] ].
 				
-				index := index + 1.
 				index to: fieldsTmp size do: [ :each | (fieldKeys includes: each) ifTrue: [
 					fields add: each.
 					separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ] ].
-				collection add: (entry key -> fields).
 			].
 		separators add: displayPattern end.
-		separatorsCollection add: separators ].
-	self halt.
-	^ collection
+		generatingCollection add: entry -> (fields -> separators) ].
+
+]
+
+{ #category : #private }
+CZScript >> generatingCollection [
+	^ generatingCollection 
 ]
 
 { #category : #initialization }
@@ -297,7 +253,7 @@ CZScript >> initialize [
 	fieldsToRemove := #().
 	sortCollection := OrderedCollection new.
 	displayOrder := #().
-	displayPattern := CZDisplayPattern new field: #*.
+	displayPattern := CZDisplayPattern new.
 	query := nil.
 	defaultSeparator := ' '.
 	separatorsCollection := OrderedCollection new.

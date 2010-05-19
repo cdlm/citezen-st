@@ -8,14 +8,13 @@ Class {
 CZAdrienBarreau class >> bib [
 	^ (CZScript new)
 		sortByField: #year;
-		reversedSortByField: #annote;
-		exportAsBib
+		reversedSortByField: #annote
 	"	query: ((field named: #year checks: (fieldValue <= 2005 OR: (fieldValue > 2005))) AND: (field named: #annote matches: '*ot*'));"
 		"query: self myquery;"
 		"blackList: #(u2); "
 		"displayOrder: #(article *)" 
 		"displayPattern: (CZDisplayPattern new field: #year)"
-		"fieldsToRemove: #(year)"
+		"fieldsToRemove: #(year)" 
 ]
 
 { #category : #script }
@@ -32,7 +31,6 @@ CZAdrienBarreau class >> bib2 [
 CZAdrienBarreau class >> html [
 	^ (CZScript new)
 "		sortByField: #annote;"
-		exportAsHtml;
 	"	query: ((field named: #year checks: (fieldValue <= 2005 OR: (fieldValue > 2005))) AND: (field named: #annote matches: '*ot*'));"
 		query: self myquery;
 "		blackList: #(u2); "
@@ -44,7 +42,6 @@ CZAdrienBarreau class >> html [
 { #category : #script }
 CZAdrienBarreau class >> html2 [
 	^ (CZScript new)
-		exportAsHtml;
 		displayPattern: (CZDisplayPattern new field: #*; separator: ', '; field: #annote; beginsWith: ' -> '; endWith: ' <- ');
 		defaultSeparator: ', '
 
