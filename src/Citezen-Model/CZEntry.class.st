@@ -10,7 +10,8 @@ Class {
 		'fields'
 	],
 	#classInstVars : [
-		'fieldsDictionary'
+		'neededFieldsDictionary',
+		'optionalFieldsDictionary'
 	],
 	#category : #'Citezen-Model'
 }
@@ -48,9 +49,9 @@ CZEntry class >> incollection [
 { #category : #metadata }
 CZEntry class >> initialize [
 	"self initialize"
-	fieldsDictionary := Dictionary new.
+	neededFieldsDictionary := Dictionary new.
 	
-	fieldsDictionary 
+	neededFieldsDictionary 
 		at: #article put: #(author title journal year);
 		at: #book put: #(author editor title publisher year);
 		at: #booklet put: #(title);
@@ -64,7 +65,25 @@ CZEntry class >> initialize [
 		at: #phdthesis put: #(author title school year);
 		at: #proceedings put: #(title year);
 		at: #techreport put: #(author title institution year);
-		at: #unpublished put: #(author title note)
+		at: #unpublished put: #(author title note).
+		
+	optionalFieldsDictionary := Dictionary new.
+	
+	optionalFieldsDictionary 
+		at: #article put: #(volume number pages month note key),self inriaFields;
+		at: #book put: #(volume series address edition month note key),self inriaFields;
+		at: #booklet put: #(author howpublished address month year note key),self inriaFields;
+		at: #conference put: #(editor pages organization publisher address month note key),self inriaFields;
+		at: #inbook put: #(volume series address edition month note key),self inriaFields;
+		at: #incollection put: #(editor pages organization publisher address month note key),self inriaFields;
+		at: #inproceedings put: #(editor series pages organization publisher address month note key),self inriaFields;
+		at: #manual put: #(author, organization, address, edition, month, year, note, key),self inriaFields;
+		at: #mastersthesis put: #(address month note key),self inriaFields;
+		at: #misc put: #(author title howpublished month year note key),self inriaFields;
+		at: #phdthesis put: #(aaddress month note key),self inriaFields;
+		at: #proceedings put: #(editor publisher organization address month note key),self inriaFields;
+		at: #techreport put: #(type number address month note key),self inriaFields;
+		at: #unpublished put: #(month year key),self inriaFields
 		
 	
 ]
@@ -72,6 +91,11 @@ CZEntry class >> initialize [
 { #category : #metadata }
 CZEntry class >> inproceedings [
 	^ #inproceedings
+]
+
+{ #category : #metadata }
+CZEntry class >> inriaFields [
+	^ #(hal keywords annote aeresstatus aeres selectif labo inria impactfactor rate x-editorial-board x-proceedings x-international-audience x-pays x-invited-conference x-scientific-popularization )
 ]
 
 { #category : #metadata }
@@ -102,7 +126,7 @@ CZEntry class >> proceedings [
 { #category : #metadata }
 CZEntry class >> requiredFieldsFor: aSymbol [
 
-	^ fieldsDictionary at: aSymbol ifAbsent: #()
+	^ neededFieldsDictionary at: aSymbol ifAbsent: #()
 ]
 
 { #category : #metadata }
