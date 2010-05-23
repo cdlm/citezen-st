@@ -4,10 +4,10 @@ Class {
 	#instVars : [
 		'sort',
 		'display',
-		'editor',
 		'czset',
 		'info',
-		'selectBlock'
+		'selectBlock',
+		'newfield'
 	],
 	#classInstVars : [
 		'file'
@@ -15,94 +15,9 @@ Class {
 	#category : #IBib
 }
 
-{ #category : #rendering }
-IBib >> EXrenderSortBarOn: html [
-
-	"Render sort bar and link to add a new entry"
-		
-	html div id: 'sort-bar' ; with: [
-					
-		html form id: 'form-id' ; with: [
-
-			html text: 'Sort by: ' .
-			html select 
-				list: #(#Category #Author #Year) ;
-				selected: self sort ;
-				onChange: ( html scriptaculous updater
-								id: 'listId' ;
-								triggerForm: ( html scriptaculous element up: 'form' ) ;
-								callback: [ :ajaxhtml | self renderTableListOn: ajaxhtml ] ) ;
-				callback: [ :sortValue |
-					(sortValue = #Category)
-						ifTrue: [ self byCategory ] 
-						ifFalse: [ (sortValue = #Author)
-									ifTrue: [ self byAuthor ]
-									ifFalse: [ self byYear ] ] ] .
-		
-			html text: ' Display: ' .
-			html select 
-				list: #(#Summary #Bibtex) ;
-				selected: self display ;
-				onChange: ( html scriptaculous updater
-								id: 'listId' ;
-								triggerForm: ( html scriptaculous element up: 'form' ) ;
-								callback: [ :ajaxhtml | self renderTableListOn: ajaxhtml ] ) ;
-				callback: [ :displayValue |
-					(displayValue = #Summary)
-						ifTrue: [ self asSummary ]
-						ifFalse: [ self asBibtex ]] .
-				
-				html text: ' Hide controls: ' .
-				html checkbox value: false ; onChange: ( html scriptaculous effect id: 'sort-bar' ; toggleAppear )
-			
-			
-			]]
-]
-
-{ #category : #rendering }
-IBib >> EXrenderTableListOn: html [
-	
-	| id sortedBibs |
-	
-	id := 1 . "id de l'article TODO"
-	
-	html div id: 'listId' ; with: [
-
-		html table cellpadding: 5 ; class: 'table-list' ; with: [
-		
-		sortedBibs := SortedCollection new .
-		
-		(self sort = #Category)
-			ifTrue: [ sortedBibs sortBlock: [ :a :b | a author  <= b author ] ] . "A CHANGER QUAND LA CATEGORIE DE L'ARTICLE SERA PRIS EN COMPTE (remplacer author par category)'"
-		(self sort = #Author)
-			ifTrue: [ sortedBibs sortBlock: [ :a :b | a author  <= b author ] ] .
-		(self sort = #Year)
-			ifTrue: [ sortedBibs sortBlock: [ :a :b | a year  <= b year ] ] .
-		
-		sortedBibs addAll: self bibentries .
-		
-		sortedBibs do: [ :bibentry |
-		
-			html tableRow: [
-				
-				html tableData verticalAlign: 'top' ; with: [
-					html text: id . id := id + 1 .
-					html text: '.' .
-				] .
-				
-				html tableData: [ self renderArticleOn: html with: bibentry ] .
-			
-			] .	
-		] .
-	
-		] .
-	
-	] .
-]
-
-{ #category : #updating }
-IBib >> addBibentry: aBibentry [
-	Bibentry addBibentry: aBibentry
+{ #category : #displaying }
+IBib >> asAbstract [ 
+	display := #Abstract
 ]
 
 { #category : #displaying }
@@ -115,26 +30,9 @@ IBib >> asSummary [
 	display := #Summary
 ]
 
-{ #category : #rendering }
-IBib >> askAndCreateBibentry [
-	| bibentry |
-	bibentry := self call: (Bibentry new asComponent addMessage: 'Add a new entry' ; addValidatedForm) .
-	bibentry ifNotNil: [ self addBibentry: bibentry ]
-]
-
-{ #category : #initialization }
-IBib >> bibentries [
-	^ Bibentry bibentries
-]
-
 { #category : #displaying }
 IBib >> byAuthor [
 	sort := #Author
-]
-
-{ #category : #displaying }
-IBib >> byCategory [
-	sort := #Category
 ]
 
 { #category : #displaying }
@@ -142,71 +40,107 @@ IBib >> byYear [
 	sort := #Year
 ]
 
-{ #category : #updating }
-IBib >> cancel [
-	self answer: false .
-]
-
-{ #category : #initialization }
-IBib >> children [
-	^ Array with: editor
-]
-
 { #category : #displaying }
 IBib >> display [
 	^ display ifNil: [ display := #Summary ]
 ]
 
-{ #category : #updating }
-IBib >> editBibentry: aBibentry [
-	editor bibentry: aBibentry .
-]
-
 { #category : #initialization }
 IBib >> initialize [
-	super initialize .	
-	editor := BibentryView new .
-	editor bibentry: self bibentries first .
-]
-
-{ #category : #updating }
-IBib >> removeBibentry: aBibentry [
-	( self confirm: 'Voulez-vous vraiment supprimer l''entree ' , aBibentry title printString , ' ?' )
-		ifTrue: [ Bibentry removeBibentry: aBibentry ]
+	super initialize .
+	listAdd := CZEntry types first .
 ]
 
 { #category : #rendering }
-IBib >> renderArticleOn: html with: aBibentry [
-	
-	html div class: 'article' ; with: [
+IBib >> renderAbstractViewOn: html with: czentry and: helpId [
+
+	(czentry hasField: #abstract)
+	ifTrue: [
+		html div class: 'abstract' ; with: 'Abstract' .
+		html paragraph class: 'abstract-content' ; with: [ html text: (czentry at: #abstract) value ]
+	]
+	ifFalse: [
+		html div class: 'abstract' ; with: 'No Abstract'
+	]
+]
+
+{ #category : #rendering }
+IBib >> renderAddSearchOn: html [
+
+	| tmp |
+	html div class: 'div-top' ; with: [
 		
-		( self display = #Summary )
+		html table id: 'add_search' ; with: [
+			
+			html tableRow: [
+				
+				html tableData: [ html span class: 'entry_link' ; onClick: (html element id: 'div_add_entry' ; toggle) ; with: 'Add a new entry' . ] .
+				
+				html tableData: [
+					
+					html form: [
+						html textInput
+							id: 'input-search' ;
+							style: 'color: #888;' ;
+							callback: [ :value | selectBlock := value ] ;
+							onClick: (html scriptaculous element id: 'input-search' ; removeAttribute: 'value') ;
+							size: 30 ; value: 'Author, title, journal, booktitle...' .
+						html submitButton
+							callback: [
+								html scriptaculous updater
+									id: 'orderedlist' ;
+									triggerForm: ( html scriptaculous element up: 'form' ) ;
+									callback: [ :ajaxhtml | self renderListOn: ajaxhtml ]
+							] ; value: 'Search' ] ] ] ] .
+		
+		html div
+			id: 'div_add_entry' ;
+			style: 'display:none' ;
+			with: [
+				self renderFormAddEntryOn: html .
+				self renderFormAddFieldOn: html .
+			]
+		
+	]
+]
+
+{ #category : #rendering }
+IBib >> renderBibtexViewOn: html with: czentry [
+	html div class: 'bibtex-view' ; with: [
+		html text: '@' , czentry type , '{' , czentry key , ',' .
+		html break .
+		czentry do: [ :czfield |
+			(czfield key = 'author')
 			ifTrue: [
-				"AFFICHER LES ARTICLES EN MODE SOMMAIRE"
-				html text: 'summary ' .
+				czfield value do: [ :author |
+					html space . html space . html space . html space . html space . html space .
+					html text: (czfield key) .
+					html text: ' = ' .
+					html text: (author fullName) .
+					html break .
+				]
 			]
 			ifFalse: [
-				"AFFICHER LES ARTICLES EN MODE BIBTEX"
-				html text: 'bibtex ' .
-			] .
-		
-		html text: '[' , aBibentry year , ']' .
-		html space .
-		html text: aBibentry author .
-		html space .
-		html text: aBibentry title .
-		html space .
-		
-		html anchor 
-			callback: [ self editBibentry: aBibentry ] ;
-			with: 'edit' .
-		
-		html space .
-			
-		html anchor 
-			callback: [ self removeBibentry: aBibentry ] ;
-			with: 'remove' .
-					
+				(czfield key = 'editor')
+				ifTrue: [
+					czfield value do: [ :editor |
+						html space . html space . html space . html space . html space . html space .
+						html text: (czfield key) .
+						html text: ' = ' .
+						html text: (editor fullName) .
+						html break .
+					]
+				]
+				ifFalse: [
+					html space . html space . html space . html space . html space . html space .
+					html text: (czfield key) .
+					html text: ' = ' .
+					html text: (czfield value) .
+					html break .
+				]
+			]
+		] .
+		html text: '}' .
 	]
 ]
 
@@ -218,6 +152,8 @@ IBib >> renderContentOn: html [
 		self renderUploadFileOn: html .
 		
 		html div class: 'main' ; with: [
+			(czset isNil)
+			ifFalse: [ self renderAddSearchOn: html ]	 .
 									
 			html div class: 'subtitle' ; with: [ html span: 'Publications' ] .
 			
@@ -226,131 +162,246 @@ IBib >> renderContentOn: html [
 			ifFalse: [
 				
 				html div class: 'submain' ; with: [
-				
-					html div class: 'div-top' ; with: [
-						html anchor
-							callback: [ self askAndCreateBibentry ] ;
-							with: 'Add a new entry' .
-						
-						html form: [
-							html textInput callback: [ :value | selectBlock := value ] ; value: 'Search...' .
-							html submitButton
-								callback: [
-									html scriptaculous updater
-										id: 'orderedlist' ;
-										triggerForm: ( html scriptaculous element up: 'form' ) ;
-										callback: [ :ajaxhtml | self renderListOn: ajaxhtml ]
-								] ;
-								value: 'Ok'
-						]
-					] .
-				
+									
 					self renderSortBarOn: html .
+					
+					(selectBlock isNil)
+					ifFalse: [ html div id: 'search-text' ; with: 'Search : "' , selectBlock , '"' ] .
 				
-					html table cellpadding: 10 ; class: 'table-main' ; with: [
-						html tableRow: [
-							html tableData id: 'td-border' ;verticalAlign: 'top' ; with: [
-								
-								self renderTableListOn: html . "à remplacer par celle du dessous..."
-							
-								self renderListOn: html .
-								
-							] .
-						
-							html tableData verticalAlign: 'top' ; with: [ html render: editor . ] ] ] ] ] ]
+					self renderListOn: html .
+					
+					selectBlock := nil .
+				
+				] ] ]
+]
+
+{ #category : #rendering }
+IBib >> renderFormAddEntryOn: html [
+	
+	| entry |
+	
+	entry := CZEntry new .
+
+	html form id: 'form_add_entry' ; with: [
+		html table id: 'list_fields_add' ; with: [
+			html tableRow: [
+				html tableData style: 'width: 130px;font-size: 0.8em;color:black;font-weight: bold;text-decoration:underline;' ; with: 'Choose a type : ' .
+				html tableData: [
+					html select
+						list: (CZEntry types) ;
+						selected: listAdd ;
+						callback: [ :value | listAdd := value ] ;
+						onChange: (	html scriptaculous updater
+											id: 'form_add_entry' ;
+											triggerForm: ( html scriptaculous element up: 'form' ) ;
+											callback: [ :ajaxhtml | self renderFormAddEntryOn: ajaxhtml ] ) .
+				]
+			] .
+			html tableRow: [
+				html tableData: 'key : ' .
+				html tableData: [ html textInput callback: [ :value | entry key: value ] ]
+			] .
+			(CZEntry requiredFieldsFor: listAdd) do: [ :i |
+				html tableRow: [
+					html tableData: [ html text: i , ' : ' ] .
+					html tableData: [ html textInput callback: [ :value | (value isEmpty) ifFalse: [ entry key: i . entry at: i put: value ] ] ]
+				] ] .
+			html tableRow: [
+				html tableData: [ html submitButton callback: [ entry type: listAdd . czset addEntry: entry ] ; with: 'Add an entry' ]
+			] ] ] .
+]
+
+{ #category : #rendering }
+IBib >> renderFormAddFieldOn: html [
+
+	html form id: 'form_add_field' ; with: [
+		html table: [
+			html tableRow: [
+				html tableData style: 'width: 130px;font-size: 0.8em;color:black;font-weight: bold;text-decoration:underline;' ; with: 'Add a field : ' .
+				html tableData: [
+					html select
+						list: (CZEntry optionalFieldsFor: listAdd) ;
+						callback: [ :value | newfield := value ] ;
+						onChange: (html scriptaculous updater
+										id: 'form_add_entry' ;
+										insertion: 'bottom' ;
+										callback: [ :x |
+											x table: [
+												x tableRow: [
+													x tableData style: 'width: 130px;' ; with: 'newfield :' .
+													x tableData: [ x textInput with: '' ] ] ] ] ) ] ] ] ]
 ]
 
 { #category : #rendering }
 IBib >> renderListOn: html [
 
-	| helpId |
-	"
-	(self sort = #Category)
-		ifTrue: [ (czset isNil) ifFalse: [ czset sortByAuthor ] ] .
+	| helpId inc authorAdd listAuthor listDel collectionAuthor deleteAuthor searchCzset |
+	
+	listDel := Bag new .
+	listAuthor := '' .
+	collectionAuthor := Bag new .
+	deleteAuthor := Bag new .
+	searchCzset := CZSet new .
+	
+	inc := 0 .
+	
 	(self sort = #Author)
 		ifTrue: [ czset sortByAuthor ] .
 	(self sort = #Year)
-		ifTrue: [ czset sortByAuthor ] .
-	"
-		
-	html orderedList id: 'orderedlist' ; class: 'czentry' ; with: [
-		(czset isNil) ifFalse:
-			[ czset do: [ :czentry |
-				
-				helpId := html nextId .
+		ifTrue: [ czset sortByDateReverse ] .
+	
+	html div id: 'div_ord_list' ; with: [ 
+		html orderedList id: 'orderedlist' ; class: 'czentry' ; with: [
+			
+			"if the search block has been specified"
+			(selectBlock isNil)
+			ifFalse: [
+				(czset isNil)
+				ifFalse: [
+					czset do: [ :czentry |
+						(czentry hasField: #author)
+						ifTrue: [
+							(czentry at: #author) value do: [ :author |
+								(author fullName includesSubstring: selectBlock caseSensitive: false)
+								ifTrue: [ czentry addToBibSet: searchCzset ]
+							]
+						] .
+						(czentry hasField: #title)
+						ifTrue: [
+							((czentry at: #title) value includesSubstring: selectBlock caseSensitive: false)
+							ifTrue: [ czentry addToBibSet: searchCzset ]
+						] .
+						(czentry hasField: #journal)
+						ifTrue: [
+							((czentry at: #journal) value includesSubstring: selectBlock caseSensitive: false)
+							ifTrue: [ czentry addToBibSet: searchCzset ]
+						] .
+						(czentry hasField: #booktitle)
+						ifTrue: [
+							((czentry at: #booktitle) value includesSubstring: selectBlock caseSensitive: false)
+							ifTrue: [ czentry addToBibSet: searchCzset ]
+						]
+					]
+				]
+			]
+			ifTrue: [ searchCzset := czset ] .
+			
+			(searchCzset isNil) ifFalse:
+				[ searchCzset do: [ :czentry |
+					
+					helpId := html nextId .
 
-				html listItem with: [
-					(czentry hasField: #author)
-					ifTrue: [ (czentry at: #author ifAbsent: ["do nothing"]) value do: [ :author | html text: author fullName , ' ; ' ] ] .
-					
-					(czentry hasField: #url)
-					ifTrue: [
-						html anchor
-							class: 'link_title' ;
-							url: (czentry at: #url) value ;
-							with: (czentry at: #title) value ] 
-					ifFalse: [ html span: (czentry at: #title ifAbsent: ["do nothing"]) value ] .
-										
-					(czentry hasField: #year)
-					ifTrue: [ html text: ', ' , (czentry at: #year) value , '. ' ]
-					ifFalse: [ html text: '. ' ] .
-					
-					html span
-						class: 'entry_link' ;
-						onClick: (html element id: helpId ; toggle) ;
-						with: 'edit' .
-					
-					html space .
-					
-					html anchor
-						class: 'entry_link' ;
-						callback: [ czset removeEntry: czentry ] ;
-						with: 'remove' .
-					
-					html space .
-					
-					html anchor
-						class: 'entry_link' ;
-						callback: [ czentry addToBibSet: czset ] ;
-						with: 'duplicate' .
-					
+					html listItem with: [
+						html div class: 'div-list' ; with: [
+						(display = #Bibtex)
+						ifTrue: [ self renderBibtexViewOn: html with: czentry ]
+						ifFalse: [ self renderSummaryViewOn: html with: czentry and: helpId ] .
+						
 					html div id: helpId ; class: 'form-edit' ; style: 'display: none' ; with: [
-						html form: [
-							html table style: 'border:1px green solid' ; id: 'edit-form' ; class: 'table-edit' ; with: [
-								html tableHead: [
-									html tableData align: 'right' ; with: 'key' .
-									html tableData align: 'center' ; with: 'value' .
-									html tableData align: 'center' ; with: 'delete ?' .
-								] .
-								czentry do: [ :czfield |
-									html tableRow: [
-										html tableData style: 'width: 150px;font-weight:bold' ; align: 'right' ; with: (czfield key) , ' : '  .
-										html tableData style: 'width: 380px;' ; align: 'center' ; with: [ html textInput size: 45 ; with: (czfield value)  ] .
-										html tableData style: 'width: 70px;' ; align: 'center' ; with: [ html checkbox value:false; callback: [ :value | czentry removeFields: #(author) ]]]]].
-								html table: [
-									html tableRow: [
-										html tableData align: 'center' ; with: [
-											html span
-												class: 'entry_link' ;
-												onClick: (html scriptaculous updater
-													id: 'edit-form' ;
-													insertion: 'bottom' ;
-													callback: [ :x |
-														x tableRow: [
-															x tableData
-																style: 'width: 150px;font-weight:bold' ;
-																align: 'right' ; with: 'bla : ' .
-															x tableData
-																style: 'width: 380px;' ;
-																align: 'center' ;
-																with: [ x textInput size: 45 ; with: 'bla' ] .
-															x tableData
-																style: 'width: 70px;' ;
-																align: 'center' ;
-																with: [ x checkbox value:false; callback: [ :value | czentry removeFields: #(author) ]]]] ) ;
-												with: 'Add a field' .
-									html tableData align: 'center' ; with: [ html submitButton on: #save of: self ] ] ] ] ]
-					] ] ] ] ]
+							html form: [
+								html table id: 'edit-form' ; class: 'table-edit' ; with: [
+									html tableHead: [
+										html tableData align: 'right' ; with: 'key' .
+										html tableData align: 'center' ; with: 'value' .
+										html tableData align: 'center' ; with: 'delete ?' .
+									] .
+							
+									czentry do: [ :czfield |
+										(czfield key = 'author')
+										ifTrue: [
+											czfield value do: [ :author |
+												html tableRow: [
+													html tableData
+														style: 'width: 150px;font-weight:bold' ;
+														align: 'right' ;
+														with: (czfield key) , ' : '  .
+													html tableData
+														style: 'width: 380px;' ;
+														align: 'center' ;
+														with: [
+															html textInput
+																callback: [ :value | authorAdd := value . collectionAuthor add: authorAdd ] ;
+																size: 45 ;
+																with: (author fullName)
+														] .
+													html tableData
+														style: 'width: 70px;' ;
+														align: 'center' ;
+														with: [ html checkbox value: false ; callback: [ :value | value ifTrue: [ deleteAuthor add: authorAdd . authorAdd := '' ] ] ] ] ] ]
+										ifFalse: [
+											html tableRow: [
+												html tableData
+													style: 'width: 150px;font-weight:bold' ;
+													align: 'right' ;
+													with: (czfield key) , ' : '  .
+											(czfield key = 'abstract')
+												ifTrue: [
+													html tableData
+														style: 'width: 380px;' ;
+														align: 'center' ;
+														with: [ html textArea callback: [ :value | czentry at: czfield key put: value ] ; columns: 41 ; rows: 10 ; with: (czfield value)  ] .
+												]
+												ifFalse: [
+													html tableData
+														style: 'width: 380px;' ;
+														align: 'center' ;
+														with: [ html textInput callback: [ :value | czentry at: czfield key put: value ] ; size: 45 ; with: (czfield value)  ] .
+												] .
+												html tableData
+													style: 'width: 70px;' ;
+													align: 'center' ;
+													with: [ html checkbox value: false ; callback: [ :value | value ifTrue: [ listDel add: (czfield key) ] ] ]
+											]]]] .
+														
+									html table: [
+										html tableRow: [
+											html tableData style: 'width: 150px;' ; align: 'center' ; with: [
+												html span
+													class: 'entry_link' ;
+													onClick: (html scriptaculous updater
+														id: helpId ;
+														insertion: 'bottom' ;
+														callback: [ :x |
+															x tableRow: [
+																x tableData
+																	style: 'width: 150px;font-weight:bold' ;
+																	align: 'right' ;
+																	with: 'bla' .
+																x tableData
+																	style: 'width: 380px;' ;
+																	align: 'center' ;
+																	with: [ x textInput size: 45 ; with: 'bla' ] .
+																x tableData
+																	style: 'width: 70px;' ;
+																	align: 'center' ;
+																	with: [ x checkbox value: false ; callback: [ :value |  ] ] ] ] ) ;
+													with: 'Add a field' . ] .
+										html tableData
+											align: 'center' ;
+											with: [	html submitButton
+															callback: [
+																collectionAuthor := collectionAuthor reject: [ :e | deleteAuthor includes: e ] .
+																collectionAuthor do: [ : val |
+																	listAuthor := listAuthor , val .
+																	inc := inc + 1 .
+																	(inc < collectionAuthor size)
+																	ifTrue: [ listAuthor := listAuthor , ' and ' ]
+																] .
+																(collectionAuthor isEmpty)
+																ifFalse: [ czentry at: #author put: listAuthor ] .
+																czentry fields: (czentry fields reject: [ :each | listDel includes: each key])
+															] ;
+															with: 'Save' ]
+										]
+									]
+								]
+							]
+						]
+					]
+				]
+			] 
+		]
+	]
 ]
 
 { #category : #rendering }
@@ -364,75 +415,100 @@ IBib >> renderSortBarOn: html [
 
 			html text: 'Sort by: ' .
 			html select 
-				list: #(#Category #Author #Year) ;
+				list: #(#none #Author #Year) ;
 				selected: self sort ;
 				onChange: ( html scriptaculous updater
-								id: 'orderedlist' ;
+								id: 'div_ord_list' ;
 								triggerForm: ( html scriptaculous element up: 'form' ) ;
 								callback: [ :ajaxhtml | self renderListOn: ajaxhtml ] ) ;
 				callback: [ :sortValue |
-					(sortValue = #Category)
-						ifTrue: [ self byCategory ] 
-						ifFalse: [ (sortValue = #Author)
-									ifTrue: [ self byAuthor ]
-									ifFalse: [ self byYear ] ] ] .
-		
+					(sortValue = #none)
+					ifFalse: [
+						(sortValue = #Author)
+							ifTrue: [ self byAuthor ] 
+							ifFalse: [ self byYear ] ] ] .
 			html text: ' Display: ' .
 			html select 
-				list: #(#Summary #Bibtex) ;
+				list: #(#Summary #Abstract #Bibtex) ;
 				selected: self display ;
 				onChange: ( html scriptaculous updater
-								id: 'orderedlist' ;
+								id: 'div_ord_list' ;
 								triggerForm: ( html scriptaculous element up: 'form' ) ;
 								callback: [ :ajaxhtml | self renderListOn: ajaxhtml ] ) ;
 				callback: [ :displayValue |
 					(displayValue = #Summary)
 						ifTrue: [ self asSummary ]
-						ifFalse: [ self asBibtex ]] .
+						ifFalse: [
+							(displayValue = #Abstract)
+							ifTrue: [ self asAbstract ]
+							ifFalse: [ self asBibtex ] ]] .
 				
 				html text: ' Hide controls: ' .
 				html checkbox value: false ; onChange: ( html scriptaculous effect id: 'sort-bar' ; toggleAppear ) ] ]
 ]
 
 { #category : #rendering }
-IBib >> renderTableListOn: html [
-	
-	| id sortedBibs |
-	
-	id := 1 . "id de l'article TODO"
-	
-	html div id: 'listId' ; with: [
+IBib >> renderSummaryViewOn: html with: czentry and: helpId [
 
-		html table cellpadding: 5 ; class: 'table-list' ; with: [
-		
-		sortedBibs := SortedCollection new .
-		
-		(self sort = #Category)
-			ifTrue: [ sortedBibs sortBlock: [ :a :b | a author  <= b author ] ] . "A CHANGER QUAND LA CATEGORIE DE L'ARTICLE SERA PRIS EN COMPTE (remplacer author par category)'"
-		(self sort = #Author)
-			ifTrue: [ sortedBibs sortBlock: [ :a :b | a author  <= b author ] ] .
-		(self sort = #Year)
-			ifTrue: [ sortedBibs sortBlock: [ :a :b | a author  <= b author ] ] .
-		
-		sortedBibs addAll: self bibentries .
-		
-		sortedBibs do: [ :bibentry |
-		
-			html tableRow: [
-				
-				html tableData verticalAlign: 'top' ; with: [
-					html text: id . id := id + 1 .
-					html text: '.' .
+		(czentry hasField: #author)
+		ifTrue: [
+			(czentry at: #author) value do: [ :author | html span class: 'author-name' ; with: author fullName , ' / ' ]
+		] .
+	
+		(czentry hasField: #url)
+			ifTrue: [
+				(czentry hasField: #title)
+				ifTrue: [
+					html anchor
+						class: 'link_title' ;
+						url: (czentry at: #url) value ;
+						with: (czentry at: #title) value
+				]
+				ifFalse: [
+					html anchor
+						class: 'link_title' ;
+						url: (czentry at: #url) value ;
+						with: (czentry at: #url) value
 				] .
-				
-				html tableData: [ self renderArticleOn: html with: bibentry ] .
+			] 
+			ifFalse: [
+				(czentry hasField: #title)
+				ifTrue: [ html span: (czentry at: #title) value ]
+			] .
+								
+			(czentry hasField: #year)
+				ifTrue: [
+				(czentry hasField: #title)
+				ifTrue: [ html text: ', ' , (czentry at: #year) value , '. ' ]
+				ifFalse: [
+					(czentry hasField: #url)
+					ifTrue: [ html text: ', ' , (czentry at: #year) value , '. ' ]
+					ifFalse: [ html text: (czentry at: #year) value , '. ' ]
+				]
+			]
+			ifFalse: [ html text: '. ' ] .
 			
-			] .	
-		] .
-	
-		] .
-	
-	] .
+			html span
+				class: 'entry_link' ;
+				onClick: (html element id: helpId ; toggle) ;
+				with: 'edit' .
+						
+			html space .
+					
+			html anchor
+				class: 'entry_link' ;
+				callback: [ czset removeEntry: czentry ] ;
+				with: 'remove' .
+						
+			html space .
+						
+			html anchor
+				class: 'entry_link' ;
+				callback: [ czentry addToBibSet: czset ] ;
+				with: 'duplicate' .
+				
+			(display = #Abstract)
+			ifTrue: [ self renderAbstractViewOn: html with: czentry and: helpId ]
 ]
 
 { #category : #rendering }
@@ -460,6 +536,8 @@ IBib >> renderUploadFileOn: html [
 						(value contentType sub = 'x-bibtex')
 						ifTrue: [
 							czset := CZBibParser parse: value contents .
+							czset scope: CZSet months .
+							czset scope withStandardDefinitions .
 							info := value fileName , ' : The file has been imported correctly' .
 						]
 						ifFalse: [ info := value fileName , ' : File format is incorrect' ] ] .
@@ -469,14 +547,9 @@ IBib >> renderUploadFileOn: html [
 	]
 ]
 
-{ #category : #updating }
-IBib >> save [
-	
-]
-
 { #category : #displaying }
 IBib >> sort [
-	^ sort ifNil: [ sort := #Category ]
+	^ sort ifNil: [ ]
 ]
 
 { #category : #rendering }
@@ -486,7 +559,7 @@ IBib >> style [
 		margin: 0;
 		padding: 0;
 		color: #444;
-		font-family: sans-serif;
+		font-family: serif;
 	}
 		
 	h1, h2, h3, h4, h5, h6 { margin: 0; padding: 0; }
@@ -500,7 +573,7 @@ IBib >> style [
 	
 	.subtitle {
 		color: #111;
-		width: 800px;
+		width: 600px;
 		font-size: 2em;
 		font-weight: normal;
 		padding: 10px;
@@ -514,8 +587,31 @@ IBib >> style [
 	
 	.uploadBloc{
 		border: 1px #AAA dashed;
-		width: 820px;
+		width: 620px;
 		margin: 20px;
+	}
+	
+	.div-top{
+		width: 620px;
+	}
+	
+	#list_fields_add td{
+		width: 130px;
+	}
+	
+	#add_search{
+		background-color: #F8F8F8;
+		width: 620px;
+		margin-bottom: 20px;
+	}
+	
+	#add_search td{
+		text-align: center;
+	}
+	
+	.author-name{
+		font-weight: bold;
+		font-style: italic;
 	}
 	
 	.uploadFile{
@@ -529,6 +625,36 @@ IBib >> style [
 		color: #007;
 	}
 	
+	#search-text{
+		background-color: #987;
+		width: 600px;
+		padding: 5px;
+		color: #FEFEFE;
+		font-weight: bold;
+	}
+	
+	.div-list{
+		width: 550px;
+		text-align: justify;
+		line-height: 20px;
+	}
+	
+	.abstract{
+		font-weight: bold;
+		color: #888;
+		font-style:italic;
+		margin-top: 10px;
+	}
+		
+	.abstract-content{
+		font-style: italic;
+	}
+	
+	#div_add_entry{
+		margin-bottom: 20px;
+		padding: 5px;
+	}
+	
 	.main {
 		margin: 20px;
 		padding: 0px;
@@ -537,6 +663,12 @@ IBib >> style [
 	
 	.submain {
 		margin: 10px;
+	}
+	
+	.bibtex-view{
+		background-color: #F5F5F5;
+		color: #444;
+		padding: 10px;
 	}
 	
 	.link_title{
@@ -558,18 +690,12 @@ IBib >> style [
 	.table-edit{
 		width: 100%;
 	}
-	
-	.____table-edit tr:first-child{
-		background: #F5F5F5;
-		height: 20px;
-		text-decoration: underline;
-	}
 		
 	.form-edit{
 		border: 1px #CCC dashed;
 		margin-top: 10px;
 		padding: 10px;
-		width: 600px;
+		width: 530px;
 	}
 	
 	#sort-bar {
