@@ -1,8 +1,11 @@
+"
+Obviously, visits all elements of the document and writes their xHTML equivalent on the output stream.
+"
 Class {
 	#name : #CZHtmlOutputer,
 	#superclass : #CZOutputer,
 	#instVars : [
-		'accentuateCharChercker'
+		'accentuateCharChecker'
 	],
 	#category : #'Citezen-Outputers'
 }

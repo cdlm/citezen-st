@@ -1,3 +1,6 @@
+"
+Obviously, visits all elements of the document and writes their BibTeX equivalent on the output stream.
+"
 Class {
 	#name : #CZRawOutputer,
 	#superclass : #CZOutputer,

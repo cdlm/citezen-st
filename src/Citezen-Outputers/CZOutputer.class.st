@@ -1,3 +1,14 @@
+"
+CZOutputer is an abstract class (all the visit*: messages are self subclassResponsibility).
+
+It is a visitor, which can visit all the elements of a CZDocument.
+
+It defines 3 messages:
+- setOutputFile: aString -> gives the path for the field which will contain the result
+- getLastOutput -> returns the last output as a String
+- getOutputFor: aCZDocument -> opens the stream on the specified path (or, if setOutputFile: wasn't call, on String new) and generates the document
+
+"
 Class {
 	#name : #CZOutputer,
 	#superclass : #Object,
@@ -37,8 +48,8 @@ CZOutputer >> getOutputFor: aCZDocument [
 ]
 
 { #category : #'as yet unclassified' }
-CZOutputer >> setOutputFile: path [	
-	fileName := path
+CZOutputer >> setOutputFile: aString [	
+	fileName := aString
 ]
 
 { #category : #'as yet unclassified' }
