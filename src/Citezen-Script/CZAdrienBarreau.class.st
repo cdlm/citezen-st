@@ -42,7 +42,7 @@ CZAdrienBarreau class >> html [
 { #category : #script }
 CZAdrienBarreau class >> html2 [
 	^ (CZScript new)
-		displayPattern: (CZDisplayPattern new field: #*; separator: ', '; field: #annote; beginsWith: ' -> '; endWith: ' <- ');
+		displayPattern: (CZDisplayPattern new field: #*; separator: ', '; field: #annote; beginsWith: ' -> '; endsWith: ' <- ');
 		defaultSeparator: ', '
 
 ]

@@ -1,3 +1,25 @@
+"
+CZChecker is a class helping you to check your BibTeX files.
+It will check:
+- Syntax errors
+- Bad entry types
+- Undefined macros
+- Blank fields
+- Duplicate fields
+- Needed fields (depending on the type)
+- Keys are unique
+
+It allows to specifie some rules (e.g. tell that the key has to be a 7-character-long word) with the messages addRule: aBlock and addRule: aBlock named: aString.
+A rule is a block with one parameter: a CZEntry.
+
+You can check your file with these 3 lines:
+checker := CZChecker new.
+checker fileToParse: '/Users/.../file.bib'.
+checker checks.
+If you compute it with ""print it"", you'll see the errors.
+If you don't print it, you can do at anytime by doing ""print it"" on that:
+checker errorString.
+"
 Class {
 	#name : #CZChecker,
 	#superclass : #Object,
@@ -11,7 +33,12 @@ Class {
 		'typeFieldsMatching',
 		'keys',
 		'macros',
-		'macrosUsage'
+		'macrosUsage',
+		'bibtexTypes',
+		'macroKeys',
+		'fieldKeys',
+		'entryKeys',
+		'index'
 	],
 	#category : #'Citezen-Script'
 }
@@ -46,174 +73,142 @@ CZChecker >> bibtexBlockToCZEntry: aString [
 				macros add: ((bibset macros at: 1) -> aString).
 				macrosUsage at: ((bibset macros at: 1) key) put: false ].
 		(bibset entries notEmpty) 
-			ifTrue: [ entries add: ((bibset entries at: 1) -> aString) ]	
+			ifTrue: [ 
+				(bibset entries at: 1) scope: CZSet standardDefinitions.
+				entries add: ((bibset entries at: 1) -> aString) ]	
 	]
 ]
 
 { #category : #'as yet unclassified' }
-CZChecker >> bibtexTypes [
-	^ #(article book booklet conference inbook incollection inproceedings manual mastersthesis misc phsthesis proceedings techreport unpublished)
+CZChecker >> checkBibtexType: aCZEntry [
+	(bibtexTypes includes: aCZEntry type asLowercase)
+		ifFalse: [ 
+			errorStream nextPutAll: 'Error: Bad entry type'; cr.
+			^ false].
+	^ true
 ]
 
 { #category : #'as yet unclassified' }
-CZChecker >> checkBibtexBlock: aString [
-	| string initChar endChar count countCountAtZero |
+CZChecker >> checkDuplicateField: aCZField [
+	(fieldKeys includes: aCZField key)
+		ifTrue: [ 
+			errorStream nextPutAll: 'Warning: Removes duplicate field: ', aCZField key; cr.
+			^ false ].
 	
-	string := aString deepCopy.
-	
-	(string first = $@)
-		ifTrue: [ string := string allButFirst ]
-		ifFalse: [ self error: '@ missing in ', aString ].
-		
-	[ string first isLetter ] whileTrue: [ string := string allButFirst ].
+	fieldKeys add: aCZField key.
+	^ true
+]
 
-	string := string trimBoth.
-	((string first = ${) | (string first = $()) 
-		ifTrue: [ initChar := string first. string := string allButFirst ]
-		ifFalse: [ self error: '{ or (' ].
+{ #category : #'as yet unclassified' }
+CZChecker >> checkEmptyField: aCZField [
+	(aCZField value = '')
+		ifTrue: [ 
+			errorStream nextPutAll: 'Warning: Removes empty field: ', aCZField key; cr.
+			^ false ].
 	
-	(initChar = ${)
-		ifTrue: [ endChar := $} ]
-		ifFalse: [ endChar := $) ].
-	count := 1.
+	^ true
+]
+
+{ #category : #'as yet unclassified' }
+CZChecker >> checkMacroReferenced: aCZField [
+	| macroSymbols error |
 	
-	countCountAtZero := 0.
-	string do: [ :char |
-		(char = initChar) ifTrue: [ count := count + 1 ].
-		(char = endChar) ifTrue: [ count := count - 1 ].
-		(count = 0) ifTrue: [ countCountAtZero := countCountAtZero + 1 ] ].
+	macroSymbols := OrderedCollection new.
+	(aCZField valueClass = CZMacroReference)
+		ifTrue: [ 
+			macrosUsage at: aCZField rawValue put: true.
+			macroSymbols add: aCZField rawValue ]
+		ifFalse: [ (aCZField valueClass = CZCompositeValue)
+			ifTrue: [ aCZField rawValue do: [ :each | 
+				(each class = CZMacroReference)
+					ifTrue: [ 
+						macrosUsage at: each notExpanded put: true.
+						macroSymbols add: each notExpanded ] ] ] ].
 	
-	(countCountAtZero > 1) ifTrue: [ self error: 'Two entries -> @' ]
+	error := false.	
+	macroSymbols do: [ :each |
+		(macroKeys includes: each)
+			ifFalse: [ 
+				errorStream nextPutAll: 'Warning: Removes field: ', aCZField key, ' references this undefined macro: ', each; cr.
+				error := true ] ].
 	
-		
-	
+	^ error not
 ]
 
 { #category : #'as yet unclassified' }
 CZChecker >> checks [
-	| collection |
-	
-	entries := OrderedCollection new.
-	
-	errorStream := WriteStream on: String new.
-	[eof] whileFalse: [ self bibtexBlockToCZEntry: self getBibtexBlock ].
-
-	"checks if the entries types are valid bibtex types"
-	collection := OrderedCollection new.
-	entries do: [ :assoc | 
-		(self bibtexTypes includes: assoc key type asLowercase)
-			ifTrue: [ collection add: assoc ]
-			ifFalse: [ errorStream nextPutAll: 'Error : Bad entry type for :'; cr; nextPutAll: assoc value; cr; cr ]].
-	entries := collection.
-	
-	"removes fields with empty value"
-	entries do: [ :assoc | 
-		collection := OrderedCollection new.
-		assoc key fields do: [ :field |
-			(field value = '')
-				ifFalse: [ collection add: field ]
-				ifTrue: [ errorStream nextPutAll: 'Warning : Remove field: ', field key, ' in :'; cr; nextPutAll: assoc value; cr; cr ] ].
-		assoc key fields: collection ].
-	
-	"removes empty entries"
-	collection := OrderedCollection new.
-	entries do: [ :assoc |
-		(assoc key fields size = 0)
-			ifFalse: [ collection add: assoc ]
-			ifTrue: [ errorStream nextPutAll: 'Warning : Remove empty entry:'; cr; nextPutAll: assoc value; cr; cr ] ].
-	entries := collection.
-	
-	"removes entries which don't have all the fields needed by their types"
-	collection := OrderedCollection new.
-	entries do: [ :assoc |
-		((typeFieldsMatching at: (assoc key type)) value: (assoc key fields collect: [ :each | each key ]))
-			ifTrue: [ collection add: assoc ]
-			ifFalse: [ errorStream nextPutAll: 'Error : This entry does not contain all needed fields:'; cr; nextPutAll: assoc value; cr; cr ] ].
-	entries := collection.
-	
-	"checks and corrects duplicate entry keys"
-	entries do: [ :assoc | 
-		keys at: assoc key key put: ((keys at: assoc key key ifAbsent: 0) + 1).
-		((keys at: assoc key key) > 1)
-			ifTrue: [ 
-				assoc key key: '###',(assoc key key, '_',(keys at: assoc key key) asString,'###' ).
-				errorStream nextPutAll: 'Warning: duplicate key changed to: ',assoc key key,' in:'; cr; nextPutAll: assoc value; cr; cr] ].
-
-	"removes entries which don't match with the rules"
-	rules do: [ :rule |
-		collection := OrderedCollection new.
-		entries do: [ :assoc | 
-			(rule value value: assoc key)
-				ifTrue: [ collection add: assoc ] 
-				ifFalse: [ errorStream nextPutAll: 'Error : entry does not respect the rule: ', rule key, ' in:'; cr; nextPutAll: assoc value; cr; cr ] ].
-		
-		entries := collection ].
-]
-
-{ #category : #'as yet unclassified' }
-CZChecker >> checks2 [
-	| newEntries newFields newMacros toBeInclude error |
+	| newEntries newFields newMacros toBeDeleted toBeInclude error |
 	
 	macros := OrderedCollection new.
 	macrosUsage := Dictionary new.
 	entries := OrderedCollection new.
+	keys := Dictionary new.
 	
 	errorStream := WriteStream on: String new.
 	[eof] whileFalse: [ self bibtexBlockToCZEntry: self getBibtexBlock ].
 
-	newEntries := OrderedCollection new.
+	macros addAll: ((CZSet standardDefinitions macros) collect: [ :each | each -> 'If you read it, there is a bug in Citezen!' ]).
 	
+	"Don't display that some month macros are defined but not used"
+	(CZSet standardDefinitions macros) do: [ :each | macrosUsage at: each key put: true ].
+	
+	newEntries := OrderedCollection new.
+	macroKeys := macros collect: [ :each | each key key ].
+
+	entryKeys := entries collect: [ :each | each key key ].
+	
+	index := 0.
 	entries do: [ :assoc |
 		toBeInclude := true.	
 		error := false.
 		
+		index := index + 1.
+		
 		"checks if the type of the entry is a correct bibtex type"
-		(self bibtexTypes includes: assoc key type asLowercase)
+		(self checkBibtexType: assoc key)
 			ifFalse: [ 
-				errorStream nextPutAll: 'Error: Bad entry type'; cr.
 				error := true.
 				toBeInclude := false ].
 			
 		newFields := OrderedCollection new.
+		fieldKeys := OrderedCollection new.
 		assoc key fields do: [ :field |
-			"checks the macros referenced in the entry"
-			(field valueClass = CZMacroReference)
-				ifTrue: [ macrosUsage at: field rawValue put: true ].
-			(field valueClass = CZCompositeValue)
-				ifTrue: [ field valueObject do: [ :each | 
-					(each class = CZMacroReference)
-						ifTrue: [ macrosUsage at: each notExpanded put: true ] ] ].
+			toBeDeleted := false.
+			
+			"checks the macros referenced in the entry and removes fields with undefined macros"
+			(self checkMacroReferenced: field)
+				ifFalse: [ toBeDeleted := true ].
+			
+			toBeDeleted ifFalse: [	
+				"removes empty fields"
+				(self checkEmptyField: field)
+					ifFalse: [ toBeDeleted := true ] ].
+
+			"removes duplicate fields"
+			(self checkDuplicateField: field)
+				ifFalse: [ toBeDeleted := true ].
 				
-			"remove the empty fields"
-			(field value = '')
-				ifFalse: [ newFields add: field ]
-				ifTrue: [ 
-					errorStream nextPutAll: 'Warning: Removes empty field: ', field key; cr.
-					error := true ] ].
+			toBeDeleted 
+				ifFalse: [ newFields add: field ] 
+				ifTrue: [ error := true ]
+		].
 		assoc key fields: newFields.
 		
-		"checks if the entry is empty"
-		(assoc key fields size = 0)
-			ifTrue: [ 
-				errorStream nextPutAll: 'Error: Entry is empty'; cr.
-				error := true.
-				toBeInclude := false ].
-		
-		"checks if the entry contains all the fiels needed by it's type"
+		"checks if the entry contains all the fields needed by it's type"
 		((typeFieldsMatching at: (assoc key type)) value: (assoc key fields collect: [ :each | each key ]))
 			ifFalse: [
 				errorStream nextPutAll: 'Error: Entry does not contain all needed fields'; cr.
 				error := true.
 				toBeInclude := false ].
 		
-		"checks if the key is unique and change it if it's not"
+		"checks if the key is unique and changes it if it's not"
 		keys at: assoc key key put: ((keys at: assoc key key ifAbsent: 0) + 1).
 		((keys at: assoc key key) > 1)
 			ifTrue: [ | key |
 				key := assoc key key.
 				assoc key key: '###',(assoc key key, '_',(keys at: assoc key key) asString,'###' ).
 				errorStream nextPutAll: 'Warning: duplicate key: ', key, ' changed to: ', assoc key key; cr.
-				error := true ].
+		error := true ].
 		
 		"checks if the entry respects all the rules"	
 		rules do: [ :rule |
@@ -234,6 +229,7 @@ CZChecker >> checks2 [
 					errorStream nextPutAll: '(There are errors, the entry is deleted)'; cr; cr ]
 		]
 	].
+	entries := newEntries.
 
 	"removes unused macros"
 	newMacros := OrderedCollection new.
@@ -242,8 +238,11 @@ CZChecker >> checks2 [
 			ifFalse: [ errorStream nextPutAll: 'Unused macro:'; cr; nextPutAll: assoc value; cr; cr ]
 			ifTrue: [  newMacros add: assoc ]	
 	].
-	macros := newMacros 
+	macros := newMacros.
 	
+	errorStream close.
+	
+	^ self errorString
 ]
 
 { #category : #'as yet unclassified' }
@@ -285,34 +284,10 @@ CZChecker >> getBibtexBlock [
 		]	
 	].
 
+	fileContent := fileContent trimRight.
+	fileContent ifEmpty: [ eof := true ].
+
 	^ (block contents) trimBoth
-]
-
-{ #category : #'as yet unclassified' }
-CZChecker >> getBibtexBlock2 [
-	| block |
-	
-	self flag: 'DEPRECATED'.
-	eof ifFalse: [
-		block := WriteStream on: String new.
-	
-		(fileContent isEmpty)
-			ifFalse: [
-				fileContent := fileContent allButFirst.
-				block nextPut: $@.
-	
-				fileContent 
-					detect: [ :char |
-						(char = $@) 
-							ifTrue: [ true ]
-							ifFalse: [ block nextPut: char. fileContent := fileContent allButFirst. false ]	]
-					ifNone: [ eof := true ]
-			 ].
-
-	^ block contents trimBoth 
-	].
-
-	^ nil
 ]
 
 { #category : #'as yet unclassified' }
@@ -321,10 +296,14 @@ CZChecker >> initialize [
 	
 	parser := CZBibParser.
 	rules := OrderedCollection new.
-	keys := Dictionary new.
-	typeFieldsMatching := Dictionary new.
 	self initializeTypeFieldsMatching.
+	self initializeBibtexTypes.
 
+]
+
+{ #category : #'as yet unclassified' }
+CZChecker >> initializeBibtexTypes [
+	bibtexTypes := #(article book booklet conference inbook incollection inproceedings manual mastersthesis misc phdthesis proceedings techreport unpublished)
 ]
 
 { #category : #'as yet unclassified' }

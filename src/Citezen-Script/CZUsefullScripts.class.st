@@ -1,3 +1,6 @@
+"
+Some useful scripts, on class side.
+"
 Class {
 	#name : #CZUsefullScripts,
 	#superclass : #Object,

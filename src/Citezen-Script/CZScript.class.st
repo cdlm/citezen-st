@@ -1,3 +1,25 @@
+"
+Here is an example of the creation of a script: 
+
+CZScript new 
+query: (CZBibFieldQuery named: #annote checks: [ :value | value = 'toto' ]);
+blackList: #(barr10a);
+fieldsToRemove: #(year);
+displayOrder: #(* misc);
+displayPattern: aCZDisplayPattern;
+sortByField: #year;
+sortByKey.
+
+(aCZDisplayPattern is an instance of CZDisplayPattern ; read its class comment).
+
+All messages in the interface protocol can be used to create your script: 
+- blackList: aList -> a list of entry keys ; these entries will not be in the output file
+- displayOrder: aList -> a list of entry types which give the order to display the entries. If no order is specified, the entries will be displayed in alphabetical order of their type. You can put a star (#*) in the list as a wildcard which means ""put here all types which are not in the list"". In the example below, the displayOrder is #(* misc): it means that all will be displayed in alphabetical order, except for the misc entries, which are at the end.
+- displayPattern: aCZDisplayPattern -> read CZDisplayPattern class comment.
+- fieldsToRemove: aList -> don't display the fields specified in the collection
+- query: aQuery -> a query that the entries should respect. Take a look at the Citezen-Query package.
+- sortByKey and reversedSortByKey, sortByType and reversedSortByType, and sortByField: aSymbol and reversedSortByField: aSymbol, add a sort option. The order is important: in the example, the entries will be sorted by the value of their field #year, and then, for all the entries which have the same year, they are sorted by key. A little tip: don't add any sort option after sortByKey because keys are unique.
+"
 Class {
 	#name : #CZScript,
 	#superclass : #Object,
@@ -186,7 +208,7 @@ CZScript >> filter [
 		bibset entries: (bibset entries select: [ :each | query value: each])]
 ]
 
-{ #category : #interface }
+{ #category : #private }
 CZScript >> generate [
 	| separators fieldsTmp fieldTmp fields index hasWildcard fieldKeys fieldsToDisplay |
 	
@@ -258,17 +280,6 @@ CZScript >> initialize [
 	defaultSeparator := ' '.
 	separatorsCollection := OrderedCollection new.
 
-]
-
-{ #category : #interface }
-CZScript >> inputFile: path [
-	bibset := CZBibParser parse: ((FileStream readOnlyFileNamed: path) contents).
-	bibset scope: CZSet standardDefinitions 
-]
-
-{ #category : #interface }
-CZScript >> outputFile: path [
-	outputFile := path
 ]
 
 { #category : #interface }
