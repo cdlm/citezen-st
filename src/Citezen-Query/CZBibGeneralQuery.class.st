@@ -1,3 +1,7 @@
+"
+CZBibGeneralQuery resolves the query in the value: message.
+The 3 subclasses just change what they send to super value:
+"
 Class {
 	#name : #CZBibGeneralQuery,
 	#superclass : #CZBibQuery,

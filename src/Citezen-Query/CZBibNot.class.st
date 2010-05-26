@@ -1,3 +1,6 @@
+"
+Returns query value: not on the value: call
+"
 Class {
 	#name : #CZBibNot,
 	#superclass : #CZBibQuery,
@@ -6,11 +9,6 @@ Class {
 	],
 	#category : #'Citezen-Query'
 }
-
-{ #category : #testing }
-CZBibNot >> = aBibquery [
-	^ self class = aBibquery class and: [ self query = aBibquery query ]
-]
 
 { #category : #'as yet unclassified' }
 CZBibNot >> field: aSymbol [
@@ -23,8 +21,8 @@ CZBibNot >> query [
 ]
 
 { #category : #accessing }
-CZBibNot >> query: anObject [
-	query := anObject
+CZBibNot >> query: aBlock [
+	query := aBlock
 ]
 
 { #category : #printing }
@@ -33,6 +31,6 @@ CZBibNot >> queryString [
 ]
 
 { #category : #public }
-CZBibNot >> value: aBibEntry [
-	^ (self query value: aBibEntry) not
+CZBibNot >> value: aCZEntry [
+	^ (self query value: aCZEntry) not
 ]

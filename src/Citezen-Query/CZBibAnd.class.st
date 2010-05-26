@@ -1,3 +1,6 @@
+"
+Returns leftAnd value: and rightAnd value: on the value: call
+"
 Class {
 	#name : #CZBibAnd,
 	#superclass : #CZBibQuery,
@@ -7,11 +10,6 @@ Class {
 	],
 	#category : #'Citezen-Query'
 }
-
-{ #category : #testing }
-CZBibAnd >> = aBibquery [
-	^ self class = aBibquery class and: [ self leftAnd = aBibquery leftAnd and: [ self rightAnd = aBibquery rightAnd ] ]
-]
 
 { #category : #'as yet unclassified' }
 CZBibAnd >> field: aSymbol [

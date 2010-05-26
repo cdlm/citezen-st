@@ -1,33 +1,17 @@
 "
-A BibQuery is an object that reifies queries over BibEntries.
+CZBibQuery is an abstract class.
+It defines 3 messages: 
+- AND: aQuery
+- OR: aQuery
+- NOT
 
-BibQuery objects are created by invoking the following (class-side) methods:
-
-BibEntry all
-BibEntry contains: aString
-BibEntry matches: aPattern
-BibEntry hasField: fieldName
-BibType matches: aPattern 
-BibKey matches: aPattern 
-BibField named: fieldName contains: aString
-BibField named: fieldName matches: aPattern
-
-Instance methods AND:, OR: and NOT can be used to compose or negate basic queries.
-
-A composed query behaves like a single-argument BlockClosure, i.e., it implements value:
-See testCartoonQueries for examples.
-
+These 3 messages are constructors shared by all queries. They respectively create CZBibAnd, CZBibOr and CZBibNot instances.
 "
 Class {
 	#name : #CZBibQuery,
 	#superclass : #Object,
 	#category : #'Citezen-Query'
 }
-
-{ #category : #testing }
-CZBibQuery >> = aBibquery [
-	^ self subclassResponsibility
-]
 
 { #category : #public }
 CZBibQuery >> AND: aQuery [

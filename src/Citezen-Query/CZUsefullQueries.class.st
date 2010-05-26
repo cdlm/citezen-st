@@ -1,3 +1,6 @@
+"
+Some useful queries, on class side.
+"
 Class {
 	#name : #CZUsefullQueries,
 	#superclass : #Object,
