@@ -55,14 +55,7 @@ CZCompositeValue >> expanded [
 	| aStream |
 	aStream := WriteStream on: String new.
 
-	value
-		do: 
-			[ :each | aStream nextPutAll: (
-				(each isKindOf: CZValue) 
-					ifTrue: [ each expanded] 
-					ifFalse: [ each ]) ]
-		separatedBy: 
-			[aStream nextPutAll: ' # '].
+	value do: [ :each | aStream nextPutAll: each expanded ].
 
 	^ aStream contents 
 ]
@@ -82,7 +75,7 @@ CZCompositeValue >> isComposite [
 CZCompositeValue >> notExpanded [
 	"return the bibtex # notation"
 	
-	^ String streamContents: 
+	"^ String streamContents: 
 	[  :aStream |
 			value do:
 				[ :each | (each isKindOf: CZValue)
@@ -91,7 +84,9 @@ CZCompositeValue >> notExpanded [
 				]
 			separatedBy: 
 				[ aStream nextPutAll: ' # ']
-	].
+	]."
+
+	^ super notExpanded 
 ]
 
 { #category : #'as yet unclassified' }

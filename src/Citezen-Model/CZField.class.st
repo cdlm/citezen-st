@@ -1,5 +1,13 @@
 "
-Name / Value pair used as a single field of a bibliographic entry, or as the declaration of a macro.
+Key / Value pair used as a single field of a bibliographic entry, or as the declaration of a macro.
+
+Example:
+author = {BARREAU,Adrien}
+
+Most useful messages: 
+- key -> returns the key (here ""author"")
+- value -> returns the value expanded (resolves concatenation, macros)
+- rawValue -> return the value without expanding
 "
 Class {
 	#name : #CZField,
@@ -71,6 +79,13 @@ CZField >> addToBibSet: aBibSet [
 ]
 
 { #category : #'as yet unclassified' }
+CZField >> asCZInteger [
+	(value notExpanded isAllDigits)
+		ifTrue: [ ^ CZInteger with: value notExpanded asNumber ]
+		ifFalse: [ self error: 'Can not convert a string which does not represent an integer' ]
+]
+
+{ #category : #'as yet unclassified' }
 CZField >> dispatchVisitor: aVisitor [
 	value acceptVisitor: aVisitor 
 ]
@@ -134,9 +149,4 @@ CZField >> value [
 { #category : #accessing }
 CZField >> valueClass [
 	^ value class
-]
-
-{ #category : #'as yet unclassified' }
-CZField >> valueObject [
-	^ value
 ]

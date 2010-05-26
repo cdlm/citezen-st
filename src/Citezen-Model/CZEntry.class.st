@@ -1,5 +1,31 @@
 "
 A bibliographic entry representing a single document or unit published work.
+
+A BibTeX entry: 
+
+@misc{barr10a,
+	title = {Comment example}
+}
+
+3 informations: 
+- ""misc"" is the TYPE of the entry
+- ""barr10a"" is the KEY of the entry
+- ""title = {Comment example}"" is a FIELD
+
+So, a BibTeX entry respects this template:
+@type{key,
+	key = value,
+	key = value,
+	...
+}
+
+Most useful messages are:
+- at: aSymbol -> returns the CZField for the field aSymbol
+- at: aSymbol put: aValue  -> creates a CZField containing aValue and puts it at the key aSymbol
+- fields and fields: aCollection -> getter & setter for the field collection
+- hasField: aSymbol -> returns true/false if the entry has/has not a field with key=aSymbol
+- key and key: aSymbol -> getter & setter for the key
+- type and type: aSymbol aSymbol -> getter & setter for the key
 "
 Class {
 	#name : #CZEntry,
@@ -162,28 +188,28 @@ CZEntry >> addFields: aCollection [
 ]
 
 { #category : #bibset }
-CZEntry >> addToBibSet: aBibSet [
-	aBibSet addEntry: self
+CZEntry >> addToBibSet: aCZSet [
+	aCZSet addEntry: self
 ]
 
 { #category : #accessing }
-CZEntry >> at: fieldName [
-	^ self at: fieldName ifAbsent: [CZField undefined: fieldName]
+CZEntry >> at: aSymbol [
+	^ self at: aSymbol ifAbsent: [CZField undefined: aSymbol]
 ]
 
 { #category : #accessing }
-CZEntry >> at: fieldName ifAbsent: aBlock [
+CZEntry >> at: aSymbol ifAbsent: aBlock [
 	| index |
-	index := fields findFirst: [:each | each key = fieldName].
+	index := fields findFirst: [:each | each key = aSymbol].
 	^ index = 0
 		ifTrue: [aBlock value]
 		ifFalse: [fields at: index]
 ]
 
 { #category : #accessing }
-CZEntry >> at: fieldName put: aValue [ 
-	fields removeAllSuchThat: [:each | each key = fieldName].
-	fields add: ((CZField key: fieldName rawValue: aValue)
+CZEntry >> at: aSymbol put: aValue [ 
+	fields removeAllSuchThat: [:each | each key = aSymbol].
+	fields add: ((CZField key: aSymbol rawValue: aValue)
 				scope: self;
 				yourself)
 ]
@@ -194,17 +220,17 @@ CZEntry >> do: aBlock [
 ]
 
 { #category : #'as yet unclassified' }
-CZEntry >> equalsButDifferent: anEntry [
+CZEntry >> equalsButDifferent: aCZEntry [
 	"test the equality between two DIFFERENT entries"
 	
-	(self == anEntry) ifTrue: [ ^ false ].
+	(self == aCZEntry) ifTrue: [ ^ false ].
 	
-	((key = anEntry key) and: [ (type = anEntry type) ]) ifFalse: [ ^ false ].
+	((key = aCZEntry key) and: [ (type = aCZEntry type) ]) ifFalse: [ ^ false ].
 
-	(self size = anEntry size) ifFalse: [ ^ false ].
+	(self size = aCZEntry size) ifFalse: [ ^ false ].
 
 	fields do: 
-		[:each | ((anEntry at: each key) rawValue = each rawValue) 
+		[:each | ((aCZEntry at: each key) rawValue = each rawValue) 
 			ifFalse:
 				[ ^ false ]].
 	
@@ -222,8 +248,8 @@ CZEntry >> fields: aCollection [
 ]
 
 { #category : #accessing }
-CZEntry >> hasField: fieldName [
-	^ fields anySatisfy: [:each | each key = fieldName]
+CZEntry >> hasField: aSymbol [
+	^ fields anySatisfy: [:each | each key = aSymbol]
 ]
 
 { #category : #'initialize-release' }
@@ -237,8 +263,8 @@ CZEntry >> key [
 ]
 
 { #category : #accessing }
-CZEntry >> key: aKey [
-	key := aKey
+CZEntry >> key: aSymbol [
+	key := aSymbol
 ]
 
 { #category : #accessing }
@@ -248,11 +274,11 @@ CZEntry >> macroReferences [
 ]
 
 { #category : #bibset }
-CZEntry >> moveToBibSet: aBibSet [
+CZEntry >> moveToBibSet: aCZSet [
 	self scope ifNotNilDo: [:it |
 		"pull references if necessary"
 		it removeEntry: self].
-	aBibSet addEntry: self
+	aCZSet addEntry: self
 ]
 
 { #category : #printing }
@@ -334,6 +360,6 @@ CZEntry >> type [
 ]
 
 { #category : #'initialize-release' }
-CZEntry >> type: aType [
-	type := aType
+CZEntry >> type: aSymbol [
+	type := aSymbol
 ]

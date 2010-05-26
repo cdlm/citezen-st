@@ -1,5 +1,13 @@
 "
 Set of bibliographic entries and macro definitions, equivalent of a .bib BibTeX file.
+
+Most useful messages: 
+- addEntry: aCZEntry and addMacro: aCZField -> add the entry or the macro, and put self as its scope
+- entries & entries: aCollection -> getter and setter for the entries collection
+- entryAt: aSymbol & entryAt: aSymbol ifAbsent: aBlock -> returns the entry which has aSymbol as key
+- entryAt: aSymbol put: anEntry -> put (or replace) the entry at the key aSymbol
+- macroAt: aSymbol & macroAt: aSymbol ifAbsent: aBlock & macroAt: aSymbol put: aCZField -> same things than the three previous messages
+
 "
 Class {
 	#name : #CZSet,
@@ -63,15 +71,15 @@ CZSet >> acceptVisitor: aVisitor [
 ]
 
 { #category : #adding }
-CZSet >> addEntry: anEntry [
-	anEntry scope: self.
-	entries add: anEntry
+CZSet >> addEntry: aCZEntry [
+	aCZEntry scope: self.
+	entries add: aCZEntry
 ]
 
 { #category : #adding }
-CZSet >> addMacro: aField [
-	aField scope: self.
-	macros add: aField
+CZSet >> addMacro: aCZField [
+	aCZField scope: self.
+	macros add: aCZField
 ]
 
 { #category : #cleanup }
@@ -84,14 +92,14 @@ CZSet >> checkDuplicates [
 ]
 
 { #category : #cleanup }
-CZSet >> checkDuplicatesFor: list [
+CZSet >> checkDuplicatesFor: aCollection [
 	| withoutDuplicates |
 	
 	withoutDuplicates := OrderedCollection new.
 	
-	1 to:list size do: 
-		[ :each | (self existsDuplicateFor: (list at:each) startingAt: each in: list) ifFalse:
-			[ withoutDuplicates add:(list at:each) ]].
+	1 to:aCollection size do: 
+		[ :each | (self existsDuplicateFor: (aCollection at:each) startingAt: each in: aCollection) ifFalse:
+			[ withoutDuplicates add:(aCollection at:each) ]].
 	
 	^ withoutDuplicates.
 
@@ -121,51 +129,51 @@ CZSet >> entries: aCollection [
 ]
 
 { #category : #accessing }
-CZSet >> entryAt: aKey [
+CZSet >> entryAt: aSymbol [
 	"Return the local entry definition, if known."
-	^ self entryAt: aKey ifAbsent: [Error signal]
+	^ self entryAt: aSymbol ifAbsent: [Error signal]
 ]
 
 { #category : #accessing }
-CZSet >> entryAt: aKey ifAbsent: aBlock [
+CZSet >> entryAt: aSymbol ifAbsent: aBlock [
 	| index |
-	index := entries findFirst: [:each | each key = aKey].
+	index := entries findFirst: [:each | each key = aSymbol].
 	^ index = 0
 		ifTrue: [aBlock value]
 		ifFalse: [entries at: index]
 ]
 
 { #category : #accessing }
-CZSet >> entryAt: aKey put: anEntry [
+CZSet >> entryAt: aSymbol put: anEntry [
 	| index |
-	index := entries findFirst: [:each | each key = aKey].
+	index := entries findFirst: [:each | each key = aSymbol].
 	^ index = 0
 		ifTrue: [entries add: anEntry]
 		ifFalse: [entries at: index put: anEntry]
 ]
 
 { #category : #'as yet unclassified' }
-CZSet >> equalsButDifferent: aSet [
-	(entries size = aSet entries size) ifFalse: [ ^ false ].
-	(macros size = aSet macros size) ifFalse: [ ^ false ].
+CZSet >> equalsButDifferent: aCZSet [
+	(entries size = aCZSet entries size) ifFalse: [ ^ false ].
+	(macros size = aCZSet macros size) ifFalse: [ ^ false ].
 	
 	1 to: entries size do: [ :cpt | 
-		((entries at: cpt) equalsButDifferent: (aSet entries at: cpt)) 
+		((entries at: cpt) equalsButDifferent: (aCZSet entries at: cpt)) 
 			ifFalse: [ ^ false ]].
 	
 	1 to: macros size do: [ :cpt |
-		((macros at: cpt) equalsButDifferent: (aSet macros at: cpt))
+		((macros at: cpt) equalsButDifferent: (aCZSet macros at: cpt))
 			ifFalse: [ ^ false ]].
 	
 	^ true
 ]
 
 { #category : #'as yet unclassified' }
-CZSet >> existsDuplicateFor: entry startingAt: index in: list [
+CZSet >> existsDuplicateFor: aCZEntry startingAt: index in: list [
 	"search a duplicate for entry from entries at: index to the end of entries"
 
 	index to: list size do:
-		[ :each | ((list at:each) equalsButDifferent: entry) ifTrue:
+		[ :each | ((list at:each) equalsButDifferent: aCZEntry) ifTrue:
 			[ ^ true ] ].
 	^ false.
 ]
@@ -192,40 +200,40 @@ CZSet >> isEmpty [
 ]
 
 { #category : #accessing }
-CZSet >> lookupEntryAt: aKey [
-	"Return the entry named aKey, looking up the scope chain if necessary."
-	^ self entryAt: aKey ifAbsent: [scope ifNotNil: [scope lookupEntryAt: aKey]]
+CZSet >> lookupEntryAt: aSymbol [
+	"Return the entry named aSymbol, looking up the scope chain if necessary."
+	^ self entryAt: aSymbol ifAbsent: [scope ifNotNil: [scope lookupEntryAt: aSymbol]]
 ]
 
 { #category : #accessing }
-CZSet >> lookupMacroAt: aKey ifAbsent: aBlock [
-	"Return the local value of macro named aKey, or look it up."
-	^ self macroAt: aKey ifAbsent:
-		[super lookupMacroAt: aKey ifAbsent: aBlock]
+CZSet >> lookupMacroAt: aSymbol ifAbsent: aBlock [
+	"Return the local value of macro named aSymbol, or look it up."
+	^ self macroAt: aSymbol ifAbsent:
+		[super lookupMacroAt: aSymbol ifAbsent: aBlock]
 ]
 
 { #category : #accessing }
-CZSet >> macroAt: aKey [
+CZSet >> macroAt: aSymbol [
 	"Return the local macro definition, if known."
-	^ self macroAt: aKey ifAbsent: [Error signal.]
+	^ self macroAt: aSymbol ifAbsent: [Error signal.]
 ]
 
 { #category : #accessing }
-CZSet >> macroAt: aKey ifAbsent: aBlock [
+CZSet >> macroAt: aSymbol ifAbsent: aBlock [
 	| index |
-	index := macros findFirst: [:each | each key = aKey].
+	index := macros findFirst: [:each | each key = aSymbol].
 	^ index = 0
 		ifTrue: [aBlock value]
 		ifFalse: [macros at: index]
 ]
 
 { #category : #accessing }
-CZSet >> macroAt: aKey put: aMacro [
+CZSet >> macroAt: aSymbol put: aCZField [
 	| index |
-	index := macros findFirst: [:each | each key = aKey].
+	index := macros findFirst: [:each | each key = aSymbol].
 	^ index = 0
-		ifTrue: [macros add: aMacro]
-		ifFalse: [macros at: index put: aMacro]
+		ifTrue: [macros add: aCZField]
+		ifFalse: [macros at: index put: aCZField]
 ]
 
 { #category : #accessing }
@@ -261,21 +269,21 @@ CZSet >> referencedMacros [
 ]
 
 { #category : #'arranging - combining' }
-CZSet >> reject: aPredicate [
+CZSet >> reject: aBlock [
 	^ self class new
-		setEntries: (self entries reject: aPredicate)
+		setEntries: (self entries reject: aBlock)
 ]
 
 { #category : #adding }
-CZSet >> removeEntry: anEntry [
-	anEntry scope: nil.
-	entries remove: anEntry
+CZSet >> removeEntry: aCZEntry [
+	aCZEntry scope: nil.
+	entries remove: aCZEntry
 ]
 
 { #category : #'arranging - combining' }
-CZSet >> select: aPredicate [
+CZSet >> select: aBlock [
 	^ self class new
-		setEntries: (self entries select: aPredicate)
+		setEntries: (self entries select: aBlock)
 ]
 
 { #category : #accessing }
