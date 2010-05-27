@@ -40,7 +40,8 @@ Class {
 		'withoutHeaderAndFooter',
 		'header',
 		'footer',
-		'changed'
+		'changed',
+		'authorDisplay'
 	],
 	#classInstVars : [
 		'exportTypeMatching'
@@ -106,6 +107,21 @@ CZDocument >> addEntriesDisplayed: aNumber [
 ]
 
 { #category : #interface }
+CZDocument >> displayFullName [
+	authorDisplay := CZPeople displayFullName
+]
+
+{ #category : #interface }
+CZDocument >> displayNormalizedName [
+	authorDisplay := CZPeople displayNormalizedName
+]
+
+{ #category : #interface }
+CZDocument >> displayShortenedName [
+	authorDisplay := CZPeople displayShortenedName
+]
+
+{ #category : #interface }
 CZDocument >> doNotRestartOrderedListAtEachScript [
 	restartOrdered := false
 ]
@@ -144,6 +160,7 @@ CZDocument >> footer: aString [
 CZDocument >> generate [
 	outputer ifNil: [ outputer := self class defaultOutputer ].
 	outputer setOutputFile: outputFile.
+	outputer setAuthorDisplayOption: authorDisplay.
 	
 	^ outputer getOutputFor: self
 	
