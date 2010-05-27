@@ -8,12 +8,32 @@ Class {
 }
 
 { #category : #script }
+CZStefScript >> articleDisplayPattern [
+
+	^ CZDisplayPattern new 
+			defaultSeparator: ', ';
+			field: #author;
+			field: #title;
+			field: #journal;
+			field: #volume;
+			field: #pages;
+			field: #publisher; 
+			field: #year;
+		"	separator: '---'; "
+			field: #impactfactor;
+			field: #url;
+			field: #doi;
+			endsWith: '.'
+]
+
+{ #category : #script }
 CZStefScript >> assemble [
 	"self new assemble"
 	
 	self inout.
 	self document 
 		orderedList ;
+		doNotRestartOrderedListAtEachScript;
 		addElement: (CZTitleElement new 
 							title: 'Refereed Articles in International Journals'; htmlLevel: 4);
 		addElement: self journalsScript;
@@ -26,6 +46,25 @@ CZStefScript >> assemble [
 ]
 
 { #category : #script }
+CZStefScript >> conferenceDisplayPattern [
+
+	^ CZDisplayPattern new 
+			defaultSeparator: ', ';
+			field: #author;
+			field: #title;
+			field: #booktitle;
+			field: #volume;
+			field: #pages;
+			field: #publisher; 
+			field: #year;
+		"	separator: '---'; "
+			field: #impactFactor;
+			field: #url;
+			field: #doi;
+			endsWith: '.'
+]
+
+{ #category : #script }
 CZStefScript >> document [
 
 	^ document ifNil: [document := CZDocument new]
@@ -35,13 +74,14 @@ CZStefScript >> document [
 CZStefScript >> inout [
 
 	self document
-		inputFile: 'stef.bib';
+		inputFile: 'scg.bib';
 		outputFile: 'stef.html'.
 ]
 
 { #category : #script }
 CZStefScript >> journalsScript [
 	^ CZScript new
+		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
 					AND: (CZBibFieldQuery 
@@ -63,6 +103,7 @@ CZStefScript >> onlyStefAuthor [
 { #category : #script }
 CZStefScript >> topConferencesScript [
 	^ CZScript new
+		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
 					AND: (CZBibFieldQuery 
