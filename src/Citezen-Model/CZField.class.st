@@ -68,7 +68,7 @@ CZField class >> valueClasses [
 	^ valueClasses ifNil: [self initializeValueClasses]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visitor }
 CZField >> acceptVisitor: aVisitor [
 	aVisitor visitField: self
 ]
@@ -78,22 +78,34 @@ CZField >> addToBibSet: aBibSet [
 	aBibSet addMacro: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
 CZField >> asCZInteger [
 	(value notExpanded isAllDigits)
 		ifTrue: [ ^ CZInteger with: value notExpanded asNumber ]
 		ifFalse: [ self error: 'Can not convert a string which does not represent an integer' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visitor }
 CZField >> dispatchVisitor: aVisitor [
 	value acceptVisitor: aVisitor 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 CZField >> equalsButDifferent: aField [
 	(self == aField) ifTrue: [ ^ false ].
 	^ (self key = aField key) & (self rawValue = aField rawValue)
+]
+
+{ #category : #testing }
+CZField >> isDoi [
+
+	^ key = #doi
+]
+
+{ #category : #testing }
+CZField >> isURL [
+
+	^ key = #url
 ]
 
 { #category : #accessing }
