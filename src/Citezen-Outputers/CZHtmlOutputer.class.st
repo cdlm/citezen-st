@@ -84,7 +84,16 @@ CZHtmlOutputer >> visitEntry: anEntry [
 { #category : #'as yet unclassified' }
 CZHtmlOutputer >> visitField: aField [
 	outputStream nextPutAll: '<span class="',aField key,'">'.
+	
+	aField isURL
+		ifTrue: [outputStream nextPutAll: '<a href="'].
+	aField isDoi
+		ifTrue: [outputStream nextPutAll: '<a href="http://dx.doi.org/'].	
 	aField dispatchVisitor: self.
+	aField isURL
+		ifTrue: [outputStream nextPutAll: '">PDF</a>'].
+	aField isDoi
+		ifTrue: [outputStream nextPutAll: '">DOI</a>'].
 	outputStream nextPutAll: '</span>'.
 ]
 
