@@ -8,6 +8,26 @@ Class {
 }
 
 { #category : #script }
+CZStefScript >> allDisplayPattern [
+
+	^ CZDisplayPattern new 
+			defaultSeparator: ', ';
+			field: #author;
+			field: #title;
+			field: #journal;
+			field: #booktitle;
+			field: #volume;
+			field: #pages;
+			field: #publisher; 
+			field: #year;
+		"	separator: '---'; "
+			field: #impactfactor;
+			field: #url;
+			field: #doi;
+			endsWith: '.'
+]
+
+{ #category : #script }
 CZStefScript >> articleDisplayPattern [
 
 	^ CZDisplayPattern new 
@@ -32,6 +52,7 @@ CZStefScript >> assemble [
 	
 	self inout.
 	self document 
+		displayFullName ;
 		orderedList ;
 		doNotRestartOrderedListAtEachScript;
 		addElement: (CZTitleElement new 
@@ -40,6 +61,25 @@ CZStefScript >> assemble [
 		addElement: (CZTitleElement new 
 							title: 'Refereed Articles in Top Conferences'; htmlLevel: 4);
 		addElement: self topConferencesScript.
+	self document exportAsHtml. 
+	self document generate.
+	^ self document
+]
+
+{ #category : #script }
+CZStefScript >> assembleSortedByYear [
+	"self new assembleSortedByYear"
+	
+	self inoutYear.
+	self document 
+		displayFullName.
+	1999 to: 2009
+		do: [:year | 
+		self document 
+				addElement: (CZTitleElement new 
+							title: 'Articles in ', year asString; htmlLevel: 4);
+				addElement: (self yearScript: year)].
+	
 	self document exportAsHtml. 
 	self document generate.
 	^ self document
@@ -79,6 +119,14 @@ CZStefScript >> inout [
 ]
 
 { #category : #script }
+CZStefScript >> inoutYear [ 
+
+	self document
+		inputFile: 'scg.bib';
+		outputFile: 'stefY.html'.
+]
+
+{ #category : #script }
 CZStefScript >> journalsScript [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
@@ -86,7 +134,7 @@ CZStefScript >> journalsScript [
 		query: (self onlyStefAuthor 
 					AND: (CZBibFieldQuery 
 								named: #annote 
-								checks: [ :value | value = 'internationaljournal' ]))
+								checks: [ :value | '*internationaljournal*' match: value ]))
 ]
 
 { #category : #script }
@@ -109,4 +157,16 @@ CZStefScript >> topConferencesScript [
 					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*topconference*' match: value ]))
+]
+
+{ #category : #script }
+CZStefScript >> yearScript: aYear [
+
+	^ CZScript new
+		displayPattern: self allDisplayPattern;
+		sortByField: #author;
+		query: (self onlyStefAuthor 
+					AND: (CZBibFieldQuery 
+								named: #year 
+								checks: [ :value | value asInteger = aYear ]))
 ]
