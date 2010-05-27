@@ -250,6 +250,7 @@ CZScript >> generate [
 					(fieldsTmp includes: each key) ifFalse: [ 
 						fields add: each key.
 						separators add: displayPattern defaultSeparator ] ].
+				separators removeLast.
 				
 				index to: fieldsTmp size do: [ :each | (fieldKeys includes: each) ifTrue: [
 					fields add: each.

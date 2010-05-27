@@ -90,12 +90,13 @@ CZDocument >> acceptVisitor: aVisitor [
 
 { #category : #interface }
 CZDocument >> addElement: aDocumentElement [
-	(changed) ifFalse: [ changed := true. elements := OrderedCollection new ].
-
 	(aDocumentElement isNil | elements includes: aDocumentElement)
 		ifFalse: [ 
 			elements add: aDocumentElement.
-			(aDocumentElement class = CZScript) ifTrue: [ aDocumentElement document: self ] ]
+			(aDocumentElement class = CZScript) 
+				ifTrue: [ 
+					aDocumentElement document: self.
+					(changed) ifFalse: [ changed := true. elements removeFirst ] ] ]
 ]
 
 { #category : #'as yet unclassified' }
