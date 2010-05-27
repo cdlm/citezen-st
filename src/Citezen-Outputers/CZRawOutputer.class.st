@@ -24,7 +24,7 @@ CZRawOutputer >> visitCompositeValue: aCZCompositeValue [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitDocument: aCZDocument [
+CZRawOutputer >> visitDocument: aCZDocument. [	
 	aCZDocument originalBibset macros do: [ :each | 
 		outputStream nextPutAll: '@string {'.
 		each acceptVisitor: self.
@@ -64,6 +64,7 @@ CZRawOutputer >> visitMacroReference: aCZMacroReference [
 
 { #category : #'as yet unclassified' }
 CZRawOutputer >> visitPeople: aCZPeople [
+	aCZPeople expandOption: CZPeople normalizedName.
 	outputStream 
 		nextPutAll: '{ ';
 		nextPutAll: aCZPeople notExpanded;

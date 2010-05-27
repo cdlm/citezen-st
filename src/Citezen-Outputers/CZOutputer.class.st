@@ -17,7 +17,8 @@ Class {
 		'lastOutput',
 		'outputStream',
 		'lastEntryVisited',
-		'defaultSeparator'
+		'defaultSeparator',
+		'authorDisplay'
 	],
 	#classInstVars : [
 		'blackList'
@@ -45,6 +46,11 @@ CZOutputer >> getOutputFor: aCZDocument [
 	
 	^ lastOutput 
 	
+]
+
+{ #category : #'as yet unclassified' }
+CZOutputer >> setAuthorDisplayOption: aSymbol [
+	authorDisplay := aSymbol
 ]
 
 { #category : #'as yet unclassified' }

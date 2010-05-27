@@ -109,7 +109,8 @@ CZHtmlOutputer >> visitMacroReference: aCZMacroReference [
 
 { #category : #'as yet unclassified' }
 CZHtmlOutputer >> visitPeople: aCZPeople [
-	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople notExpanded)
+	aCZPeople expandOption: authorDisplay.
+	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
 ]
 
 { #category : #'as yet unclassified' }
