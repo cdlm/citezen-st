@@ -2,13 +2,13 @@
 Here is an example of the creation of a script: 
 
 CZScript new 
-query: (CZBibFieldQuery named: #annote checks: [ :value | value = 'toto' ]);
-blackList: #(barr10a);
-fieldsToRemove: #(year);
-displayOrder: #(* misc);
-displayPattern: aCZDisplayPattern;
-sortByField: #year;
-sortByKey.
+	query: (CZBibFieldQuery named: #annote checks: [ :value | value = 'toto' ]);
+	blackList: #(barr10a);
+	fieldsToRemove: #(year);
+	displayOrder: #(* misc);
+	displayPattern: aCZDisplayPattern;
+	sortByField: #year;
+	sortByKey.
 
 (aCZDisplayPattern is an instance of CZDisplayPattern ; read its class comment).
 
@@ -204,7 +204,7 @@ CZScript >> fieldsToRemove: aList [
 
 { #category : #private }
 CZScript >> filter [
-	(query isNil not) ifTrue: [
+	query isNil ifFalse: [
 		bibset entries: (bibset entries select: [ :each | query value: each])]
 ]
 
@@ -281,6 +281,11 @@ CZScript >> initialize [
 	defaultSeparator := ' '.
 	separatorsCollection := OrderedCollection new.
 
+]
+
+{ #category : #private }
+CZScript >> query [ 
+	^ query
 ]
 
 { #category : #interface }
