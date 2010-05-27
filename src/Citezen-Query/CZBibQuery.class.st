@@ -34,11 +34,6 @@ CZBibQuery >> OR: aQuery [
 		yourself
 ]
 
-{ #category : #printing }
-CZBibQuery >> queryString [
-	^ self subclassResponsibility
-]
-
 { #category : #public }
 CZBibQuery >> value: aBibEntry [
 	^ self subclassResponsibility
