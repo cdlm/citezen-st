@@ -35,11 +35,6 @@ CZBibQuery >> OR: aQuery [
 ]
 
 { #category : #printing }
-CZBibQuery >> printOn: aStream [
-	^ aStream nextPutAll: self queryString
-]
-
-{ #category : #printing }
 CZBibQuery >> queryString [
 	^ self subclassResponsibility
 ]
