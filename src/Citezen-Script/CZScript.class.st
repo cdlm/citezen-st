@@ -338,7 +338,7 @@ CZScript >> reversedSortByType [
 
 { #category : #private }
 CZScript >> sort [
-	sortCollection ifEmpty: [
+	sortCollection ifNotEmpty: [
 		bibset entries: (self sortStartingAt: 1 value: bibset entries) ].
 	
 

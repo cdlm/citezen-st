@@ -41,7 +41,8 @@ Class {
 		'header',
 		'footer',
 		'changed',
-		'authorDisplay'
+		'authorDisplay',
+		'inputFile'
 	],
 	#classInstVars : [
 		'exportTypeMatching'
@@ -107,6 +108,12 @@ CZDocument >> addEntriesDisplayed: aNumber [
 ]
 
 { #category : #interface }
+CZDocument >> createBibSetFromPath [
+	originalBibset := CZBibParser parse: ((FileStream readOnlyFileNamed: inputFile) contents).
+	originalBibset scope: CZSet standardDefinitions 
+]
+
+{ #category : #interface }
 CZDocument >> displayFullName [
 	authorDisplay := CZPeople displayFullName
 ]
@@ -158,6 +165,8 @@ CZDocument >> footer: aString [
 
 { #category : #interface }
 CZDocument >> generate [
+	self createBibSetFromPath.
+	
 	outputer ifNil: [ outputer := self class defaultOutputer ].
 	outputer setOutputFile: outputFile.
 	outputer setAuthorDisplayOption: authorDisplay.
@@ -205,8 +214,7 @@ CZDocument >> initialize [
 
 { #category : #interface }
 CZDocument >> inputFile: aString [
-	originalBibset := CZBibParser parse: ((FileStream readOnlyFileNamed: aString) contents).
-	originalBibset scope: CZSet standardDefinitions 
+	inputFile := aString
 ]
 
 { #category : #'as yet unclassified' }
