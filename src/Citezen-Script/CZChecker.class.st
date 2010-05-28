@@ -296,6 +296,7 @@ CZChecker >> initialize [
 	
 	parser := CZBibParser.
 	rules := OrderedCollection new.
+	typeFieldsMatching := Dictionary new.
 	self initializeTypeFieldsMatching.
 	self initializeBibtexTypes.
 
