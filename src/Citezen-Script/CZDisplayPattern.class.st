@@ -86,9 +86,8 @@ CZDisplayPattern >> field: aSymbol [
 	(changed) ifFalse: [ changed := true. fields := OrderedCollection new].
 	
 	(aSymbol isNil) ifFalse: [
-		lastAddWasField ifTrue: [
-			separators add: defaultSeparator].
-		fields add: aSymbol.
+		lastAddWasField ifTrue: [ separators add: defaultSeparator ].
+		fields add: aSymbol asLowercase asSymbol.
 		lastAddWasField := true ]
 ]
 

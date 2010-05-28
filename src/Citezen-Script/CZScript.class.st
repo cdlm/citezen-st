@@ -103,9 +103,9 @@ CZScript >> acceptVisitor: aVisitor [
 
 { #category : #private }
 CZScript >> addSort: aSymbol reversed: aBoolean [
-	(aSymbol isNil not) ifTrue: [
-		(sortCollection includes: aSymbol) not ifTrue: [
-			sortCollection add: (aSymbol -> aBoolean) ] ]
+	aSymbol ifNil: [
+		(sortCollection includes: aSymbol) 
+		ifFalse: [ sortCollection add: (aSymbol -> aBoolean) ] ]
 ]
 
 { #category : #private }
@@ -117,11 +117,6 @@ CZScript >> bibsetInput: aCZSet [
 { #category : #interface }
 CZScript >> blackList: aList [
 	blackList := (aList ifNil: [#()])
-]
-
-{ #category : #private }
-CZScript >> defaultOutputPath [
-	^ 'default.bib'
 ]
 
 { #category : #interface }
@@ -199,7 +194,9 @@ CZScript >> document: aCZDocument [
 
 { #category : #interface }
 CZScript >> fieldsToRemove: aList [
-	fieldsToRemove := (aList ifNil: [ #() ])
+	(aList isNil)
+		ifTrue: [ fieldsToRemove := #() ]
+		ifFalse: [fieldsToRemove := aList collect: [ :each | each asLowercase asSymbol ] ]
 ]
 
 { #category : #private }
@@ -210,14 +207,17 @@ CZScript >> filter [
 
 { #category : #private }
 CZScript >> generate [
-	| separators fieldsTmp fieldTmp fields index hasWildcard fieldKeys fieldsToDisplay |
-	
-	self bibsetInput: document requestBibset.
-	
 	self 
+		bibsetInput: document requestBibset;
 		removeEntries;
 		filter;
-		sort.
+		sort;
+		generateGeneratingCollection
+]
+
+{ #category : #private }
+CZScript >> generateGeneratingCollection [
+	| separators fieldsTmp fieldTmp fields index hasWildcard fieldKeys fieldsToDisplay cpt |
 		
 	generatingCollection := OrderedCollection new.
 	hasWildcard := displayPattern fields includes: #*.
@@ -230,19 +230,22 @@ CZScript >> generate [
 		
 		separators add: 	displayPattern begin.		
 		hasWildcard 
-			ifFalse: [ 
-				fieldsToDisplay := displayPattern fields select: [ :each | fieldKeys includes: each ].
-				fields addAll: (fieldsToDisplay copyTwoLevel).
-				
-				1 to: fieldsToDisplay size do: [ :cpt | 
-					separators add: (displayPattern separators at: cpt ifAbsent: displayPattern defaultSeparator ) ].
+			ifFalse: [
+				cpt := 1.
+				displayPattern fields do: [ :each | 
+					(fieldKeys includes: each)
+						ifTrue: [
+							fields add: each.
+							separators add: (displayPattern separators at: cpt ifAbsent: displayPattern defaultSeparator) ].
+					cpt := cpt +1 
+				]
 			]
 			ifTrue: [
 				fieldTmp := fieldsTmp at: (index := 1).
 				
 				[fieldTmp = #*] whileFalse: [ 
 					(fieldKeys includes: fieldTmp) ifTrue: [
-						fields add: (fieldTmp).
+						fields add: fieldTmp.
 						separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ]. 
 					fieldTmp := fieldsTmp at: (index := index + 1) ].
 				
@@ -278,8 +281,6 @@ CZScript >> initialize [
 	displayOrder := #().
 	displayPattern := CZDisplayPattern new.
 	query := nil.
-	defaultSeparator := ' '.
-	separatorsCollection := OrderedCollection new.
 
 ]
 
@@ -320,13 +321,6 @@ CZScript >> removeEntries [
 
 ]
 
-{ #category : #private }
-CZScript >> removeFields [
-	"Remove all fields listed in fieldsToRemove from all the entries"
-	
-	bibset entries do: [ :each | each removeFields: fieldsToRemove ]
-]
-
 { #category : #interface }
 CZScript >> reversedSortByField: aSymbol [
 	self addSort: aSymbol reversed: true
@@ -344,9 +338,8 @@ CZScript >> reversedSortByType [
 
 { #category : #private }
 CZScript >> sort [
-	(sortCollection isEmpty)
-		ifFalse: [
-			bibset entries: (self sortStartingAt: 1 value: bibset entries) ].
+	sortCollection ifEmpty: [
+		bibset entries: (self sortStartingAt: 1 value: bibset entries) ].
 	
 
 ]

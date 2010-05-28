@@ -162,7 +162,10 @@ CZDocument >> generate [
 	outputer setOutputFile: outputFile.
 	outputer setAuthorDisplayOption: authorDisplay.
 	
-	^ outputer getOutputFor: self
+	outputer getOutputFor: self.
+	Transcript cr; show: '(Citezen >) ', outputFile, ' was successfully generated'.
+	^ self getLastOutput
+	
 	
 
 ]
