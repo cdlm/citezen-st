@@ -181,6 +181,12 @@ CZEntry >> acceptVisitor: aVisitor [
 ]
 
 { #category : #accessing }
+CZEntry >> addField: aCZField [
+	fields add: aCZField.
+	aCZField scope: self
+]
+
+{ #category : #accessing }
 CZEntry >> addFields: aCollection [
 	fields addAll: aCollection.
 	aCollection do: [:each | each scope: self]

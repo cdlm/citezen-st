@@ -49,7 +49,7 @@ CZPeople >> expanded [
 	
 	(expandOption = self class displayNormalizedName) ifTrue: [ ^ self normalizedName ].
 	(expandOption = self class displayFullName) ifTrue: [ ^ self fullName ].
-	^ self displayShortenedName
+	^ self shortenedName
 ]
 
 { #category : #'as yet unclassified' }

@@ -41,7 +41,7 @@ CZField class >> key: aSymbol rawValue: valueFromParser [
 	(#(author editor) includes: aSymbol asLowercase) 
 		ifTrue: [
 			^ self 
-				key: aSymbol 
+				key: aSymbol asLowercase asSymbol 
 				value: ((CZPeople new) setValue: valueFromParser )].
 	
 	^ self new
