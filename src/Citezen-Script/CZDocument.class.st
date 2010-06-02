@@ -23,6 +23,8 @@ Some details about theses messages: (all messages are in the interface protocol)
 - inputFile: aString & outputFile: aString -> specifies the paths of input and output files
 - orderedList & unorderedList -> choice between <ol> and <ul>
 - withHeaderAndFooter & withoutHeaderAndFooter -> if you want to generate some xHTML code and include it in another web page, send withoutHeaderAndFooter (by default, they are displayed)
+- withDoubles & withoutDoubles -> if you want that the scripts include entries allready displayed, use withDoubles ; 
+- ->
 - getLastOutput -> returns a String containing the last output
 - generate -> generates the document, shoud be the LAST message you send ; it returns a string containing the document too
 "
@@ -42,7 +44,10 @@ Class {
 		'footer',
 		'changed',
 		'authorDisplay',
-		'inputFile'
+		'inputFile',
+		'lastBibsetRequested',
+		'withoutDoubles',
+		'entriesAlleadyDisplayed'
 	],
 	#classInstVars : [
 		'exportTypeMatching'
@@ -166,13 +171,16 @@ CZDocument >> footer: aString [
 { #category : #interface }
 CZDocument >> generate [
 	self createBibSetFromPath.
+	entriesAlleadyDisplayed := OrderedCollection new.
 	
 	outputer ifNil: [ outputer := self class defaultOutputer ].
 	outputer setOutputFile: outputFile.
 	outputer setAuthorDisplayOption: authorDisplay.
 	
 	outputer getOutputFor: self.
-	Transcript cr; show: '(Citezen >) ', outputFile, ' was successfully generated'.
+	(outputFile isNil)
+		ifFalse: [ Transcript cr; show: '(Citezen >) ', outputFile, ' was successfully generated' ]
+		ifTrue: [ Transcript cr; show: '(Citezen >) end of generation' ].
 	^ self getLastOutput
 	
 	
@@ -208,8 +216,10 @@ CZDocument >> initialize [
 	header := nil.
 	footer := nil.
 	changed := false.
+	lastBibsetRequested := nil.
 	elements := OrderedCollection new.
 	self addElement: CZScript new.
+	withoutDoubles := true.
 ]
 
 { #category : #interface }
@@ -240,7 +250,18 @@ CZDocument >> outputFile: aString [
 
 { #category : #'as yet unclassified' }
 CZDocument >> requestBibset [
-	^ originalBibset copyTwoLevel
+	| newBibSet |
+
+	withoutDoubles ifFalse: [ ^ lastBibsetRequested := originalBibset copyTwoLevel ].
+	lastBibsetRequested ifNil: [ ^ lastBibsetRequested := originalBibset copyTwoLevel ].
+	
+	newBibSet := CZSet withStandardDefinitions.
+	
+	entriesAlleadyDisplayed addAll: lastBibsetRequested entries.
+	(originalBibset entries reject: [ :each | entriesAlleadyDisplayed includes: each]) do: [ :each | newBibSet addEntry: each].
+	originalBibset macros do: [ :each | newBibSet addMacro: each].
+	
+	^ lastBibsetRequested := newBibSet
 ]
 
 { #category : #interface }
@@ -254,8 +275,18 @@ CZDocument >> unorderedList [
 ]
 
 { #category : #interface }
+CZDocument >> withDoubles [
+	withoutDoubles := false
+]
+
+{ #category : #interface }
 CZDocument >> withHeaderAndFooter [
 	withoutHeaderAndFooter := false
+]
+
+{ #category : #interface }
+CZDocument >> withoutDoubles [
+	withoutDoubles := true
 ]
 
 { #category : #interface }
