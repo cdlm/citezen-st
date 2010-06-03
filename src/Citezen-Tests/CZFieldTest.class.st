@@ -67,8 +67,9 @@ CZFieldTest >> testPeople [
 		key: #author
 		rawValue: 'Last, First Middle and Prénom de Nom'.
 	self assert: field valueClass = CZPeople.
-	self assert: field value size = 2.
-	self assert: field value first shortenedName = 'F. M. Last'
+	self assert: field value shortenedName = 'F. M. Last and P. Nom'.
+	self assert: field value normalizedName =  'Last, First Middle and de Nom, Prénom'.
+	self assert: field value fullName = 'First Middle Last and Prénom de Nom'
 ]
 
 { #category : #testsForInstances }

@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 CZQueryTest >> setUp [
-		bibset := CZBibParser parse: 
+	bibset := CZBibParser parse: 
 	'
 	@article { a1,
 		author = {Barreau, Adrien},
