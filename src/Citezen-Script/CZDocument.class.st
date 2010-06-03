@@ -1,5 +1,6 @@
 "
-A CZDocument represents a document. It takes all the elements, an outputer, and create the final file on the hard drive.
+A CZDocument represents a document. It takes all the elements, an outputer, and creates the final file on the hard drive.
+N.B.: Some options will obviously ignored, for example orderedList & unorderedList, when you don't export with the good outputer (here the BibTeX outputer ignore these two options).
 
 Example: 
 
@@ -17,16 +18,23 @@ CZDocument new
 	
 Some details about theses messages: (all messages are in the interface protocol)
 - addElement: aDocumentElement -> adds an element to the document (CZCommentElement, CZTitleElement, CZScript). The elements will be displayed in the order they were added.
-- doNotRestartOrderedListAtEachScript & restartOrderedListAtEachScript -> In xHTML, corresponds to specifie the ""start"" parameter to 1 or to last index of previous script + 1.
-- exportAsBib & exportAsHtml -> choose the export format (default is BibTeX)
+- doNotRestartOrderedListAtEachScript & restartOrderedListAtEachScript -> In xHTML, corresponds to specifie the ""start"" parameter to 1 or to last index of previous script + 1 (default is restartOrderedListAtEachScript).
+- exportAsBib & exportAsHtml -> choose the export format (default is xHTML)
 - footer: aString & header: aString -> specifies a header or a footer (ignored by the BibTeX outputer)
-- inputFile: aString & outputFile: aString -> specifies the paths of input and output files
+- inputFile: aString & outputFile: aString -> specifies the paths of input and output files; if no outputFile is given, the generation will only be stored as a string returned by generate and getLastOutput
 - orderedList & unorderedList -> choice between <ol> and <ul>
-- withHeaderAndFooter & withoutHeaderAndFooter -> if you want to generate some xHTML code and include it in another web page, send withoutHeaderAndFooter (by default, they are displayed)
-- withDoubles & withoutDoubles -> if you want that the scripts include entries allready displayed, use withDoubles ; 
-- ->
+- withHeaderAndFooter & withoutHeaderAndFooter -> if you want to generate some xHTML code and include it in another web page, send withoutHeaderAndFooter (default is withHeaderAndFooter)
+- withDoubles & withoutDoubles -> if you want that the scripts include entries allready displayed, use withDoubles (default is  withoutDoubles)
 - getLastOutput -> returns a String containing the last output
 - generate -> generates the document, shoud be the LAST message you send ; it returns a string containing the document too
+
+
+If you just want to take your file and transform it in another format, without any query, you can just write that:
+CZDocument new
+inputFile: '/Users/.../myReferences.bib';
+outputFile: '/Users/.../myWebPage.html';
+generate
+It will generate a xHTML document with all your BibTeX file.
 "
 Class {
 	#name : #CZDocument,
@@ -62,7 +70,7 @@ CZDocument class >> bibExporterEncoding [
 
 { #category : #'as yet unclassified' }
 CZDocument class >> defaultExportType [ 
-	^ self bibExporterEncoding 
+	^ self htmlExporterEncoding 
 ]
 
 { #category : #'as yet unclassified' }
@@ -79,8 +87,9 @@ CZDocument class >> htmlExporterEncoding [
 CZDocument class >> initializeExportTypeMatching [
 	exportTypeMatching := Dictionary new.
 	exportTypeMatching 
-		add: (self bibExporterEncoding) -> CZRawOutputer;
-		add: (self htmlExporterEncoding) -> CZHtmlOutputer 
+		add: (self bibExporterEncoding) -> CZBibtexOutputer;
+		add: (self htmlExporterEncoding) -> CZHtmlOutputer;
+		add: (self textExporterEncoding) -> CZTextOutputer
 		
 ]
 
@@ -91,6 +100,11 @@ CZDocument class >> matchType: aString [
 ]
 
 { #category : #'as yet unclassified' }
+CZDocument class >> textExporterEncoding [
+	^ #text
+]
+
+{ #category : #'as yet unclassified' }
 CZDocument >> acceptVisitor: aVisitor [
 	aVisitor visitDocument: self
 ]
@@ -98,12 +112,17 @@ CZDocument >> acceptVisitor: aVisitor [
 { #category : #interface }
 CZDocument >> addElement: aDocumentElement [
 	(aDocumentElement isNil | elements includes: aDocumentElement)
-		ifFalse: [ 
-			elements add: aDocumentElement.
+		ifFalse: [
+			changed 
+			ifTrue: [ elements add: aDocumentElement ]
+			ifFalse: [ elements add: aDocumentElement beforeIndex: elements size ].
+			
 			(aDocumentElement class = CZScript) 
 				ifTrue: [ 
 					aDocumentElement document: self.
-					(changed) ifFalse: [ changed := true. elements removeFirst ] ] ]
+					(changed) ifFalse: [ changed := true. elements removeLast ] 
+				] 
+		]
 ]
 
 { #category : #'as yet unclassified' }
@@ -112,7 +131,13 @@ CZDocument >> addEntriesDisplayed: aNumber [
 	listIndex := listIndex + aNumber ]
 ]
 
-{ #category : #interface }
+{ #category : #'as yet unclassified' }
+CZDocument >> bibsetInput: aCZSet [
+	originalBibset := aCZSet.
+	aCZSet scope: CZSet standardDefinitions 
+]
+
+{ #category : #'as yet unclassified' }
 CZDocument >> createBibSetFromPath [
 	originalBibset := CZBibParser parse: ((FileStream readOnlyFileNamed: inputFile) contents).
 	originalBibset scope: CZSet standardDefinitions 
@@ -140,7 +165,7 @@ CZDocument >> doNotRestartOrderedListAtEachScript [
 
 { #category : #'as yet unclassified' }
 CZDocument >> elements [
-	^ elements 
+	^ elements
 ]
 
 { #category : #interface }
@@ -151,6 +176,11 @@ CZDocument >> exportAsBib [
 { #category : #interface }
 CZDocument >> exportAsHtml [
 	self exportType: self class htmlExporterEncoding
+]
+
+{ #category : #interface }
+CZDocument >> exportAsText [
+	self exportType: self class textExporterEncoding
 ]
 
 { #category : #'as yet unclassified' }
@@ -170,10 +200,10 @@ CZDocument >> footer: aString [
 
 { #category : #interface }
 CZDocument >> generate [
-	self createBibSetFromPath.
+	inputFile ifNotNilDo: [ self createBibSetFromPath ].
 	entriesAlleadyDisplayed := OrderedCollection new.
 	
-	outputer ifNil: [ outputer := self class defaultOutputer ].
+	outputer ifNil: [ outputer := self class defaultOutputer new ].
 	outputer setOutputFile: outputFile.
 	outputer setAuthorDisplayOption: authorDisplay.
 	
@@ -211,15 +241,13 @@ CZDocument >> header: aString [
 CZDocument >> initialize [ 
 	super initialize.
 	
-	self unorderedList.
-	withoutHeaderAndFooter := false.
-	header := nil.
-	footer := nil.
 	changed := false.
-	lastBibsetRequested := nil.
-	elements := OrderedCollection new.
-	self addElement: CZScript new.
-	withoutDoubles := true.
+	elements := OrderedCollection with: (CZScript new document: self).
+	self withDoubles.
+	self displayFullName.
+	self withHeaderAndFooter.
+	self unorderedList.
+	self restartOrderedListAtEachScript
 ]
 
 { #category : #interface }
