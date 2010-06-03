@@ -39,7 +39,7 @@ CZOutputer >> getOutputFor: aCZDocument [
 
 	[self visitDocument: aCZDocument.
 		
-	 lastOutput := outputStream contents] 
+	 lastOutput := outputStream contents trimBoth] 
 		ensure: [
 			outputStream close.
 			outputStream := nil ].

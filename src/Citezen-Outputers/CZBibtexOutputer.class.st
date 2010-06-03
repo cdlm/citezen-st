@@ -2,13 +2,13 @@
 Obviously, visits all elements of the document and writes their BibTeX equivalent on the output stream.
 "
 Class {
-	#name : #CZRawOutputer,
+	#name : #CZBibtexOutputer,
 	#superclass : #CZOutputer,
 	#category : #'Citezen-Outputers'
 }
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitComment: aCZCommentElement [
+CZBibtexOutputer >> visitComment: aCZCommentElement [
 	outputStream 
 		nextPutAll: '@comment { ';
 		nextPutAll: aCZCommentElement comment;
@@ -18,24 +18,24 @@ CZRawOutputer >> visitComment: aCZCommentElement [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitCompositeValue: aCZCompositeValue [
+CZBibtexOutputer >> visitCompositeValue: aCZCompositeValue [
 	aCZCompositeValue do: 
 		[ :each | each acceptVisitor: self] separatedBy: [ outputStream nextPutAll: ' # ' ].
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitDocument: aCZDocument. [	
+CZBibtexOutputer >> visitDocument: aCZDocument. [	
 	aCZDocument originalBibset macros do: [ :each | 
 		outputStream nextPutAll: '@string {'.
 		each acceptVisitor: self.
 		outputStream nextPut: $}; cr; cr.
-		].
+	].
 
 	aCZDocument elements do: [ :each | each acceptVisitor: self ]
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitEntry: anEntry [	
+CZBibtexOutputer >> visitEntry: anEntry [	
 	anEntry fields do: [ :each |
 		each acceptVisitor: self.
 		(each == (anEntry fields at: anEntry size))
@@ -44,7 +44,7 @@ CZRawOutputer >> visitEntry: anEntry [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitField: aField [
+CZBibtexOutputer >> visitField: aField [
 	outputStream 
 		nextPutAll: '  ';
 		nextPutAll: aField key;
@@ -53,17 +53,17 @@ CZRawOutputer >> visitField: aField [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitInteger: aCZInteger [
+CZBibtexOutputer >> visitInteger: aCZInteger [
 	outputStream nextPutAll: aCZInteger notExpanded asString 
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitMacroReference: aCZMacroReference [
+CZBibtexOutputer >> visitMacroReference: aCZMacroReference [
 	outputStream nextPutAll: aCZMacroReference notExpanded 
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitPeople: aCZPeople [
+CZBibtexOutputer >> visitPeople: aCZPeople [
 	aCZPeople expandOption: CZPeople normalizedName.
 	outputStream 
 		nextPutAll: '{ ';
@@ -72,7 +72,7 @@ CZRawOutputer >> visitPeople: aCZPeople [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitScript: aCZScript [
+CZBibtexOutputer >> visitScript: aCZScript [
 	| list beginList endList entry fields sep |
 
 	aCZScript generate.
@@ -101,7 +101,7 @@ CZRawOutputer >> visitScript: aCZScript [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitSet: aSet [	
+CZBibtexOutputer >> visitSet: aSet [	
 	lastEntryVisited := 0.
 	
 	aSet macros do: [ :each | 
@@ -122,7 +122,7 @@ CZRawOutputer >> visitSet: aSet [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitString: aCZString [
+CZBibtexOutputer >> visitString: aCZString [
 	outputStream 
 		nextPutAll: '{ ';
 		nextPutAll: aCZString notExpanded; 
@@ -130,6 +130,6 @@ CZRawOutputer >> visitString: aCZString [
 ]
 
 { #category : #'as yet unclassified' }
-CZRawOutputer >> visitTitle: aCZTitleElement [
+CZBibtexOutputer >> visitTitle: aCZTitleElement [
 	"does nothing"
 ]

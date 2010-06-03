@@ -4,9 +4,6 @@ Obviously, visits all elements of the document and writes their xHTML equivalent
 Class {
 	#name : #CZHtmlOutputer,
 	#superclass : #CZOutputer,
-	#instVars : [
-		'accentuateCharChecker'
-	],
 	#category : #'Citezen-Outputers'
 }
 
@@ -53,6 +50,8 @@ CZHtmlOutputer >> visitCompositeValue: aCZCompositeValue [
 
 { #category : #'as yet unclassified' }
 CZHtmlOutputer >> visitDocument: aCZDocument [
+	CZAccentuateCharactersParser toHtmlTable.
+	
 	aCZDocument getWithoutHeaderAndFooter ifFalse: [
 		(aCZDocument header isNil not)
 			ifTrue: [ outputStream nextPutAll: aCZDocument header ]
