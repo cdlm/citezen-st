@@ -322,7 +322,7 @@ CZDocumentTest >> testHtmlRestartOrderedListIndex [
 			withDoubles;
 			exportAsHtml;
 			orderedList;
-			restartOrderedListAtEachScript. "by default, the option is set to unorderedList, this line can be removed"
+			restartOrderedListAtEachScript. "by default, the option is set to restartOrderedListAtEachScript, this line can be removed"
 		
 	self assert: document generate =  
 '<ol start="1">
