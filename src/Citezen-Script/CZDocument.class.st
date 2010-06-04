@@ -19,8 +19,8 @@ CZDocument new
 Some details about theses messages: (all messages are in the interface protocol)
 - addElement: aDocumentElement -> adds an element to the document (CZCommentElement, CZTitleElement, CZScript). The elements will be displayed in the order they were added.
 - doNotRestartOrderedListAtEachScript & restartOrderedListAtEachScript -> In xHTML, corresponds to specifie the ""start"" parameter to 1 or to last index of previous script + 1 (default is restartOrderedListAtEachScript).
-- exportAsBib & exportAsHtml -> choose the export format (default is xHTML)
-- footer: aString & header: aString -> specifies a header or a footer (ignored by the BibTeX outputer)
+- exportAsText, exportAsBib & exportAsHtml -> choose the export format (default is exportAsHtml)
+- footer: aString & header: aString -> specifies a header or a footer (ignored by all outputers except xHTML)
 - inputFile: aString & outputFile: aString -> specifies the paths of input and output files; if no outputFile is given, the generation will only be stored as a string returned by generate and getLastOutput
 - orderedList & unorderedList -> choice between <ol> and <ul>
 - withHeaderAndFooter & withoutHeaderAndFooter -> if you want to generate some xHTML code and include it in another web page, send withoutHeaderAndFooter (default is withHeaderAndFooter)

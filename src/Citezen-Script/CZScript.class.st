@@ -103,9 +103,9 @@ CZScript >> acceptVisitor: aVisitor [
 
 { #category : #private }
 CZScript >> addSort: aSymbol reversed: aBoolean [
-	aSymbol ifNil: [
+	aSymbol ifNotNil: [
 		(sortCollection includes: aSymbol) 
-		ifFalse: [ sortCollection add: (aSymbol -> aBoolean) ] ]
+			ifFalse: [ sortCollection add: (aSymbol -> aBoolean) ] ]
 ]
 
 { #category : #private }
@@ -136,7 +136,7 @@ CZScript >> displayOrder: aList [
 
 { #category : #interface }
 CZScript >> displayPattern: aCZDisplayPattern [
-	displayPattern := (aCZDisplayPattern ifNil: [CZDisplayPattern new field: #*])
+	displayPattern := (aCZDisplayPattern ifNil: [ CZDisplayPattern new ])
 ]
 
 { #category : #private }
@@ -194,7 +194,7 @@ CZScript >> document: aCZDocument [
 
 { #category : #interface }
 CZScript >> fieldsToRemove: aList [
-	(aList isNil)
+	(aList isEmptyOrNil)
 		ifTrue: [ fieldsToRemove := #() ]
 		ifFalse: [fieldsToRemove := aList collect: [ :each | each asLowercase asSymbol ] ]
 ]
@@ -226,7 +226,13 @@ CZScript >> generateGeneratingCollection [
 	bibset entries do: [ :entry | 
 		fields := OrderedCollection new.
 		separators := OrderedCollection new.
-		fieldKeys := entry fields collect: [ :each | each key ].
+		fieldKeys := entry fields reject: [ :each | fieldsToRemove includes: each key ].
+		fieldKeys := entry fields 
+			collect: [ :each |
+				(fieldsToRemove includes: each key)
+					ifTrue: [ nil ]
+					ifFalse: [ each key ] ]
+			thenSelect: [ :each | each isNil not ].
 		
 		separators add: 	displayPattern begin.		
 		hasWildcard 
@@ -248,16 +254,18 @@ CZScript >> generateGeneratingCollection [
 						fields add: fieldTmp.
 						separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ]. 
 					fieldTmp := fieldsTmp at: (index := index + 1) ].
-				
-				entry fields do: [ :each |
-					(fieldsTmp includes: each key) ifFalse: [ 
-						fields add: each key.
+
+				fieldKeys do: [ :each | 
+					(fieldsTmp includes: each) ifFalse: [
+						fields add: each.
 						separators add: displayPattern defaultSeparator ] ].
 				separators removeLast.
+				index := index + 1.
 				
-				index to: fieldsTmp size do: [ :each | (fieldKeys includes: each) ifTrue: [
-					fields add: each.
-					separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ] ].
+				index to: fieldsTmp size do: [ :each | 
+					(fieldKeys includes: (fieldsTmp at: each)) ifTrue: [
+						fields add: (fieldsTmp at: each).
+						separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ] ].
 			].
 		separators add: displayPattern end.
 		generatingCollection add: entry -> (fields -> separators) ].
