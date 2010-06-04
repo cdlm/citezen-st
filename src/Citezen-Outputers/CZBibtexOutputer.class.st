@@ -64,7 +64,7 @@ CZBibtexOutputer >> visitMacroReference: aCZMacroReference [
 
 { #category : #'as yet unclassified' }
 CZBibtexOutputer >> visitPeople: aCZPeople [
-	aCZPeople expandOption: CZPeople normalizedName.
+	aCZPeople expandOption: CZPeople displayNormalizedName.
 	outputStream 
 		nextPutAll: '{ ';
 		nextPutAll: aCZPeople notExpanded;
@@ -85,12 +85,16 @@ CZBibtexOutputer >> visitScript: aCZScript [
 		outputStream 
 			nextPut: $@;
 			nextPutAll: entry type;
-			nextPutAll: ' {'.
+			nextPutAll: ' {';
+			nextPutAll: entry key;
+			nextPut: $,;
+			cr.
 		1 to: fields size do: [ :cpt | 
 			outputStream 
 				cr;
 				nextPutAll: '  '.
-			(entry at: (fields at: cpt)) acceptVisitor: self ].
+			(entry at: (fields at: cpt)) acceptVisitor: self.
+			(cpt = fields size) ifFalse: [ outputStream nextPut: $, ] ].
 		outputStream
 			cr; 
 			nextPutAll: '}';
