@@ -17,24 +17,17 @@ There are many messages to know:
 - beginsWith: aString -> a string put before all entries (empty by default)
 - endsWith: aString -> a string put after all entries (empty by default)
 - field: aSymbol -> specifies a field to display; if the last thing you added to the display pattern was a field, the default separator is automatically inserted before added this new field.
-- separator: aString -> add a separator ; be careful: if you add two separators like that:
-	CZDisplayPattern new 
-	field: #year;
-	separator: ';;;';
-	separator: '***';
-	field: #note.
-	It's the same thing than: 
-	CZDisplayPattern new 
-	field: #year;
-	separator: ';;;';
-	field: #note;
-	separator: '***'.
-	And in this case, the second separator will be ignored: 
-	CZDisplayPattern new 
-	field: #year;
-	separator: ';;;';
-	separator: '***';
-	field: #*.
+- separator: aString -> add a separator ; if you add two separators between two fields, they will be concatenated
+CZDisplayPattern new
+	field: #author;
+	separator: ' ***';
+	separator: '*** ';
+	field: #*
+is equivalent to: 
+CZDisplayPattern new
+	field: #author;
+	separator: ' ****** ';
+	field: #*
 "
 Class {
 	#name : #CZDisplayPattern,
@@ -107,8 +100,15 @@ CZDisplayPattern >> initialize [
 
 { #category : #'as yet unclassified' }
 CZDisplayPattern >> separator: aString [
-	separators add: (aString ifNil: [ defaultSeparator ]).
-	lastAddWasField := false
+	lastAddWasField 
+		ifFalse: [ 
+			| sep |
+			sep := separators removeLast.
+			aString isEmptyOrNil ifFalse: [ sep := sep, aString  ].
+			separators add: sep ]
+		ifTrue: [
+			separators add: (aString ifNil: [ defaultSeparator ]).
+			lastAddWasField := false ]
 ]
 
 { #category : #'as yet unclassified' }
