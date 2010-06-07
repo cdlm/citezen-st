@@ -326,7 +326,7 @@ CZScriptTest >> testWithDisplayPattern [
 
 - Le Chat, choucroute, Le chat aime la choucroute, 2001, note'
 
-"More query tests in CZDisplayPatternTest"
+"More display pattern tests in CZDisplayPatternTest"
 ]
 
 { #category : #RemoveTests }
