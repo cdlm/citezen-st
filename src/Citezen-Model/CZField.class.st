@@ -91,12 +91,6 @@ CZField >> dispatchVisitor: aVisitor [
 ]
 
 { #category : #testing }
-CZField >> equalsButDifferent: aField [
-	(self == aField) ifTrue: [ ^ false ].
-	^ (self key = aField key) & (self rawValue = aField rawValue)
-]
-
-{ #category : #testing }
 CZField >> isDoi [
 
 	^ key = #doi

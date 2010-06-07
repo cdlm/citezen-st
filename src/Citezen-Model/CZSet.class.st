@@ -82,30 +82,6 @@ CZSet >> addMacro: aCZField [
 	macros add: aCZField
 ]
 
-{ #category : #cleanup }
-CZSet >> checkDuplicates [
-	| withoutDuplicates |
-	
-	entries := self checkDuplicatesFor: entries.
-	macros := self checkDuplicatesFor: macros.
-  	
-]
-
-{ #category : #cleanup }
-CZSet >> checkDuplicatesFor: aCollection [
-	| withoutDuplicates |
-	
-	withoutDuplicates := OrderedCollection new.
-	
-	1 to:aCollection size do: 
-		[ :each | (self existsDuplicateFor: (aCollection at:each) startingAt: each in: aCollection) ifFalse:
-			[ withoutDuplicates add:(aCollection at:each) ]].
-	
-	^ withoutDuplicates.
-
-  	
-]
-
 { #category : #enumerating }
 CZSet >> do: aBlock [
 	self entries do: aBlock
@@ -150,32 +126,6 @@ CZSet >> entryAt: aSymbol put: anEntry [
 	^ index = 0
 		ifTrue: [entries add: anEntry]
 		ifFalse: [entries at: index put: anEntry]
-]
-
-{ #category : #'as yet unclassified' }
-CZSet >> equalsButDifferent: aCZSet [
-	(entries size = aCZSet entries size) ifFalse: [ ^ false ].
-	(macros size = aCZSet macros size) ifFalse: [ ^ false ].
-	
-	1 to: entries size do: [ :cpt | 
-		((entries at: cpt) equalsButDifferent: (aCZSet entries at: cpt)) 
-			ifFalse: [ ^ false ]].
-	
-	1 to: macros size do: [ :cpt |
-		((macros at: cpt) equalsButDifferent: (aCZSet macros at: cpt))
-			ifFalse: [ ^ false ]].
-	
-	^ true
-]
-
-{ #category : #'as yet unclassified' }
-CZSet >> existsDuplicateFor: aCZEntry startingAt: index in: list [
-	"search a duplicate for entry from entries at: index to the end of entries"
-
-	index to: list size do:
-		[ :each | ((list at:each) equalsButDifferent: aCZEntry) ifTrue:
-			[ ^ true ] ].
-	^ false.
 ]
 
 { #category : #'arranging - combining' }

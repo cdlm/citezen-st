@@ -226,24 +226,6 @@ CZEntry >> do: aBlock [
 ]
 
 { #category : #'as yet unclassified' }
-CZEntry >> equalsButDifferent: aCZEntry [
-	"test the equality between two DIFFERENT entries"
-	
-	(self == aCZEntry) ifTrue: [ ^ false ].
-	
-	((key = aCZEntry key) and: [ (type = aCZEntry type) ]) ifFalse: [ ^ false ].
-
-	(self size = aCZEntry size) ifFalse: [ ^ false ].
-
-	fields do: 
-		[:each | ((aCZEntry at: each key) rawValue = each rawValue) 
-			ifFalse:
-				[ ^ false ]].
-	
-	^ true.
-]
-
-{ #category : #'as yet unclassified' }
 CZEntry >> fields [
 	^ fields 
 ]
