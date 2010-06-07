@@ -145,7 +145,7 @@ CZScript >> displayWithDisplayOrder: anArray in: aCollection [
 	
 	dictKeyIndex := Dictionary new.
 	1 to: anArray size do: [ :cpt | dictKeyIndex at: (anArray at: cpt) key put: cpt ].
-	keys := dictKeyIndex keys.
+	keys := dictKeyIndex keys asOrderedCollection.
 	
 	currentKey := displayOrder at: (index := 1).
 	aBoolean := displayOrder includes: #*.
