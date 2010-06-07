@@ -43,24 +43,6 @@ CZEntryTest >> testAt [
 ]
 
 { #category : #tests }
-CZEntryTest >> testEqualsButDifferent [
-	self assert: (entry equalsButDifferent: duplicateEntry).
-	self deny: (entry equalsButDifferent: entry).
-	
-	duplicateEntry type: #changed.
-	self deny: (entry equalsButDifferent: duplicateEntry).
-	
-	self setUp.
-	duplicateEntry key: #changed.
-	self deny: (entry equalsButDifferent: duplicateEntry).
-	
-	self setUp.
-	duplicateEntry at:#add put:''.
-	self deny: (entry equalsButDifferent: duplicateEntry)
-
-]
-
-{ #category : #tests }
 CZEntryTest >> testHasField [
 	self assert: (entry hasField: #author).
 	self assert: (entry hasField: #title).

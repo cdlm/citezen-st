@@ -26,50 +26,9 @@ CZFieldTest >> testAddToBibSet [
 ]
 
 { #category : #testsForInstances }
-CZFieldTest >> testEqualsButDifferent [ 
-	| duplicateEntry titleValue |
-	
-	duplicateEntry := (CZBibParser parse: CZTestResource bibTest) entries at:1.
-	
-	self assert: ((entry at:#author) equalsButDifferent: (duplicateEntry at:#author)).
-	self deny: ((entry at:#author) equalsButDifferent: (entry at:#author)).
-	
-	duplicateEntry := (CZBibParser parse: CZTestResource bibTest) entries at:1.
-	titleValue := (duplicateEntry at:#title) value.
-	(duplicateEntry at:#title) setKey:#keyChanged rawValue:titleValue.
-	self deny: ((entry at:#title) equalsButDifferent: (duplicateEntry at:#title)).
-	
-	duplicateEntry := (CZBibParser parse: CZTestResource bibTest) entries at:1.
-	(duplicateEntry at:#title) setKey:#title rawValue:'title changed'.
-	self deny: ((entry at:#title) equalsButDifferent: (duplicateEntry at:#title)).
-]
-
-{ #category : #testsForInstances }
 CZFieldTest >> testIsUndefined [
 	self deny: (entry at:#title) isUndefined.
 	self assert: (CZUndefinedField new isUndefined). 
-]
-
-{ #category : #testForClass }
-CZFieldTest >> testKeyValue [
-	| value |
-
-	self assert: ((CZField new setKey: #key rawValue: 'value') equalsButDifferent: (CZField key: #key rawValue: 'value')).
-	
-	value := CZString new setValue: 'value'.
-	self assert: ((CZField new setKey: #key value: value) equalsButDifferent: (CZField key: #key value: value)).
-]
-
-{ #category : #testsForInstances }
-CZFieldTest >> testPeople [
-	| field |
-	field := CZField
-		key: #author
-		rawValue: 'Last, First Middle and Prénom de Nom'.
-	self assert: field valueClass = CZPeople.
-	self assert: field value shortenedName = 'F. M. Last and P. Nom'.
-	self assert: field value normalizedName =  'Last, First Middle and de Nom, Prénom'.
-	self assert: field value fullName = 'First Middle Last and Prénom de Nom'
 ]
 
 { #category : #testsForInstances }
@@ -96,7 +55,7 @@ CZFieldTest >> testUndefined [
 
 { #category : #testsForInstances }
 CZFieldTest >> testValue [
-	self assert: (entry at:#author) value class = OrderedCollection.
+	self assert: (entry at:#author) value class = ByteString.
 	self assert: (entry at:#author) rawValue class = ByteString.
 	
 	self assert: (entry at:#title) value class = ByteString.
@@ -110,11 +69,14 @@ CZFieldTest >> testValue [
 
 { #category : #testsForInstances }
 CZFieldTest >> testValueClass [
-	self assert: (entry at:#author) valueClass = CZPeople.
-	self assert: (entry at:#title) valueClass = CZString.
-	self assert: (entry at:#year) valueClass = CZInteger.
-	self assert: (entry at:#annotation) valueClass = CZString.
+	| string |
 	
-	self assert: (entry at:#undefined) valueClass = CZString
+	string := {CZString . CZMacroReference . CZCompositeValue}.
+	self assert: (entry at:#author) valueClass = CZPeople.
+	self assert: (string includes: (entry at:#title) valueClass).
+	self assert: (entry at:#year) valueClass = CZInteger.
+	self assert: (string includes: (entry at:#annotation) valueClass).
+	
+	self assert: (entry at:#undefined) valueClass = CZValue
 	
 ]

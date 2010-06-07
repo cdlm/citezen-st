@@ -17,29 +17,6 @@ CZSetTest >> setUp [
 	bibset := CZTestResource current bibset
 ]
 
-{ #category : #'as yet unclassified' }
-CZSetTest >> testCheckDuplicates [
-	| duplicateSet sizeEntries sizeMacros |
-	duplicateSet := CZBibParser parse: 
-		CZTestResource myBibFile, CZTestResource myBibFile.
-		
-	sizeEntries := duplicateSet entries size.
-	sizeMacros := duplicateSet macros size.
-	
-	duplicateSet checkDuplicates.
-	
-	self assert: (duplicateSet entries size = (sizeEntries / 2)).
-	self assert: (duplicateSet macros size = (sizeMacros / 2)).
-	
-	sizeEntries := duplicateSet entries size.
-	sizeMacros := duplicateSet macros size.
-	
-	duplicateSet checkDuplicates.
-	
-	self assert: (duplicateSet entries size = sizeEntries).
-	self assert: (duplicateSet macros size = sizeMacros).
-]
-
 { #category : #running }
 CZSetTest >> testEntryAtKey [
 	"self debug: #testEntryAtKey"
