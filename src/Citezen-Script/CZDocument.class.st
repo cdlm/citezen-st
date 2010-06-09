@@ -63,7 +63,7 @@ Class {
 	#category : #'Citezen-Script'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #types }
 CZDocument class >> bibExporterEncoding [
 	^ #bib
 ]
@@ -85,18 +85,20 @@ CZDocument class >> htmlExporterEncoding [
 
 { #category : #'as yet unclassified' }
 CZDocument class >> initializeExportTypeMatching [
+	
 	exportTypeMatching := Dictionary new.
-	exportTypeMatching 
-		add: (self bibExporterEncoding) -> CZBibtexOutputer;
-		add: (self htmlExporterEncoding) -> CZHtmlOutputer;
-		add: (self textExporterEncoding) -> CZTextOutputer
+	CZOutputer allSubclassesDo: [:each |
+			exportTypeMatching at: each exporterEncoding put: each
+			]
+	
+	 
 		
 ]
 
 { #category : #'as yet unclassified' }
 CZDocument class >> matchType: aString [
 	exportTypeMatching ifNil: [ self initializeExportTypeMatching ].
-	^ exportTypeMatching at: aString ifAbsent: self defaultExportType
+	^ exportTypeMatching at: aString ifAbsent: [self defaultExportType]
 ]
 
 { #category : #'as yet unclassified' }
@@ -170,17 +172,18 @@ CZDocument >> elements [
 
 { #category : #interface }
 CZDocument >> exportAsBib [
-	self exportType: self class bibExporterEncoding
+	self exportType: CZBibtexOutputer exporterEncoding
 ]
 
 { #category : #interface }
 CZDocument >> exportAsHtml [
-	self exportType: self class htmlExporterEncoding
+	self exportType: CZHtmlOutputer exporterEncoding
 ]
 
 { #category : #interface }
 CZDocument >> exportAsText [
-	self exportType: self class textExporterEncoding
+
+	self exportType: CZTextOutputer exporterEncoding
 ]
 
 { #category : #'as yet unclassified' }
