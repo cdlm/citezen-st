@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CZBibtexOutputer class >> exporterEncoding [
+
+	^ #bib
+]
+
+{ #category : #'as yet unclassified' }
 CZBibtexOutputer >> visitComment: aCZCommentElement [
 	outputStream 
 		nextPutAll: '@comment { ';

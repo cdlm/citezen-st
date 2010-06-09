@@ -4,6 +4,12 @@ Class {
 	#category : #'Citezen-Outputers'
 }
 
+{ #category : #registration }
+CZTextOutputer class >> exporterEncoding [
+
+	^ #text
+]
+
 { #category : #'as yet unclassified' }
 CZTextOutputer >> visitComment: aCZCommentElement [
 	outputStream 

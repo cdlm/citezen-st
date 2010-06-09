@@ -7,6 +7,12 @@ Class {
 	#category : #'Citezen-Outputers'
 }
 
+{ #category : #registration }
+CZHtmlOutputer class >> exporterEncoding [
+
+	^ #html
+]
+
 { #category : #'as yet unclassified' }
 CZHtmlOutputer >> defaultFooter [
 	^ '</body>

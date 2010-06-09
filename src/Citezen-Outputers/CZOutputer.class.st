@@ -8,6 +8,8 @@ It defines 3 messages:
 - getLastOutput -> returns the last output as a String
 - getOutputFor: aCZDocument -> opens the stream on the specified path (or, if setOutputFile: wasn't call, on String new) and generates the document
 
+Note that the document is responsible of filtering fields that should not be considered.
+
 "
 Class {
 	#name : #CZOutputer,
@@ -25,6 +27,12 @@ Class {
 	],
 	#category : #'Citezen-Outputers'
 }
+
+{ #category : #registration }
+CZOutputer class >> exporterEncoding [
+
+	^ self subclassResponsibility
+]
 
 { #category : #'as yet unclassified' }
 CZOutputer >> getLastOutput [
