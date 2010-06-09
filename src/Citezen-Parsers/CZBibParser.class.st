@@ -45,7 +45,7 @@ Field :
 Value :
 	SimpleValue ( ""#"" SimpleValue )*
 		{ '2' isEmpty
-			ifTrue: [ '1' trimBoth ]
+			ifTrue: [ ('1' isKindOf: String) ifTrue: [ '1' trimBoth ] ifFalse: [ '1' ]]
 			ifFalse: [(CZCompositeValue with: '1')
 				addAll: ('2' collect: [:subcoll | subcoll at: 2]);
 				yourself] };
@@ -65,7 +65,7 @@ CZBibParser class >> scannerClass [
 
 { #category : #'generated-starting states' }
 CZBibParser class >> startingStateForBibfile [
-	^2
+	^1
 ]
 
 { #category : #'generated-starting states' }
@@ -200,7 +200,10 @@ CZBibParser >> reduceActionForSimpleValue4: nodes [
 { #category : #'generated-reduction actions' }
 CZBibParser >> reduceActionForValue1: nodes [
 	^ (nodes at: 2) isEmpty
-		ifTrue: [ (nodes at: 1) trimBoth ]
+		ifTrue: [ 
+			((nodes at: 1) isKindOf: String)
+				ifTrue: [ (nodes at: 1) trimBoth ]
+				ifFalse: [ nodes at: 1 ] ]
 		ifFalse: [ 
 			(CZCompositeValue with: (nodes at: 1))
 				addAll: ((nodes at: 2) collect: [ :subcoll | subcoll at: 2 ]);
@@ -266,30 +269,18 @@ CZBibParser >> transitionTable [
 #[0 0 30 0 1 0 10 0 11 0 28]
 #[0 0 102 0 1 0 10 0 11 0 28]
 #[0 0 38 0 1 0 10 0 11 0 28]
-#[1 0 141 0 8 0 145 0 26]
+#[1 0 41 0 8 0 141 0 26]
 #[0 0 54 0 2 0 28]
-#[0 0 70 0 3 0 28]
-#[0 0 74 0 3 0 28]
-#[0 0 62 0 3 0 28]
-#[0 0 66 0 3 0 28]
-#[0 0 90 0 28]
-#[1 0 82 0 3 0 149 0 25 0 82 0 28]
-#[0 0 26 0 1 0 10 0 11 0 28]
-#[0 0 153 0 4]
-#[0 0 46 0 2 0 28]
-#[1 0 157 0 3 0 161 0 24 0 58 0 28]
-#[1 0 165 0 7 0 169 0 8 0 173 0 9 0 177 0 12 0 181 0 22 0 185 0 23]
-#[1 0 113 0 7 0 117 0 8 0 121 0 9 0 125 0 12 0 189 0 23]
-#[0 0 86 0 3 0 28]
 #[0 0 70 0 2 0 3 0 28]
 #[0 0 74 0 2 0 3 0 28]
 #[0 0 62 0 2 0 3 0 28]
 #[0 0 66 0 2 0 3 0 28]
 #[0 0 90 0 2 0 28]
-#[1 0 82 0 2 0 82 0 3 0 193 0 25 0 82 0 28]
-#[0 0 78 0 3 0 28]
-#[1 0 58 0 2 0 197 0 3 0 201 0 24 0 58 0 28]
-#[1 0 165 0 7 0 169 0 8 0 173 0 9 0 177 0 12 0 205 0 23]
+#[1 0 82 0 2 0 82 0 3 0 145 0 25 0 82 0 28]
+#[0 0 26 0 1 0 10 0 11 0 28]
+#[0 0 46 0 2 0 28]
+#[1 0 58 0 2 0 149 0 3 0 153 0 24 0 58 0 28]
+#[1 0 113 0 7 0 117 0 8 0 121 0 9 0 125 0 12 0 157 0 23]
 #[0 0 86 0 2 0 3 0 28]
 #[0 0 78 0 2 0 3 0 28]
 )
