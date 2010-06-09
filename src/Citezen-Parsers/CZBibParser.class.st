@@ -45,7 +45,7 @@ Field :
 Value :
 	SimpleValue ( ""#"" SimpleValue )*
 		{ '2' isEmpty
-			ifTrue: [ '1' ]
+			ifTrue: [ '1' trimBoth ]
 			ifFalse: [(CZCompositeValue with: '1')
 				addAll: ('2' collect: [:subcoll | subcoll at: 2]);
 				yourself] };
@@ -65,7 +65,7 @@ CZBibParser class >> scannerClass [
 
 { #category : #'generated-starting states' }
 CZBibParser class >> startingStateForBibfile [
-	^1
+	^2
 ]
 
 { #category : #'generated-starting states' }
@@ -200,7 +200,7 @@ CZBibParser >> reduceActionForSimpleValue4: nodes [
 { #category : #'generated-reduction actions' }
 CZBibParser >> reduceActionForValue1: nodes [
 	^ (nodes at: 2) isEmpty
-		ifTrue: [ nodes at: 1 ]
+		ifTrue: [ (nodes at: 1) trimBoth ]
 		ifFalse: [ 
 			(CZCompositeValue with: (nodes at: 1))
 				addAll: ((nodes at: 2) collect: [ :subcoll | subcoll at: 2 ]);
@@ -210,16 +210,16 @@ CZBibParser >> reduceActionForValue1: nodes [
 { #category : #'generated-tables' }
 CZBibParser >> reduceTable [
 	^#(
-#(14 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
-#(14 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
-#(14 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration3:)
-#(15 1 #reduceFor:)
-#(16 0 #reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
-#(16 2 #reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
+#(14 0 #reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
+#(14 2 #reduceActionForRepeatXXGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
+#(15 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration1:)
+#(15 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration2:)
+#(15 1 #reduceActionForGroupXXXXXCommentDeclarationXXXMacroDeclarationXXXEntryDeclaration3:)
+#(16 3 #buildEntry:)
 #(17 1 #reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX1:)
 #(17 1 #reduceActionForGroupXXXXXXparenthesizedStringXXXXXbracedStringX2:)
-#(18 2 #buildMacro:)
-#(19 2 #reduceActionForCommentDeclaration1:)
+#(18 2 #reduceActionForCommentDeclaration1:)
+#(19 1 #reduceFor:)
 #(20 2 #reduceFor:)
 #(21 0 #reduceActionForRepeatXXGroupXXXXXXXXXField1:)
 #(21 2 #reduceActionForRepeatXXGroupXXXXXXXXXField2:)
@@ -233,19 +233,19 @@ CZBibParser >> reduceTable [
 #(25 2 #reduceActionForRepeatXXGroupXXXXXXXXXSimpleValue2:)
 #(26 3 #reduceActionForField1:)
 #(27 2 #reduceActionForBodyContents1:)
-#(30 3 #buildEntry:)
-#(31 1 #reduceActionForBibfile1:)
+#(30 1 #reduceActionForBibfile1:)
+#(31 2 #buildMacro:)
 )
 ]
 
 { #category : #'generated-tables' }
 CZBibParser >> transitionTable [
 	^#(
-#[1 0 22 0 1 0 22 0 10 0 22 0 11 0 21 0 16 0 22 0 28 0 25 0 31]
-#[1 0 22 0 1 0 22 0 10 0 22 0 11 0 21 0 16 0 22 0 28 0 29 0 31]
+#[1 0 6 0 1 0 6 0 10 0 6 0 11 0 21 0 14 0 6 0 28 0 25 0 30]
+#[1 0 6 0 1 0 6 0 10 0 6 0 11 0 21 0 14 0 6 0 28 0 29 0 30]
 #[1 0 33 0 8 0 37 0 27]
 #[1 0 41 0 8 0 45 0 26]
-#[1 0 49 0 1 0 53 0 10 0 57 0 11 0 61 0 14 0 65 0 18 0 69 0 19 0 102 0 28 0 73 0 30]
+#[1 0 49 0 1 0 53 0 10 0 57 0 11 0 61 0 15 0 65 0 16 0 69 0 18 0 98 0 28 0 73 0 31]
 #[0 0 0 0 28]
 #[0 0 0 0 28]
 #[1 0 50 0 2 0 77 0 21 0 50 0 28]
@@ -255,17 +255,17 @@ CZBibParser >> transitionTable [
 #[0 0 85 0 8]
 #[1 0 89 0 12 0 93 0 13 0 97 0 17]
 #[1 0 89 0 12 0 93 0 13 0 101 0 17]
-#[0 0 26 0 1 0 10 0 11 0 28]
 #[0 0 10 0 1 0 10 0 11 0 28]
-#[0 0 6 0 1 0 10 0 11 0 28]
+#[0 0 22 0 1 0 10 0 11 0 28]
 #[0 0 14 0 1 0 10 0 11 0 28]
+#[0 0 18 0 1 0 10 0 11 0 28]
 #[1 0 105 0 2 0 109 0 20 0 94 0 28]
 #[1 0 113 0 7 0 117 0 8 0 121 0 9 0 125 0 12 0 129 0 22 0 133 0 23]
 #[1 0 89 0 12 0 93 0 13 0 137 0 17]
 #[0 0 34 0 1 0 10 0 11 0 28]
 #[0 0 30 0 1 0 10 0 11 0 28]
+#[0 0 102 0 1 0 10 0 11 0 28]
 #[0 0 38 0 1 0 10 0 11 0 28]
-#[0 0 42 0 1 0 10 0 11 0 28]
 #[1 0 141 0 8 0 145 0 26]
 #[0 0 54 0 2 0 28]
 #[0 0 70 0 3 0 28]
@@ -274,7 +274,7 @@ CZBibParser >> transitionTable [
 #[0 0 66 0 3 0 28]
 #[0 0 90 0 28]
 #[1 0 82 0 3 0 149 0 25 0 82 0 28]
-#[0 0 98 0 1 0 10 0 11 0 28]
+#[0 0 26 0 1 0 10 0 11 0 28]
 #[0 0 153 0 4]
 #[0 0 46 0 2 0 28]
 #[1 0 157 0 3 0 161 0 24 0 58 0 28]
