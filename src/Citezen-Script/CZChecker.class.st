@@ -44,6 +44,87 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+CZChecker class >> inriaField [
+	^
+	self new
+		addRule: [ :entry |
+			| ret |
+			ret := true.
+			(entry key size = 7)
+				ifFalse: [ ret := false ]
+				ifTrue: [ 
+					1 to: 4 do: [ :cpt | (entry key at: cpt) isLetter ifFalse: [ ret := false ] ].
+					5 to: 6 do: [ :cpt | (entry key at: cpt) isDigit ifFalse: [ ret := false] ].
+					(entry key at: 7) isLetter ifFalse: [ ret := false ] ].
+			ret ]
+		named: '(Inria) Key = 4 letter of author + 2 digit of year + a-z';
+		
+		addRule: [ :entry |
+			| ret |
+			ret := true.
+			(entry hasField: #keyword)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := ('*lse-pub*' match: (entry at: #keyword) rawValue) ].
+			ret ]
+		named: '(Inria) Must have field #keyword including "lse-pub"';
+		
+		addRule: [ :entry |
+			| ret |
+			ret := true.
+			(entry hasField: #aeresstatus)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := ((entry at: #aeresstatus) rawValue) = 'aeres12'].
+			ret ]
+		named: '(Inria) Must have field #aeresstatus with value "aeres12"';
+		
+		addRule: [ :entry |
+			|ret |
+			ret := true.
+			(entry hasField: #aeres)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := #(ACL ACLN ASCL INV ACT COM AFF OS OV DO AP TH) includes: (entry at: #aeres) rawValue.].
+			ret ]
+		named: '(Inria) Must have field #aeres with value in: [ACL ACLN ASCL INV ACT COM AFF OS OV DO AP TH]';
+		
+		addRule: [ :entry |
+			|ret |
+			ret := true.
+			(entry hasField: #annote)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := #(master internationalconference nationalconference topconference internationaljournal nationaljournal shortpaper internationalworkshop nationalworkshop lectures book tooldemo notrefereed technicalreport report workshopproceedings tutorial insubmission presentation) includes: (entry at: #annote) rawValue ].
+			ret ]
+		named:  '(Inria) Must have field #aeres with value in: [master internationalconference nationalconference topconference internationaljournal nationaljournal shortpaper internationalworkshop nationalworkshop lectures book tooldemo notrefereed technicalreport report workshopproceedings tutorial insubmission presentation]';
+		
+		addRule: [ :entry |
+			|ret |
+			ret := true.
+			(entry hasField: #selectif)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := #(non oui) includes: (entry at: #selectif) rawValue ].
+			ret ]
+		named:  '(Inria) Must have field #selectif with value in: [oui non]';
+		
+		addRule: [ :entry |
+			|ret |
+			ret := true.
+			(entry hasField: #labo)
+				ifFalse: [ ret := false ]
+				ifTrue: [  
+					ret := #(dans hors) includes: (entry at: #labo) rawValue ].
+			ret ]
+		named:  '(Inria) Must have field #labo with value in: [dans hors]';
+		
+		addRule: [ :entry |
+			| ret |
+			ret := true.
+			(entry hasField: #inria)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := ((entry at: #inria) rawValue = 'RMOD') ].
+			ret ]
+		named: '(Inria) Must have field #inria with value "RMOD"'
+]
+
+{ #category : #'as yet unclassified' }
 CZChecker >> addRule: aBlock [
 	self addRule: aBlock named: '' 
 ]
@@ -242,7 +323,7 @@ CZChecker >> checks [
 	
 	errorStream close.
 	
-	^ self errorString
+	^ self errorString ifEmpty: [ 'No error' ]
 ]
 
 { #category : #'as yet unclassified' }
