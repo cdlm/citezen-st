@@ -14,6 +14,24 @@ CZBibtexOutputer class >> exporterEncoding [
 ]
 
 { #category : #'as yet unclassified' }
+CZBibtexOutputer >> entryToBibtexString: aCZEntry [
+	outputStream := WriteStream on: String new.
+	self visitEntry: aCZEntry.
+	outputStream close.
+	^ outputStream contents
+	
+]
+
+{ #category : #'as yet unclassified' }
+CZBibtexOutputer >> macroToBibtexString: aCZField [
+	outputStream := WriteStream on: String new.
+	self visitMacro: aCZField.
+	outputStream close.
+	^ outputStream contents
+	
+]
+
+{ #category : #'as yet unclassified' }
 CZBibtexOutputer >> visitComment: aCZCommentElement [
 	outputStream 
 		nextPutAll: '@comment { ';
@@ -41,11 +59,22 @@ CZBibtexOutputer >> visitDocument: aCZDocument. [
 ]
 
 { #category : #'as yet unclassified' }
-CZBibtexOutputer >> visitEntry: anEntry [	
-	anEntry fields do: [ :each |
-		each acceptVisitor: self.
-		(each == (anEntry fields at: anEntry size))
-			ifFalse: [outputStream nextPut: $,; cr]]
+CZBibtexOutputer >> visitEntry: anEntry [
+	outputStream  
+		nextPut: $@;
+		nextPutAll: anEntry type;
+		nextPut: ${;
+		nextPutAll: anEntry key;
+		nextPut: $,;
+		cr.
+		
+	anEntry fields 
+		do: [ :each | each acceptVisitor: self ]
+		separatedBy: [ outputStream nextPut: $,; cr ].
+		
+	outputStream 
+		cr;
+		nextPut: $}
 
 ]
 
@@ -61,6 +90,13 @@ CZBibtexOutputer >> visitField: aField [
 { #category : #'as yet unclassified' }
 CZBibtexOutputer >> visitInteger: aCZInteger [
 	outputStream nextPutAll: aCZInteger notExpanded asString 
+]
+
+{ #category : #'as yet unclassified' }
+CZBibtexOutputer >> visitMacro: aCZField [
+	outputStream nextPutAll: '@string{'.
+	self visitField: aCZField. 
+	outputStream nextPutAll: ' }'
 ]
 
 { #category : #'as yet unclassified' }
@@ -83,7 +119,7 @@ CZBibtexOutputer >> visitScript: aCZScript [
 
 	aCZScript generate.
 	
-	aCZScript generatingCollection do: [ :assoc |
+	aCZScript generatingCollection do: [ :assoc | 
 		entry := assoc key.
 		fields := assoc value key.
 		sep := assoc value value.
