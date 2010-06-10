@@ -125,11 +125,6 @@ CZChecker class >> inriaField [
 ]
 
 { #category : #'as yet unclassified' }
-CZChecker >> addRule: aBlock [
-	self addRule: aBlock named: '' 
-]
-
-{ #category : #'as yet unclassified' }
 CZChecker >> addRule: aBlock named: aString [
 	| name |
 	(aString isEmptyOrNil)
@@ -145,19 +140,33 @@ CZChecker >> bibtexBlockToCZEntry: aString [
 	| bibset |
 	
 	[ bibset := parser parse: aString.]
-		on: Error do: [ "self checkBibtexBlock: aString"
+		on: Error do: [
 			errorStream nextPutAll: 'Error : Syntax error in:'; cr; nextPutAll: aString; cr; cr ].
 	
 	bibset ifNotNil: [ 
 		(bibset macros notEmpty) 
 			ifTrue: [ 
-				macros add: ((bibset macros at: 1) -> aString).
+				macros add: ((bibset macros at: 1)).
 				macrosUsage at: ((bibset macros at: 1) key) put: false ].
 		(bibset entries notEmpty) 
 			ifTrue: [ 
 				(bibset entries at: 1) scope: CZSet standardDefinitions.
-				entries add: ((bibset entries at: 1) -> aString) ]	
+				entries add: ((bibset entries at: 1)) ]	
 	]
+]
+
+{ #category : #'as yet unclassified' }
+CZChecker >> checkBibset: aCZSet [
+	macros := OrderedCollection new.
+	macrosUsage := Dictionary new.
+	entries := OrderedCollection new.
+	errorStream := WriteStream on: String new.
+
+	macros addAll: aCZSet macros.
+	entries addAll: aCZSet entries.
+
+	^ self checks
+
 ]
 
 { #category : #'as yet unclassified' }
@@ -191,6 +200,22 @@ CZChecker >> checkEmptyField: aCZField [
 ]
 
 { #category : #'as yet unclassified' }
+CZChecker >> checkFile: aString [
+	macros := OrderedCollection new.
+	macrosUsage := Dictionary new.
+	entries := OrderedCollection new.
+
+	fileContent := (FileStream readOnlyFileNamed: aString) contents copyReplaceAll: String lf with: String cr.
+	eof := false.
+
+	errorStream := WriteStream on: String new.
+	[eof] whileFalse: [ self bibtexBlockToCZEntry: self getBibtexBlock ].
+
+	^ self checks
+
+]
+
+{ #category : #'as yet unclassified' }
 CZChecker >> checkMacroReferenced: aCZField [
 	| macroSymbols error |
 	
@@ -220,40 +245,34 @@ CZChecker >> checkMacroReferenced: aCZField [
 CZChecker >> checks [
 	| newEntries newFields newMacros toBeDeleted toBeInclude error |
 	
-	macros := OrderedCollection new.
-	macrosUsage := Dictionary new.
-	entries := OrderedCollection new.
 	keys := Dictionary new.
-	
-	errorStream := WriteStream on: String new.
-	[eof] whileFalse: [ self bibtexBlockToCZEntry: self getBibtexBlock ].
 
-	macros addAll: ((CZSet standardDefinitions macros) collect: [ :each | each -> 'If you read it, there is a bug in Citezen!' ]).
+	macros addAll: (CZSet standardDefinitions macros).
 	
 	"Don't display that some month macros are defined but not used"
 	(CZSet standardDefinitions macros) do: [ :each | macrosUsage at: each key put: true ].
 	
 	newEntries := OrderedCollection new.
-	macroKeys := macros collect: [ :each | each key key ].
+	macroKeys := macros collect: [ :each | each key ].
 
-	entryKeys := entries collect: [ :each | each key key ].
+	entryKeys := entries collect: [ :each | each key ].
 	
 	index := 0.
-	entries do: [ :assoc |
+	entries do: [ :entry |
 		toBeInclude := true.	
 		error := false.
 		
 		index := index + 1.
 		
 		"checks if the type of the entry is a correct bibtex type"
-		(self checkBibtexType: assoc key)
+		(self checkBibtexType: entry)
 			ifFalse: [ 
 				error := true.
 				toBeInclude := false ].
 			
 		newFields := OrderedCollection new.
 		fieldKeys := OrderedCollection new.
-		assoc key fields do: [ :field |
+		entry fields do: [ :field |
 			toBeDeleted := false.
 			
 			"checks the macros referenced in the entry and removes fields with undefined macros"
@@ -273,27 +292,27 @@ CZChecker >> checks [
 				ifFalse: [ newFields add: field ] 
 				ifTrue: [ error := true ]
 		].
-		assoc key fields: newFields.
+		entry fields: newFields.
 		
 		"checks if the entry contains all the fields needed by it's type"
-		((typeFieldsMatching at: (assoc key type)) value: (assoc key fields collect: [ :each | each key ]))
+		((typeFieldsMatching at: (entry type)) value: (entry fields collect: [ :each | each key ]))
 			ifFalse: [
 				errorStream nextPutAll: 'Error: Entry does not contain all needed fields'; cr.
 				error := true.
 				toBeInclude := false ].
 		
 		"checks if the key is unique and changes it if it's not"
-		keys at: assoc key key put: ((keys at: assoc key key ifAbsent: 0) + 1).
-		((keys at: assoc key key) > 1)
+		keys at: entry key put: ((keys at: entry key ifAbsent: 0) + 1).
+		((keys at: entry key) > 1)
 			ifTrue: [ | key |
-				key := assoc key key.
-				assoc key key: '###',(assoc key key, '_',(keys at: assoc key key) asString,'###' ).
-				errorStream nextPutAll: 'Warning: duplicate key: ', key, ' changed to: ', assoc key key; cr.
+				key := entry key.
+				entry key key: '###',(entry key, '_',(keys at: entry key) asString,'###' ).
+				errorStream nextPutAll: 'Warning: duplicate key: ', key, ' changed to: ', entry key; cr.
 		error := true ].
 		
 		"checks if the entry respects all the rules"	
 		rules do: [ :rule |
-			(rule value value: assoc key)
+			(rule value value: entry)
 				ifFalse: [
 					errorStream nextPutAll: 'Error : entry does not respect the rule: ', rule key; cr.
 					error := true.
@@ -301,10 +320,15 @@ CZChecker >> checks [
 		
 		"displays the errors and creates the collection with safe entries"
 		error ifTrue: [ 
-			errorStream nextPut: Character tab; nextPutAll: 'for :'; cr; nextPutAll: assoc value; cr.
+			errorStream 
+				nextPut: Character tab; 
+				nextPutAll: 'for :'; 
+				cr;
+				nextPutAll: "assoc value; "(CZBibtexOutputer new entryToBibtexString: entry);
+				cr.
 			toBeInclude 
 				ifTrue: [ 
-					newEntries add: assoc key.
+					newEntries add: entry.
 					errorStream nextPutAll: '(There are only warnings, the entry is not deleted)'; cr; cr ]
 				ifFalse: [
 					errorStream nextPutAll: '(There are errors, the entry is deleted)'; cr; cr ]
@@ -314,21 +338,21 @@ CZChecker >> checks [
 
 	"removes unused macros"
 	newMacros := OrderedCollection new.
-	macros do: [ :assoc | 
-		(macrosUsage at: assoc key key)
-			ifFalse: [ errorStream nextPutAll: 'Unused macro:'; cr; nextPutAll: assoc value; cr; cr ]
-			ifTrue: [  newMacros add: assoc ]	
+	macros do: [ :macro | 
+		(macrosUsage at: macro key)
+			ifFalse: [ errorStream nextPutAll: 'Unused macro:'; cr; nextPutAll: macro; cr; cr ]
+			ifTrue: [  newMacros add: macro ]	
 	].
 	macros := newMacros.
 	
 	errorStream close.
 	
-	^ self errorString ifEmpty: [ 'No error' ]
+	^ self errorString
 ]
 
 { #category : #'as yet unclassified' }
 CZChecker >> errorString [
-	^ errorStream contents trimRight 
+	^ errorStream contents trimRight ifEmpty: [ 'No error' ]
 ]
 
 { #category : #'as yet unclassified' }

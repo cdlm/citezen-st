@@ -203,7 +203,7 @@ CZDocument >> footer: aString [
 
 { #category : #interface }
 CZDocument >> generate [
-	inputFile ifNotNilDo: [ self createBibSetFromPath ].
+	inputFile ifNotNil: [ self createBibSetFromPath ].
 	entriesAlleadyDisplayed := OrderedCollection new.
 	
 	outputer ifNil: [ outputer := self class defaultOutputer new ].
