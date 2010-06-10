@@ -1,7 +1,7 @@
 "
 There are no released versions yet, so this is needed to load anything:
 
-	(ConfigurationOfCitezen project latestVersion: #development) load
+	((ConfigurationOfCitezen project) latestVersion: #development) load
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
 
@@ -260,11 +260,13 @@ ConfigurationOfCitezen >> baseline04: spec [
 			project: 'Magritte' copyFrom: 'Seaside' with: [
 				spec
 					className: 'ConfigurationOfMagritte2';
+					loads: #('Core' 'Magritte-Seaside');
 					file: 'ConfigurationOfMagritte2';
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
 			project: 'Pier' copyFrom: 'Seaside' with: [
 				spec
 					className: 'ConfigurationOfPier2';
+					loads: #('Core');
 					file: 'ConfigurationOfPier2';
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
 			project: 'SmaCC' with: [
