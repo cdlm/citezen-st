@@ -241,6 +241,58 @@ ConfigurationOfCitezen >> baseline03: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfCitezen >> baseline04: spec [
+	<version: '0.4-baseline'>
+
+	spec for: #common do: [
+		spec blessing: #baseline.
+		spec description: 'A set of tools to work with BibTeX bibliographies.'.
+		spec author: 'AdrienBarreau'.
+		spec repository: 'http://www.squeaksource.com/Citezen'.
+		
+		spec
+			project: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfSeaside30';
+					file: 'ConfigurationOfSeaside30';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Magritte' copyFrom: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfMagritte2';
+					file: 'ConfigurationOfMagritte2';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Pier' copyFrom: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfPier2';
+					file: 'ConfigurationOfPier2';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'SmaCC' with: [
+				spec
+					className: 'ConfigurationOfSmaCC';
+					file: 'ConfigurationOfSmaCC';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+
+		spec
+			package: 'Citezen-Model';
+			package: 'Citezen-Parsers' with: [ spec requires: #('Citezen-Model' 'SmaCC')];
+			package: 'Citezen-Rendering' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Outputers' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Query' with: [ spec requires: 'Citezen-Model'];
+			package: 'Citezen-Script' with: [ spec requires: #('Citezen-Model' 'Citezen-Outputers' 'Citezen-Query') ];
+			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside') ];
+			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
+			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte') ];
+			package: 'Citezen-Tests' with: [ spec requires: 'Core' ].
+			
+		spec
+			group: 'default' with: #('Core' 'Web' 'Tests');
+			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script');
+			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
+			group: 'Tests' with: #('Citezen-Tests')
+	]
+]
+
 { #category : #accessing }
 ConfigurationOfCitezen >> project [
 
@@ -287,5 +339,17 @@ ConfigurationOfCitezen >> version03: spec [
 			blessing: #development;
 			author: 'DamienPollet';
 			description: 'Switch to Seaside 3'
+	]
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version04: spec [
+	<version: '0.4' imports: #('0.4-baseline')>
+	
+	spec for: #common do: [
+		spec
+			blessing: #development;
+			author: 'AdrienBarreau';
+			description: 'Change to Pharo 1.1'
 	]
 ]
