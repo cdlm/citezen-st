@@ -15,32 +15,32 @@ CZAccentuateCharactersScanner class >> initializeKeywordMap [
 { #category : #'generated-comments' }
 CZAccentuateCharactersScanner class >> scannerDefinitionComment [
 
-	"<plainChar>					:	[a-zA-Z]					;
+	"<plainChar>					:	[a-zA-Z]						;
 <openingBrace>				:	\{							;
 <closingBrace>				:	\}							;
-<noBackSlash>				:	[^a-zA-Z\\\~\}]			;
-<doubleSlash>				:	\\ \\							;
-<otherSlashedChar>			:	\\ [^'\`\^\""\~\=\.\v\u\H]	;
+<noBackSlash>				:	[^a-zA-Z\\\~\}]					;
+<doubleSlash>				:	\\ \\								;
+<otherSlashedChar>			:	\\ [^'\`\^\""\~\=\.\v\u\H]		;
 <dollar>						:	$							;
 <endash>						:	\- \-							;
-<emdash>					:	\- \- \-						;
+<emdash>					:	\- \- \-							;
 
 #international characters
-<acute>						:	\\ \' 						;	# \'{ }
-<grave>						:	\\ \` 						;	# \`{ }
+<acute>						:	\\ \' 							;	# \'{ }
+<grave>						:	\\ \` 							;	# \`{ }
 <circumflex>					:	\\ \^	 					;	# \^{ }
 <umlaut>						:	\\ \""			 				;	# \""{ }
-<tilde>						:	\\ \~			 			;	# \~{ }
+<tilde>							:	\\ \~			 			;	# \~{ }
 <bar>							:	\\ \=	 					;	# \={ }
 <dot>							:	\\ \.				 			;	# \.{ }
-<invCircumflex>				:	\\ v 						;	# \v{ }
+<invCircumflex>				:	\\ v 							;	# \v{ }
 <arc>							:	\\ u		 					;	# \u{ }
 <doubleQuote>				:	\\ H 						;	# \H{ }
 
 #special characters
-<ccedilla>						:	\\ c \{ c \}					;	# \c{c}
-<scedilla>						:	\\ c \{ s \}					;	# \c{s}
-<tcedilla>						:	\\ c \{ t \}					;	# \c{t}
+<ccedilla>						:	\\ c \{ c \} | \\ c \  c 			;	# \c{c}
+<scedilla>						:	\\ c \{ s \} | \\ c \  s			;	# \c{s}
+<tcedilla>						:	\\ c \{ t \} | \\ c \  t			;	# \c{t}
 <inversedQuestionMark>		:	\? \'							;	# ?`
 <oe>							:	\\ o e						;	# \oe
 <ae>							:	\\ a e						;	# \ae
@@ -48,24 +48,24 @@ CZAccentuateCharactersScanner class >> scannerDefinitionComment [
 <smallRingedA>				:	\\ a a						;	# \aa
 <capitalRingedA>				:	\\ A A						;	# \AA
 <smallSlashedO>				:	\\ / o						;	# \/o
-<capitalSlashedO>			:	\\ O							;	# \O
+<capitalSlashedO>				:	\\ O							;	# \O
 <barredL>						:	\\ l							;	# \l
 <capitalBarredL>				:	\\ L							;	# \L
 <iForm>						:	\\ i							;	# \i
 <jForm>						:	\\ j							;	# \j
 <nonBreakingSpace>			:	\~							;	# ~
-<optionalHyphen>			:	\\ -							;	# \-
+<optionalHyphen>				:	\\ -							;	# \-
 <ampersand>					:	\\ &							;	# \&
 <percent>						:	\\ %						;	# \%
-<hash>						:	\\ \#						;
+<hash>							:	\\ \#						;
 
 <circlea>						:	\\ o a						;	# \oa
 <nu>							:	\\ n u						;	# \nu
 <pi>							:	\\ p i						;	# \pi
 <tau>							:	\\ t a u						;	# \tau
-<omega>						:	\\ o m e g a				;	# \omega
+<omega>						:	\\ o m e g a					;	# \omega
 <neq>							:	\\ n e q						;	# \neq
-<wedge>						:	\\ w e d g e				;	# \wedge
+<wedge>						:	\\ w e d g e					;	# \wedge
 
 #unclassified things
 <underscoredChar>			:	\\ b \x20					;	# \b"
@@ -155,6 +155,16 @@ CZAccentuateCharactersScanner >> scan1 [
 		ifTrue: [ 
 			self recordMatch: #(6).
 			self step.
+			currentCharacter = Character space
+				ifTrue: [ 
+					self step.
+					currentCharacter = $c
+						ifTrue: [ ^ self recordAndReportMatch: #(20) ].
+					currentCharacter = $s
+						ifTrue: [ ^ self recordAndReportMatch: #(21) ].
+					currentCharacter = $t
+						ifTrue: [ ^ self recordAndReportMatch: #(22) ].
+					^ self reportLastMatch ].
 			currentCharacter = ${
 				ifTrue: [ 
 					self step.
