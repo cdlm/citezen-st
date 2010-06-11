@@ -212,64 +212,73 @@ CZScript >> generate [
 		removeEntries;
 		filter;
 		sort;
-		generateGeneratingCollection
+		generateSeparatorsAndFieldsCollection
 ]
 
 { #category : #private }
-CZScript >> generateGeneratingCollection [
-	| separators fieldsTmp fieldTmp fields index hasWildcard fieldKeys fieldsToDisplay cpt |
+CZScript >> generateSeparatorsAndFieldsCollection [
+	| separators fields entryFieldsKeys |
 		
 	generatingCollection := OrderedCollection new.
-	hasWildcard := displayPattern fields includes: #*.
-	fieldsTmp := displayPattern fields.
 	
 	bibset entries do: [ :entry | 
 		fields := OrderedCollection new.
 		separators := OrderedCollection new.
-		fieldKeys := entry fields reject: [ :each | fieldsToRemove includes: each key ].
-		fieldKeys := entry fields 
+
+		entryFieldsKeys := entry fields 
 			collect: [ :each |
 				(fieldsToRemove includes: each key)
 					ifTrue: [ nil ]
 					ifFalse: [ each key ] ]
 			thenSelect: [ :each | each isNil not ].
 		
-		separators add: 	displayPattern begin.		
-		hasWildcard 
-			ifFalse: [
-				cpt := 1.
-				displayPattern fields do: [ :each | 
-					(fieldKeys includes: each)
-						ifTrue: [
-							fields add: each.
-							separators add: (displayPattern separators at: cpt ifAbsent: displayPattern defaultSeparator) ].
-					cpt := cpt +1 
-				]
-			]
-			ifTrue: [
-				fieldTmp := fieldsTmp at: (index := 1).
-				
-				[fieldTmp = #*] whileFalse: [ 
-					(fieldKeys includes: fieldTmp) ifTrue: [
-						fields add: fieldTmp.
-						separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ]. 
-					fieldTmp := fieldsTmp at: (index := index + 1) ].
-
-				fieldKeys do: [ :each | 
-					(fieldsTmp includes: each) ifFalse: [
-						fields add: each.
-						separators add: displayPattern defaultSeparator ] ].
-				separators removeLast.
-				index := index + 1.
-				
-				index to: fieldsTmp size do: [ :each | 
-					(fieldKeys includes: (fieldsTmp at: each)) ifTrue: [
-						fields add: (fieldsTmp at: each).
-						separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ] ].
-			].
+		separators add: displayPattern begin.		
+		(displayPattern fields includes: #* )
+			ifFalse: [ self generateSeparatorsAndFieldsWithoutWildcardEntryFieldsKey: entryFieldsKeys fields: fields separators: separators ]
+			ifTrue: [ self generateSeparatorsAndFieldsWithWildcardEntryFieldsKey: entryFieldsKeys fields: fields separators: separators ].
 		separators add: displayPattern end.
+		
 		generatingCollection add: entry -> (fields -> separators) ].
 
+]
+
+{ #category : #private }
+CZScript >> generateSeparatorsAndFieldsWithWildcardEntryFieldsKey: entryFieldsKey fields: fields separators: separators [
+	| cpt  index fieldTmp fieldsTmp |
+	
+	fieldsTmp := displayPattern fields.
+	fieldTmp := fieldsTmp at: (index := 1).
+				
+	[fieldTmp = #*] whileFalse: [ 
+		(entryFieldsKey includes: fieldTmp) ifTrue: [
+			fields add: fieldTmp.
+			separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ]. 
+		fieldTmp := fieldsTmp at: (index := index + 1) ].
+
+	entryFieldsKey do: [ :each | 
+		(fieldsTmp includes: each) ifFalse: [
+			fields add: each.
+			separators add: displayPattern defaultSeparator ] ].
+	separators removeLast.
+	index := index + 1.
+				
+	index to: fieldsTmp size do: [ :each | 
+		(entryFieldsKey includes: (fieldsTmp at: each)) ifTrue: [
+			fields add: (fieldsTmp at: each).
+			separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ] ].
+]
+
+{ #category : #private }
+CZScript >> generateSeparatorsAndFieldsWithoutWildcardEntryFieldsKey: entryFieldsKey fields: fields separators: separators [
+	| cpt |
+	
+	cpt := 1.
+	displayPattern fields do: [ :each | 
+		(entryFieldsKey includes: each)
+		ifTrue: [
+			fields add: each.
+			separators add: (displayPattern separators at: cpt ifAbsent: displayPattern defaultSeparator) ].
+		cpt := cpt +1 ]
 ]
 
 { #category : #private }
