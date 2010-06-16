@@ -72,7 +72,14 @@ ConfigurationOfCitezen class >> lastMetacelloVersionLoad [
 ConfigurationOfCitezen class >> load [
 	"self load"
 
-	^self project latestVersion load
+	"^self project latestVersion load"
+	
+	((ConfigurationOfCitezen project) latestVersion: #development) load
+]
+
+{ #category : #loading }
+ConfigurationOfCitezen class >> loadNoWeb [
+	((ConfigurationOfCitezen project) latestVersion: #development) load: #NoWeb
 ]
 
 { #category : #'metacello tool support' }
@@ -288,7 +295,8 @@ ConfigurationOfCitezen >> baseline04: spec [
 			package: 'Citezen-Tests' with: [ spec requires: 'Core' ].
 			
 		spec
-			group: 'default' with: #('Core' 'Web' 'Tests');
+			group: 'default' with: #('NoWeb' 'Web');
+			group: 'NoWeb' with: #('Core' 'Tests');
 			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script');
 			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
 			group: 'Tests' with: #('Citezen-Tests')
