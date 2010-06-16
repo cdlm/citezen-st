@@ -16,6 +16,21 @@ Class {
 	#category : #'Citezen-Rendering'
 }
 
+{ #category : #'phrases-partial' }
+BibPhraseLibrary class >> acceptanceRate [
+	^ BibAlternativePhrase new
+		add: (BibSequencePhrase new
+				add: (BibLiteralPhrase text: 'Acceptance rate: ');
+				addField: #acceptnum;
+				add: (BibLiteralPhrase text: '/');
+				addField: #accepttotal;
+				add: (BibLiteralPhrase text: ' = ');
+				add: (BibDeferredPhrase block: [:entry | ((entry at: #acceptnum) value asNumber / (entry at: #accepttotal) value asNumber * 100) rounded]);
+				add: (BibLiteralPhrase text: '%');
+				yourself)
+		condition: [ :anEntry | (anEntry hasField: #accepttotal) and: [ anEntry hasField: #acceptnum ] ]
+]
+
 { #category : #'phrases-entries' }
 BibPhraseLibrary class >> article [
 	^ (BibSequencePhrase new)
@@ -42,7 +57,7 @@ BibPhraseLibrary class >> article [
 { #category : #'formats-fields' }
 BibPhraseLibrary class >> author: aField [
 	| authors andSep |
-	authors := aField value collect: [:each | BibLiteralPhrase text: each fullName].
+	authors := (CZAuthorParser parse: aField value) collect: [:each | BibLiteralPhrase text: each fullName].
 	andSep := authors size > 2 ifTrue: [', and '] ifFalse: [' and '].
 	^ (BibSequencePhrase with: authors)
 		separatorText: ', ';
@@ -198,6 +213,7 @@ BibPhraseLibrary class >> inproceedings [
 							yourself)) 
 						blockNamed: 'publishing');
 		addBlockWithField: #note;
+		add: self acceptanceRate;
 		separatorText: '. ';
 		terminatorText: '.'
 ]

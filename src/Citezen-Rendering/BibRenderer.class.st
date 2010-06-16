@@ -67,6 +67,11 @@ BibRenderer >> visitAlternativePhrase: aPhrase [
 	^ aPhrase do: [:each | self visit: each] for: currentEntry
 ]
 
+{ #category : #'visiting-phrases' }
+BibRenderer >> visitDeferredPhrase: aDeferredPhrase [
+	self text: (aDeferredPhrase block value: currentEntry)
+]
+
 { #category : #'visiting-bibsets' }
 BibRenderer >> visitEntry: anEntry [
 	self render: (self phraseFor: anEntry) for: anEntry

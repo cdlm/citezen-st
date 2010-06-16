@@ -26,6 +26,11 @@ BibPhrasePrunableEvaluator >> visitAlternativePhrase: aPhrase [
 ]
 
 { #category : #'visitor-double dispatch' }
+BibPhrasePrunableEvaluator >> visitDeferredPhrase: aDeferredPhrase [
+	^ aDeferredPhrase block isNil 
+]
+
+{ #category : #'visitor-double dispatch' }
 BibPhrasePrunableEvaluator >> visitFieldRef: aFieldRef [
 	^ (entry hasField: aFieldRef fieldName) not
 ]

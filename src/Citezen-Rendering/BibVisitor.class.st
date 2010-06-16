@@ -20,6 +20,10 @@ BibVisitor >> visitBibSet: aBibSet [
 	aBibSet do: [:each | self visit: each]
 ]
 
+{ #category : #'visiting-phrases' }
+BibVisitor >> visitDeferredPhrase: aBibDeferredPhrase [ 
+]
+
 { #category : #'visiting-bibsets' }
 BibVisitor >> visitEntry: anEntry [
 	anEntry do: [:each | self visit: each]
