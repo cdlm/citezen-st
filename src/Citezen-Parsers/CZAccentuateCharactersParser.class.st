@@ -209,7 +209,7 @@ CZAccentuateCharactersParser class >> toHtmlTable [
 		at: #percent put: '%';
 		at: #hash put: '#';
 		at: #endash put: '&#8211;';
-		at: #emdash put: '&#8212'.
+		at: #emdash put: '&#8212;'.
 	^ table
 ]
 
