@@ -1,5 +1,5 @@
 "
-CZBibGeneralQuery resolves the query in the value: message.
+CZEntryQuery resolves the query in the value: message.
 This message takes a CZEntry as parameter.
 The 3 subclasses just change what they send to super value:
 
@@ -10,15 +10,15 @@ field2 = value2,
 ...
 }
 
-- If you want to create queries on the type, use: CZBibTypeQuery
-- If you want to create queries on the key, use: CZBibKeyQuery
-- If you want to create queries on a field, use: CZBibFieldQuery
+- If you want to create queries on the type, use: CZTypeQuery
+- If you want to create queries on the key, use: CZKeyQuery
+- If you want to create queries on a field, use: CZFieldQuery
 
 Take a look at their class comments.
 "
 Class {
-	#name : #CZBibEntryQuery,
-	#superclass : #CZBibQuery,
+	#name : #CZEntryQuery,
+	#superclass : #CZQuery,
 	#instVars : [
 		'block'
 	],
@@ -26,17 +26,17 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CZBibEntryQuery class >> checks: aBlock [
+CZEntryQuery class >> checks: aBlock [
 	^ self new block: aBlock 
 ]
 
 { #category : #'as yet unclassified' }
-CZBibEntryQuery >> block: aBlock [
+CZEntryQuery >> block: aBlock [
 	block := aBlock 
 ]
 
 { #category : #'as yet unclassified' }
-CZBibEntryQuery >> value: aValue [
+CZEntryQuery >> value: aValue [
 	block ifNil: [ ^ true ].
 	(aValue = '') ifTrue: [ ^ false ].
 	^ block value: aValue 

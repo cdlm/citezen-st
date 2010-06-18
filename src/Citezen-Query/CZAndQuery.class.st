@@ -2,8 +2,8 @@
 Returns leftAnd value: and rightAnd value: on the value: call
 "
 Class {
-	#name : #CZBibAnd,
-	#superclass : #CZBibQuery,
+	#name : #CZAndQuery,
+	#superclass : #CZQuery,
 	#instVars : [
 		'leftAnd',
 		'rightAnd'
@@ -12,37 +12,37 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CZBibAnd >> field: aSymbol [
+CZAndQuery >> field: aSymbol [
 	leftAnd field: aSymbol.
 	rightAnd field: aSymbol 
 ]
 
 { #category : #'accessing-private' }
-CZBibAnd >> leftAnd [
+CZAndQuery >> leftAnd [
 	^ leftAnd
 ]
 
 { #category : #'accessing-private' }
-CZBibAnd >> leftAnd: anObject [
+CZAndQuery >> leftAnd: anObject [
 	leftAnd := anObject
 ]
 
 { #category : #printing }
-CZBibAnd >> queryString [
+CZAndQuery >> queryString [
 	^ '(' , self leftAnd printString , ' and ' , self rightAnd printString , ')'
 ]
 
 { #category : #'accessing-private' }
-CZBibAnd >> rightAnd [
+CZAndQuery >> rightAnd [
 	^ rightAnd
 ]
 
 { #category : #'accessing-private' }
-CZBibAnd >> rightAnd: anObject [
+CZAndQuery >> rightAnd: anObject [
 	rightAnd := anObject
 ]
 
 { #category : #public }
-CZBibAnd >> value: aBibEntry [
+CZAndQuery >> value: aBibEntry [
 	^ (leftAnd value: aBibEntry) and: [ rightAnd value: aBibEntry ]
 ]

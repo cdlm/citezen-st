@@ -2,8 +2,8 @@
 Returns query value: not on the value: call
 "
 Class {
-	#name : #CZBibNot,
-	#superclass : #CZBibQuery,
+	#name : #CZNotQuery,
+	#superclass : #CZQuery,
 	#instVars : [
 		'query'
 	],
@@ -11,26 +11,26 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CZBibNot >> field: aSymbol [
+CZNotQuery >> field: aSymbol [
 	query field: aSymbol 
 ]
 
 { #category : #accessing }
-CZBibNot >> query [
+CZNotQuery >> query [
 	^ query
 ]
 
 { #category : #accessing }
-CZBibNot >> query: aBlock [
+CZNotQuery >> query: aBlock [
 	query := aBlock
 ]
 
 { #category : #printing }
-CZBibNot >> queryString [
+CZNotQuery >> queryString [
 	^ 'not ' , self query printString
 ]
 
 { #category : #public }
-CZBibNot >> value: aCZEntry [
+CZNotQuery >> value: aCZEntry [
 	^ (self query value: aCZEntry) not
 ]

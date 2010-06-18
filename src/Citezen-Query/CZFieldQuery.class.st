@@ -1,5 +1,5 @@
 "
-CZBibFieldQuery creates queries on a specified field of a BibTeX entry.
+CZFieldQuery creates queries on a specified field of a BibTeX entry.
 
 Use the message named: aSymbol checks: aBlock on class side.
 You should give it a symbol which is the key of the field, and a block which takes a parameter.
@@ -15,17 +15,20 @@ year = 2000
 title = { Title 2 }
 }
 
-If you write this query: CZBibFieldQuery named: #title checks: [ :value | '*1*' match: value ]
+If you write this query: 
+CZFieldQuery named: #title checks: [ :value | '*1*' match: value ]
 it will select only the first entry.
 
 You could also check if an entry has a field with: existingFieldNamed: aSymbol (still on class side).
 
-If you write that: CZBibFieldQuery existingFieldNamed: #year
+If you write that: 
+CZFieldQuery existingFieldNamed: #year
 it will select only the first entry too.
+
 "
 Class {
-	#name : #CZBibFieldQuery,
-	#superclass : #CZBibEntryQuery,
+	#name : #CZFieldQuery,
+	#superclass : #CZEntryQuery,
 	#instVars : [
 		'field'
 	],
@@ -33,21 +36,21 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CZBibFieldQuery class >> existingFieldNamed: aSymbol [
+CZFieldQuery class >> existingFieldNamed: aSymbol [
 	^ (CZBibEntryQuery checks: [ :entry | entry hasField: aSymbol ])
 ]
 
 { #category : #'as yet unclassified' }
-CZBibFieldQuery class >> named: aSymbol checks: aBlock [
+CZFieldQuery class >> named: aSymbol checks: aBlock [
 	^ (self checks: aBlock) field: aSymbol 
 ]
 
 { #category : #'as yet unclassified' }
-CZBibFieldQuery >> field: aSymbol [
+CZFieldQuery >> field: aSymbol [
 	field := aSymbol 
 ]
 
 { #category : #'as yet unclassified' }
-CZBibFieldQuery >> value: aCZEntry [
+CZFieldQuery >> value: aCZEntry [
 	^ super value: (aCZEntry at: field) rawValue 
 ]

@@ -2,8 +2,8 @@
 Returns leftAnd value: or rightAnd value: on the value: call
 "
 Class {
-	#name : #CZBibOr,
-	#superclass : #CZBibQuery,
+	#name : #CZOrQuery,
+	#superclass : #CZQuery,
 	#instVars : [
 		'leftOr',
 		'rightOr'
@@ -12,37 +12,37 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CZBibOr >> field: aSymbol [
+CZOrQuery >> field: aSymbol [
 	leftOr field: aSymbol.
 	rightOr field: aSymbol 
 ]
 
 { #category : #accessing }
-CZBibOr >> leftOr [
+CZOrQuery >> leftOr [
 	^ leftOr
 ]
 
 { #category : #accessing }
-CZBibOr >> leftOr: anObject [
+CZOrQuery >> leftOr: anObject [
 	leftOr := anObject
 ]
 
 { #category : #printing }
-CZBibOr >> queryString [
+CZOrQuery >> queryString [
 	^ '(' , self leftOr printString , ' or ' , self rightOr printString , ')'
 ]
 
 { #category : #accessing }
-CZBibOr >> rightOr [
+CZOrQuery >> rightOr [
 	^ rightOr
 ]
 
 { #category : #accessing }
-CZBibOr >> rightOr: anObject [
+CZOrQuery >> rightOr: anObject [
 	rightOr := anObject
 ]
 
 { #category : #public }
-CZBibOr >> value: aBibEntry [
+CZOrQuery >> value: aBibEntry [
 	^ (leftOr value: aBibEntry) or: [ rightOr value: aBibEntry ]
 ]
