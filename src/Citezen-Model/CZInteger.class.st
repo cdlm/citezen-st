@@ -1,3 +1,6 @@
+"
+A CZString represents an integer value in a BibTeX field.
+"
 Class {
 	#name : #CZInteger,
 	#superclass : #CZValue,

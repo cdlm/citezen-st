@@ -26,6 +26,8 @@ Most useful messages are:
 - hasField: aSymbol -> returns true/false if the entry has/has not a field with key=aSymbol
 - key and key: aSymbol -> getter & setter for the key
 - type and type: aSymbol aSymbol -> getter & setter for the key
+
+These entries are stored in CZSet>>entries.
 "
 Class {
 	#name : #CZEntry,

@@ -1,5 +1,5 @@
 "
-Concatenation expression as value of a BibTeX field or macro (represents the foo # bar notation in BibTeX).
+A CZCompositeValue represents a string value in a BibTeX field created with the concatenation of CZString or CZMacroReference.
 "
 Class {
 	#name : #CZCompositeValue,

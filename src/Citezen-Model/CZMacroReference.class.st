@@ -1,3 +1,6 @@
+"
+A CZMacroReference represent a reference to a macro defined in the BibTeX file.
+"
 Class {
 	#name : #CZMacroReference,
 	#superclass : #CZValue,
