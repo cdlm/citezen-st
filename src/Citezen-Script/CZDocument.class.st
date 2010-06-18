@@ -1,4 +1,11 @@
 "
+To begin something with Citezen, you should create a document. It's the first step.
+This document will keep all the options for your final document (export format, output path, ...).
+Then you should add ell the elements un the document, in the order you want to display them. There are three kind of elements: CZTitleElement, CZCommentElement, and CZScript. Of course, new elements can be create if you need it.
+Note that there is a lot of messages for the html export format. They are stored in the html-interface protocol.
+
+-----
+
 A CZDocument represents a document. It takes all the elements, an outputer, and creates the final file on the hard drive.
 N.B.: Some options will obviously ignored, for example orderedList & unorderedList, when you don't export with the good outputer (here the BibTeX outputer ignore these two options).
 
@@ -16,7 +23,7 @@ CZDocument new
 	outputFile: '/Users/.../myWebPage.html';
 	generate
 	
-Some details about theses messages: (all messages are in the interface protocol)
+Some details about theses messages: (all messages are in the interface and html-interface protocols)
 - addElement: aDocumentElement -> adds an element to the document (CZCommentElement, CZTitleElement, CZScript). The elements will be displayed in the order they were added.
 - doNotRestartOrderedListAtEachScript & restartOrderedListAtEachScript -> In xHTML, corresponds to specifie the ""start"" parameter to 1 or to last index of previous script + 1 (default is restartOrderedListAtEachScript).
 - exportAsText, exportAsBib & exportAsHtml -> choose the export format (default is exportAsHtml)
@@ -29,12 +36,15 @@ Some details about theses messages: (all messages are in the interface protocol)
 - generate -> generates the document, shoud be the LAST message you send ; it returns a string containing the document too
 
 
-If you just want to take your file and transform it in another format, without any query, you can just write that:
+When you create a document, it creates a fake script and add it to the element, that will be delete when you add one of your scripts.
+As a consequence, if you just want to take your file and transform it in another format without any query, note you can just write that:
 CZDocument new
 inputFile: '/Users/.../myReferences.bib';
 outputFile: '/Users/.../myWebPage.html';
 generate
 It will generate a xHTML document with all your BibTeX file.
+
+
 "
 Class {
 	#name : #CZDocument,
@@ -129,8 +139,7 @@ CZDocument >> addElement: aDocumentElement [
 
 { #category : #'as yet unclassified' }
 CZDocument >> addEntriesDisplayed: aNumber [
-	restartOrdered ifFalse: [
-	listIndex := listIndex + aNumber ]
+	restartOrdered ifFalse: [ listIndex := listIndex + aNumber ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -160,7 +169,7 @@ CZDocument >> displayShortenedName [
 	authorDisplay := CZPeople displayShortenedName
 ]
 
-{ #category : #interface }
+{ #category : #'interface-html' }
 CZDocument >> doNotRestartOrderedListAtEachScript [
 	restartOrdered := false
 ]
@@ -182,7 +191,6 @@ CZDocument >> exportAsHtml [
 
 { #category : #interface }
 CZDocument >> exportAsText [
-
 	self exportType: CZTextOutputer exporterEncoding
 ]
 
@@ -263,7 +271,7 @@ CZDocument >> listIndex [
 	^ listIndex
 ]
 
-{ #category : #interface }
+{ #category : #'interface-html' }
 CZDocument >> orderedList [
 	listIndex := 1.
 	restartOrdered := true
@@ -295,12 +303,12 @@ CZDocument >> requestBibset [
 	^ lastBibsetRequested := newBibSet
 ]
 
-{ #category : #interface }
+{ #category : #'interface-html' }
 CZDocument >> restartOrderedListAtEachScript [
 	restartOrdered := true
 ]
 
-{ #category : #interface }
+{ #category : #'interface-html' }
 CZDocument >> unorderedList [
 	listIndex := 0
 ]
@@ -310,7 +318,7 @@ CZDocument >> withDoubles [
 	withoutDoubles := false
 ]
 
-{ #category : #interface }
+{ #category : #'interface-html' }
 CZDocument >> withHeaderAndFooter [
 	withoutHeaderAndFooter := false
 ]
@@ -320,7 +328,7 @@ CZDocument >> withoutDoubles [
 	withoutDoubles := true
 ]
 
-{ #category : #interface }
+{ #category : #'interface-html' }
 CZDocument >> withoutHeaderAndFooter [
 	withoutHeaderAndFooter := true
 ]

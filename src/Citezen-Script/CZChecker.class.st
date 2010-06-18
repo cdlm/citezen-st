@@ -8,6 +8,7 @@ It will check:
 - Duplicate fields
 - Needed fields (depending on the type)
 - Keys are unique
+- All the rules you defined 
 
 It allows to specifie some rules (e.g. tell that the key has to be a 7-character-long word) with the messages addRule: aBlock and addRule: aBlock named: aString.
 A rule is a block with one parameter: a CZEntry.
