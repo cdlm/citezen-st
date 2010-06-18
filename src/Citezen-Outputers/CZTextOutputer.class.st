@@ -1,3 +1,6 @@
+"
+Obviously, visits all elements of the document and writes their text equivalent on the output stream.
+"
 Class {
 	#name : #CZTextOutputer,
 	#superclass : #CZOutputer,
