@@ -39,45 +39,15 @@ Class {
 		'macroKeys',
 		'fieldKeys',
 		'entryKeys',
-		'index'
+		'index',
+		'warnings'
 	],
 	#category : #'Citezen-Script'
 }
 
-{ #category : #'as yet unclassified' }
-CZChecker class >> inriaField [
-	^
-	self new
-		addRule: [ :entry |
-			| ret |
-			ret := true.
-			(entry key size = 7)
-				ifFalse: [ ret := false ]
-				ifTrue: [ 
-					1 to: 4 do: [ :cpt | (entry key at: cpt) isLetter ifFalse: [ ret := false ] ].
-					5 to: 6 do: [ :cpt | (entry key at: cpt) isDigit ifFalse: [ ret := false] ].
-					(entry key at: 7) isLetter ifFalse: [ ret := false ] ].
-			ret ]
-		named: '(Inria) Key = 4 letter of author + 2 digit of year + a-z';
-		
-		addRule: [ :entry |
-			| ret |
-			ret := true.
-			(entry hasField: #keyword)
-				ifFalse: [ ret := false ]
-				ifTrue: [ ret := ('*lse-pub*' match: (entry at: #keyword) rawValue) ].
-			ret ]
-		named: '(Inria) Must have field #keyword including "lse-pub"';
-		
-		addRule: [ :entry |
-			| ret |
-			ret := true.
-			(entry hasField: #aeresstatus)
-				ifFalse: [ ret := false ]
-				ifTrue: [ ret := ((entry at: #aeresstatus) rawValue) = 'aeres12'].
-			ret ]
-		named: '(Inria) Must have field #aeresstatus with value "aeres12"';
-		
+{ #category : #inriaRules }
+CZChecker class >> aeresField: aCZChecker [
+	aCZChecker	
 		addRule: [ :entry |
 			|ret |
 			ret := true.
@@ -85,8 +55,25 @@ CZChecker class >> inriaField [
 				ifFalse: [ ret := false ]
 				ifTrue: [ ret := #(ACL ACLN ASCL INV ACT COM AFF OS OV DO AP TH) includes: (entry at: #aeres) rawValue.].
 			ret ]
-		named: '(Inria) Must have field #aeres with value in: [ACL ACLN ASCL INV ACT COM AFF OS OV DO AP TH]';
-		
+		named: '(Inria) Must have field #aeres with value in: [ACL ACLN ASCL INV ACT COM AFF OS OV DO AP TH]'
+]
+
+{ #category : #inriaRules }
+CZChecker class >> aeresstatusAeres12: aCZChecker [
+	aCZChecker	
+		addRule: [ :entry |
+			| ret |
+			ret := true.
+			(entry hasField: #aeresstatus)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := ((entry at: #aeresstatus) rawValue) = 'aeres12'].
+			ret ]
+		named: '(Inria) Must have field #aeresstatus with value "aeres12"'
+]
+
+{ #category : #inriaRules }
+CZChecker class >> annoteField: aCZChecker [
+	aCZChecker
 		addRule: [ :entry |
 			|ret |
 			ret := true.
@@ -94,27 +81,30 @@ CZChecker class >> inriaField [
 				ifFalse: [ ret := false ]
 				ifTrue: [ ret := #(master internationalconference nationalconference topconference internationaljournal nationaljournal shortpaper internationalworkshop nationalworkshop lectures book tooldemo notrefereed technicalreport report workshopproceedings tutorial insubmission presentation) includes: (entry at: #annote) rawValue ].
 			ret ]
-		named:  '(Inria) Must have field #aeres with value in: [master internationalconference nationalconference topconference internationaljournal nationaljournal shortpaper internationalworkshop nationalworkshop lectures book tooldemo notrefereed technicalreport report workshopproceedings tutorial insubmission presentation]';
+		named:  '(Inria) Must have field #aeres with value in: [master internationalconference nationalconference topconference internationaljournal nationaljournal shortpaper internationalworkshop nationalworkshop lectures book tooldemo notrefereed technicalreport report workshopproceedings tutorial insubmission presentation]'
+]
+
+{ #category : #'as yet unclassified' }
+CZChecker class >> inriaChecker [
+	| checker |
+	checker := self new.
+	
+	self 
+		keyShouldBe4let2dig1let: checker;
+		keyWordIncludesLsePub: checker;
+		aeresstatusAeres12: checker;
+		aeresField: checker;
+		annoteField: checker;
+		selectifOuiNon: checker;
+		laboDansHors: checker;
+		inriaRMOD: checker.
 		
-		addRule: [ :entry |
-			|ret |
-			ret := true.
-			(entry hasField: #selectif)
-				ifFalse: [ ret := false ]
-				ifTrue: [ ret := #(non oui) includes: (entry at: #selectif) rawValue ].
-			ret ]
-		named:  '(Inria) Must have field #selectif with value in: [oui non]';
-		
-		addRule: [ :entry |
-			|ret |
-			ret := true.
-			(entry hasField: #labo)
-				ifFalse: [ ret := false ]
-				ifTrue: [  
-					ret := #(dans hors) includes: (entry at: #labo) rawValue ].
-			ret ]
-		named:  '(Inria) Must have field #labo with value in: [dans hors]';
-		
+	^ checker
+]
+
+{ #category : #inriaRules }
+CZChecker class >> inriaRMOD: aCZChecker [
+	aCZChecker
 		addRule: [ :entry |
 			| ret |
 			ret := true.
@@ -126,6 +116,71 @@ CZChecker class >> inriaField [
 ]
 
 { #category : #'as yet unclassified' }
+CZChecker class >> isWrittenByRModMember: aCZEntry [
+	| authorField |
+	
+	(aCZEntry hasField: #author) ifFalse: [ ^ false ].
+	authorField := (aCZEntry at: #author) value.
+	^ #('*ducasse*' '*pollet*' '*laval*') anySatisfy: [ :each | each match: authorField ]
+]
+
+{ #category : #inriaRules }
+CZChecker class >> keyShouldBe4let2dig1let: aCZChecker [
+	aCZChecker 
+		addRule: [ :entry |
+			| ret |
+			ret := true.
+			(entry key size = 7)
+				ifFalse: [ ret := false ]
+				ifTrue: [ 
+					1 to: 4 do: [ :cpt | (entry key at: cpt) isLetter ifFalse: [ ret := false ] ].
+					5 to: 6 do: [ :cpt | (entry key at: cpt) isDigit ifFalse: [ ret := false] ].
+					(entry key at: 7) isLetter ifFalse: [ ret := false ] ].
+			ret ]
+		named: '(Inria) Key = 4 letter + 2 digit of year + a-z'
+]
+
+{ #category : #inriaRules }
+CZChecker class >> keyWordIncludesLsePub: aCZChecker [
+	aCZChecker
+		addRule: [ :entry |
+			| ret |
+			ret := true.
+			(entry hasField: #keyword)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := ('*lse-pub*' match: (entry at: #keyword) rawValue) ].
+			ret ]
+		named: '(Inria) Must have field #keyword including "lse-pub"'
+]
+
+{ #category : #inriaRules }
+CZChecker class >> laboDansHors: aCZChecker [
+	aCZChecker
+		addRule: [ :entry |
+			|ret |
+			ret := true.
+			(entry hasField: #labo)
+				ifFalse: [ ret := false ]
+				ifTrue: [  
+					ret := #(dans hors) includes: (entry at: #labo) rawValue ].
+			ret ]
+		named:  '(Inria) Must have field #labo with value in: [dans hors]'
+]
+
+{ #category : #inriaRules }
+CZChecker class >> selectifOuiNon: aCZChecker [
+	aCZChecker
+		addRule: [ :entry |
+			|ret |
+			ret := true.
+			(entry hasField: #selectif)
+				ifFalse: [ ret := false ]
+				ifTrue: [ ret := #(non oui) includes: (entry at: #selectif) rawValue ].
+			ret ]
+		named:  '(Inria) Must have field #selectif with value in: [oui non]'
+]
+
+{ #category : #interface }
 CZChecker >> addRule: aBlock named: aString [
 	| name |
 	(aString isEmptyOrNil)
@@ -156,7 +211,7 @@ CZChecker >> bibtexBlockToCZEntry: aString [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #interface }
 CZChecker >> checkBibset: aCZSet [
 	macros := OrderedCollection new.
 	macrosUsage := Dictionary new.
@@ -200,7 +255,7 @@ CZChecker >> checkEmptyField: aCZField [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #interface }
 CZChecker >> checkFile: aString [
 	macros := OrderedCollection new.
 	macrosUsage := Dictionary new.
@@ -320,17 +375,21 @@ CZChecker >> checks [
 					toBeInclude := false ] ].	
 		
 		"displays the errors and creates the collection with safe entries"
-		error ifTrue: [ 
-			errorStream 
-				nextPut: Character tab; 
-				nextPutAll: 'for :'; 
-				cr;
-				nextPutAll: "assoc value; "(CZBibtexOutputer new entryToBibtexString: entry);
-				cr.
+		error ifTrue: [
+			((toBeInclude not) | (warnings & toBeInclude))
+			ifTrue: [
+				errorStream 
+					nextPut: Character tab; 
+					nextPutAll: 'for :'; 
+					cr;
+					nextPutAll: "assoc value; "(CZBibtexOutputer new entryToBibtexString: entry);
+					cr.
+			].
 			toBeInclude 
-				ifTrue: [ 
-					newEntries add: entry.
-					errorStream nextPutAll: '(There are only warnings, the entry is not deleted)'; cr; cr ]
+				ifTrue: [
+					warnings ifTrue: [
+						newEntries add: entry.
+						errorStream nextPutAll: '(There are only warnings, the entry is not deleted)'; cr; cr ] ]
 				ifFalse: [
 					errorStream nextPutAll: '(There are errors, the entry is deleted)'; cr; cr ]
 		]
@@ -354,12 +413,6 @@ CZChecker >> checks [
 { #category : #'as yet unclassified' }
 CZChecker >> errorString [
 	^ errorStream contents trimRight ifEmpty: [ 'No error' ]
-]
-
-{ #category : #'as yet unclassified' }
-CZChecker >> fileToParse: aString [
-	fileContent := (FileStream readOnlyFileNamed: aString) contents copyReplaceAll: String lf with: String cr.
-	eof := false
 ]
 
 { #category : #'as yet unclassified' }
@@ -403,6 +456,7 @@ CZChecker >> initialize [
 	parser := CZBibParser.
 	rules := OrderedCollection new.
 	typeFieldsMatching := Dictionary new.
+	warnings := true.
 	self initializeTypeFieldsMatching.
 	self initializeBibtexTypes.
 
@@ -455,7 +509,7 @@ CZChecker >> initializeTypeFieldsMatching [
 					ifFalse: [ ret := false ] ].
 			ret ];
 		
-		 at: #incolletion put: [ :fields | | ret |
+		 at: #incollection put: [ :fields | | ret |
 			ret := true.
 			#(author title booktitle year) do: [ :each |
 				(fields includes: each)
@@ -509,4 +563,9 @@ CZChecker >> initializeTypeFieldsMatching [
 					(fields includes: each)
 						ifFalse: [ ret := false ] ].
 				ret ]
+]
+
+{ #category : #interface }
+CZChecker >> noWarnings [
+	warnings := false
 ]
