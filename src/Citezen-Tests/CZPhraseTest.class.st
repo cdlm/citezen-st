@@ -4,8 +4,7 @@ Class {
 	#instVars : [
 		'entry',
 		'phrase',
-		'renderer',
-		'acceptPhrase'
+		'renderer'
 	],
 	#category : #'Citezen-Tests'
 }
@@ -24,36 +23,7 @@ CZPhraseTest >> setUp [
 						(BibFieldRef field: #title).
 						(BibFieldRef field: #journal).
 						(BibFieldRef field: #year)}.
-	acceptPhrase := phrase add: (BibPhraseLibrary acceptanceRate); yourself.
 	renderer := BibTextRenderer new
-]
-
-{ #category : #testing }
-CZPhraseTest >> testAcceptance [
-	entry
-		at: #acceptnum put: '27';
-		at: #accepttotal put: '174'.
-	renderer render: acceptPhrase for: entry.
-	self assert: renderer contents = 'ATJ4Acceptance rate: 27/174 = 16%'.
-	
-]
-
-{ #category : #testing }
-CZPhraseTest >> testAcceptanceMissingNumber [
-	entry
-		at: #accepttotal put: '174'.
-	renderer render: acceptPhrase for: entry.
-	self assert: renderer contents = 'ATJ4'.
-	
-]
-
-{ #category : #testing }
-CZPhraseTest >> testAcceptanceMissingTotal [
-	entry
-		at: #acceptnum put: '27'.
-	renderer render: acceptPhrase for: entry.
-	self assert: renderer contents = 'ATJ4'.
-	
 ]
 
 { #category : #testing }
@@ -67,17 +37,6 @@ CZPhraseTest >> testAlternate [
 	entry at: #bar put: #whatever.
 	renderer render: phrase for: entry.
 	self assert: renderer contents = 'ATJ4ATJ4foo'
-]
-
-{ #category : #testing }
-CZPhraseTest >> testDeferredPhrase [
-	|here|
-	here := false.
-	phrase := BibDeferredPhrase block: [:curentry | here := true. (curentry at: #author) value,'XX'].
-	self deny: here.
-	renderer render: phrase for: entry.
-	self assert: here.
-	self assert: renderer contents = 'AXX'
 ]
 
 { #category : #testing }
