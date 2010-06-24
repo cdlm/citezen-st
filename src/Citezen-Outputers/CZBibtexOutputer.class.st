@@ -108,9 +108,9 @@ CZBibtexOutputer >> visitMacroReference: aCZMacroReference [
 CZBibtexOutputer >> visitPeople: aCZPeople [
 	aCZPeople expandOption: CZPeople displayNormalizedName.
 	outputStream 
-		nextPutAll: '{ ';
+		nextPut: ${;
 		nextPutAll: aCZPeople notExpanded;
-		nextPutAll: ' }'
+		nextPut: $}
 ]
 
 { #category : #'as yet unclassified' }
@@ -170,9 +170,9 @@ CZBibtexOutputer >> visitSet: aSet [
 { #category : #'as yet unclassified' }
 CZBibtexOutputer >> visitString: aCZString [
 	outputStream 
-		nextPutAll: '{ ';
+		nextPut: ${;
 		nextPutAll: aCZString notExpanded; 
-		nextPutAll: ' }'
+		nextPut: $}
 ]
 
 { #category : #'as yet unclassified' }
