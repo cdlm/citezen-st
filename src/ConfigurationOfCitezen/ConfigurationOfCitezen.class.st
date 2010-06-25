@@ -276,6 +276,12 @@ ConfigurationOfCitezen >> baseline04: spec [
 					loads: #('Core');
 					file: 'ConfigurationOfPier2';
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Grease Core' with: [
+				spec
+					className: 'ConfigurationOfGrease';
+					loads: #('Core' );
+					file: 'ConfigurationOfGrease';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
 			project: 'SmaCC' with: [
 				spec
 					className: 'ConfigurationOfSmaCC';
@@ -297,7 +303,7 @@ ConfigurationOfCitezen >> baseline04: spec [
 			
 		spec
 			group: 'default' with: #('NoWeb' 'Web');
-			group: 'NoWeb' with: #('Core' 'Tests');
+			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
 			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script' 'Citezen-Checking');
 			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
 			group: 'Tests' with: #('Citezen-Tests')
