@@ -287,6 +287,11 @@ ConfigurationOfCitezen >> baseline04: spec [
 					loads: #('Core' );
 					file: 'ConfigurationOfGrease';
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'OSProcess' with: [
+				spec
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
 			project: 'SmaCC' with: [
 				spec
 					className: 'ConfigurationOfSmaCC';
@@ -304,7 +309,7 @@ ConfigurationOfCitezen >> baseline04: spec [
 			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
 			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte') ];
 			package: 'Citezen-Checking' with: [ spec requires: 'Core' ];
-			package: 'Citezen-CommandLine' with: [ spec requires: 'Core' ];
+			package: 'Citezen-CommandLine' with: [ spec requires: #('Core' 'OSProcess') ];
 			package: 'Citezen-Tests' with: [ spec requires: 'Core' ].
 			
 		spec
