@@ -38,3 +38,8 @@ SmalltalkImage >> extractMinusParameters [
 
 	^ dict
 ]
+
+{ #category : #'*Citezen-CommandLine' }
+SmalltalkImage >> shouldQuit [
+	^ self extractMinusParameters includesKey: 'quit'
+]
