@@ -78,6 +78,11 @@ ConfigurationOfCitezen class >> load [
 ]
 
 { #category : #loading }
+ConfigurationOfCitezen class >> loadCommandLine [
+	((ConfigurationOfCitezen project) latestVersion: #development) load: #CommandLine
+]
+
+{ #category : #loading }
 ConfigurationOfCitezen class >> loadNoWeb [
 	((ConfigurationOfCitezen project) latestVersion: #development) load: #NoWeb
 ]
@@ -299,12 +304,14 @@ ConfigurationOfCitezen >> baseline04: spec [
 			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
 			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte') ];
 			package: 'Citezen-Checking' with: [ spec requires: 'Core' ];
+			package: 'Citezen-CommandLine' with: [ spec requires: 'Core' ];
 			package: 'Citezen-Tests' with: [ spec requires: 'Core' ].
 			
 		spec
 			group: 'default' with: #('NoWeb' 'Web');
 			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
 			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script' 'Citezen-Checking');
+			group: 'CommandLine' with: #('Core' 'Citezen-CommandLine');
 			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
 			group: 'Tests' with: #('Citezen-Tests')
 	]
