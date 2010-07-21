@@ -13,7 +13,7 @@ CZDisplayPattern new
 	endsWith: '<--'.
 	
 There are many messages to know:
-- defaultSeparator: aString -> this is the default separator used to separate the fields. By default, it's a space. If you want to change that, make sure this is the FIRST message you send to your display pattern, because it changes the default separator for the next fields, it doesn't change the previous separators (a space by default))
+- defaultSeparator: aString -> this is the default separator used to separate the fields. By default, it's a space. If you want to change that, make sure this is the FIRST message you send to your display pattern, because it changes the default separator for the next fields, it doesn't change the previous separators.
 - beginsWith: aString -> a string put before all entries (empty by default)
 - endsWith: aString -> a string put after all entries (empty by default)
 - field: aSymbol -> specifies a field to display; if the last thing you added to the display pattern was a field, the default separator is automatically inserted before added this new field.
@@ -28,15 +28,6 @@ CZDisplayPattern new
 	field: #author;
 	separator: ' ****** ';
 	field: #*
-	
-An example:
-
-If you use the example display pattern on :
-@misc{key,
-year = 2000,
-annote = {annote},
-title = {title} }
-It will create something like (depending on the outputer): -->2000;;;annote*****title<--
 "
 Class {
 	#name : #CZDisplayPattern,

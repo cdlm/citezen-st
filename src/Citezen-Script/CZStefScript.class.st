@@ -16,9 +16,9 @@ CZStefScript >> PhDAndHabilitation [
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: ((CZTypeQuery checks: [ :each | each = #phd]) 
-							OR: (CZFieldQuery 
-									named: #techreport 
+					AND: ((CZBibTypeQuery checks: [ :each | each = #phdthesis]) 
+							OR: (CZBibFieldQuery 
+									named: #annote 
 									checks: [ :value | '*habilitation*' match: value ])))
 ]
 
@@ -67,7 +67,7 @@ CZStefScript >> bookChapterScript [
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*articlebook*' match: value ]))
 ]
@@ -78,7 +78,7 @@ CZStefScript >> booksScript [
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZTypeQuery checks: [ :each | each = #book] ))
+					AND: (CZBibTypeQuery checks: [ :each | each = #book] ))
 ]
 
 { #category : #patterns }
@@ -103,18 +103,35 @@ CZStefScript >> conferenceDisplayPattern [
 { #category : #script }
 CZStefScript >> conferencesScript [
 	^ CZScript new
-		displayPattern: self articleDisplayPattern;
+		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
-								checks: [ :value | '*internationalconference*' match: value ]))
+								checks: [ :value | ('*internationalconference*' match: value) 
+													and: [('*topconference*' match: value) not ]]))
 ]
 
 { #category : #accessing }
 CZStefScript >> document [
 
 	^ document ifNil: [document := CZDocument new]
+]
+
+{ #category : #script }
+CZStefScript >> editorScript [
+	
+	^ CZScript new
+		displayPattern: self conferenceDisplayPattern;
+		reversedSortByField: #year;
+		query: ((CZBibFieldQuery named: #editor checks: [ :value | '*Ducasse*' match: value ])
+					"AND: (CZBibFieldQuery 
+								named: #annote 
+								checks: [ :value | '*editor*' match: value ])"
+					OR: (CZBibFieldQuery
+								named: #annot
+								checks: [:value | '*workshopproceedings*' match: value]			
+								))
 ]
 
 { #category : #public }
@@ -171,14 +188,10 @@ CZStefScript >> generateTypeOriented [
 		addElement: self booksScript;
 		addElement: (CZTitleElement new 
 							title: 'Editor'; htmlLevel: 4);
-		addElement: self booksScript;
+		addElement: self editorScript;
 		addElement: (CZTitleElement new 
 							title: 'International Workshops Refereed Articles'; htmlLevel: 4);
 		addElement: self internationalWorkshopScript;
-		addElement: (CZTitleElement new 
-							title: 'International Workshops Refereed Articles'; htmlLevel: 4);
-		addElement: self internationalWorkshopScript;
-		
 		addElement: (CZTitleElement new 
 							title: 'PhD and Habilitation'; htmlLevel: 4);
 		addElement: self PhDAndHabilitation;
@@ -197,7 +210,7 @@ CZStefScript >> generateTypeOriented [
 CZStefScript >> inout [
 
 	self document
-		inputFile: 'scg.bib';
+		inputFile: 'all.bib';
 		outputFile: 'stef.html'.
 ]
 
@@ -212,10 +225,10 @@ CZStefScript >> inoutYear [
 { #category : #script }
 CZStefScript >> internationalWorkshopScript [
 	^ CZScript new
-		displayPattern: self articleDisplayPattern;
+		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*internationalworkshop*' match: value ]))
 ]
@@ -223,10 +236,10 @@ CZStefScript >> internationalWorkshopScript [
 { #category : #script }
 CZStefScript >> invitedScript [
 	^ CZScript new
-		displayPattern: self articleDisplayPattern;
+		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*invited*' match: value ]))
 ]
@@ -237,7 +250,7 @@ CZStefScript >> journalsScript [
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*internationaljournal*' match: value ]))
 ]
@@ -251,10 +264,10 @@ CZStefScript >> metadata [
 { #category : #script }
 CZStefScript >> nationalConferencesScript [
 	^ CZScript new
-		displayPattern: self articleDisplayPattern;
+		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | 'nationalconference*' match: value ]))
 ]
@@ -265,14 +278,22 @@ CZStefScript >> nationalJournalsScript [
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
-								checks: [ :value | '*nationaljournal*' match: value ]))
+								checks: [ :value | ('*nationaljournal*' match: value) and: [('*internationaljournal*' match: value) not] ]))
 ]
 
 { #category : #queries }
 CZStefScript >> onlyStefAuthor [
 	^ CZBibFieldQuery named: #author checks: [ :value | '*Ducasse*' match: value ]
+]
+
+{ #category : #todo }
+CZStefScript >> todo [
+	^ '
+		- editor does not well
+		
+		'
 ]
 
 { #category : #script }
@@ -281,7 +302,7 @@ CZStefScript >> toolDemosScript [
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*tooldemo*' match: value ]))
 ]
@@ -289,10 +310,10 @@ CZStefScript >> toolDemosScript [
 { #category : #script }
 CZStefScript >> topConferencesScript [
 	^ CZScript new
-		displayPattern: self articleDisplayPattern;
+		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*topconference*' match: value ]))
 ]
@@ -300,10 +321,10 @@ CZStefScript >> topConferencesScript [
 { #category : #script }
 CZStefScript >> vulgarisationsScript [
 	^ CZScript new
-		displayPattern: self articleDisplayPattern;
+		displayPattern: self allDisplayPattern;
 		reversedSortByField: #year;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*vulgarisation*' match: value ]))
 ]
@@ -315,7 +336,7 @@ CZStefScript >> yearScript: aYear [
 		displayPattern: self allDisplayPattern;
 		sortByField: #author;
 		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
+					AND: (CZBibFieldQuery 
 								named: #year 
 								checks: [ :value | value asInteger = aYear ]))
 ]

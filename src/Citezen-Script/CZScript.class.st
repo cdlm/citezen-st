@@ -1,10 +1,4 @@
 "
-A CZScript represents a script, which is a part of a CZDocument. In a script, you can filter the entries, sort them, choose how to display them (if the export format allows it).
-So you should create a CZScript, you can give it a CZQuery (filter the entries), a CZDisplayPattern (choose the fields and the separators bewteen these field for each entry), ...
-Then, you should add this script with CZDocument>>addElement: in a CZDocument.
-
------
-
 Here is an example of the creation of a script: 
 
 CZScript new 
@@ -16,14 +10,15 @@ CZScript new
 	sortByField: #year;
 	sortByKey.
 
+(aCZDisplayPattern is an instance of CZDisplayPattern ; read its class comment).
 
 All messages in the interface protocol can be used to create your script: 
-- blackList: aList -> a list of entry keys ; these entries will not be in the output file (by default, this list is empty)
-- displayOrder: aList -> a list of entry types which give the order to display the entries. If no order is specified, the entries will be displayed in alphabetical order of their type. You can put a star (#*) in the list as a wildcard which means ""put here all types which are not in the list"". In the example below, the displayOrder is #(* misc): it means that all will be displayed in alphabetical order, except for the misc entries, which are at the end (the default displayOrder is #(*))
-- displayPattern: aCZDisplayPattern -> read CZDisplayPattern class comment (the default displayPattern make that all the fields are displayed separated by a space)
-- fieldsToRemove: aList -> don't display the fields specified in the collection (by default, this list is empty)
-- query: aQuery -> a query that the entries should respect. Take a look at the Citezen-Query package (by default, there is no query)
-- sortByKey and reversedSortByKey, sortByType and reversedSortByType, and sortByField: aSymbol and reversedSortByField: aSymbol, add a sort option. The order is important: in the example, the entries will be sorted by the value of their fields #year, and then,  all the entries which have the same year are sorted by the value of their keys. A little tip: don't add any sort option after sortByKey because keys are unique, so no other sort option can be used after it (by default, there is no sort option)
+- blackList: aList -> a list of entry keys ; these entries will not be in the output file
+- displayOrder: aList -> a list of entry types which give the order to display the entries. If no order is specified, the entries will be displayed in alphabetical order of their type. You can put a star (#*) in the list as a wildcard which means ""put here all types which are not in the list"". In the example below, the displayOrder is #(* misc): it means that all will be displayed in alphabetical order, except for the misc entries, which are at the end.
+- displayPattern: aCZDisplayPattern -> read CZDisplayPattern class comment.
+- fieldsToRemove: aList -> don't display the fields specified in the collection
+- query: aQuery -> a query that the entries should respect. Take a look at the Citezen-Query package.
+- sortByKey and reversedSortByKey, sortByType and reversedSortByType, and sortByField: aSymbol and reversedSortByField: aSymbol, add a sort option. The order is important: in the example, the entries will be sorted by the value of their field #year, and then, for all the entries which have the same year, they are sorted by key. A little tip: don't add any sort option after sortByKey because keys are unique.
 "
 Class {
 	#name : #CZScript,
@@ -199,9 +194,10 @@ CZScript >> document: aCZDocument [
 
 { #category : #interface }
 CZScript >> fieldsToRemove: aList [
-	(aList isEmptyOrNil)
-		ifTrue: [ fieldsToRemove := #() ]
-		ifFalse: [fieldsToRemove := aList collect: [ :each | each asLowercase asSymbol ] ]
+	
+	fieldsToRemove :=	(aList isEmptyOrNil)
+							ifTrue: [  #() ]
+							ifFalse: [aList collect: [ :each | each asLowercase asSymbol ] ]
 ]
 
 { #category : #private }
@@ -217,73 +213,64 @@ CZScript >> generate [
 		removeEntries;
 		filter;
 		sort;
-		generateSeparatorsAndFieldsCollection
+		generateGeneratingCollection
 ]
 
 { #category : #private }
-CZScript >> generateSeparatorsAndFieldsCollection [
-	| separators fields entryFieldsKeys |
+CZScript >> generateGeneratingCollection [
+	| separators fieldsTmp fieldTmp fields index hasWildcard fieldKeys fieldsToDisplay cpt |
 		
 	generatingCollection := OrderedCollection new.
+	hasWildcard := displayPattern fields includes: #*.
+	fieldsTmp := displayPattern fields.
 	
 	bibset entries do: [ :entry | 
 		fields := OrderedCollection new.
 		separators := OrderedCollection new.
-
-		entryFieldsKeys := entry fields 
+		fieldKeys := entry fields reject: [ :each | fieldsToRemove includes: each key ].
+		fieldKeys := entry fields 
 			collect: [ :each |
 				(fieldsToRemove includes: each key)
 					ifTrue: [ nil ]
 					ifFalse: [ each key ] ]
 			thenSelect: [ :each | each isNil not ].
 		
-		separators add: displayPattern begin.		
-		(displayPattern fields includes: #* )
-			ifFalse: [ self generateSeparatorsAndFieldsWithoutWildcardEntryFieldsKey: entryFieldsKeys fields: fields separators: separators ]
-			ifTrue: [ self generateSeparatorsAndFieldsWithWildcardEntryFieldsKey: entryFieldsKeys fields: fields separators: separators ].
+		separators add: 	displayPattern begin.		
+		hasWildcard 
+			ifFalse: [
+				cpt := 1.
+				displayPattern fields do: [ :each | 
+					(fieldKeys includes: each)
+						ifTrue: [
+							fields add: each.
+							separators add: (displayPattern separators at: cpt ifAbsent: displayPattern defaultSeparator) ].
+					cpt := cpt +1 
+				]
+			]
+			ifTrue: [
+				fieldTmp := fieldsTmp at: (index := 1).
+				
+				[fieldTmp = #*] whileFalse: [ 
+					(fieldKeys includes: fieldTmp) ifTrue: [
+						fields add: fieldTmp.
+						separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ]. 
+					fieldTmp := fieldsTmp at: (index := index + 1) ].
+
+				fieldKeys do: [ :each | 
+					(fieldsTmp includes: each) ifFalse: [
+						fields add: each.
+						separators add: displayPattern defaultSeparator ] ].
+				separators removeLast.
+				index := index + 1.
+				
+				index to: fieldsTmp size do: [ :each | 
+					(fieldKeys includes: (fieldsTmp at: each)) ifTrue: [
+						fields add: (fieldsTmp at: each).
+						separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ] ].
+			].
 		separators add: displayPattern end.
-		
 		generatingCollection add: entry -> (fields -> separators) ].
 
-]
-
-{ #category : #private }
-CZScript >> generateSeparatorsAndFieldsWithWildcardEntryFieldsKey: entryFieldsKey fields: fields separators: separators [
-	| cpt  index fieldTmp fieldsTmp |
-	
-	fieldsTmp := displayPattern fields.
-	fieldTmp := fieldsTmp at: (index := 1).
-				
-	[fieldTmp = #*] whileFalse: [ 
-		(entryFieldsKey includes: fieldTmp) ifTrue: [
-			fields add: fieldTmp.
-			separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ]. 
-		fieldTmp := fieldsTmp at: (index := index + 1) ].
-
-	entryFieldsKey do: [ :each | 
-		(fieldsTmp includes: each) ifFalse: [
-			fields add: each.
-			separators add: displayPattern defaultSeparator ] ].
-	separators removeLast.
-	index := index + 1.
-				
-	index to: fieldsTmp size do: [ :each | 
-		(entryFieldsKey includes: (fieldsTmp at: each)) ifTrue: [
-			fields add: (fieldsTmp at: each).
-			separators add: (displayPattern separators at: index ifAbsent: displayPattern defaultSeparator ) ] ].
-]
-
-{ #category : #private }
-CZScript >> generateSeparatorsAndFieldsWithoutWildcardEntryFieldsKey: entryFieldsKey fields: fields separators: separators [
-	| cpt |
-	
-	cpt := 1.
-	displayPattern fields do: [ :each | 
-		(entryFieldsKey includes: each)
-		ifTrue: [
-			fields add: each.
-			separators add: (displayPattern separators at: cpt ifAbsent: displayPattern defaultSeparator) ].
-		cpt := cpt +1 ]
 ]
 
 { #category : #private }
