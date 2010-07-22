@@ -10,7 +10,7 @@ Class {
 	#category : #'Citezen-Query'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZNotQuery >> field: aSymbol [
 	query field: aSymbol 
 ]

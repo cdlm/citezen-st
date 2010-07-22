@@ -30,12 +30,12 @@ CZEntryQuery class >> checks: aBlock [
 	^ self new block: aBlock 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZEntryQuery >> block: aBlock [
 	block := aBlock 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZEntryQuery >> value: aValue [
 	block ifNil: [ ^ true ].
 	(aValue = '') ifTrue: [ ^ false ].

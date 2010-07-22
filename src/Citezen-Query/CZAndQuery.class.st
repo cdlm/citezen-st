@@ -11,7 +11,7 @@ Class {
 	#category : #'Citezen-Query'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing-private' }
 CZAndQuery >> field: aSymbol [
 	leftAnd field: aSymbol.
 	rightAnd field: aSymbol 

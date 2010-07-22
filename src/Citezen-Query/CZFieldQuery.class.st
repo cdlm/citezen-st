@@ -45,12 +45,12 @@ CZFieldQuery class >> named: aSymbol checks: aBlock [
 	^ (self checks: aBlock) field: aSymbol 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #value }
 CZFieldQuery >> field: aSymbol [
 	field := aSymbol 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #value }
 CZFieldQuery >> value: aCZEntry [
 	^ super value: (aCZEntry at: field) rawValue 
 ]

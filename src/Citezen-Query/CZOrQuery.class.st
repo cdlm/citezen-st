@@ -11,7 +11,7 @@ Class {
 	#category : #'Citezen-Query'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZOrQuery >> field: aSymbol [
 	leftOr field: aSymbol.
 	rightOr field: aSymbol 

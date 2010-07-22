@@ -23,7 +23,7 @@ Class {
 	#category : #'Citezen-Query'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #value }
 CZTypeQuery >> value: aCZEntry [
 	^ super value: aCZEntry type
 ]
