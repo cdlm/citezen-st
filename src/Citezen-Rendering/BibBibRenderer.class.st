@@ -6,13 +6,13 @@ Class {
 
 { #category : #rendering }
 BibBibRenderer >> beginEntry: anEntry [
-	self text: '@' , anEntry type , '(' , anEntry key ,',
+	self text: '@' , anEntry type , '{' , anEntry key ,',
 '
 ]
 
 { #category : #rendering }
 BibBibRenderer >> endEntry: anEntry [
-	self text: ')'.
+	self text: '}'.
 	super endEntry: anEntry
 ]
 
