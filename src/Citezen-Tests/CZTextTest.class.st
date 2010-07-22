@@ -14,7 +14,7 @@ CZTextTest >> testArticle [
 	"self debug: #testArticle"
 
 	super testArticle.
-	self assert: result = 'A. T. In J, 4.
+	self assert: result = 'St\''ephane Ducasse and Damien Pollet. Fingerprints. In Journal of Information System, 2010.
 
 '
 ]
@@ -22,9 +22,9 @@ CZTextTest >> testArticle [
 { #category : #'as yet unclassified' }
 CZTextTest >> testSeveral [
 	super testSeveral.
-	self assert: result = 'A. T. In J, 4.
+	self assert: result = 'St\''ephane Ducasse and Damien Pollet. Fingerprints. In Journal of Information System, 2010.
 
-A. T. In J, 4.
+St\''ephane Ducasse and Damien Pollet. Fingerprints. In Journal of Information System, 2010.
 
-'
+' 
 ]

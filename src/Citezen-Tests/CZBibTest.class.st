@@ -12,12 +12,12 @@ CZBibTest >> rendererClass [
 { #category : #testing }
 CZBibTest >> testArticle [
 	super testArticle.
-	self assert: result = '@article(foobar,
-author = {A},
-title = {T},
-journal = {J},
-year = 4
-)
+	self assert: result = '@article{Duca10a,
+author = {St\''ephane Ducasse and Damien Pollet},
+title = {Fingerprints},
+journal = {Journal of Information System},
+year = 2010
+}
 
 '
 ]
@@ -25,19 +25,19 @@ year = 4
 { #category : #testing }
 CZBibTest >> testSeveral [
 	super testSeveral.
-	self assert: result = '@article(foobar,
-author = {A},
-title = {T},
-journal = {J},
-year = 4
-)
+	self assert: result = '@article{Duca10a,
+author = {St\''ephane Ducasse and Damien Pollet},
+title = {Fingerprints},
+journal = {Journal of Information System},
+year = 2010
+}
 
-@article(foobar,
-author = {A},
-title = {T},
-journal = {J},
-year = 4
-)
+@article{Duca10a,
+author = {Ducasse, St\''ephane  and Pollet, Damien},
+title = {Fingerprints},
+journal = {Journal of Information System},
+year = 2010
+}
 
-'
+' 
 ]
