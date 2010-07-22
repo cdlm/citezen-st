@@ -24,12 +24,12 @@ CZQuery >> AND: aQuery [
 
 { #category : #public }
 CZQuery >> NOT [
-	^ CZBibNot new query: self
+	^ CZNotQuery new query: self
 ]
 
 { #category : #public }
 CZQuery >> OR: aQuery [
-	^ (CZBibOr new)
+	^ (CZOrQuery new)
 		leftOr: self;
 		rightOr: aQuery;
 		yourself

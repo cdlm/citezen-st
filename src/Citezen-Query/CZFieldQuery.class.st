@@ -37,7 +37,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 CZFieldQuery class >> existingFieldNamed: aSymbol [
-	^ (CZBibEntryQuery checks: [ :entry | entry hasField: aSymbol ])
+	^ (CZEntryQuery checks: [ :entry | entry hasField: aSymbol ])
 ]
 
 { #category : #'as yet unclassified' }
