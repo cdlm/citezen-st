@@ -333,7 +333,7 @@ CZScriptTest >> testWithDisplayPattern [
 CZScriptTest >> testWithQuery [
 	| generation |
 	
-	document addElement: (CZScript new query: (CZBibFieldQuery named: #year checks: [ :each | each = 2001])).
+	document addElement: (CZScript new query: (CZFieldQuery named: #year checks: [ :each | each = 2001])).
 	generation := document generate.
 
 	self assert: generation = 

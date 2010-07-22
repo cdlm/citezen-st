@@ -223,7 +223,7 @@ CZDocumentTest >> testHtmlHeaderAndFooter [
 	| document |
 	document := 
 		CZDocument new 
-			addElement: (CZScript new query: (CZBibKeyQuery checks: [ :key | key = 'key1' ]));
+			addElement: (CZScript new query: (CZKeyQuery checks: [ :key | key = 'key1' ]));
 			bibsetInput: bibset;
 			exportAsHtml;
 			withDoubles. "by default, the option is set to withDoubles, this line can be removed"
@@ -248,7 +248,7 @@ CZDocumentTest >> testHtmlHeaderAndFooter [
 
 	document := 
 		CZDocument new 
-			addElement: (CZScript new query: (CZBibKeyQuery checks: [ :key | key = 'key1' ]));
+			addElement: (CZScript new query: (CZKeyQuery checks: [ :key | key = 'key1' ]));
 			bibsetInput: bibset;
 			exportAsHtml;
 			header: '<html><head><title>Title</title></head><body>
@@ -269,7 +269,7 @@ CZDocumentTest >> testHtmlHeaderAndFooter [
 
 	document := 
 		CZDocument new 
-			addElement: (CZScript new query: (CZBibKeyQuery checks: [ :key | key = 'key1' ]));
+			addElement: (CZScript new query: (CZKeyQuery checks: [ :key | key = 'key1' ]));
 			bibsetInput: bibset;
 			exportAsHtml;
 			withoutHeaderAndFooter.
@@ -285,7 +285,7 @@ CZDocumentTest >> testHtmlList [
 	| document |
 	document := 
 		CZDocument new 
-			addElement: (CZScript new query: (CZBibKeyQuery checks: [ :key | key = 'key1' ]));
+			addElement: (CZScript new query: (CZKeyQuery checks: [ :key | key = 'key1' ]));
 			bibsetInput: bibset;
 			withoutHeaderAndFooter;
 			exportAsHtml;
@@ -298,7 +298,7 @@ CZDocumentTest >> testHtmlList [
 
 	document := 
 		CZDocument new 
-			addElement: (CZScript new query: (CZBibKeyQuery checks: [ :key | key = 'key1' ]));
+			addElement: (CZScript new query: (CZKeyQuery checks: [ :key | key = 'key1' ]));
 			bibsetInput: bibset;
 			withoutHeaderAndFooter;
 			exportAsHtml;
@@ -315,8 +315,8 @@ CZDocumentTest >> testHtmlRestartOrderedListIndex [
 	| document |
 	document := 
 		CZDocument new 
-			addElement: (CZScript new query: (CZBibFieldQuery named: #year checks: [ :year | year = 2000 ]));
-			addElement: (CZScript new query: (CZBibFieldQuery existingFieldNamed: #note));
+			addElement: (CZScript new query: (CZFieldQuery named: #year checks: [ :year | year = 2000 ]));
+			addElement: (CZScript new query: (CZFieldQuery existingFieldNamed: #note));
 			bibsetInput: bibset;
 			withoutHeaderAndFooter;
 			withDoubles;
@@ -337,8 +337,8 @@ CZDocumentTest >> testHtmlRestartOrderedListIndex [
 
 	document := 
 		CZDocument new 
-			addElement: (CZScript new query: (CZBibFieldQuery named: #year checks: [ :year | year = 2000 ]));
-			addElement: (CZScript new query: (CZBibFieldQuery existingFieldNamed: #note));
+			addElement: (CZScript new query: (CZFieldQuery named: #year checks: [ :year | year = 2000 ]));
+			addElement: (CZScript new query: (CZFieldQuery existingFieldNamed: #note));
 			bibsetInput: bibset;
 			withoutHeaderAndFooter;
 			withDoubles;
@@ -375,7 +375,7 @@ CZDocumentTest >> testOrderedList [
 	| generation |
 	generation := 
 		CZDocument new 
-			addElement: (CZScript new query: (CZBibKeyQuery checks: [ :key | key = 'key1' ]));
+			addElement: (CZScript new query: (CZKeyQuery checks: [ :key | key = 'key1' ]));
 			bibsetInput: bibset;
 			withoutHeaderAndFooter;
 			exportAsHtml;
