@@ -1,5 +1,7 @@
 "
 Some useful scripts, on class side.
+
+Not sure that we will use that for now we should learn and see. 
 "
 Class {
 	#name : #CZUsefullScripts,

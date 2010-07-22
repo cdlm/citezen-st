@@ -1,3 +1,6 @@
+"
+Note that this is not sure that we will use that class.
+"
 Class {
 	#name : #CZPersonalScript,
 	#superclass : #Object,
