@@ -10,7 +10,7 @@ Class {
 	#category : #'Citezen-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #custom }
 CZOutputterTest class >> isAbstract [
 
 	^ self == CZOutputterTest
