@@ -11,8 +11,8 @@ Class {
 
 { #category : #'as yet unclassified' }
 CZUsefullScripts class >> notWrittenBy: aString [ 
-	| script |
 	
+	| script |
 	script := (CZScript new).
 	(aString = '')
 		ifFalse: [

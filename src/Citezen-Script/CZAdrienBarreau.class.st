@@ -54,7 +54,7 @@ CZAdrienBarreau class >> me [
 
 { #category : #'as yet unclassified' }
 CZAdrienBarreau class >> myquery [
-	^
-	(CZBibFieldQuery named: #journal checks: [:each | each ~= '']) AND: 
-	(CZBibFieldQuery named: #author checks: [:each | '*ducasse*' match: each])
+
+	^(CZFieldQuery named: #journal checks: [:each | each ~= '']) AND: 
+		(CZFieldQuery named: #author checks: [:each | '*ducasse*' match: each])
 ]
