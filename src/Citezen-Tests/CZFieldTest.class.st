@@ -33,8 +33,8 @@ CZFieldTest >> testIsUndefined [
 
 { #category : #testsForInstances }
 CZFieldTest >> testSetKeyValue [
-	| aField |
 	
+	| aField |
 	aField := CZField new.
 	aField setKey: #key rawValue: 'a key'.
 	self assert: (aField key = #key).
