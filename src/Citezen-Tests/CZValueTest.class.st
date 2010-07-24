@@ -19,8 +19,8 @@ CZValueTest >> setUp [
 
 { #category : #'as yet unclassified' }
 CZValueTest >> testValues [
-	self assert: (entry at:#author) valueClass = CZPeople.
-	self assert: (entry at:#title) valueClass = CZString.
-	self assert: (entry at:#year) valueClass = CZInteger.
+	self assert: entry author valueClass = CZPeople.
+	self assert: entry title valueClass = CZString.
+	self assert: entry year valueClass = CZInteger.
 	
 ]

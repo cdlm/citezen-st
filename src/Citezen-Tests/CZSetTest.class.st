@@ -46,7 +46,7 @@ CZSetTest >> testReferencedMacros [
 CZSetTest >> testRemoveUpdatesScope [
 	| otherSet entry |
 	otherSet := CZSet new.
-	entry := (CZEntry type: #article) key: #toBeMovedToOtherSet.
+	entry := (CZEntry type: CZEntry article) key: #toBeMovedToOtherSet.
 	bibset addEntry: entry.
 	entry moveToBibSet: otherSet.
 	self deny: (bibset entries includes: entry).
@@ -68,7 +68,7 @@ CZSetTest >> testScope [
 { #category : #testing }
 CZSetTest >> testSortedBy [
 	bibset sortByDateReverse.
-	bibset entries overlappingPairsDo: [:x :y | self assert: (x at: #year) value >= (y at: #year) value].
+	bibset entries overlappingPairsDo: [:x :y | self assert: (x year) value >= (y year) value].
 	self assert: bibset entries last key = #meuh
 ]
 

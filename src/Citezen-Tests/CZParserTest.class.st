@@ -86,9 +86,9 @@ CZParserTest >> testEntry [
 '.
 	self assert: bibset macros isEmpty.
 	entry := bibset entryAt: #foobar.
-	self assert: entry type = #article.
+	self assert: entry type =  CZEntry article.
 	self assert: entry size = 4.
-	self assert: (entry at: #title) value = 'Hello world'
+	self assert: (entry title) value = 'Hello world'
 ]
 
 { #category : #tests }

@@ -13,7 +13,7 @@ Class {
 
 { #category : #setup }
 CZPhraseLibraryTest >> setUp [
-	entry := (CZEntry type: #article)
+	entry := (CZEntry type:  CZEntry article)
 				key: #foobar;
 				at: #url put: 'U';
 				at: #keywords put: 'K';

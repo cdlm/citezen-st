@@ -22,14 +22,14 @@ CZRendererTest >> rendererClass [
 
 { #category : #setup }
 CZRendererTest >> setUp [
-	entry := (CZEntry type: #article)
+	entry := (CZEntry type: CZEntry article)
 				key: #Duca10a;
 				at: #author put: 'St\''ephane Ducasse and Damien Pollet';
 				at: #title put: 'Fingerprints';
 				at: #journal put: 'Journal of Information System';
 				at: #year put: '2010';
 				yourself.
-	entry2 := (CZEntry type: #inproceedings)
+	entry2 := (CZEntry type: CZEntry inproceedings)
 				key: #Abde08a;
 				at: #author put: 'Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen';
 				at: #title put: 'Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships';

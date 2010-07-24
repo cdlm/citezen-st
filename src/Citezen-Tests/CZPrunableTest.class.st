@@ -12,7 +12,7 @@ Class {
 
 { #category : #setup }
 CZPrunableTest >> setUp [
-	entry := (CZEntry type: #article)
+	entry := (CZEntry type: CZEntry article)
 				key: #foobar;
 				at: #author put: 'A';
 				at: #title put: 'T';
