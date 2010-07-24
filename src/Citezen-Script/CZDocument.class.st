@@ -219,7 +219,7 @@ CZDocument >> generate [
 	outputer setAuthorDisplayOption: authorDisplay.
 	
 	outputer getOutputFor: self.
-	(outputFile isNil)
+	outputFile isNil
 		ifFalse: [ Transcript cr; show: '(Citezen >) ', outputFile, ' was successfully generated' ]
 		ifTrue: [ Transcript cr; show: '(Citezen >) end of generation' ].
 	^ self getLastOutput

@@ -113,13 +113,13 @@ CZScript >> addSort: aSymbol reversed: aBoolean [
 			ifFalse: [ sortCollection add: (aSymbol -> aBoolean) ] ]
 ]
 
-{ #category : #private }
+{ #category : #accessing }
 CZScript >> bibsetInput: aCZSet [
 	bibset := aCZSet.
 	aCZSet scope: CZSet standardDefinitions 
 ]
 
-{ #category : #interface }
+{ #category : #accessing }
 CZScript >> blackList: aList [
 	blackList := (aList ifNil: [#()])
 ]
@@ -292,7 +292,7 @@ CZScript >> generatingCollection [
 	^ generatingCollection 
 ]
 
-{ #category : #initialization }
+{ #category : #initialize }
 CZScript >> initialize [
 	super initialize.
 	
