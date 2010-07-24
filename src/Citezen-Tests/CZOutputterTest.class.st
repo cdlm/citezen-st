@@ -1,5 +1,5 @@
 Class {
-	#name : #CZRendererTest,
+	#name : #CZOutputterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'entry',
@@ -10,18 +10,13 @@ Class {
 	#category : #'Citezen-Tests'
 }
 
-{ #category : #testing }
-CZRendererTest class >> isAbstract [
-	^ self == CZRendererTest
-]
-
-{ #category : #setup }
-CZRendererTest >> rendererClass [
+{ #category : #hooks }
+CZOutputterTest >> rendererClass [
 	self shouldBeImplemented
 ]
 
 { #category : #setup }
-CZRendererTest >> setUp [
+CZOutputterTest >> setUp [
 	entry := (CZEntry type: #article)
 				key: #Duca10a;
 				at: #author put: 'St\''ephane Ducasse and Damien Pollet';
@@ -55,21 +50,20 @@ CZRendererTest >> setUp [
 ]
 
 { #category : #testing }
-CZRendererTest >> testArticle [
-	renderer render: entry.
-	result := renderer contents.
-]
-
-{ #category : #testing }
-CZRendererTest >> testLongArticle [
-	renderer render: entry2.
-	result := renderer contents.
+CZOutputterTest >> testArticle [
+	result := renderer entryToString: entry.
 	
 ]
 
 { #category : #testing }
-CZRendererTest >> testSeveral [
-	renderer render: entry.
-	renderer render: entry2.
-	result := renderer contents.
+CZOutputterTest >> testLongArticle [
+	result := renderer entryToString: entry2.
+	
+]
+
+{ #category : #testing }
+CZOutputterTest >> testSeveral [
+
+	result := renderer entriesToString: { entry . entry2}.
+	
 ]
