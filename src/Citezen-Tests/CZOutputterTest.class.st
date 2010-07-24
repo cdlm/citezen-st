@@ -10,6 +10,12 @@ Class {
 	#category : #'Citezen-Tests'
 }
 
+{ #category : #'as yet unclassified' }
+CZOutputterTest class >> isAbstract [
+
+	^ self == CZOutputterTest
+]
+
 { #category : #hooks }
 CZOutputterTest >> rendererClass [
 	self shouldBeImplemented
