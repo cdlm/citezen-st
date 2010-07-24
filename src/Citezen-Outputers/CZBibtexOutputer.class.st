@@ -34,10 +34,8 @@ CZBibtexOutputer >> macroToBibtexString: aCZField [
 { #category : #visiting }
 CZBibtexOutputer >> visitComment: aCZCommentElement [
 	outputStream 
-		nextPutAll: '@comment { ';
+		nextPut: $#;
 		nextPutAll: aCZCommentElement comment;
-		nextPutAll: ' }';
-		cr;
 		cr
 ]
 
@@ -52,8 +50,7 @@ CZBibtexOutputer >> visitDocument: aCZDocument. [
 	aCZDocument originalBibset macros do: [ :each | 
 		outputStream nextPutAll: '@string{'.
 		each acceptVisitor: self.
-		outputStream nextPut: $}; cr; cr.
-	].
+		outputStream nextPut: $}; cr; cr.].
 
 	aCZDocument elements do: [ :each | each acceptVisitor: self ]
 	
@@ -156,8 +153,7 @@ CZBibtexOutputer >> visitSet: aSet [
 	aSet macros do: [ :each | 
 		outputStream nextPutAll: '@string {'.
 		each acceptVisitor: self.
-		outputStream nextPut: $}; cr; cr.
-		].
+		outputStream nextPut: $}; cr; cr.].
 	
 	aSet entries do: [ :each | 
 		outputStream nextPut: $@;
