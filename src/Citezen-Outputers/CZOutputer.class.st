@@ -1,6 +1,5 @@
 "
 CZOutputer is an abstract class (all the visit*: messages are self subclassResponsibility).
-
 It is a visitor, which can visit all the elements of a CZDocument.
 
 It defines 3 messages:
@@ -10,6 +9,10 @@ It defines 3 messages:
 
 Note that the document is responsible of filtering fields that should not be considered.
 
+I could be a subclass of CZBibVisitor and I should probably be migrated there.
+Now this is not clear. 
+
+Stef
 "
 Class {
 	#name : #CZOutputer,
@@ -34,12 +37,29 @@ CZOutputer class >> exporterEncoding [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+CZOutputer >> entriesToString: aCollection [
+	outputStream := String new writeStream.
+	aCollection do: [:each | 
+		self visitEntry: each] separatedBy: [outputStream cr].
+	outputStream close.
+	^ outputStream contents
+]
+
+{ #category : #accessing }
+CZOutputer >> entryToString: aCZEntry [
+	outputStream := String new writeStream.
+	self visitEntry: aCZEntry.
+	outputStream close.
+	^ outputStream contents
+]
+
+{ #category : #accessing }
 CZOutputer >> getLastOutput [
 	^ lastOutput 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZOutputer >> getOutputFor: aCZDocument [
 	(fileName isNil) 
 		ifTrue: [ outputStream := WriteStream on: String new ]
@@ -56,72 +76,72 @@ CZOutputer >> getOutputFor: aCZDocument [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZOutputer >> setAuthorDisplayOption: aSymbol [
 	authorDisplay := aSymbol
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZOutputer >> setOutputFile: aString [	
 	fileName := aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitComment: aCZCommentElement [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitCompositeValue: aCZCompositeValue [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitDocument: aCZDocument [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitEntry: anEntry [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitField: aField [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitInteger: aCZInteger [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitMacroReference: aCZMacroReference [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitPeople: aCZPeople [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitScript: aCZScript [
 	self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitSet: aSet [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitString: aCZString [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZOutputer >> visitTitle: aCZTitleElement [
 	self subclassResponsibility 
 ]

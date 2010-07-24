@@ -50,12 +50,15 @@ CZBibtexOutputer >> visitCompositeValue: aCZCompositeValue [
 { #category : #'as yet unclassified' }
 CZBibtexOutputer >> visitDocument: aCZDocument. [	
 	aCZDocument originalBibset macros do: [ :each | 
-		outputStream nextPutAll: '@string {'.
+		outputStream nextPutAll: '@string{'.
 		each acceptVisitor: self.
 		outputStream nextPut: $}; cr; cr.
 	].
 
 	aCZDocument elements do: [ :each | each acceptVisitor: self ]
+	
+
+
 ]
 
 { #category : #'as yet unclassified' }
