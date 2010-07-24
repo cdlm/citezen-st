@@ -380,7 +380,6 @@ CZChecker >> initializeBibtexTypes [
 CZChecker >> initializeTypeFieldsMatching [
 
 	typeFieldsMatching 
-	
 		at: #article put: [ :fields | | ret |
 			ret := true.
 			#(author title journal year) do: [ :each |
