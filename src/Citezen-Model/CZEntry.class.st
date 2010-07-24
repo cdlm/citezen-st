@@ -253,6 +253,90 @@ CZEntry >> initialize [
 	fields := OrderedCollection new
 ]
 
+{ #category : #'entry type testing' }
+CZEntry >> isArticle [
+
+	^ self type = self class article
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isBook [
+
+	^ self type = #book
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isBooklet [
+
+	^ self type = #booklet
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isConference [
+
+	^ self type = #conference
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isInBook [
+
+	^ self type = #inbook
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isInCollection [
+
+	^ self type = #inCollection
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isInProceedings [
+
+	^ self type = #inproceedings
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isManual [
+
+	^ self type = #manual
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isMastersThesis [
+
+	^ self type = #mastersthesis
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isMisc [
+
+	^ self type = #misc
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isPhDThesis [
+
+	^ self type = #phdthesis
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isProceedings [
+
+	^ self type = #proceedings
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isTechReport [
+
+	^ self type = #techreport
+]
+
+{ #category : #'entry type testing' }
+CZEntry >> isUnpublished [
+
+	^ self type = #unpublished
+]
+
 { #category : #accessing }
 CZEntry >> key [
 	^ key
@@ -350,6 +434,12 @@ CZEntry >> sortFields: aList [
 	^ fieldsInWilcard
 ]
 
+{ #category : #'predefined accessing' }
+CZEntry >> title [
+
+	^ self at: #title
+]
+
 { #category : #accessing }
 CZEntry >> type [
 	^ type
@@ -358,6 +448,12 @@ CZEntry >> type [
 { #category : #initialize }
 CZEntry >> type: aSymbol [
 	type := aSymbol
+]
+
+{ #category : #'predefined accessing' }
+CZEntry >> url [
+
+	^ self at: #url
 ]
 
 { #category : #'predefined accessing' }

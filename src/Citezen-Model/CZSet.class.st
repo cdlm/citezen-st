@@ -255,12 +255,12 @@ CZSet >> sortBy: aSortBlock [
 
 { #category : #'arranging - combining' }
 CZSet >> sortByAuthor [
-	self sortBy: [:x :y | (x at: #author) rawValue <= (y at: #author) rawValue]
+	self sortBy: [:x :y | (x author) rawValue <= (y author) rawValue]
 ]
 
 { #category : #'arranging - combining' }
 CZSet >> sortByDateReverse [
-	self sortBy: [:x :y | (x at: #year) value >= (y at: #year) value]
+	self sortBy: [:x :y | (x year) value >= (y year) value]
 ]
 
 { #category : #'initialize-release' }
