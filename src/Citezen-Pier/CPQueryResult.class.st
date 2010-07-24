@@ -82,27 +82,27 @@ CPQueryResult >> renderByCategoryOn: html [
 	extracted := papers extractSatisfying: [ :entry | entry containsKeyword: 'invited' ].
 	self renderSubList: extracted named: 'Invited Papers' on: html.
 
-	extracted := papers extractType: #book.
+	extracted := papers extractType: CZEntry book.
 	self renderSubList: extracted named: 'Books' on: html.
 
-	articles := papers extractType: #article.
+	articles := papers extractType: CZEntry article.
 	journalpapers := articles extractSatisfying: [ :entry | entry containsKeyword: 'internationaljournal' ].
 	self renderSubList: journalpapers named: 'Refereed Papers in International Journals' on: html.
 	self renderSubList: articles named: 'Other Articles' on: html.
 
-	inproceedings := papers extractType: #inproceedings.
+	inproceedings := papers extractType: CZEntry inproceedings.
 	conferencepapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalconference' ].
 	tooldemos := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'tooldemo' ].
 	self renderSubList: conferencepapers named: 'Refereed Papers in International Conferences' on: html.
 	self renderSubList: inproceedings named: 'Refereed Papers in International Workshops' on: html.
 
-	extracted := papers extractType: #incollection.
+	extracted := papers extractType: CZEntry incollection.
 	self renderSubList: extracted named: 'Book Chapters' on: html.
 
-	extracted := papers extractSatisfying:  [ :entry |  entry type = #mastersthesis or: [ entry type = #phdthesis ] ].
+	extracted := papers extractSatisfying:  [ :entry |  entry type = CZEntry mastersthesis or: [ entry type = CZEntry phdthesis ] ].
 	self renderSubList: extracted named: 'Theses' on: html.
 
-	extracted := papers extractType: #techreport.
+	extracted := papers extractType: CZEntry techreport.
 	self renderSubList: extracted named: 'Technical Reports' on: html.
 
 	" #misc # #booklet  #inbook #manual #unpublished"
