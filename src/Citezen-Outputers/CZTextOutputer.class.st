@@ -13,7 +13,7 @@ CZTextOutputer class >> exporterEncoding [
 	^ #text
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitComment: aCZCommentElement [
 	outputStream 
 		nextPutAll: '(',aCZCommentElement comment,')';
@@ -21,39 +21,39 @@ CZTextOutputer >> visitComment: aCZCommentElement [
 		cr
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitCompositeValue: aCZCompositeValue [
 	outputStream nextPutAll: aCZCompositeValue expanded 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitDocument: aCZDocument [	
 	CZAccentuateCharactersParser toAccentedCharTable.
 	aCZDocument elements do: [ :each | each acceptVisitor: self ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitField: aField [
 	aField dispatchVisitor: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitInteger: aCZInteger [
 	outputStream nextPutAll: aCZInteger notExpanded asString 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitMacroReference: aCZMacroReference [
 	outputStream nextPutAll: aCZMacroReference expanded 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitPeople: aCZPeople [
 	aCZPeople expandOption: authorDisplay.
 	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitScript: aCZScript [
 	| list beginList endList entry fields sep |
 	
@@ -75,12 +75,12 @@ CZTextOutputer >> visitScript: aCZScript [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitString: aCZString [
 	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZString notExpanded)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZTextOutputer >> visitTitle: aCZTitleElement [
 	outputStream 
 		nextPutAll: aCZTitleElement title;

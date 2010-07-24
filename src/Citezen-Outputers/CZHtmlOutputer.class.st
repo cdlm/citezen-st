@@ -13,13 +13,13 @@ CZHtmlOutputer class >> exporterEncoding [
 	^ #html
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZHtmlOutputer >> defaultFooter [
 	^ '</body>
 </html>'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZHtmlOutputer >> defaultHeader [
 	| title |
 	
@@ -39,7 +39,7 @@ CZHtmlOutputer >> defaultHeader [
 '
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitComment: aCZCommentElement [
 	outputStream 
 		nextPutAll: '<!-- ';
@@ -48,13 +48,13 @@ CZHtmlOutputer >> visitComment: aCZCommentElement [
 		cr
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitCompositeValue: aCZCompositeValue [
 	aCZCompositeValue do: 
 		[ :each | each acceptVisitor: self] separatedBy: [ outputStream nextPutAll: ' ' ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitDocument: aCZDocument [
 	CZAccentuateCharactersParser toHtmlTable.
 	
@@ -71,7 +71,7 @@ CZHtmlOutputer >> visitDocument: aCZDocument [
 			ifFalse: [ outputStream nextPutAll: self defaultFooter ] ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitEntry: anEntry [
 	| fields index sep|
 	index := 1.
@@ -86,7 +86,7 @@ CZHtmlOutputer >> visitEntry: anEntry [
 		outputStream nextPutAll: (sep at: (index := index + 1) ifAbsent: 'poh')].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitField: aField [
 	outputStream nextPutAll: '<span class="',aField key,'">'.
 	
@@ -102,23 +102,23 @@ CZHtmlOutputer >> visitField: aField [
 	outputStream nextPutAll: '</span>'.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitInteger: aCZInteger [
 	outputStream nextPutAll: aCZInteger notExpanded asString 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitMacroReference: aCZMacroReference [
 	outputStream nextPutAll: aCZMacroReference expanded 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitPeople: aCZPeople [
 	aCZPeople expandOption: authorDisplay.
 	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitScript: aCZScript [
 	| list beginList endList entry fields sep |
 	
@@ -151,7 +151,7 @@ CZHtmlOutputer >> visitScript: aCZScript [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitSet: aSet [	
 	lastEntryVisited := 0.
 	
@@ -172,12 +172,12 @@ CZHtmlOutputer >> visitSet: aSet [
 	outputStream nextPutAll: self footer.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitString: aCZString [
 	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZString notExpanded)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHtmlOutputer >> visitTitle: aCZTitleElement [
 	outputStream 
 		nextPutAll: '<h'; 
