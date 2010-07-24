@@ -242,6 +242,12 @@ CZSet >> setEntries: aCollection [
 	entries := aCollection
 ]
 
+{ #category : #accessing }
+CZSet >> size [
+
+	^ self entries size
+]
+
 { #category : #'arranging - combining' }
 CZSet >> sortBy: aSortBlock [
 	entries := entries asSortedCollection: aSortBlock

@@ -7,12 +7,12 @@ Class {
 	#category : #'Citezen-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZInteger class >> defaultValue [
 	^ self with: 0
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZInteger class >> fieldsOfThisFormat [
 	^ #(year number volume edition)
 ]

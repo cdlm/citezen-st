@@ -10,18 +10,18 @@ Class {
 	#category : #'Citezen-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZValue class >> defaultValue [
 	"Should be subclassResponsibility, but abused for undefined values"
 	^ self with: ''
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZValue class >> fieldsOfThisFormat [
 	^ #()
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 CZValue class >> with: aValue [
 	^ self new setValue: aValue
 ]

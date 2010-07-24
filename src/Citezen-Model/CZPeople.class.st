@@ -12,42 +12,60 @@ Class {
 	#category : #'Citezen-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZPeople class >> defaultValue [
 	^ self with: #()
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #customize }
 CZPeople class >> displayFullName [
 	^ #fullName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #customize }
 CZPeople class >> displayNormalizedName [
 	^ #normalizedName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #customize }
 CZPeople class >> displayShortenedName [
 	^ #shortenedName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZPeople class >> fieldsOfThisFormat [
 	^ #(author editor)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZPeople >> acceptVisitor: aVisitor [
 	aVisitor visitPeople: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'expand options' }
+CZPeople >> displayFullName [
+
+	self expandOption: self class displayFullName
+]
+
+{ #category : #'expand options' }
+CZPeople >> displayNormalizedName [
+
+	self expandOption: self class displayNormalizedName
+]
+
+{ #category : #'expand options' }
+CZPeople >> displayShortenedName [
+
+	self expandOption: self class displayShortenedName
+]
+
+{ #category : #private }
 CZPeople >> expandOption: aSymbol [
 	expandOption := aSymbol 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZPeople >> expanded [
 	people ifNil: [ people := CZAuthorParser parse: value ].
 	
@@ -56,7 +74,7 @@ CZPeople >> expanded [
 	^ self shortenedName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZPeople >> fullName [
 	| ret |
 	
@@ -77,14 +95,14 @@ CZPeople >> fullName [
 	^ ret contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialize }
 CZPeople >> initialize [
 	super initialize.
 	
 	expandOption := self class displayNormalizedName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZPeople >> normalizedName [
 	| ret |
 	
@@ -101,13 +119,13 @@ CZPeople >> normalizedName [
 	^ ret contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZPeople >> setValue: aValue [
 	super setValue: aValue.
 	people := nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZPeople >> shortenedName [
 	| ret |
 	

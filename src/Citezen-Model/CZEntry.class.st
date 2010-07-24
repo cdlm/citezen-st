@@ -222,17 +222,23 @@ CZEntry >> at: aSymbol put: aValue [
 				yourself)
 ]
 
+{ #category : #'predefined accessing' }
+CZEntry >> author [
+
+	^ self at: #author
+]
+
 { #category : #enumerating }
 CZEntry >> do: aBlock [
 	fields do: aBlock
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZEntry >> fields [
 	^ fields 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZEntry >> fields: aCollection [
 	fields := aCollection 
 ]
@@ -242,7 +248,7 @@ CZEntry >> hasField: aSymbol [
 	^ fields anySatisfy: [:each | each key = aSymbol]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialize }
 CZEntry >> initialize [
 	fields := OrderedCollection new
 ]
@@ -286,7 +292,7 @@ CZEntry >> size [
 	^ fields size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #enumerating }
 CZEntry >> sortFields: aList [
 	"Big method which do this :
 		- if aBoolean is true, the fields are sorted in three times :
@@ -349,7 +355,13 @@ CZEntry >> type [
 	^ type
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialize }
 CZEntry >> type: aSymbol [
 	type := aSymbol
+]
+
+{ #category : #'predefined accessing' }
+CZEntry >> year [
+
+	^ self at: #year
 ]

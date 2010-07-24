@@ -7,17 +7,17 @@ Class {
 	#category : #'Citezen-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZString class >> defaultValue [
 	^ self with: ''
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZString >> acceptVisitor: aVisitor [
 	aVisitor visitString: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZString >> expanded [
 	^ value asString reject: [ :each | each = ${ or: [ each = $} ] ]
 ]
