@@ -157,53 +157,25 @@ CZStefScript >> generateSortedByYear [
 CZStefScript >> generateTypeOriented [
 	"self new generateTypeOriented"
 	
-	self inout.
-	self document 
-		displayFullName ;
-		orderedList ;
-		doNotRestartOrderedListAtEachScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in International Journals'; htmlLevel: 4);
-		addElement: self journalsScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in Top Conferences'; htmlLevel: 4);
-		addElement: self topConferencesScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in French Journals'; htmlLevel: 4);					
-		addElement: self nationalJournalsScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in Conferences'; htmlLevel: 4);
-		addElement: self conferencesScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in National Conferences'; htmlLevel: 4);
-		addElement: self nationalConferencesScript;
-		addElement: (CZTitleElement new 
-							title: 'Invited Articles'; htmlLevel: 4);
-		addElement: self invitedScript;
-		addElement: (CZTitleElement new 
-							title: 'Book Chapter'; htmlLevel: 4);
-		addElement: self bookChapterScript;
-		addElement: (CZTitleElement new 
-							title: 'Books'; htmlLevel: 4);
-		addElement: self booksScript;
-		addElement: (CZTitleElement new 
-							title: 'Editor'; htmlLevel: 4);
-		addElement: self editorScript;
-		addElement: (CZTitleElement new 
-							title: 'International Workshops Refereed Articles'; htmlLevel: 4);
-		addElement: self internationalWorkshopScript;
-		addElement: (CZTitleElement new 
-							title: 'PhD and Habilitation'; htmlLevel: 4);
-		addElement: self PhDAndHabilitation;
-			addElement: (CZTitleElement new 
-							title: 'Tool Demo'; htmlLevel: 4);
-		addElement: self toolDemosScript ;
-			addElement: (CZTitleElement new 
-							title: 'Vulgarisation'; htmlLevel: 4);
-		addElement: self vulgarisationsScript.
-	self document exportAsHtml. 
+	self typeOriented.
 	self document generate.
+	self document entitiesAlreadyTreated.
 	^ self document
+]
+
+{ #category : #public }
+CZStefScript >> generateTypeOrientedAssociatedBibFile [
+	"self new generateTypeOrientedAssociatedBibFile"
+	
+	| newbib |
+	self typeOriented.
+	self document fillUpOriginalSet.
+	newbib := CZBibSetGatherer bibsetFrom: self document.
+	^ CZBibtexOutputer new 
+		setOutputFile: 'stef.bib';
+		initializeOutputStream; 
+		visitSet: newbib;
+		contents
 ]
 
 { #category : #'file parameter' }
@@ -308,6 +280,58 @@ CZStefScript >> topConferencesScript [
 					AND: (CZFieldQuery 
 								named: #annote 
 								checks: [ :value | '*topconference*' match: value ]))
+]
+
+{ #category : #public }
+CZStefScript >> typeOriented [
+	"self new generateTypeOriented"
+	
+	self inout.
+	self document 
+		displayFullName ;
+		orderedList ;
+		doNotRestartOrderedListAtEachScript;
+		addElement: (CZTitleElement new 
+							title: 'Refereed Articles in International Journals'; htmlLevel: 4);
+		addElement: self journalsScript;
+		addElement: (CZTitleElement new 
+							title: 'Refereed Articles in Top Conferences'; htmlLevel: 4);
+		addElement: self topConferencesScript;
+		addElement: (CZTitleElement new 
+							title: 'Refereed Articles in French Journals'; htmlLevel: 4);					
+		addElement: self nationalJournalsScript;
+		addElement: (CZTitleElement new 
+							title: 'Refereed Articles in Conferences'; htmlLevel: 4);
+		addElement: self conferencesScript;
+		addElement: (CZTitleElement new 
+							title: 'Refereed Articles in National Conferences'; htmlLevel: 4);
+		addElement: self nationalConferencesScript;
+		addElement: (CZTitleElement new 
+							title: 'Invited Articles'; htmlLevel: 4);
+		addElement: self invitedScript;
+		addElement: (CZTitleElement new 
+							title: 'Book Chapter'; htmlLevel: 4);
+		addElement: self bookChapterScript;
+		addElement: (CZTitleElement new 
+							title: 'Books'; htmlLevel: 4);
+		addElement: self booksScript;
+		addElement: (CZTitleElement new 
+							title: 'Editor'; htmlLevel: 4);
+		addElement: self editorScript;
+		addElement: (CZTitleElement new 
+							title: 'International Workshops Refereed Articles'; htmlLevel: 4);
+		addElement: self internationalWorkshopScript;
+		addElement: (CZTitleElement new 
+							title: 'PhD and Habilitation'; htmlLevel: 4);
+		addElement: self PhDAndHabilitation;
+			addElement: (CZTitleElement new 
+							title: 'Tool Demo'; htmlLevel: 4);
+		addElement: self toolDemosScript ;
+			addElement: (CZTitleElement new 
+							title: 'Vulgarisation'; htmlLevel: 4);
+		addElement: self vulgarisationsScript.
+	self document exportAsHtml. 
+	
 ]
 
 { #category : #script }
