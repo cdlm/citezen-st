@@ -4,8 +4,8 @@ Its representation depends on the output you choose.
 
 CZCommentElement newComment: 'Here is my comment'.
 can be reprensented by: 
-- xHTML -> '<!-- Here is my comment -->'
-- BibTeX -> '@comment{Here is my comment}'
+  - xHTML -> '<!-- Here is my comment -->'
+  - BibTeX -> '@comment{Here is my comment}'
 "
 Class {
 	#name : #CZCommentElement,

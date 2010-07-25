@@ -1,7 +1,12 @@
 "
-To begin something with Citezen, you should create a document. It's the first step.
+A document represents a structured/generated list of entries potentially annotated with title or comments.
+A document can be generated from scripts that composed it.
+
 This document will keep all the options for your final document (export format, output path, ...).
-Then you should add ell the elements un the document, in the order you want to display them. There are three kind of elements: CZTitleElement, CZCommentElement, and CZScript. Of course, new elements can be create if you need it.
+Then you should add all the elements to the document, in the order you want to display them. There are three kind of elements: CZTitleElement, CZCommentElement, and CZScript. Of course, new elements can be created if you need it.
+
+A CZscript will then be associated with an bibset from which CZEntries are queried and added to the CZDocument. Finally, a CZDocument is associated with an outputter that will generate the document in the corresponding format. 
+
 Note that there is a lot of messages for the html export format. They are stored in the html-interface protocol.
 
 -----
@@ -26,7 +31,7 @@ CZDocument new
 Some details about theses messages: (all messages are in the interface and html-interface protocols)
 - addElement: aDocumentElement -> adds an element to the document (CZCommentElement, CZTitleElement, CZScript). The elements will be displayed in the order they were added.
 - doNotRestartOrderedListAtEachScript & restartOrderedListAtEachScript -> In xHTML, corresponds to specifie the ""start"" parameter to 1 or to last index of previous script + 1 (default is restartOrderedListAtEachScript).
-- exportAsText, exportAsBib & exportAsHtml -> choose the export format (default is exportAsHtml)
+- exportAsText, exportAsBib & exportAsHtml ->  selects the export format (default is exportAsHtml)
 - footer: aString & header: aString -> specifies a header or a footer (ignored by all outputers except xHTML)
 - inputFile: aString & outputFile: aString -> specifies the paths of input and output files; if no outputFile is given, the generation will only be stored as a string returned by generate and getLastOutput
 - orderedList & unorderedList -> choice between <ol> and <ul>
@@ -36,12 +41,12 @@ Some details about theses messages: (all messages are in the interface and html-
 - generate -> generates the document, shoud be the LAST message you send ; it returns a string containing the document too
 
 
-When you create a document, it creates a fake script and add it to the element, that will be delete when you add one of your scripts.
+When you create a document, it creates a fake script and add it to the element, that will be deleted when you add one of your scripts.
 As a consequence, if you just want to take your file and transform it in another format without any query, note you can just write that:
 CZDocument new
-inputFile: '/Users/.../myReferences.bib';
-outputFile: '/Users/.../myWebPage.html';
-generate
+	inputFile: '/Users/.../myReferences.bib';
+	outputFile: '/Users/.../myWebPage.html';
+	generate
 It will generate a xHTML document with all your BibTeX file.
 
 
@@ -65,7 +70,7 @@ Class {
 		'inputFile',
 		'lastBibsetRequested',
 		'withoutDoubles',
-		'entriesAlleadyDisplayed'
+		'entriesAlreadyDisplayed'
 	],
 	#classInstVars : [
 		'exportTypeMatching'
@@ -78,12 +83,12 @@ CZDocument class >> bibExporterEncoding [
 	^ #bib
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZDocument class >> defaultExportType [ 
 	^ self htmlExporterEncoding 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 CZDocument class >> defaultOutputer [ 
 	^ self matchType: self defaultExportType 
 ]
@@ -116,12 +121,12 @@ CZDocument class >> textExporterEncoding [
 	^ #text
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZDocument >> acceptVisitor: aVisitor [
 	aVisitor visitDocument: self
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> addElement: aDocumentElement [
 	(aDocumentElement isNil | elements includes: aDocumentElement)
 		ifFalse: [
@@ -138,11 +143,6 @@ CZDocument >> addElement: aDocumentElement [
 ]
 
 { #category : #'as yet unclassified' }
-CZDocument >> addEntriesDisplayed: aNumber [
-	restartOrdered ifFalse: [ listIndex := listIndex + aNumber ]
-]
-
-{ #category : #'as yet unclassified' }
 CZDocument >> bibsetInput: aCZSet [
 	originalBibset := aCZSet.
 	aCZSet scope: CZSet standardDefinitions 
@@ -150,21 +150,22 @@ CZDocument >> bibsetInput: aCZSet [
 
 { #category : #'as yet unclassified' }
 CZDocument >> createBibSetFromPath [
+	
 	originalBibset := CZBibParser parse: ((FileStream readOnlyFileNamed: inputFile) contents).
 	originalBibset scope: CZSet standardDefinitions 
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> displayFullName [
 	authorDisplay := CZPeople displayFullName
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> displayNormalizedName [
 	authorDisplay := CZPeople displayNormalizedName
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> displayShortenedName [
 	authorDisplay := CZPeople displayShortenedName
 ]
@@ -174,45 +175,63 @@ CZDocument >> doNotRestartOrderedListAtEachScript [
 	restartOrdered := false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZDocument >> elements [
 	^ elements
 ]
 
-{ #category : #interface }
+{ #category : #accessing }
+CZDocument >> entitiesAlreadyTreated [
+
+	^ entriesAlreadyDisplayed
+]
+
+{ #category : #'public interface' }
 CZDocument >> exportAsBib [
-	self exportType: CZBibtexOutputer exporterEncoding
+	self exporterType: CZBibtexOutputer exporterEncoding
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> exportAsHtml [
-	self exportType: CZHtmlOutputer exporterEncoding
+	self exporterType: CZHtmlOutputer exporterEncoding
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> exportAsText [
-	self exportType: CZTextOutputer exporterEncoding
+	self exporterType: CZTextOutputer exporterEncoding
 ]
 
 { #category : #'as yet unclassified' }
-CZDocument >> exportType: aString [
-	outputer := (self class matchType: aString) new
+CZDocument >> exporterType: aSymbol [
+	"set the exporter corresponding to the specified type represented by aSymbol. 
+	aSymbol should be one of the value returned by the class method exporterEncoding"
+	
+	outputer := (self class matchType: aSymbol) new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public interface' }
+CZDocument >> fillUpOriginalSet [
+	inputFile ifNotNil: [ self createBibSetFromPath ].
+	
+	
+
+]
+
+{ #category : #'interface-html' }
 CZDocument >> footer [
 	^ footer
 ]
 
-{ #category : #interface }
+{ #category : #'interface-html' }
 CZDocument >> footer: aString [
 	footer := aString 
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> generate [
-	inputFile ifNotNil: [ self createBibSetFromPath ].
-	entriesAlleadyDisplayed := OrderedCollection new.
+
+	self fillUpOriginalSet.
+	entriesAlreadyDisplayed := OrderedCollection new.
 	
 	outputer ifNil: [ outputer := self class defaultOutputer new ].
 	outputer setOutputFile: outputFile.
@@ -228,27 +247,27 @@ CZDocument >> generate [
 
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> getLastOutput [
 	^ outputer getLastOutput
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'interface-html' }
 CZDocument >> getWithoutHeaderAndFooter [
 	^ withoutHeaderAndFooter 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'interface-html' }
 CZDocument >> header [ 
 	^ header 
 ]
 
-{ #category : #interface }
+{ #category : #'interface-html' }
 CZDocument >> header: aString [
 	header := aString 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialize }
 CZDocument >> initialize [ 
 	super initialize.
 	
@@ -261,7 +280,7 @@ CZDocument >> initialize [
 	self restartOrderedListAtEachScript
 ]
 
-{ #category : #interface }
+{ #category : #'in out' }
 CZDocument >> inputFile: aString [
 	inputFile := aString
 ]
@@ -277,18 +296,21 @@ CZDocument >> orderedList [
 	restartOrdered := true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZDocument >> originalBibset [
+	"the originalBibSet is the source of bibentries from which a document is built based on scripts"
 	^ originalBibset 
 ]
 
-{ #category : #interface }
+{ #category : #'in out' }
 CZDocument >> outputFile: aString [
 	outputFile := aString
 ]
 
 { #category : #'as yet unclassified' }
 CZDocument >> requestBibset [
+	"this method looks difficult to understand to me. Should change it"
+
 	| newBibSet |
 
 	withoutDoubles ifFalse: [ ^ lastBibsetRequested := originalBibset copyTwoLevel ].
@@ -296,8 +318,9 @@ CZDocument >> requestBibset [
 	
 	newBibSet := CZSet withStandardDefinitions.
 	
-	entriesAlleadyDisplayed addAll: lastBibsetRequested entries.
-	(originalBibset entries reject: [ :each | entriesAlleadyDisplayed includes: each]) do: [ :each | newBibSet addEntry: each].
+	entriesAlreadyDisplayed addAll: lastBibsetRequested entries.
+	(originalBibset entries reject: [ :each | entriesAlreadyDisplayed includes: each]) 
+		do: [ :each | newBibSet addEntry: each].
 	originalBibset macros do: [ :each | newBibSet addMacro: each].
 	
 	^ lastBibsetRequested := newBibSet
@@ -313,7 +336,13 @@ CZDocument >> unorderedList [
 	listIndex := 0
 ]
 
-{ #category : #interface }
+{ #category : #'as yet unclassified' }
+CZDocument >> updateNumberOfTreatedEntries: aNumber [
+	restartOrdered 
+		ifFalse: [ listIndex := listIndex + aNumber ]
+]
+
+{ #category : #'public interface' }
 CZDocument >> withDoubles [
 	withoutDoubles := false
 ]
@@ -323,7 +352,7 @@ CZDocument >> withHeaderAndFooter [
 	withoutHeaderAndFooter := false
 ]
 
-{ #category : #interface }
+{ #category : #'public interface' }
 CZDocument >> withoutDoubles [
 	withoutDoubles := true
 ]

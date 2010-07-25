@@ -108,9 +108,9 @@ CZScript >> acceptVisitor: aVisitor [
 
 { #category : #private }
 CZScript >> addSort: aSymbol reversed: aBoolean [
-	aSymbol ifNotNil: [
-		(sortCollection includes: aSymbol) 
-			ifFalse: [ sortCollection add: (aSymbol -> aBoolean) ] ]
+	
+	(sortCollection includes: aSymbol) 
+			ifFalse: [ sortCollection add: (aSymbol -> aBoolean) ] 
 ]
 
 { #category : #accessing }

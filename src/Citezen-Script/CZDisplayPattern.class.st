@@ -33,9 +33,9 @@ An example:
 
 If you use the example display pattern on :
 @misc{key,
-year = 2000,
-annote = {annote},
-title = {title} }
+	year = 2000,
+	annote = {annote},
+	title = {title} }
 It will create something like (depending on the outputer): -->2000;;;annote*****title<--
 "
 Class {
