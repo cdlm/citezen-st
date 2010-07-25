@@ -141,13 +141,9 @@ CZHtmlOutputer >> visitScript: aCZScript [
 			outputStream nextPutAll: (sep at: cpt).
 			(entry at: (fields at: cpt)) acceptVisitor: self ].
 		outputStream nextPutAll: sep last.
-		outputStream nextPutAll: '</li>';cr
-	].
-	
+		outputStream nextPutAll: '</li>';cr ].
 	outputStream nextPutAll: endList; cr; cr.
-	
-	(list = 0) ifFalse: [
-	aCZScript document addEntriesDisplayed: aCZScript generatingCollection size ]
+	list isZero ifFalse: [aCZScript document updateNumberOfTreatedEntries: aCZScript generatingCollection size ]
 
 ]
 

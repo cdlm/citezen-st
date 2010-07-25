@@ -38,6 +38,11 @@ CZOutputer class >> exporterEncoding [
 ]
 
 { #category : #accessing }
+CZOutputer >> contents [
+	^  outputStream contents trimBoth
+]
+
+{ #category : #accessing }
 CZOutputer >> entriesToString: aCollection [
 	outputStream := String new writeStream.
 	aCollection do: [:each | 
@@ -61,18 +66,21 @@ CZOutputer >> getLastOutput [
 
 { #category : #accessing }
 CZOutputer >> getOutputFor: aCZDocument [
-	(fileName isNil) 
-		ifTrue: [ outputStream := WriteStream on: String new ]
-		ifFalse: [ outputStream := FileStream newFileNamed: fileName ].
-
-	[self visitDocument: aCZDocument.
-		
-	 lastOutput := outputStream contents trimBoth] 
-		ensure: [
-			outputStream close.
+	self initializeOutputStream.
+	[self visitDocument: aCZDocument.		
+	 lastOutput := self contents] 
+		ensure: 
+			[ outputStream close.
 			outputStream := nil ].
-	
 	^ lastOutput 
+	
+]
+
+{ #category : #accessing }
+CZOutputer >> initializeOutputStream [
+	(fileName isNil) 
+		ifTrue: [ outputStream := String new writeStream ]
+		ifFalse: [ outputStream := FileStream newFileNamed: fileName ].
 	
 ]
 
