@@ -156,13 +156,8 @@ CZBibtexOutputer >> visitSet: aSet [
 		outputStream nextPut: $}; cr; cr.].
 	
 	aSet entries do: [ :each | 
-		outputStream nextPut: $@;
-			nextPutAll: each type;
-			nextPutAll: ' {';
-			nextPutAll: each key;
-			nextPut: $,; cr.
 		each acceptVisitor: self.
-		outputStream cr; nextPut: $}; cr; cr.].
+		outputStream cr; cr.].
 	
 ]
 
