@@ -72,6 +72,13 @@ CZSet >> acceptVisitor: aVisitor [
 ]
 
 { #category : #adding }
+CZSet >> addAll: aCZSet [
+	
+	aCZSet do: [:each | self addEntry: each].
+	^ entries
+]
+
+{ #category : #adding }
 CZSet >> addEntry: aCZEntry [
 	aCZEntry scope: self.
 	entries add: aCZEntry
