@@ -162,9 +162,9 @@ CZEntryTest >> testClean [
 	self assert: (dirty  hasField: #'date-added').
 	self assert: (dirty  hasField: #'date-modified').
 	dirty clean.
-	self assert: (dirty hasField: #'date-added').
-	self assert: (dirty hasField: #'date-modified').
-	self assert: (dirty hasField: #'bdsk-url-1').
+	self deny: (dirty hasField: #'date-added').
+	self deny: (dirty hasField: #'date-modified').
+	self deny: (dirty hasField: #'bdsk-url-1').
 
 
 ]
