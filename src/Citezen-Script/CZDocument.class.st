@@ -177,6 +177,7 @@ CZDocument >> doNotRestartOrderedListAtEachScript [
 
 { #category : #accessing }
 CZDocument >> elements [
+	"elements contains comment, script..."
 	^ elements
 ]
 
