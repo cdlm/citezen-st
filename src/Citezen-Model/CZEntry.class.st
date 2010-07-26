@@ -230,10 +230,10 @@ CZEntry >> author [
 
 { #category : #'add/remove' }
 CZEntry >> clean [
-
- 	self class fieldsToRemove
-		do: [:each | (self hasField: each)
-						ifTrue: [self removeField: each]]
+	
+ 	self class fieldKeysToRemove
+		do: [:each | (self hasFieldWithKey: each)
+						ifTrue: [self removeFieldWithKey: each]]
 ]
 
 { #category : #enumerating }
@@ -253,6 +253,11 @@ CZEntry >> fields: aCollection [
 
 { #category : #accessing }
 CZEntry >> hasField: aSymbol [
+	^ fields anySatisfy: [:each | each key = aSymbol]
+]
+
+{ #category : #accessing }
+CZEntry >> hasFieldWithKey: aSymbol [
 	^ fields anySatisfy: [:each | each key = aSymbol]
 ]
 
@@ -381,8 +386,14 @@ CZEntry >> printOn: aStream [
 
 { #category : #'add/remove' }
 CZEntry >> removeField: aCZField [
-	fields remove: aCZField ifAbsent: []
 
+	fields remove: aCZField 
+]
+
+{ #category : #'add/remove' }
+CZEntry >> removeFieldWithKey: aSymbol [
+
+	 fields := fields reject: [:each | each key = aSymbol  ]
 ]
 
 { #category : #accessing }
