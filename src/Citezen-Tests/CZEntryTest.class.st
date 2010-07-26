@@ -6,12 +6,14 @@ Class {
 		'duplicateEntry',
 		'articleEntry',
 		'inproceedingsEntry',
-		'masterEntry'
+		'masterEntry',
+		'team',
+		'dirty'
 	],
 	#category : #'Citezen-Tests'
 }
 
-{ #category : #running }
+{ #category : #setup }
 CZEntryTest >> setUp [
 
 	entry := (CZBibParser parse: CZTestResource bibTest) entries at: 1.
@@ -73,10 +75,58 @@ masterEntry := CZBibParser parse: '
                   Europe with the RMoD Team led by S. Ducasse.},
   annote       = {master cook},
   school       = {Enseita}
- }'
+ }'.
+
+team := (CZEntry type: CZEntry inproceedings)
+				key: #Abde08a;
+				at: #author put: 'Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen';
+				at: #title put: 'Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships';
+				at: #Aeres	 put: 'ACT';
+ 				at: #Aeresstatus   put:  'aeres08';
+				at: #Annote       put:  'internationalconference stefPub';
+ 				at: #Booktitle    put: 'European Conference on Software Maintenance and Reengineering (CSMR)';
+  				at: #Inria	        put: 'ADAM';
+  				at: #Keywords     put:  'moose-pub';
+  				at: #Location     put: 'Athens, Greece';
+  				at: #Misc	       put:  'Acceptance rate: 24/87 = 27\%';
+  				at: #AcceptTotal  put:  87;
+  				at: #AcceptNum    put:  24;
+  				at: #Pages	       put:  '213--222';
+  				at: #Publisher    put:  'IEEE Computer Society Press';
+  				at: #Rate	       put:  '27%';
+  				at: #Selectif     put:  'oui';
+   				at: #Url	       put:  'http://scg.unibe.ch/archive/external/Abde08a.pdf';
+   				at: #Year	       put:  2008;
+   				at: #'Bdsk-Url-1'  put: 'http://scg.unibe.ch/archive/external/Abde08a.pdf'.
+				
+dirty := (CZEntry type: CZEntry inproceedings)
+				key: #Abde08a;
+				at: #author put: 'Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen';
+				at: #title put: 'Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships';
+				at: #Aeres	 put: 'ACT';
+ 				at: #Aeresstatus   put:  'aeres08';
+				at: #Annote       put:  'internationalconference stefPub';
+ 				at: #Booktitle    put: 'European Conference on Software Maintenance and Reengineering (CSMR)';
+  				at: #Inria	        put: 'ADAM';
+  				at: #Keywords     put:  'moose-pub';
+  				at: #Location     put: 'Athens, Greece';
+  				at: #Misc	       put:  'Acceptance rate: 24/87 = 27\%';
+  				at: #AcceptTotal  put:  87;
+  				at: #AcceptNum    put:  24;
+  				at: #Pages	       put:  '213--222';
+  				at: #Publisher    put:  'IEEE Computer Society Press';
+  				at: #Rate	       put:  '27%';
+  				at: #Selectif     put:  'oui';
+   				at: #Url	       put:  'http://scg.unibe.ch/archive/external/Abde08a.pdf';
+   				at: #Year	       put:  2008;
+   				at: #'Bdsk-Url-1'  put: 'http://scg.unibe.ch/archive/external/Abde08a.pdf';
+				at: #'Date-Added' put: '{2009-10-20 14:54:13 +0200}';
+				at: #'Date-Modified' put: '{2009-10-20 15:05:13 +0200}'.
+				
+
 ]
 
-{ #category : #running }
+{ #category : #setup }
 CZEntryTest >> tearDown [
 	entry := nil.
 	duplicateEntry := nil
@@ -100,6 +150,23 @@ CZEntryTest >> testAt [
 	self assert: ((entry at:#absent) class = CZUndefinedField).
 	self assert: (entry at:#absent ifAbsent:'a pas' = 'a pas').
 	
+]
+
+{ #category : #tests }
+CZEntryTest >> testClean [
+	"self debug: #testClean"
+	
+	self assert: (dirty  hasField: #aeres).
+	self assert: (dirty  hasField: #aeresstatus).
+	self assert: (dirty  hasField: #'bdsk-url-1').
+	self assert: (dirty  hasField: #'date-added').
+	self assert: (dirty  hasField: #'date-modified').
+	dirty clean.
+	self assert: (dirty hasField: #'date-added').
+	self assert: (dirty hasField: #'date-modified').
+	self assert: (dirty hasField: #'bdsk-url-1').
+
+
 ]
 
 { #category : #tests }
