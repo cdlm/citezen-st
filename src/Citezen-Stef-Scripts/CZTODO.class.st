@@ -1,8 +1,11 @@
 "
 notExpanded either returns a string or integer
 
-* gatherer from a doc to a bibset
+* gatherer from a doc to a bibset should add tests
 * bibraw printer -> test
+* added bibfield selection in Outputter
+* generatingCollection -> generatedCollection?
+
 * requestBib???
 * CZOutputer should be subclass of CZDocumentVisitor
 
