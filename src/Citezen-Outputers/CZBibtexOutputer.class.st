@@ -68,7 +68,7 @@ CZBibtexOutputer >> visitEntry: anEntry [
 		nextPut: $,;
 		cr.
 		
-	anEntry fields 
+	(anEntry fields reject: [ :aField | (blackListedFields includes: aField key)])
 		do: [ :each | each acceptVisitor: self ]
 		separatedBy: [ outputStream nextPut: $,; cr ].
 		
@@ -80,6 +80,7 @@ CZBibtexOutputer >> visitEntry: anEntry [
 
 { #category : #visiting }
 CZBibtexOutputer >> visitField: aField [
+
 	outputStream 
 		nextPutAll: '  ';
 		nextPutAll: aField key;

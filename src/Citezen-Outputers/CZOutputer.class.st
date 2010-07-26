@@ -23,7 +23,8 @@ Class {
 		'outputStream',
 		'lastEntryVisited',
 		'defaultSeparator',
-		'authorDisplay'
+		'authorDisplay',
+		'blackListedFields'
 	],
 	#classInstVars : [
 		'blackList'
@@ -35,6 +36,18 @@ Class {
 CZOutputer class >> exporterEncoding [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+CZOutputer >> blackListedFields [
+
+	^ blackListedFields
+]
+
+{ #category : #accessing }
+CZOutputer >> blackListedFields: aFieldKeyCollection [
+
+	blackListedFields := aFieldKeyCollection
 ]
 
 { #category : #accessing }
@@ -76,7 +89,14 @@ CZOutputer >> getOutputFor: aCZDocument [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #initialize }
+CZOutputer >> initialize [
+
+	super initialize.
+	blackListedFields := #().
+]
+
+{ #category : #initialize }
 CZOutputer >> initializeOutputStream [
 	(fileName isNil) 
 		ifTrue: [ outputStream := String new writeStream ]
