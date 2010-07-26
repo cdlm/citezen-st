@@ -1,8 +1,10 @@
 "
 This class is a private class to play with the Script and Document to generate a couple of personal output. May be a generalization will be usefull to avoid that everybody is doing the same. but for now we are learning.
+
+May be this class should be a subclass of CZDocument
 "
 Class {
-	#name : #CZStefScript,
+	#name : #CZPersonalWebPageGenerator,
 	#superclass : #Object,
 	#instVars : [
 		'document'
@@ -11,7 +13,7 @@ Class {
 }
 
 { #category : #script }
-CZStefScript >> PhDAndHabilitation [
+CZPersonalWebPageGenerator >> PhDAndHabilitation [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
@@ -23,7 +25,7 @@ CZStefScript >> PhDAndHabilitation [
 ]
 
 { #category : #patterns }
-CZStefScript >> allDisplayPattern [
+CZPersonalWebPageGenerator >> allDisplayPattern [
 
 	^ CZDisplayPattern new 
 			defaultSeparator: ', ';
@@ -43,7 +45,7 @@ CZStefScript >> allDisplayPattern [
 ]
 
 { #category : #patterns }
-CZStefScript >> articleDisplayPattern [
+CZPersonalWebPageGenerator >> articleDisplayPattern [
 
 	^ CZDisplayPattern new 
 			defaultSeparator: ', ';
@@ -62,7 +64,7 @@ CZStefScript >> articleDisplayPattern [
 ]
 
 { #category : #script }
-CZStefScript >> bookChapterScript [ 
+CZPersonalWebPageGenerator >> bookChapterScript [ 
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
@@ -73,7 +75,7 @@ CZStefScript >> bookChapterScript [
 ]
 
 { #category : #script }
-CZStefScript >> booksScript [
+CZPersonalWebPageGenerator >> booksScript [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
@@ -82,7 +84,7 @@ CZStefScript >> booksScript [
 ]
 
 { #category : #patterns }
-CZStefScript >> conferenceDisplayPattern [
+CZPersonalWebPageGenerator >> conferenceDisplayPattern [
 
 	^ CZDisplayPattern new 
 			defaultSeparator: ', ';
@@ -101,7 +103,7 @@ CZStefScript >> conferenceDisplayPattern [
 ]
 
 { #category : #script }
-CZStefScript >> conferencesScript [
+CZPersonalWebPageGenerator >> conferencesScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
@@ -112,14 +114,61 @@ CZStefScript >> conferencesScript [
 													and: [('*topconference*' match: value) not ]]))
 ]
 
+{ #category : #public }
+CZPersonalWebPageGenerator >> configure [
+
+	self document header: '<?xml version="1.0" encoding="ISO-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+   <link rel="stylesheet" href="stef.css"/>
+   <head>
+      <title>Prof. Dr. St&eacute;phane Ducasse</title>
+   </head>
+   <body>
+      <div id="header">
+         <div id="headerSiteTitle">St&eacute;phane Ducasse</div>
+         <div id="headerPageTitle">Publications</div>
+      </div><!-- header-->
+      <div xmlns="" id="menu">
+         <div id="toc">
+            <div id="tocItem"> <a href="index.html">Home</a> </div>
+            <div id="tocItem"> <a href="Publications.html">Publications</a> </div>
+			<div id="tocItem"> <a href="Supervised.html">PhDs and Masters</a> </div>
+            <div id="tocItem"> <a href="Books.html">Books and Columns</a> </div>
+			<div id="tocItem"> <a href="FreeBooks.html">Free Smalltalk Books</a> </div>
+			<div id="tocItem"> <a href="Resources.html">Downloads/Resources</a> </div>
+            <div id="tocItem"> <a href="Teaching.html">Lectures</a> </div>
+			<div id="tocItem"> <A HREF= "skweek2.htm">Skweek ...Strikes Back</a></div>
+            <div id="tocItem"> <A HREF= "index.html#coor">Coordinates</A> </div>
+         </div><!-- toc-->
+         <div id="copyright">last revision: ', Date today printString, '<br/></div>
+				
+		<div xmlns="" id="personalDetails">
+            <div id="personalDetailsItem"> <A HREF="http://rmod.inria.lille.fr">Rmod</A></div>
+		</div>		
+      </div> <!-- menu-->
+      <div id="mainContent">
+	  <div xmlns="" class="paperList"><style type="text/css">
+<!--
+-->
+</style>'.
+
+
+	self document footer: '<h4>BibTex Files of the Publications</h4>
+<A HREF="stef.bib">BibTex File</A> </div>  <!-- div xmlns= class="paperList" -->
+	 </div><!-- mainContent -->
+   </body>
+</html>
+'
+]
+
 { #category : #accessing }
-CZStefScript >> document [
+CZPersonalWebPageGenerator >> document [
 
 	^ document ifNil: [document := CZDocument new]
 ]
 
 { #category : #script }
-CZStefScript >> editorScript [
+CZPersonalWebPageGenerator >> editorScript [
 	
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
@@ -135,7 +184,7 @@ CZStefScript >> editorScript [
 ]
 
 { #category : #public }
-CZStefScript >> generateSortedByYear [
+CZPersonalWebPageGenerator >> generateSortedByYear [
 	"self new generateSortedByYear"
 	
 	self inoutYear.
@@ -154,17 +203,17 @@ CZStefScript >> generateSortedByYear [
 ]
 
 { #category : #public }
-CZStefScript >> generateTypeOriented [
+CZPersonalWebPageGenerator >> generateTypeOriented [
 	"self new generateTypeOriented"
 	
 	self typeOriented.
+	self configure.
 	self document generate.
-	self document entitiesAlreadyTreated.
 	^ self document
 ]
 
 { #category : #public }
-CZStefScript >> generateTypeOrientedAssociatedBibFile [
+CZPersonalWebPageGenerator >> generateTypeOrientedAssociatedBibFile [
 	"self new generateTypeOrientedAssociatedBibFile"
 	
 	| newbib |
@@ -181,7 +230,7 @@ CZStefScript >> generateTypeOrientedAssociatedBibFile [
 ]
 
 { #category : #'file parameter' }
-CZStefScript >> inout [
+CZPersonalWebPageGenerator >> inout [
 
 	self document
 		inputFile: 'all.bib';
@@ -189,7 +238,7 @@ CZStefScript >> inout [
 ]
 
 { #category : #'file parameter' }
-CZStefScript >> inoutYear [ 
+CZPersonalWebPageGenerator >> inoutYear [ 
 
 	self document
 		inputFile: 'scg.bib';
@@ -197,7 +246,7 @@ CZStefScript >> inoutYear [
 ]
 
 { #category : #script }
-CZStefScript >> internationalWorkshopScript [
+CZPersonalWebPageGenerator >> internationalWorkshopScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
@@ -208,7 +257,7 @@ CZStefScript >> internationalWorkshopScript [
 ]
 
 { #category : #script }
-CZStefScript >> invitedScript [
+CZPersonalWebPageGenerator >> invitedScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
@@ -219,7 +268,7 @@ CZStefScript >> invitedScript [
 ]
 
 { #category : #script }
-CZStefScript >> journalsScript [
+CZPersonalWebPageGenerator >> journalsScript [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
@@ -230,13 +279,13 @@ CZStefScript >> journalsScript [
 ]
 
 { #category : #document }
-CZStefScript >> metadata [
+CZPersonalWebPageGenerator >> metadata [
 
 	self document addElement: (CZCommentElement new comment: 'Generated by Citezen --', Date today printString).
 ]
 
 { #category : #script }
-CZStefScript >> nationalConferencesScript [
+CZPersonalWebPageGenerator >> nationalConferencesScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
@@ -247,7 +296,7 @@ CZStefScript >> nationalConferencesScript [
 ]
 
 { #category : #script }
-CZStefScript >> nationalJournalsScript [ 
+CZPersonalWebPageGenerator >> nationalJournalsScript [ 
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
@@ -258,12 +307,12 @@ CZStefScript >> nationalJournalsScript [
 ]
 
 { #category : #queries }
-CZStefScript >> onlyStefAuthor [
+CZPersonalWebPageGenerator >> onlyStefAuthor [
 	^ CZFieldQuery named: #author checks: [ :value | '*Ducasse*' match: value ]
 ]
 
 { #category : #script }
-CZStefScript >> toolDemosScript [
+CZPersonalWebPageGenerator >> toolDemosScript [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
@@ -274,7 +323,7 @@ CZStefScript >> toolDemosScript [
 ]
 
 { #category : #script }
-CZStefScript >> topConferencesScript [
+CZPersonalWebPageGenerator >> topConferencesScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
@@ -285,7 +334,7 @@ CZStefScript >> topConferencesScript [
 ]
 
 { #category : #public }
-CZStefScript >> typeOriented [
+CZPersonalWebPageGenerator >> typeOriented [
 	"self new generateTypeOriented"
 	
 	self inout.
@@ -337,7 +386,7 @@ CZStefScript >> typeOriented [
 ]
 
 { #category : #script }
-CZStefScript >> vulgarisationsScript [
+CZPersonalWebPageGenerator >> vulgarisationsScript [
 	^ CZScript new
 		displayPattern: self allDisplayPattern;
 		reversedSortByField: #year;
@@ -348,7 +397,7 @@ CZStefScript >> vulgarisationsScript [
 ]
 
 { #category : #script }
-CZStefScript >> yearScript: aYear [
+CZPersonalWebPageGenerator >> yearScript: aYear [
  
 	^ CZScript new
 		displayPattern: self allDisplayPattern;
