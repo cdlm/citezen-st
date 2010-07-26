@@ -171,6 +171,7 @@ CZStefScript >> generateTypeOrientedAssociatedBibFile [
 	self typeOriented.
 	self document fillUpOriginalSet.
 	newbib := CZBibSetGatherer bibsetFrom: self document.
+	newbib clean.
 	^ CZBibtexOutputer new 
 		setOutputFile: 'stef.bib';
 		blackListedFields: CZEntry privateFields;
