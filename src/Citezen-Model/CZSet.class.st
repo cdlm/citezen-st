@@ -83,6 +83,12 @@ CZSet >> addMacro: aCZField [
 	macros add: aCZField
 ]
 
+{ #category : #'arranging - combining' }
+CZSet >> clean [
+
+	self entries do: [:each | each clean]
+]
+
 { #category : #enumerating }
 CZSet >> do: aBlock [
 	self entries do: aBlock

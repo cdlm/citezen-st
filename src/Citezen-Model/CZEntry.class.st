@@ -121,7 +121,7 @@ CZEntry class >> inproceedings [
 	^ #inproceedings
 ]
 
-{ #category : #metadata }
+{ #category : #'instance creation' }
 CZEntry class >> inriaFields [
 	^ #(hal keywords annote aeresstatus aeres selectif labo inria impactfactor rate x-editorial-board x-proceedings x-international-audience x-pays x-invited-conference x-scientific-popularization )
 ]
@@ -182,13 +182,13 @@ CZEntry >> acceptVisitor: aVisitor [
 	aVisitor visitEntry: self
 ]
 
-{ #category : #accessing }
+{ #category : #'add/remove' }
 CZEntry >> addField: aCZField [
 	fields add: aCZField.
 	aCZField scope: self
 ]
 
-{ #category : #accessing }
+{ #category : #'add/remove' }
 CZEntry >> addFields: aCollection [
 	fields addAll: aCollection.
 	aCollection do: [:each | each scope: self]
@@ -226,6 +226,14 @@ CZEntry >> at: aSymbol put: aValue [
 CZEntry >> author [
 
 	^ self at: #author
+]
+
+{ #category : #'add/remove' }
+CZEntry >> clean [
+
+ 	self class fieldsToRemove
+		do: [:each | (self hasField: each)
+						ifTrue: [self removeField: each]]
 ]
 
 { #category : #enumerating }
@@ -369,6 +377,12 @@ CZEntry >> printOn: aStream [
 		nextPut: $(;
 		nextPutAll: self key;
 		nextPut: $)
+]
+
+{ #category : #'add/remove' }
+CZEntry >> removeField: aCZField [
+	fields remove: aCZField ifAbsent: []
+
 ]
 
 { #category : #accessing }
