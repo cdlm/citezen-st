@@ -3,11 +3,11 @@ notExpanded either returns a string or integer
 
 * gatherer from a doc to a bibset should add tests
 * bibraw printer -> test
-* added bibfield selection in Outputter
-* generatingCollection -> generatedCollection?
+* add test for CZSet , 
 
+* generatingCollection -> generatedCollection?
 * requestBib???
-* CZOutputer should be subclass of CZDocumentVisitor
+* CZOutputer should be subclass of CZDocumentVisitor ?
 
 * should check that   - BibTeX -> '@comment{Here is my comment}' is a valid entry.  probably it is.
 * introduce setter for used fields (replace field at: #author but field author: 

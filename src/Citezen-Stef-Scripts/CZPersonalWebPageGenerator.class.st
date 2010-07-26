@@ -114,7 +114,7 @@ CZPersonalWebPageGenerator >> conferencesScript [
 													and: [('*topconference*' match: value) not ]]))
 ]
 
-{ #category : #public }
+{ #category : #document }
 CZPersonalWebPageGenerator >> configure [
 
 	self document header: '<?xml version="1.0" encoding="ISO-8859-1"?>
