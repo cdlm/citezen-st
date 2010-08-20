@@ -41,7 +41,7 @@ CPBibTest >> createBibFilePage [
 	parent := PRKernel defaultRoot.
 	child := CPBibFile named: self bibFilePageName.
 	child maxResults: CPQuerySpec defaultMaxResults.
-	"child file: (MAReferenceFileModel fromRio: (Rio new: self bibFileName))."
+	child file: (MAReferenceFileModel fromRio: (Rio new: self bibFileName)).
 	parent addChild: child.
 	^ child
 ]
@@ -329,7 +329,7 @@ CPBibTest >> testBibListSize [
 CPBibTest >> testExtractJournals [
 	| testResult extracted |
 	testResult := self queryMatchingAll.
-	extracted := testResult bibList extractType: CZEntry article.
+	extracted := testResult bibList extractType: #article.
 	self assert: extracted size = 1.
 	self assert: extracted entries first key = 'Duca06b'.
 ]

@@ -99,8 +99,7 @@ CPBibFile >> initialize [
 
 { #category : #testing }
 CPBibFile >> invariant [
-	^ self file notNil and: [self maxResults isInteger
-		and: [self isValid]]
+	^ self file notNil and: [self maxResults isInteger] and: [self isValid]
 ]
 
 { #category : #testing }
