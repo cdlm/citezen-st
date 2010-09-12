@@ -373,7 +373,7 @@ ConfigurationOfCitezen >> baseline05: spec [
 			package: 'Citezen-Rendering' with: [ spec requires: 'Citezen-Model' ];
 			package: 'Citezen-Outputers' with: [ spec requires: 'Citezen-Model' ];
 			package: 'Citezen-Query' with: [ spec requires: 'Citezen-Model'];
-			package: 'Citezen-Script' with: [ spec requires: #('Citezen-Script') ];
+			package: 'Citezen-Script';
 			package: 'Citezen-Stef-Scripts' with: [ spec requires: #('Citezen-Model' 'Citezen-Outputers' 'Citezen-Query') ];
 			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside') ];
 			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
