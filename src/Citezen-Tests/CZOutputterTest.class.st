@@ -18,7 +18,7 @@ CZOutputterTest class >> isAbstract [
 
 { #category : #hooks }
 CZOutputterTest >> rendererClass [
-	self shouldBeImplemented
+	self subclassResponsibility
 ]
 
 { #category : #setup }
