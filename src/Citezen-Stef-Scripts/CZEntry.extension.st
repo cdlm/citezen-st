@@ -7,7 +7,7 @@ CZEntry >> isTeamEntry [
 	
 	author := self author value.
 	^ #( '*Ducasse*S*' '*Denker*M*' '*Anquetil*N*' '*Pollet*D*' '*Abdeen*H*' '*Laval*J*' '*Peirs*R*' '*Falleri*' '*Denier*S*' 
-		'*Casaccio*G*' '*Arnaud*J*B*' '*Bhatti*U*' '*Fernandes*H*' '*Razavizadeh*A*' ) anySatisfy: [ :each | each match: author ]
+		'*Casaccio*G*' '*Martinez-Peck*' '*Uquillas*' '*Arnaud*J*B*' '*Bhatti*U*' '*Fernandes*H*' '*Razavizadeh*A*' ) anySatisfy: [ :each | each match: author ]
 ]
 
 { #category : #'*Citezen-Stef-Scripts' }
