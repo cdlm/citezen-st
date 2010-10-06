@@ -65,6 +65,12 @@ CZEntry class >> conference [
 ]
 
 { #category : #metadata }
+CZEntry class >> fieldKeysToRemove [
+
+	 ^ #(#'date-added'  #'date-modified' #'bdsk-url-1')
+]
+
+{ #category : #metadata }
 CZEntry class >> inbook [
 	^ #inbook
 ]
