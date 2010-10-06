@@ -2,6 +2,11 @@
 A CZFileDispatcher takes a bibset and split if in several ones.
 It is usefull for creating file for a team or a person out of a large bibset. 
 
+CZFileDispatcher new 
+	inBibset: (CZFileMerger new inputFiles: #('lse.bib' 'scg.bib') ; merge);
+	outputFilesDescription: {true -> 'rmod.bib' . false -> 'other.bib'};
+	dispatchBlock: [:each | each isTeamEntry];
+	generate
 "
 Class {
 	#name : #CZFileDispatcher,
