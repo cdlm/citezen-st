@@ -64,10 +64,10 @@ CZEntry class >> conference [
 	^ #conference
 ]
 
-{ #category : #metadata }
+{ #category : #cleanup }
 CZEntry class >> fieldKeysToRemove [
 
-	 ^ #(#'date-added'  #'date-modified' #'bdsk-url-1')
+	^ #(#'date-added' 'date-modified' #'bdsk-url-1' #'bdsk-url-2' )
 ]
 
 { #category : #metadata }
