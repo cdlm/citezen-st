@@ -385,7 +385,7 @@ ConfigurationOfCitezen >> baseline05: spec [
 		spec
 			group: 'default' with: #('NoWeb' 'Web');
 			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
-			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script' 'Citezen-Checking');
+			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script' 'Citezen-Checking' 'Citezen-Stef-Scripts');
 			group: 'CommandLine' with: #('NoWeb' 'Citezen-CommandLine');
 			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
 			group: 'Tests' with: #('Citezen-Tests')
