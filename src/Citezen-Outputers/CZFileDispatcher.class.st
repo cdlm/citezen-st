@@ -1,6 +1,6 @@
 "
-A CZFileDispatcher takes a bibset and split if in several ones.
-It is usefull for creating file for a team or a person out of a large bibset. 
+A CZFileDispatcher takes a bibset and splits it in several ones.
+It is useful for creating files for a team or a person out of a large bibset. 
 
 CZFileDispatcher new 
 	inBibset: (CZFileMerger new inputFiles: #('lse.bib' 'scg.bib') ; merge);

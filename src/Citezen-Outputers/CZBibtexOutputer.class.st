@@ -36,7 +36,7 @@ CZBibtexOutputer >> visitComment: aCZCommentElement [
 	outputStream 
 		nextPut: $#;
 		nextPutAll: aCZCommentElement comment;
-		cr
+		lf
 ]
 
 { #category : #visiting }
@@ -50,8 +50,8 @@ CZBibtexOutputer >> visitDocument: aCZDocument. [
 	aCZDocument originalBibset macros do: [ :each | 
 		outputStream nextPutAll: '@string{'.
 		each acceptVisitor: self.
-		outputStream nextPut: $}; cr; cr.].
-
+		outputStream nextPut: $}; lf.].
+	outputStream lf.
 	aCZDocument elements do: [ :each | each acceptVisitor: self ]
 	
 
@@ -66,14 +66,14 @@ CZBibtexOutputer >> visitEntry: anEntry [
 		nextPut: ${;
 		nextPutAll: anEntry key;
 		nextPut: $,;
-		cr.
+		lf.
 		
 	(anEntry fields reject: [ :aField | (blackListedFields includes: aField key)])
 		do: [ :each | each acceptVisitor: self ]
-		separatedBy: [ outputStream nextPut: $,; cr ].
+		separatedBy: [ outputStream nextPut: $,; lf ].
 		
 	outputStream 
-		cr;
+		lf;
 		nextPut: $}
 
 ]
@@ -131,18 +131,18 @@ CZBibtexOutputer >> visitScript: aCZScript [
 			nextPutAll: ' {';
 			nextPutAll: entry key;
 			nextPut: $,;
-			cr.
+			lf.
 		1 to: fields size do: [ :cpt | 
 			outputStream 
-				cr;
+				lf;
 				nextPutAll: '  '.
 			(entry at: (fields at: cpt)) acceptVisitor: self.
 			(cpt = fields size) ifFalse: [ outputStream nextPut: $, ] ].
 		outputStream
-			cr; 
+			lf; 
 			nextPutAll: '}';
-			cr;
-			cr
+			lf;
+			lf
 	].
 
 ]
@@ -154,11 +154,11 @@ CZBibtexOutputer >> visitSet: aSet [
 	aSet macros do: [ :each | 
 		outputStream nextPutAll: '@string {'.
 		each acceptVisitor: self.
-		outputStream nextPut: $}; cr; cr.].
-	
+		outputStream nextPut: $}; lf ].
+	outputStream lf.
 	aSet entries do: [ :each | 
 		each acceptVisitor: self.
-		outputStream cr; cr.].
+		outputStream lf; lf ].
 	
 ]
 

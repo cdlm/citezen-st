@@ -16,7 +16,7 @@ CZHtmlOutputer class >> exporterEncoding [
 { #category : #default }
 CZHtmlOutputer >> defaultFooter [
 	^ '</body>
-</html>'
+</html>' withUnixLineEndings
 ]
 
 { #category : #default }
@@ -27,7 +27,7 @@ CZHtmlOutputer >> defaultHeader [
 					ifTrue: [ 'default.html' ]
 					ifFalse: [ fileName ].
 	
-	^ '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	^ ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
 	<head>
 		<title>',title,'</title>
@@ -35,7 +35,7 @@ CZHtmlOutputer >> defaultHeader [
 	</head>
 <body>
 
-'
+') withUnixLineEndings
 ]
 
 { #category : #visiting }
@@ -44,7 +44,7 @@ CZHtmlOutputer >> visitComment: aCZCommentElement [
 		nextPutAll: '<!-- ';
 		nextPutAll: aCZCommentElement comment;
 		nextPutAll: ' -->';
-		cr
+		lf
 ]
 
 { #category : #visiting }
@@ -78,7 +78,8 @@ CZHtmlOutputer >> visitEntry: anEntry [
 	lastEntryVisited := lastEntryVisited + 1.
 	
 	
-	sep := separators at: lastEntryVisited.
+	"sep := separators at: lastEntryVisited."
+	sep := defaultSeparator. self flag: 'suspicious, test code?'.
 	outputStream nextPutAll: (sep at: 1 ifAbsent: 'Hop').
 	fields do: [ :each |
 		each acceptVisitor: self.
@@ -128,7 +129,7 @@ CZHtmlOutputer >> visitScript: aCZScript [
 		ifTrue: [ beginList := '<ul>'. endList := '</ul>' ]
 		ifFalse: [ beginList := '<ol start="', list asString, '">'. endList := '</ol>'].
 		
-	outputStream nextPutAll: beginList; cr.
+	outputStream nextPutAll: beginList; lf.
 	
 	aCZScript generatingCollection do: [ :assoc |
 		entry := assoc key.
@@ -140,8 +141,9 @@ CZHtmlOutputer >> visitScript: aCZScript [
 			outputStream nextPutAll: (sep at: cpt).
 			(entry at: (fields at: cpt)) acceptVisitor: self ].
 		outputStream nextPutAll: sep last.
-		outputStream nextPutAll: '</li>';cr ].
-	outputStream nextPutAll: endList; cr; cr.
+		outputStream nextPutAll: '</li>'; lf ].
+	
+	outputStream nextPutAll: endList; lf; lf.
 	list isZero ifFalse: [aCZScript document updateNumberOfTreatedEntries: aCZScript generatingCollection size ]
 
 ]
@@ -151,17 +153,17 @@ CZHtmlOutputer >> visitSet: aSet [
 	lastEntryVisited := 0.
 	
 	outputStream nextPutAll: self header.
-	outputStream nextPutAll: '<ol>';cr.
+	outputStream nextPutAll: '<ol>'; lf.
 	
 	aSet entries do: [ :each | 
 		outputStream nextPutAll: '<li>';
-			cr; 
+			lf; 
 			nextPutAll: each type;
 			nextPutAll: ' : ';
 			nextPutAll: each key;
-			cr.
+			lf.
 		each acceptVisitor: self.
-		outputStream cr; nextPutAll: '</li>'; cr; cr.].
+		outputStream lf; nextPutAll: '</li>'; lf; lf.].
 	
 	outputStream nextPutAll: '</ol>'.
 	outputStream nextPutAll: self footer.
@@ -182,6 +184,6 @@ CZHtmlOutputer >> visitTitle: aCZTitleElement [
 		nextPutAll: '</h';
 		nextPutAll: aCZTitleElement htmlLevel asString;
 		nextPutAll: '>';
-		cr;
-		cr
+		lf;
+		lf
 ]

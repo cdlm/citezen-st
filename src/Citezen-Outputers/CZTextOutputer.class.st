@@ -17,8 +17,8 @@ CZTextOutputer class >> exporterEncoding [
 CZTextOutputer >> visitComment: aCZCommentElement [
 	outputStream 
 		nextPutAll: '(',aCZCommentElement comment,')';
-		cr;
-		cr
+		lf;
+		lf
 ]
 
 { #category : #visiting }
@@ -70,8 +70,8 @@ CZTextOutputer >> visitScript: aCZScript [
 			(entry at: (fields at: cpt)) acceptVisitor: self ].
 		outputStream 
 			nextPutAll: sep last;
-			cr;
-			cr.
+			lf;
+			lf.
 	]
 ]
 
@@ -84,6 +84,6 @@ CZTextOutputer >> visitString: aCZString [
 CZTextOutputer >> visitTitle: aCZTitleElement [
 	outputStream 
 		nextPutAll: aCZTitleElement title;
-		cr;
-		cr
+		lf;
+		lf
 ]

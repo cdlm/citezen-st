@@ -59,7 +59,7 @@ CZOutputer >> contents [
 CZOutputer >> entriesToString: aCollection [
 	outputStream := String new writeStream.
 	aCollection do: [:each | 
-		self visitEntry: each] separatedBy: [outputStream cr].
+		self visitEntry: each] separatedBy: [outputStream lf].
 	outputStream close.
 	^ outputStream contents
 ]
