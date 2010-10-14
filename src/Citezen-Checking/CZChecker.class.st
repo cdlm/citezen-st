@@ -314,7 +314,7 @@ CZChecker >> checks [
 	
 	errorStream close.
 	
-	Smalltalk at: #Console ifPresent: [ :thing | Console print: (self errorString copyReplaceAll: String cr with: String crlf) ].
+	Smalltalk at: #Console ifPresent: [ :console | console print: (self errorString copyReplaceAll: String cr with: String crlf) ].
 	
 	^ self errorString
 ]
