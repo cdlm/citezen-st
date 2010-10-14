@@ -8,7 +8,7 @@ Class {
 	#category : #'Citezen-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 CZDisplayPatternTest >> setUp [
 	bibset := CZBibParser parse: '
 	@article{key1,
@@ -51,7 +51,7 @@ CZDisplayPatternTest >> setUp [
 	document := CZDocument new bibsetInput: bibset; exportAsText 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testBeginsWith [
 	| generation |
 	
@@ -70,10 +70,10 @@ CZDisplayPatternTest >> testBeginsWith [
 
 - --> Adrien Barreau and Robert Marcel d article 2001 
 
-- --> Le Chat choucroute Le chat aime la choucroute 2001 note'
+- --> Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testBeginsWithAndEndsWith [
 	| generation |
 	
@@ -93,10 +93,10 @@ CZDisplayPatternTest >> testBeginsWithAndEndsWith [
 
 - --> Adrien Barreau and Robert Marcel d article 2001 <--
 
-- --> Le Chat choucroute Le chat aime la choucroute 2001 note <--'
+- --> Le Chat choucroute Le chat aime la choucroute 2001 note <--' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testCompletePattern [
 	| generation |
 		document addElement: (
@@ -124,10 +124,10 @@ CZDisplayPatternTest >> testCompletePattern [
 
 - --> author: Adrien Barreau and Robert Marcel; annote: d; title: article; year: 2001 <--
 
-- --> author: Le Chat; annote: choucroute; title: Le chat aime la choucroute; year: 2001; note: note <--'
+- --> author: Le Chat; annote: choucroute; title: Le chat aime la choucroute; year: 2001; note: note <--' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testDefaultSeparator [
 	| generation |
 	
@@ -146,10 +146,10 @@ CZDisplayPatternTest >> testDefaultSeparator [
 
 - Adrien Barreau and Robert Marcel; d; article; 2001 
 
-- Le Chat; choucroute; Le chat aime la choucroute; 2001; note'
+- Le Chat; choucroute; Le chat aime la choucroute; 2001; note' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testDoubleDefaultSeparator [
 	| generation |
 	
@@ -172,10 +172,10 @@ CZDisplayPatternTest >> testDoubleDefaultSeparator [
 
 - 2001*^^*Adrien Barreau and Robert Marcel^**^d^**^article 
 
-- 2001*^^*note^**^Le Chat^**^choucroute^**^Le chat aime la choucroute'
+- 2001*^^*note^**^Le Chat^**^choucroute^**^Le chat aime la choucroute' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testDoubleSeparator [
 	| generation |
 		document addElement: (
@@ -196,10 +196,10 @@ CZDisplayPatternTest >> testDoubleSeparator [
 
 - Adrien Barreau and Robert Marcel ****** d article 2001 
 
-- Le Chat ****** choucroute Le chat aime la choucroute 2001 note'
+- Le Chat ****** choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testEndsWith [
 	| generation |
 	
@@ -218,10 +218,10 @@ CZDisplayPatternTest >> testEndsWith [
 
 - Adrien Barreau and Robert Marcel d article 2001 <--
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note <--'
+- Le Chat choucroute Le chat aime la choucroute 2001 note <--' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testField [
 	| generation |
 	
@@ -240,10 +240,10 @@ CZDisplayPatternTest >> testField [
 
 - Adrien Barreau and Robert Marcel 
 
-- Le Chat'
+- Le Chat' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testFieldWildcard [
 	| generation |
 	
@@ -263,10 +263,10 @@ CZDisplayPatternTest >> testFieldWildcard [
 
 - 2001 Adrien Barreau and Robert Marcel d article 
 
-- 2001 Le Chat choucroute Le chat aime la choucroute note'
+- 2001 Le Chat choucroute Le chat aime la choucroute note' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testFields [
 	| generation |
 	
@@ -286,10 +286,10 @@ CZDisplayPatternTest >> testFields [
 
 - Adrien Barreau and Robert Marcel 2001 
 
-- Le Chat 2001'
+- Le Chat 2001' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testFieldsWildcard [
 	| generation |
 	
@@ -310,10 +310,10 @@ CZDisplayPatternTest >> testFieldsWildcard [
 
 - 2001 Adrien Barreau and Robert Marcel d article 
 
-- note 2001 Le Chat choucroute Le chat aime la choucroute'
+- note 2001 Le Chat choucroute Le chat aime la choucroute' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testSeparator [
 	| generation |
 		document addElement: (
@@ -333,10 +333,10 @@ CZDisplayPatternTest >> testSeparator [
 
 - Adrien Barreau and Robert Marcel *** d article 2001 
 
-- Le Chat *** choucroute Le chat aime la choucroute 2001 note'
+- Le Chat *** choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testSeparators [
 	| generation |
 		document addElement: (
@@ -358,10 +358,10 @@ CZDisplayPatternTest >> testSeparators [
 
 - Adrien Barreau and Robert Marcel *** 2001 *^* d article 
 
-- Le Chat *** 2001 *^* choucroute Le chat aime la choucroute note'
+- Le Chat *** 2001 *^* choucroute Le chat aime la choucroute note' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testWildcard [
 	| generation |
 	
@@ -380,10 +380,10 @@ CZDisplayPatternTest >> testWildcard [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testWildcardField [
 	| generation |
 	
@@ -403,10 +403,10 @@ CZDisplayPatternTest >> testWildcardField [
 
 - Adrien Barreau and Robert Marcel article 2001 d 
 
-- Le Chat Le chat aime la choucroute 2001 note choucroute'
+- Le Chat Le chat aime la choucroute 2001 note choucroute' withUnixLineEndings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 CZDisplayPatternTest >> testWildcardFields [
 	| generation |
 	
@@ -427,5 +427,5 @@ CZDisplayPatternTest >> testWildcardFields [
 
 - article 2001 d Adrien Barreau and Robert Marcel 
 
-- Le chat aime la choucroute 2001 note choucroute Le Chat'
+- Le chat aime la choucroute 2001 note choucroute Le Chat' withUnixLineEndings
 ]

@@ -17,7 +17,7 @@ CZBibtexOutputterTest >> testArticle [
   title = {Fingerprints},
   journal = {Journal of Information System},
   year = {2010}
-}' 
+}' withUnixLineEndings
 ]
 
 { #category : #testing }
@@ -43,7 +43,7 @@ CZBibtexOutputterTest >> testLongArticle [
   url = {http://scg.unibe.ch/archive/external/Abde08a.pdf},
   year = 2008,
   bdsk-url-1 = {http://scg.unibe.ch/archive/external/Abde08a.pdf}
-}'
+}' withUnixLineEndings
 ]
 
 { #category : #testing }
@@ -75,5 +75,5 @@ CZBibtexOutputterTest >> testSeveral [
   url = {http://scg.unibe.ch/archive/external/Abde08a.pdf},
   year = 2008,
   bdsk-url-1 = {http://scg.unibe.ch/archive/external/Abde08a.pdf}
-}' 
+}'  withUnixLineEndings
 ]

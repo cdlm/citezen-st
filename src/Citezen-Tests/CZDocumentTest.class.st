@@ -75,7 +75,7 @@ Default script:
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 
 "The default script is removed only when another script is added.
 But you can see that the comments (and titles) are displayed before this script."
@@ -102,7 +102,7 @@ CZDocumentTest >> testAddCommentElement [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 
 "The default script is removed only when another script is added.
 But you can see that the comments (and titles) are displayed before this script."
@@ -129,7 +129,7 @@ CZDocumentTest >> testAddMultipleScriptsWithAndWithoutDouble [
 
 - Adrien Barreau a article / key 1 2000 
 
-- Adrien Barreau b article / key 2 2002'.
+- Adrien Barreau b article / key 2 2002' withUnixLineEndings.
 
 	generation := 
 		CZDocument new 
@@ -155,7 +155,7 @@ CZDocumentTest >> testAddMultipleScriptsWithAndWithoutDouble [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 
 
 ]
@@ -179,7 +179,7 @@ CZDocumentTest >> testAddScript [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 
 "As you can see, this is the same thing that
 CZDocument new 
@@ -212,7 +212,7 @@ CZDocumentTest >> testAddTitleElement [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 
 "The default script is removed only when another script is added.
 But you can see that the comments (and titles) are displayed before this script."
@@ -242,7 +242,7 @@ CZDocumentTest >> testHtmlHeaderAndFooter [
 </ul>
 
 </body>
-</html>'.
+</html>' withUnixLineEndings.
 
 "///"
 
@@ -253,7 +253,7 @@ CZDocumentTest >> testHtmlHeaderAndFooter [
 			exportAsHtml;
 			header: '<html><head><title>Title</title></head><body>
 
-';
+' withUnixLineEndings;
 			footer: '</body><!-- End of document --></html>'.
 	
 	self assert: document generate =  
@@ -263,7 +263,7 @@ CZDocumentTest >> testHtmlHeaderAndFooter [
 <li> <span class="author">Adrien Barreau</span> <span class="annote">a</span> <span class="title">article / key 1</span> <span class="year">2000</span> </li>
 </ul>
 
-</body><!-- End of document --></html>'.
+</body><!-- End of document --></html>' withUnixLineEndings.
 
 "///"
 
@@ -277,7 +277,7 @@ CZDocumentTest >> testHtmlHeaderAndFooter [
 	self assert: document generate =  
 '<ul>
 <li> <span class="author">Adrien Barreau</span> <span class="annote">a</span> <span class="title">article / key 1</span> <span class="year">2000</span> </li>
-</ul>'.
+</ul>' withUnixLineEndings.
 ]
 
 { #category : #'as yet unclassified' }
@@ -294,7 +294,7 @@ CZDocumentTest >> testHtmlList [
 	self assert: document generate =  
 '<ul>
 <li> <span class="author">Adrien Barreau</span> <span class="annote">a</span> <span class="title">article / key 1</span> <span class="year">2000</span> </li>
-</ul>'.
+</ul>' withUnixLineEndings.
 
 	document := 
 		CZDocument new 
@@ -307,7 +307,7 @@ CZDocumentTest >> testHtmlList [
 	self assert: document generate =  
 '<ol start="1">
 <li> <span class="author">Adrien Barreau</span> <span class="annote">a</span> <span class="title">article / key 1</span> <span class="year">2000</span> </li>
-</ol>'.
+</ol>' withUnixLineEndings.
 ]
 
 { #category : #'as yet unclassified' }
@@ -331,7 +331,7 @@ CZDocumentTest >> testHtmlRestartOrderedListIndex [
 
 <ol start="1">
 <li> <span class="author">Le Chat</span> <span class="annote">choucroute</span> <span class="title">Le chat aime la choucroute</span> <span class="year">2001</span> <span class="note">note</span> </li>
-</ol>'.
+</ol>' withUnixLineEndings.
 
 "///"
 
@@ -353,7 +353,7 @@ CZDocumentTest >> testHtmlRestartOrderedListIndex [
 
 <ol start="2">
 <li> <span class="author">Le Chat</span> <span class="annote">choucroute</span> <span class="title">Le chat aime la choucroute</span> <span class="year">2001</span> <span class="note">note</span> </li>
-</ol>'.
+</ol>' withUnixLineEndings.
 ]
 
 { #category : #'as yet unclassified' }
@@ -384,7 +384,7 @@ CZDocumentTest >> testOrderedList [
 	self assert: generation =  
 '<ul>
 <li> <span class="author">Adrien Barreau</span> <span class="annote">a</span> <span class="title">article / key 1</span> <span class="year">2000</span> </li>
-</ul>'
+</ul>' withUnixLineEndings
 ]
 
 { #category : #'as yet unclassified' }
@@ -405,5 +405,5 @@ CZDocumentTest >> testQuickGeneration [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]

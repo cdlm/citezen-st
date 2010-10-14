@@ -77,7 +77,7 @@ CZScriptTest >> testDoubleSort [
 
 - Adrien Barreau and Robert Marcel c misc / key 3 2001 
 
-- Adrien Barreau b article / key 2 2002'
+- Adrien Barreau b article / key 2 2002' withUnixLineEndings
 
 "sort is case-sensitive"
 ]
@@ -97,7 +97,7 @@ CZScriptTest >> testRemoveFields [
 
 - d 2001 
 
-- choucroute 2001 note'
+- choucroute 2001 note' withUnixLineEndings
 ]
 
 { #category : #'tests-remove fields' }
@@ -115,7 +115,7 @@ CZScriptTest >> testRemoveFieldsBadFields [
 
 - d article 2001 
 
-- choucroute Le chat aime la choucroute 2001 note'
+- choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]
 
 { #category : #'tests-sorting' }
@@ -133,7 +133,7 @@ CZScriptTest >> testReversedSortByField [
 
 - Le Chat choucroute Le chat aime la choucroute 2001 note 
 
-- Adrien Barreau a article / key 1 2000'
+- Adrien Barreau a article / key 1 2000' withUnixLineEndings
 
 ]
 
@@ -152,7 +152,7 @@ CZScriptTest >> testReversedSortByKey [
 
 - Adrien Barreau b article / key 2 2002 
 
-- Adrien Barreau a article / key 1 2000'
+- Adrien Barreau a article / key 1 2000' withUnixLineEndings
 ]
 
 { #category : #'tests-sorting' }
@@ -170,7 +170,7 @@ CZScriptTest >> testReversedSortByType [
 
 - Adrien Barreau a article / key 1 2000 
 
-- Adrien Barreau b article / key 2 2002'
+- Adrien Barreau b article / key 2 2002' withUnixLineEndings
 ]
 
 { #category : #'tests-sorting' }
@@ -199,7 +199,7 @@ CZScriptTest >> testSortByField [
 
 - Le Chat choucroute Le chat aime la choucroute 2001 note 
 
-- Adrien Barreau b article / key 2 2002'
+- Adrien Barreau b article / key 2 2002' withUnixLineEndings
 
 ]
 
@@ -229,7 +229,7 @@ CZScriptTest >> testSortByKey [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]
 
 { #category : #'tests-sorting' }
@@ -247,7 +247,7 @@ CZScriptTest >> testSortByType [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]
 
 { #category : #'test-display order' }
@@ -261,7 +261,7 @@ CZScriptTest >> testTypeOrderDisplayingBadOrder [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 ]
 
 { #category : #'test-display order' }
@@ -279,7 +279,7 @@ CZScriptTest >> testTypeOrderDisplayingWithWildcard [
 
 - Adrien Barreau a article / key 1 2000 
 
-- Adrien Barreau b article / key 2 2002'
+- Adrien Barreau b article / key 2 2002' withUnixLineEndings
 ]
 
 { #category : #'test-display order' }
@@ -291,7 +291,7 @@ CZScriptTest >> testTypeOrderDisplayingWithoutWildcard [
 	self assert: generation = 
 '- Adrien Barreau a article / key 1 2000 
 
-- Adrien Barreau b article / key 2 2002'
+- Adrien Barreau b article / key 2 2002' withUnixLineEndings
 ]
 
 { #category : #'tests-remove' }
@@ -309,7 +309,7 @@ CZScriptTest >> testWithDisplayPattern [
 
 - Adrien Barreau and Robert Marcel, d, article, 2001 
 
-- Le Chat, choucroute, Le chat aime la choucroute, 2001, note'
+- Le Chat, choucroute, Le chat aime la choucroute, 2001, note' withUnixLineEndings
 
 "More display pattern tests in CZDisplayPatternTest"
 ]
@@ -325,7 +325,7 @@ CZScriptTest >> testWithQuery [
 
 - Adrien Barreau and Robert Marcel d article 2001 
 
-- Le Chat choucroute Le chat aime la choucroute 2001 note'
+- Le Chat choucroute Le chat aime la choucroute 2001 note' withUnixLineEndings
 
 
 ]
