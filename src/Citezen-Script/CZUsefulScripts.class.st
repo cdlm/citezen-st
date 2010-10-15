@@ -16,7 +16,7 @@ CZUsefulScripts class >> notWrittenBy: aString [
 	script := (CZScript new).
 	(aString = '')
 		ifFalse: [
-			script query: (CZUsefullQueries dontMatchAuthor: aString)].
+			script query: (CZUsefulQueries dontMatchAuthor: aString)].
 		
 	^ script
 ]
@@ -36,7 +36,7 @@ CZUsefulScripts class >> writtenBy: aString [
 	script := (CZScript new).
 	(aString = '')
 		ifFalse: [
-			script query: (CZUsefullQueries matchAuthor: aString)].
+			script query: (CZUsefulQueries matchAuthor: aString)].
 		
 	^ script
 ]
