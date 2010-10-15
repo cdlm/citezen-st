@@ -27,8 +27,7 @@ CZTextOutputer >> visitCompositeValue: aCZCompositeValue [
 ]
 
 { #category : #visiting }
-CZTextOutputer >> visitDocument: aCZDocument [	
-	CZAccentuateCharactersParser toAccentedCharTable.
+CZTextOutputer >> visitDocument: aCZDocument [
 	aCZDocument elements do: [ :each | each acceptVisitor: self ]
 ]
 
