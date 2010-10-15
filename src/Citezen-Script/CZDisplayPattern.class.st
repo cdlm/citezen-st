@@ -53,7 +53,7 @@ Class {
 	#category : #'Citezen-Script'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZDisplayPattern >> begin [
 	^ begin 
 ]
@@ -63,17 +63,17 @@ CZDisplayPattern >> beginsWith: aString [
 	begin := (aString ifNil: [ '' ]) 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZDisplayPattern >> defaultSeparator [ 
 	^ defaultSeparator 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZDisplayPattern >> defaultSeparator: aString [
 	defaultSeparator := (aString ifNil: [ '' ])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZDisplayPattern >> end [
 	^ end
 ]

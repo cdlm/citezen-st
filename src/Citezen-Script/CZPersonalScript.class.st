@@ -15,10 +15,10 @@ CZPersonalScript class >> me [
 
 { #category : #'as yet unclassified' }
 CZPersonalScript class >> notWrittenByMe [
-	^ CZUsefullScripts notWrittenBy: self me
+	^ CZUsefulScripts notWrittenBy: self me
 ]
 
 { #category : #'as yet unclassified' }
 CZPersonalScript class >> writtenByMe [ 
-	^ CZUsefullScripts writtenBy: self me
+	^ CZUsefulScripts writtenBy: self me
 ]

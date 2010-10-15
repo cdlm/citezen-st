@@ -21,12 +21,12 @@ Class {
 
 { #category : #'as yet unclassified' }
 CZTitleElement class >> newTitle: aString [ 
-	^ self new title: aString
+	^ self new title: aString; yourself
 ]
 
 { #category : #'as yet unclassified' }
 CZTitleElement class >> newTitle: aString htmlLevel: anInteger [
-	^ self new title: aString; htmlLevel: anInteger 
+	^ self new title: aString; htmlLevel: anInteger; yourself
 ]
 
 { #category : #'as yet unclassified' }
@@ -36,42 +36,20 @@ CZTitleElement >> acceptVisitor: aVisitor [
 
 { #category : #'as yet unclassified' }
 CZTitleElement >> htmlLevel [
-	^ htmlLevel 
+	^ htmlLevel ifNil: [htmlLevel := 1]
 ]
 
 { #category : #'as yet unclassified' }
 CZTitleElement >> htmlLevel: anInteger [
-	| level |
-	
-	(anInteger <= 1)
-		ifTrue: [ level := 1 ]
-		ifFalse: [
-			(anInteger >= 6)
-				ifTrue: [ level := 6 ]
-				ifFalse: [ level := anInteger ] ].
-			
-	htmlLevel := level 
-]
-
-{ #category : #'as yet unclassified' }
-CZTitleElement >> initialize [
-	title := self undefinedString.
-	htmlLevel := 1
+	htmlLevel := anInteger min: 6 max: 1
 ]
 
 { #category : #'as yet unclassified' }
 CZTitleElement >> title [
-	^ title
+	^ title ifNil: [title := '']
 ]
 
 { #category : #'as yet unclassified' }
 CZTitleElement >> title: aString [
-	(aString isNil)
-		ifFalse: [ title := aString ]
-		ifTrue: [ title := self undefinedString ]
-]
-
-{ #category : #'as yet unclassified' }
-CZTitleElement >> undefinedString [
-	^ 'UNDEFINED TITLE'
+	title := aString
 ]

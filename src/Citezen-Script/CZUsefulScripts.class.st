@@ -4,13 +4,13 @@ Some useful scripts, on class side.
 Not sure that we will use that for now we should learn and see. 
 "
 Class {
-	#name : #CZUsefullScripts,
+	#name : #CZUsefulScripts,
 	#superclass : #Object,
 	#category : #'Citezen-Script'
 }
 
 { #category : #'as yet unclassified' }
-CZUsefullScripts class >> notWrittenBy: aString [ 
+CZUsefulScripts class >> notWrittenBy: aString [ 
 	
 	| script |
 	script := (CZScript new).
@@ -22,7 +22,7 @@ CZUsefullScripts class >> notWrittenBy: aString [
 ]
 
 { #category : #'as yet unclassified' }
-CZUsefullScripts class >> withoutInriaFields [
+CZUsefulScripts class >> withoutInriaFields [
 	^ (CZScript new)
 		"displayPattern: (CZDisplayPattern new beginWith:'<br />&nbsp;&nbsp;Infos : '; endWith: '.'; defaultSeparator: ', '; field: #year; separator: '  ->  ';field: #author);"
 		"displayPattern: (CZDisplayPattern new field: #*; defaultSeparator: '::');"
@@ -30,7 +30,7 @@ CZUsefullScripts class >> withoutInriaFields [
 ]
 
 { #category : #'as yet unclassified' }
-CZUsefullScripts class >> writtenBy: aString [ 
+CZUsefulScripts class >> writtenBy: aString [ 
 	| script |
 	
 	script := (CZScript new).

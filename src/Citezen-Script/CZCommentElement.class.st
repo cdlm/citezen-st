@@ -18,7 +18,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 CZCommentElement class >> newComment: aString [
-	^ self new comment: aString 
+	^ self new comment: aString; yourself
 ]
 
 { #category : #'as yet unclassified' }
@@ -39,11 +39,7 @@ CZCommentElement >> comment: aString [
 ]
 
 { #category : #'as yet unclassified' }
-CZCommentElement >> initialize [
-	comment := self undefinedString
-]
-
-{ #category : #'as yet unclassified' }
 CZCommentElement >> undefinedString [
+	self isThisEverCalled.
 	^ 'UNDEFINED COMMENT'
 ]
