@@ -233,7 +233,7 @@ CZPersonalWebPageGenerator >> generateTypeOrientedAssociatedBibFile [
 CZPersonalWebPageGenerator >> inout [
 
 	self document
-		inputFile: 'all.bib';
+		inputFile: 'rmod.bib';
 		outputFile: 'stef.html'.
 ]
 
@@ -241,7 +241,7 @@ CZPersonalWebPageGenerator >> inout [
 CZPersonalWebPageGenerator >> inoutYear [ 
 
 	self document
-		inputFile: 'scg.bib';
+		inputFile: 'rmod.bib';
 		outputFile: 'stefY.html'.
 ]
 
