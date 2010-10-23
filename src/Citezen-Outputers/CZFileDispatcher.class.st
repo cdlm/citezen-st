@@ -6,7 +6,7 @@ CZFileDispatcher new
 	inBibset: (CZFileMerger new inputFiles: #('lse.bib' 'scg.bib') ; merge);
 	outputFilesDescription: {true -> 'rmod.bib' . false -> 'others.bib'};
 	dispatchBlock: [:each | each isTeamEntry];
-	generate
+	generate 
 "
 Class {
 	#name : #CZFileDispatcher,
@@ -14,7 +14,8 @@ Class {
 	#instVars : [
 		'bibset',
 		'dispatchBlock',
-		'outputFilesDescription'
+		'outputFilesDescription',
+		'blackListedFields'
 	],
 	#category : #'Citezen-Outputers'
 }
@@ -28,6 +29,18 @@ CZFileDispatcher class >> example [
 		outputFilesDescription: {true -> 'rmod.bib' . false -> 'other.bib'};
 		dispatchBlock: [:each | each isTeamEntry];
 		generate
+]
+
+{ #category : #action }
+CZFileDispatcher >> blackListedFields [
+	
+	^ blackListedFields 
+]
+
+{ #category : #action }
+CZFileDispatcher >> blackListedFields: aCollection [
+	
+	blackListedFields := aCollection 
 ]
 
 { #category : #action }
@@ -52,7 +65,7 @@ CZFileDispatcher >> generate [
 	outputFilesDescription associationsDo: [:ass |
 		CZBibtexOutputer new 
 			setOutputFile: ass value;
-			blackListedFields: CZEntry privateFields;
+			blackListedFields: self blackListedFields ;
 			initializeOutputStream; 
 			visitSet: (splitDict at: ass key);
 			contents]
@@ -69,6 +82,13 @@ CZFileDispatcher >> initialize [
 
 	super initialize.
 	bibset := CZSet withStandardDefinitions.
+	blackListedFields := #()
+]
+
+{ #category : #action }
+CZFileDispatcher >> onlyPublicFields [
+
+	blackListedFields := CZEntry privateFields
 ]
 
 { #category : #options }
