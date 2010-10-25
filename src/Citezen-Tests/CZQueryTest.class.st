@@ -60,6 +60,36 @@ CZQueryTest >> testBibAndQuery [
 ]
 
 { #category : #tests }
+CZQueryTest >> testBibAndQueryWithFalse [
+	"self debug: #testBibAndQueryWithFalse"
+	
+	| query query1 query2 collection index |
+	query1 := CZFalseQuery new.
+	query2 := CZFieldQuery named: #year checks: [ :each | self halt. ].
+	query := query1 AND: query2.
+	self assert: bibset entries size = 5.
+	collection := bibset entries select: [ :each | query value: each ].
+	self assert: (collection size = 0).
+	
+	self shouldnt: [ bibset entries select: [ :each | query value: each ]] raise: Halt.
+]
+
+{ #category : #tests }
+CZQueryTest >> testBibAndQueryWithTrue [
+	"self debug: #testBibAndQueryWithTrue"
+	
+	| query query1 query2 collection index |
+	query1 := CZTrueQuery new.
+	query2 := CZFieldQuery named: #year checks: [ :each | each < 2006 ]..
+	query := query1 AND: query2.
+	self assert: bibset entries size = 5.
+	collection := bibset entries select: [ :each | query value: each ].
+	self assert: (collection size = 4).
+	
+	
+]
+
+{ #category : #tests }
 CZQueryTest >> testBibFieldCompareQuery [
 	| query collection index |
 	query := CZFieldQuery named: #year checks: [ :each | each <= 2005].
@@ -157,6 +187,40 @@ CZQueryTest >> testBibOrQuery [
 	bibset entries do: [ :each | ((each at: #year ifAbsent: 2006) value <= 2005) ifTrue: 
 		[ index := index + 1. 
 		  self assert: ((collection at: index) = each) ]]
+]
+
+{ #category : #tests }
+CZQueryTest >> testBibOrQueryWithFalse [
+	"self debug: #testBibOrQueryWithFalse"
+	
+	| query query1 query2 collection index |
+	query1 := CZFalseQuery new.
+	query2 := CZFieldQuery named: #year checks: [ :each | each < 2005 ].
+	query := query1 OR: query2.
+	
+	collection := bibset entries select: [ :each | query value: each ].
+	
+	self assert: (collection size = 2).
+	
+	
+]
+
+{ #category : #tests }
+CZQueryTest >> testBibOrQueryWithTrue [
+	"self debug: #testBibOrQueryWithTrue"
+	
+	| query query1 query2 collection index |
+	query1 := CZTrueQuery new.
+	query2 := CZFieldQuery named: #year checks: [ :each | self halt. ].
+	query := query1 OR: query2.
+	self assert: (bibset entries size = 5).
+	
+	collection := bibset entries select: [ :each | query value: each ].
+	
+	self assert: (collection size = 5).
+	self shouldnt: [bibset entries select: [ :each | query value: each ]] raise: Halt. 
+	
+	
 ]
 
 { #category : #tests }
