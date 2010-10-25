@@ -438,6 +438,14 @@ CZPersonalWebPageGenerator >> setConferenceDisplayPattern: aPattern [
 	conferenceDisplayPattern := aPattern
 ]
 
+{ #category : #accessing }
+CZPersonalWebPageGenerator >> setDocument [
+
+	self document 
+		inputFile: inputFileName;
+		outputFile: outputFileName 
+]
+
 { #category : #script }
 CZPersonalWebPageGenerator >> toolDemosScript [
 	^ CZScript new
@@ -464,8 +472,8 @@ CZPersonalWebPageGenerator >> topConferencesScript [
 CZPersonalWebPageGenerator >> typeOriented [
 	"self new generateTypeOriented"
 	
-	self outputFile: 'stef.html'.
-	self inputFile: 'rmod.bib'.
+	self outputFileName: 'stef.html'.
+	self inputFileName: 'rmod.bib'.
 	self setDocument..
 	self typeOrientedConfiguration.
 	
