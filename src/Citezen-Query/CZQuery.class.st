@@ -11,8 +11,20 @@ These 3 messages are constructors shared by all queries. They respectively creat
 Class {
 	#name : #CZQuery,
 	#superclass : #Object,
+	#classVars : [
+		'CZFalseQueryInstance',
+		'CZTrueQueryInstance'
+	],
 	#category : #'Citezen-Query'
 }
+
+{ #category : #'initialize-release' }
+CZQuery class >> initialize [
+	"self initialize"
+	
+	CZFalseQueryInstance := CZFalseQuery new.
+	CZTrueQueryInstance := CZTrueQuery new
+]
 
 { #category : #public }
 CZQuery >> AND: aQuery [

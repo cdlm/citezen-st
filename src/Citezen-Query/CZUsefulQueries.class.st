@@ -14,5 +14,5 @@ CZUsefulQueries class >> dontMatchAuthor: aString [
 
 { #category : #'as yet unclassified' }
 CZUsefulQueries class >> matchAuthor: aString [
-	^ (CZBibFieldQuery named: #author checks: [:each | ('*',aString,'*') match: each])
+	^ (CZFieldQuery named: #author checks: [:each | ('*',aString,'*') match: each])
 ]
