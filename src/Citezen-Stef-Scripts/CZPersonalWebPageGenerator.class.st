@@ -7,7 +7,12 @@ Class {
 	#name : #CZPersonalWebPageGenerator,
 	#superclass : #Object,
 	#instVars : [
-		'document'
+		'document',
+		'outputFileName',
+		'inputFileName',
+		'conferenceDisplayPattern',
+		'articleDisplayPattern',
+		'allDisplayPattern'
 	],
 	#category : #'Citezen-Stef-Scripts'
 }
@@ -27,6 +32,12 @@ CZPersonalWebPageGenerator >> PhDAndHabilitation [
 { #category : #patterns }
 CZPersonalWebPageGenerator >> allDisplayPattern [
 
+	^ allDisplayPattern ifNil: [ allDisplayPattern := self allDisplayPatternDefault ]
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> allDisplayPatternDefault [
+
 	^ CZDisplayPattern new 
 			defaultSeparator: ', ';
 			field: #author;
@@ -39,13 +50,37 @@ CZPersonalWebPageGenerator >> allDisplayPattern [
 			field: #year;
 		"	separator: '---'; "
 			field: #impactfactor;
-			field: #url;
-			field: #doi;
+			field: #rate;
+			endsWith: '.'
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> allDisplayPatternNoWeb [
+
+	^ CZDisplayPattern new 
+			defaultSeparator: ', ';
+			field: #author;
+			field: #title;
+			field: #journal;
+			field: #booktitle;
+			field: #volume;
+			field: #pages;
+			field: #publisher; 
+			field: #year;
+		"	separator: '---'; "
+			field: #impactfactor;
+			field: #rate;
 			endsWith: '.'
 ]
 
 { #category : #patterns }
 CZPersonalWebPageGenerator >> articleDisplayPattern [
+
+	^ articleDisplayPattern ifNil: [ articleDisplayPattern := self articleDisplayPatternDefault ]
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> articleDisplayPatternDefault [
 
 	^ CZDisplayPattern new 
 			defaultSeparator: ', ';
@@ -60,6 +95,24 @@ CZPersonalWebPageGenerator >> articleDisplayPattern [
 			field: #impactfactor;
 			field: #url;
 			field: #doi;
+			endsWith: '.'
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> articleDisplayPatternNoWeb [
+
+	^ CZDisplayPattern new 
+			defaultSeparator: ', ';
+			field: #author;
+			field: #title;
+			field: #journal;
+			field: #volume;
+			field: #pages;
+			field: #publisher; 
+			field: #year;
+		"	separator: '---'; "
+			field: #impactfactor;
+			field: #rate;
 			endsWith: '.'
 ]
 
@@ -86,6 +139,12 @@ CZPersonalWebPageGenerator >> booksScript [
 { #category : #patterns }
 CZPersonalWebPageGenerator >> conferenceDisplayPattern [
 
+	^ conferenceDisplayPattern ifNil: [ conferenceDisplayPattern := self conferenceDisplayPatternDefault ]
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> conferenceDisplayPatternDefault [
+
 	^ CZDisplayPattern new 
 			defaultSeparator: ', ';
 			field: #author;
@@ -97,8 +156,26 @@ CZPersonalWebPageGenerator >> conferenceDisplayPattern [
 			field: #year;
 		"	separator: '---'; "
 			field: #impactFactor;
-			field: #url;
-			field: #doi;
+			field: #impactfactor;
+			field: #rate;
+			endsWith: '.'
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> conferenceDisplayPatternNoWeb [
+
+	^ CZDisplayPattern new 
+			defaultSeparator: ', ';
+			field: #author;
+			field: #title;
+			field: #booktitle;
+			field: #volume;
+			field: #pages;
+			field: #publisher; 
+			field: #year;
+		"	separator: '---'; "
+			field: #impactFactor;
+			field: #misc;
 			endsWith: '.'
 ]
 
@@ -187,14 +264,14 @@ CZPersonalWebPageGenerator >> editorScript [
 CZPersonalWebPageGenerator >> generateSortedByYear [
 	"self new generateSortedByYear"
 	
-	self inoutYear.
-	self document 
-		displayFullName.
+	self outputFile: 'stefY.html'.
+	self inputFile: 'rmod.bib'.
+	self setDocument..
+	self document displayFullName.
 	1999 to: 2009
 		do: [:year | 
 		self document 
-				addElement: (CZTitleElement new 
-							title: 'Articles in ', year asString; htmlLevel: 4);
+				addElement: (CZTitleElement new  title: 'Articles in ', year asString; htmlLevel: 4);
 				addElement: (self yearScript: year)].
 	
 	self document exportAsHtml. 
@@ -207,6 +284,23 @@ CZPersonalWebPageGenerator >> generateTypeOriented [
 	"self new generateTypeOriented"
 	
 	self typeOriented.
+	self configure.
+	self document generate.
+	^ self document
+]
+
+{ #category : #public }
+CZPersonalWebPageGenerator >> generateTypeOriented20062009 [
+	"self new generateTypeOriented20062009"
+	
+	self inputFileName: 'rmod.bib'.
+	self document outputFile: 'stef2006-10.html'.
+	self setAllDisplayPattern: self allDisplayPatternNoWeb.
+	self setArticleDisplayPattern: self articleDisplayPatternNoWeb.
+	self setConferenceDisplayPattern:  self conferenceDisplayPatternNoWeb.
+	
+	self document bibsetInput: self select20062009.
+	self typeOrientedConfiguration.
 	self configure.
 	self document generate.
 	^ self document
@@ -230,19 +324,13 @@ CZPersonalWebPageGenerator >> generateTypeOrientedAssociatedBibFile [
 ]
 
 { #category : #'file parameter' }
-CZPersonalWebPageGenerator >> inout [
-
-	self document
-		inputFile: 'rmod.bib';
-		outputFile: 'stef.html'.
+CZPersonalWebPageGenerator >> inputFileName [
+	^ inputFileName
 ]
 
 { #category : #'file parameter' }
-CZPersonalWebPageGenerator >> inoutYear [ 
-
-	self document
-		inputFile: 'rmod.bib';
-		outputFile: 'stefY.html'.
+CZPersonalWebPageGenerator >> inputFileName: aString [
+	inputFileName := aString
 ]
 
 { #category : #script }
@@ -311,6 +399,45 @@ CZPersonalWebPageGenerator >> onlyStefAuthor [
 	^ CZFieldQuery named: #author checks: [ :value | '*Ducasse*' match: value ]
 ]
 
+{ #category : #'file parameter' }
+CZPersonalWebPageGenerator >> outputFileName [
+	^ outputFileName 
+]
+
+{ #category : #'file parameter' }
+CZPersonalWebPageGenerator >> outputFileName: aString [
+	outputFileName := aString
+]
+
+{ #category : #public }
+CZPersonalWebPageGenerator >> select20062009 [
+	
+	| rmod selected|	
+	rmod :=  (CZBibParser parse: ((FileStream readOnlyFileNamed: inputFileName ) contents)).
+	selected := rmod select: (CZFieldQuery 
+					named: #year 
+					checks: [ :value | value asNumber between: 2006 and: 2010]).
+	^ selected
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> setAllDisplayPattern: aPattern [
+
+	allDisplayPattern := aPattern
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> setArticleDisplayPattern: aPattern [
+
+	articleDisplayPattern := aPattern
+]
+
+{ #category : #patterns }
+CZPersonalWebPageGenerator >> setConferenceDisplayPattern: aPattern [
+
+	conferenceDisplayPattern := aPattern
+]
+
 { #category : #script }
 CZPersonalWebPageGenerator >> toolDemosScript [
 	^ CZScript new
@@ -337,7 +464,17 @@ CZPersonalWebPageGenerator >> topConferencesScript [
 CZPersonalWebPageGenerator >> typeOriented [
 	"self new generateTypeOriented"
 	
-	self inout.
+	self outputFile: 'stef.html'.
+	self inputFile: 'rmod.bib'.
+	self setDocument..
+	self typeOrientedConfiguration.
+	
+]
+
+{ #category : #public }
+CZPersonalWebPageGenerator >> typeOrientedConfiguration [
+	"self new typeOrientedConfiguration"
+	
 	self document 
 		displayFullName ;
 		orderedList ;
