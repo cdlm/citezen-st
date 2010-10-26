@@ -60,8 +60,9 @@ CPQueryResult >> querySpec: aQuerySpec [
 { #category : #rendering }
 CPQueryResult >> renderByAuthorOn: html [ 
 	<ignoreForCoverage>
-	html
-		orderedList: [bibList sortByAuthor entries
+	html orderedList
+		class: 'bibliography';
+		with: [bibList sortByAuthor entries
 				do: [:each | html
 						listItem class: 'entry'; with: [self renderEntry: each on: html]]].
 	self renderTruncatedOn: html.
@@ -69,7 +70,7 @@ CPQueryResult >> renderByAuthorOn: html [
 
 { #category : #rendering }
 CPQueryResult >> renderByCategoryOn: html [ 
-	| papers extracted drafts articles journalpapers inproceedings tooldemos workshoppapers |
+	| papers extracted drafts articles journalpapers inproceedings conferencepapers tooldemos |
 	<ignoreForCoverage>
 
 	papers := bibList sortByAuthor.
@@ -81,28 +82,27 @@ CPQueryResult >> renderByCategoryOn: html [
 	extracted := papers extractSatisfying: [ :entry | entry containsKeyword: 'invited' ].
 	self renderSubList: extracted named: 'Invited Papers' on: html.
 
-	extracted := papers extractType: #book.
+	extracted := papers extractType: CZEntry book.
 	self renderSubList: extracted named: 'Books' on: html.
 
-	articles := papers extractType: #article.
+	articles := papers extractType: CZEntry article.
 	journalpapers := articles extractSatisfying: [ :entry | entry containsKeyword: 'internationaljournal' ].
 	self renderSubList: journalpapers named: 'Refereed Papers in International Journals' on: html.
 	self renderSubList: articles named: 'Other Articles' on: html.
 
-	inproceedings := papers extractType: #inproceedings.
-	workshoppapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalworkshop' ].
-	"conferencepapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalconference' ]."
+	inproceedings := papers extractType: CZEntry inproceedings.
+	conferencepapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalconference' ].
 	tooldemos := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'tooldemo' ].
-	self renderSubList: inproceedings named: 'Refereed Papers in International Conferences' on: html.
-	self renderSubList: workshoppapers named: 'Refereed Papers in International Workshops' on: html.
+	self renderSubList: conferencepapers named: 'Refereed Papers in International Conferences' on: html.
+	self renderSubList: inproceedings named: 'Refereed Papers in International Workshops' on: html.
 
-	extracted := papers extractType: #incollection.
+	extracted := papers extractType: CZEntry incollection.
 	self renderSubList: extracted named: 'Book Chapters' on: html.
 
-	extracted := papers extractSatisfying:  [ :entry |  entry type = #mastersthesis or: [ entry type = #phdthesis ] ].
+	extracted := papers extractSatisfying:  [ :entry |  entry type = CZEntry mastersthesis or: [ entry type = CZEntry phdthesis ] ].
 	self renderSubList: extracted named: 'Theses' on: html.
 
-	extracted := papers extractType: #techreport.
+	extracted := papers extractType: CZEntry techreport.
 	self renderSubList: extracted named: 'Technical Reports' on: html.
 
 	" #misc # #booklet  #inbook #manual #unpublished"
@@ -171,12 +171,14 @@ CPQueryResult >> renderDisplayOn: html [
 		beSubmitOnChange
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 CPQueryResult >> renderEntries: entries forYear: year on: html [ 
 	<ignoreForCoverage>
 	entries ifNotEmpty: 
 		[ html heading: year printString.
-		html orderedList: [ entries do: [ :each | html listItem class: 'entry'; with: [self renderEntry: each on: html] ] ] ]
+		html orderedList
+				class: 'bibliography';
+				with: [ entries do: [ :each | html listItem class: 'entry'; with: [self renderEntry: each on: html] ] ] ]
 ]
 
 { #category : #rendering }
@@ -227,7 +229,9 @@ CPQueryResult >> renderSubList: aBibList named: heading on: html [
 	<ignoreForCoverage>
 	aBibList entries notEmpty
 		ifTrue: [html heading: heading.
-			html orderedList: [aBibList sortByAuthor entries
+			html orderedList
+				class: 'bibliography';
+				with: [aBibList sortByYear entries
 						do: [:each | html listItem class: 'entry'; with: [self renderEntry: each on: html]]]]
 ]
 

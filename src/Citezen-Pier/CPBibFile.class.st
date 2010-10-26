@@ -99,12 +99,13 @@ CPBibFile >> initialize [
 
 { #category : #testing }
 CPBibFile >> invariant [
-	^ self file notNil and: [self maxResults isInteger] and: [self isValid]
+	^ self file notNil and: [self maxResults isInteger
+		and: [self isValid]]
 ]
 
 { #category : #testing }
 CPBibFile >> isExpired [
-	^ self isValid and: [file modificationTime > timestamp]
+	^ self isValid and: [file entry modification > timestamp]
 ]
 
 { #category : #testing }
@@ -116,15 +117,15 @@ CPBibFile >> isValid [
 CPBibFile >> loadBibList [
 	bibList := nil.
 	errorString := ''.
-	(file filePath endsWith: '.bib') 
+	(file basename endsWith: '.bib') 
 		ifTrue: 
 			[ file exists 
 				ifTrue: 
-					[ timestamp := file modificationTime.
-					bibList := CPBibList from: file contents ]
-				ifFalse: [ errorString := file filePath , ' does not exist. ' ] ]
+					[ timestamp := file entry modification.
+					bibList := CPBibList from: (String fromByteArray: file readStream contents) ]
+				ifFalse: [ errorString := file pathString , ' does not exist. ' ] ]
 		ifFalse: 
-			[ errorString := file filePath , ' does not appear to be a bibtex file. ' ]
+			[ errorString := file pathString , ' does not appear to be a bibtex file. ' ]
 ]
 
 { #category : #accessing }
