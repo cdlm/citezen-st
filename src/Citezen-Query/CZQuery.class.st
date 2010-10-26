@@ -26,6 +26,14 @@ CZQuery class >> initialize [
 	CZTrueQueryInstance := CZTrueQuery new
 ]
 
+{ #category : #useful }
+CZQuery class >> isInternationalJournalQuery [
+
+	^ (CZFieldQuery 
+			named: #annote 
+			checks: [ :value | '*internationaljournal*' match: value ])
+]
+
 { #category : #public }
 CZQuery >> AND: aQuery [
 	^ (CZAndQuery new)
