@@ -365,6 +365,11 @@ ConfigurationOfCitezen >> baseline05: spec [
 				spec
 					className: 'ConfigurationOfSmaCC';
 					file: 'ConfigurationOfSmaCC';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Filesystem' with: [
+				spec
+					className: 'ConfigurationOfFilesystem';
+					file: 'ConfigurationOfFilesystem';
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
 
 		spec
@@ -380,7 +385,7 @@ ConfigurationOfCitezen >> baseline05: spec [
 			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte') ];
 			package: 'Citezen-Checking' with: [ spec requires: 'Core' ];
 			package: 'Citezen-CommandLine' with: [ spec requires: #('Core' 'OSProcess') ];
-			package: 'Citezen-Tests' with: [ spec requires: 'Core' ].
+			package: 'Citezen-Tests' with: [ spec requires: #('Core' 'Filesystem') ].
 			
 		spec
 			group: 'default' with: #('NoWeb' 'Web');
