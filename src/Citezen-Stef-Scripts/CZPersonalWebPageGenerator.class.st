@@ -22,7 +22,7 @@ CZPersonalWebPageGenerator >> PhDAndHabilitation [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
+		query: (self withAuthor 
 					AND: ((CZTypeQuery checks: [ :each | each = #phdthesis]) 
 							OR: (CZFieldQuery 
 									named: #annote 
@@ -116,15 +116,18 @@ CZPersonalWebPageGenerator >> articleDisplayPatternNoWeb [
 			endsWith: '.'
 ]
 
+{ #category : #parameters }
+CZPersonalWebPageGenerator >> author [
+
+	^ '*Ducasse*'
+]
+
 { #category : #script }
 CZPersonalWebPageGenerator >> bookChapterScript [ 
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
-								named: #annote 
-								checks: [ :value | '*articlebook*' match: value ]))
+		query: (self withAuthor AND: (self withType: '*articlebook*') )
 ]
 
 { #category : #script }
@@ -132,7 +135,7 @@ CZPersonalWebPageGenerator >> booksScript [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
+		query: (self withAuthor 
 					AND: (CZTypeQuery checks: [ :each | each = #book] ))
 ]
 
@@ -155,7 +158,6 @@ CZPersonalWebPageGenerator >> conferenceDisplayPatternDefault [
 			field: #publisher; 
 			field: #year;
 		"	separator: '---'; "
-			field: #impactFactor;
 			field: #impactfactor;
 			field: #rate;
 			endsWith: '.'
@@ -174,7 +176,7 @@ CZPersonalWebPageGenerator >> conferenceDisplayPatternNoWeb [
 			field: #publisher; 
 			field: #year;
 		"	separator: '---'; "
-			field: #impactFactor;
+			field: #impactfactor;
 			field: #misc;
 			endsWith: '.'
 ]
@@ -184,7 +186,7 @@ CZPersonalWebPageGenerator >> conferencesScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
+		query: (self withAuthor 
 					AND: (CZFieldQuery 
 								named: #annote 
 								checks: [ :value | ('*internationalconference*' match: value) 
@@ -250,14 +252,11 @@ CZPersonalWebPageGenerator >> editorScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
-		query: ((CZFieldQuery named: #editor checks: [ :value | '*Ducasse*' match: value ])
+		query: ((CZFieldQuery named: #editor checks: [ :value | self author match: value ])
 					"AND: (CZBibFieldQuery 
 								named: #annote 
 								checks: [ :value | '*editor*' match: value ])"
-					OR: (CZFieldQuery
-								named: #annot
-								checks: [:value | '*workshopproceedings*' match: value]			
-								))
+					OR: (self withType: '*workshopproceedings*') )
 ]
 
 { #category : #public }
@@ -336,10 +335,7 @@ CZPersonalWebPageGenerator >> internationalWorkshopScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
-								named: #annote 
-								checks: [ :value | '*internationalworkshop*' match: value ]))
+		query: (self withAuthor AND: (self withType: '*internationalworkshop*') )
 ]
 
 { #category : #script }
@@ -347,10 +343,7 @@ CZPersonalWebPageGenerator >> invitedScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
-								named: #annote 
-								checks: [ :value | '*invited*' match: value ]))
+		query: (self withAuthor AND: (self withType: '*invited*') )
 ]
 
 { #category : #script }
@@ -358,7 +351,7 @@ CZPersonalWebPageGenerator >> journalsScript [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
+		query: (self withAuthor 
 					AND: CZQuery isInternationalJournalQuery )
 ]
 
@@ -373,10 +366,7 @@ CZPersonalWebPageGenerator >> nationalConferencesScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
-								named: #annote 
-								checks: [ :value | 'nationalconference*' match: value ]))
+		query: (self withAuthor AND: (self withType: 'nationalconference*') )
 ]
 
 { #category : #script }
@@ -384,7 +374,7 @@ CZPersonalWebPageGenerator >> nationalJournalsScript [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
+		query: (self withAuthor 
 					AND: (CZFieldQuery 
 								named: #annote 
 								checks: [ :value | ('*nationaljournal*' match: value) and: [('*internationaljournal*' match: value) not] ]))
@@ -398,11 +388,6 @@ CZPersonalWebPageGenerator >> noWebFormat [
 	self setConferenceDisplayPattern:  self conferenceDisplayPatternNoWeb.
 	
 
-]
-
-{ #category : #queries }
-CZPersonalWebPageGenerator >> onlyStefAuthor [
-	^ CZFieldQuery named: #author checks: [ :value | '*Ducasse*' match: value ]
 ]
 
 { #category : #'file parameter' }
@@ -457,10 +442,8 @@ CZPersonalWebPageGenerator >> toolDemosScript [
 	^ CZScript new
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
-								named: #annote 
-								checks: [ :value | '*tooldemo*' match: value ]))
+		query: (self withAuthor 
+					AND: (self withType: '*tooldemo*') )
 ]
 
 { #category : #script }
@@ -468,10 +451,8 @@ CZPersonalWebPageGenerator >> topConferencesScript [
 	^ CZScript new
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
-								named: #annote 
-								checks: [ :value | '*topconference*' match: value ]))
+		query: (self withAuthor 
+					AND: (self withType: '*topconference*') )
 ]
 
 { #category : #public }
@@ -503,7 +484,7 @@ CZPersonalWebPageGenerator >> typeOrientedConfiguration [
 							title: 'Refereed Articles in French Journals'; htmlLevel: 4);					
 		addElement: self nationalJournalsScript;
 		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in Conferences'; htmlLevel: 4);
+							title: 'Refereed Articles in International Conferences'; htmlLevel: 4);
 		addElement: self conferencesScript;
 		addElement: (CZTitleElement new 
 							title: 'Refereed Articles in National Conferences'; htmlLevel: 4);
@@ -512,7 +493,7 @@ CZPersonalWebPageGenerator >> typeOrientedConfiguration [
 							title: 'Invited Articles'; htmlLevel: 4);
 		addElement: self invitedScript;
 		addElement: (CZTitleElement new 
-							title: 'Book Chapter'; htmlLevel: 4);
+							title: 'Book Chapters'; htmlLevel: 4);
 		addElement: self bookChapterScript;
 		addElement: (CZTitleElement new 
 							title: 'Books'; htmlLevel: 4);
@@ -521,13 +502,13 @@ CZPersonalWebPageGenerator >> typeOrientedConfiguration [
 							title: 'Editor'; htmlLevel: 4);
 		addElement: self editorScript;
 		addElement: (CZTitleElement new 
-							title: 'International Workshops Refereed Articles'; htmlLevel: 4);
+							title: 'Refereed Articles in International Workshops'; htmlLevel: 4);
 		addElement: self internationalWorkshopScript;
 		addElement: (CZTitleElement new 
 							title: 'PhD and Habilitation'; htmlLevel: 4);
 		addElement: self PhDAndHabilitation;
 			addElement: (CZTitleElement new 
-							title: 'Tool Demo'; htmlLevel: 4);
+							title: 'Tool Demos'; htmlLevel: 4);
 		addElement: self toolDemosScript ;
 			addElement: (CZTitleElement new 
 							title: 'Vulgarisation'; htmlLevel: 4);
@@ -541,10 +522,21 @@ CZPersonalWebPageGenerator >> vulgarisationsScript [
 	^ CZScript new
 		displayPattern: self allDisplayPattern;
 		reversedSortByField: #year;
-		query: (self onlyStefAuthor 
-					AND: (CZFieldQuery 
-								named: #annote 
-								checks: [ :value | '*vulgarisation*' match: value ]))
+		query: (self withAuthor 
+					AND: (self withType: '*vulgarisation*') )
+]
+
+{ #category : #queries }
+CZPersonalWebPageGenerator >> withAuthor [
+	^ CZFieldQuery named: #author checks: [ :value | self author match: value ]
+]
+
+{ #category : #queries }
+CZPersonalWebPageGenerator >> withType: aQueryString [
+
+	^ CZFieldQuery 
+			named: #annote 
+			checks: [ :value | aQueryString match: value ]
 ]
 
 { #category : #script }
@@ -553,7 +545,7 @@ CZPersonalWebPageGenerator >> yearScript: aYear [
 	^ CZScript new
 		displayPattern: self allDisplayPattern;
 		sortByField: #author;
-		query: (self onlyStefAuthor 
+		query: (self withAuthor 
 					AND: (CZFieldQuery 
 								named: #year 
 								checks: [ :value | value asInteger = aYear ]))

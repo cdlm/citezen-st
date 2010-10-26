@@ -23,11 +23,6 @@ CZRMODScript >> generateTypeOriented20072010 [
 ]
 
 { #category : #'as yet unclassified' }
-CZRMODScript >> onlyStefAuthor [
-	^ CZTypeQuery checks: [ :each | true] 
-]
-
-{ #category : #'as yet unclassified' }
 CZRMODScript >> queriesForReportTypeOriented20072010 [
 	"self new queriesForReportTypeOriented20072010"
 	
@@ -46,4 +41,9 @@ CZRMODScript >> select20062009 [
 					named: #year 
 					checks: [ :value | value asNumber between: 2007 and: 2010]).
 	^ selected
+]
+
+{ #category : #'as yet unclassified' }
+CZRMODScript >> withAuthor [
+	^ CZTypeQuery checks: [ :each | true] 
 ]
