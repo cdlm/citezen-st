@@ -10,6 +10,18 @@ MAReferenceFileModel class >> baseDirectory [
 ]
 
 { #category : #'instance creation' }
+MAReferenceFileModel class >> fromPath: aFSPath [
+	| parents |
+	self flag: 'Ugly, MAExternalFileModels should use FS objects in the 1st place'.
+	parents := Array new: aFSPath size - 1.
+	1 to: aFSPath size - 1 do: [:index | parents at: index put: (aFSPath at: index)].
+	^ self new
+		filename: aFSPath basename;
+		location: parents;
+		yourself
+]
+
+{ #category : #'instance creation' }
 MAReferenceFileModel class >> fromRio: aRio [
 	^ self new
 		filename: aRio fileName;
