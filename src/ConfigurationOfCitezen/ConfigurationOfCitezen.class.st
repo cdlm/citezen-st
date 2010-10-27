@@ -79,8 +79,6 @@ ConfigurationOfCitezen class >> ensureMetacello [
 
 { #category : #synching }
 ConfigurationOfCitezen class >> fetch [ 
-	
-
 	| packageNames |
 	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
 	packageNames 
@@ -128,18 +126,6 @@ ConfigurationOfCitezen class >> loadNoWeb [
 	((ConfigurationOfCitezen project) latestVersion: #development) load: #NoWeb
 ]
 
-{ #category : #synching }
-ConfigurationOfCitezen class >> message [
-
-	^ message ifNil: [message := 'well you should use ConfigurationOfCitezen message: amessage ; push' ]
-]
-
-{ #category : #synching }
-ConfigurationOfCitezen class >> message: aString [
-
-	message := aString
-]
-
 { #category : #'metacello tool support' }
 ConfigurationOfCitezen class >> metacelloVersion: versionString loads: anArrayOrString [
 	"Stash the last version loaded and the list of packages loaded for that version. The list
@@ -164,7 +150,7 @@ ConfigurationOfCitezen class >> push: aMessage [
 		do: [:each | Gofer new
 		squeaksource: 'Citezen';
 		package: each;
-		commit: self message ;
+		commit: aMessage ;
 		push ]
 
 
