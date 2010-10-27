@@ -67,7 +67,7 @@ CZEntry class >> conference [
 { #category : #cleanup }
 CZEntry class >> fieldKeysToRemove [
 
-	^ #(#'date-added' 'date-modified' #'bdsk-url-1' #'bdsk-url-2' )
+	^ #(#'date-added' #'date-modified' #'bdsk-url-1' #'bdsk-url-2' )
 ]
 
 { #category : #metadata }
