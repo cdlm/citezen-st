@@ -1,8 +1,4 @@
 "
-Rework the tool so that we can have bibset functionarlity and file inputy.
-To have a stream like system.
-
-
 we should add the fact that if a document is given a pattern for entries then all the entries get displayed
 using potentially in all the scripts associated to the document.
 
