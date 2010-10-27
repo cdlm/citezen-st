@@ -15,7 +15,7 @@ A rule is a block with one parameter: a CZEntry.
 
 You can check your file with these 3 lines:
 checker := CZChecker new.
-checker fileToParse: '/Users/.../file.bib'.
+checker checkFile: '/Users/.../file.bib'.
 checker checks.
 If you compute it with ""print it"", you'll see the errors.
 If you don't print it, you can do at anytime by doing ""print it"" on that:
@@ -172,7 +172,7 @@ CZChecker >> checkFile: aString [
 
 	errorStream := WriteStream on: String new.
 	[eof] whileFalse: [ self bibtexBlockToCZEntry: self getBibtexBlock ].
-
+	self halt.
 	^ self checks
 
 ]
@@ -264,13 +264,13 @@ CZChecker >> checks [
 				toBeInclude := false ].
 		
 		"checks if the key is unique and changes it if it's not"
-		keys at: entry key put: ((keys at: entry key ifAbsent: 0) + 1).
+		"keys at: entry key put: ((keys at: entry key ifAbsent: 0) + 1).
 		((keys at: entry key) > 1)
 			ifTrue: [ | key |
 				key := entry key.
-				entry key key: '###',(entry key, '_',(keys at: entry key) asString,'###' ).
+				entry key: '###',(entry key, '_',(keys at: entry key) asString,'###' ).
 				errorStream nextPutAll: 'Warning: duplicate key: ', key, ' changed to: ', entry key; cr.
-		error := true ].
+		error := true ]."
 		
 		"checks if the entry respects all the rules"	
 		rules do: [ :rule |
