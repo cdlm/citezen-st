@@ -91,6 +91,11 @@ CZSet >> addMacro: aCZField [
 ]
 
 { #category : #'arranging - combining' }
+CZSet >> anySatisfy:  aBlock [
+	^ self entries anySatisfy: aBlock
+]
+
+{ #category : #'arranging - combining' }
 CZSet >> clean [
 
 	self entries do: [:each | each clean]
@@ -113,7 +118,7 @@ CZSet >> entries [
 	^ entries
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZSet >> entries: aCollection [
 	entries := aCollection 
 ]
@@ -149,6 +154,16 @@ CZSet >> groupedBy: aBlock [
 	self 
 		do: [:each | (result at: (aBlock value: each) ifAbsentPut: CZSet new) addEntry: each].
 	^ result
+]
+
+{ #category : #'arranging - combining' }
+CZSet >> includes: aBlock [
+	^ self entries includes: aBlock
+]
+
+{ #category : #'arranging - combining' }
+CZSet >> includesKey: aKey [
+	^ self entries anySatisfy: [:each | each key = aKey]
 ]
 
 { #category : #'initialize-release' }
