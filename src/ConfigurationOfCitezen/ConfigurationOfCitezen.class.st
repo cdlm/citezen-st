@@ -40,9 +40,6 @@ Class {
 	#classVars : [
 		'LastVersionLoad'
 	],
-	#classInstVars : [
-		'message'
-	],
 	#category : #ConfigurationOfCitezen
 }
 
@@ -158,8 +155,8 @@ ConfigurationOfCitezen class >> project [
 ]
 
 { #category : #synching }
-ConfigurationOfCitezen class >> push [ 
-	"self message: 'Changed commentto load tests and duplicated based on title' ; push"
+ConfigurationOfCitezen class >> push: aMessage [
+	"self  push: 'simpler message implementation' "
 
 	| packageNames |
 	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
@@ -168,23 +165,6 @@ ConfigurationOfCitezen class >> push [
 		squeaksource: 'Citezen';
 		package: each;
 		commit: self message ;
-		push ]
-
-
-
-
-]
-
-{ #category : #synching }
-ConfigurationOfCitezen class >> pushNoComment [
-	
-	| packageNames |
-	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
-	packageNames 
-		do: [:each | Gofer new
-		squeaksource: 'Citezen';
-		package: each;
-		commit;
 		push ]
 
 
