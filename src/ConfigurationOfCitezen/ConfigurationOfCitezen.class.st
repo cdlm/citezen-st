@@ -2,10 +2,34 @@
 There are no released versions yet, so this is needed to load anything:
 
 	((ConfigurationOfCitezen project) latestVersion: #development) load
+	
+	(ConfigurationOfCoolBrowser project version: '0.5') load: { 'Core' }.
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
 
 	ConfigurationOfSmaCC project latestVersion load: 'Tools'
+	
+
+To sync
+
+
+#(	'Citezen-Checking' 
+	'Citezen-Model'
+ 	'Citezen-Model'
+ 	'Citezen-Outputters'
+ 	'Citezen-Query'
+ 	'Citezen-Script'
+ 	'Citezen-Tests'
+ 	'Citezen-Stef-Scripts'
+	)
+do: [:each | Gofer new
+	squeaksource: 'Citezen';
+	package: each;
+	push ]
+
+SystemOrganization categories select: [:each |    '*Citezen*' match: each]
+
+
 "
 Class {
 	#name : #ConfigurationOfCitezen,
@@ -51,6 +75,23 @@ ConfigurationOfCitezen class >> ensureMetacello [
 			gofer load ].
 		"load 'default' group of Metacello"
 		(Smalltalk at: #ConfigurationOfMetacello) perform: #load ]
+]
+
+{ #category : #synching }
+ConfigurationOfCitezen class >> fetch [ 
+	
+
+	| packageNames |
+	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
+	packageNames 
+		do: [:each | Gofer new
+		squeaksource: 'Citezen';
+		package: each;
+		fetch ]
+
+
+
+
 ]
 
 { #category : #'metacello tool support' }
@@ -99,6 +140,41 @@ ConfigurationOfCitezen class >> metacelloVersion: versionString loads: anArrayOr
 ConfigurationOfCitezen class >> project [
 
 	^self new project
+]
+
+{ #category : #synching }
+ConfigurationOfCitezen class >> push [ 
+	"self push"
+
+	| packageNames |
+	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
+	packageNames 
+		do: [:each | Gofer new
+		squeaksource: 'Citezen';
+		package: each;
+		commit: 'adding push and fetch to config';
+		push ]
+
+
+
+
+]
+
+{ #category : #synching }
+ConfigurationOfCitezen class >> pushNoComment [
+	
+	| packageNames |
+	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
+	packageNames 
+		do: [:each | Gofer new
+		squeaksource: 'Citezen';
+		package: each;
+		commit;
+		push ]
+
+
+
+
 ]
 
 { #category : #baselines }
