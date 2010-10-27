@@ -21,14 +21,15 @@ Class {
 }
 
 { #category : #accessing }
-CZDuplicateIdentifier >> duplicates [ 
-	
+CZDuplicateIdentifier >> keyBasedDuplicates [ 
+	"Returns the duplicated entries identified when running withoutInternalKeyDuplicates:"
 	^ duplicates 
 ]
 
 { #category : #accessing }
-CZDuplicateIdentifier >> withoutInternalDuplicates: aBibSet [
-
+CZDuplicateIdentifier >> withoutInternalKeyDuplicates: aBibSet [
+	"Returns a version without duplicated entries based on keys"
+	
 	prioritaryBibSet := aBibSet.
 	withoutDuplications := CZSet new.
 	duplicates := CZSet new.
