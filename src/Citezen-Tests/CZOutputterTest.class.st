@@ -57,19 +57,21 @@ CZOutputterTest >> setUp [
 
 { #category : #testing }
 CZOutputterTest >> testArticle [
+
 	result := renderer entryToString: entry.
 	
 ]
 
 { #category : #testing }
 CZOutputterTest >> testLongArticle [
+	
 	result := renderer entryToString: entry2.
 	
 ]
 
 { #category : #testing }
 CZOutputterTest >> testSeveral [
-
+	
 	result := renderer entriesToString: { entry . entry2}.
 	
 ]
