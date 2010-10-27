@@ -20,13 +20,19 @@ Class {
 	#category : #'Citezen-Outputers'
 }
 
-{ #category : #accessing }
+{ #category : #'key based' }
 CZDuplicateIdentifier >> keyBasedDuplicates [ 
 	"Returns the duplicated entries identified when running withoutInternalKeyDuplicates:"
 	^ duplicates 
 ]
 
-{ #category : #accessing }
+{ #category : #titlebased }
+CZDuplicateIdentifier >> titleBasedDuplicates [ 
+	"Returns the duplicated entries identified when running withoutInternalTitleDuplicates:"
+	^ duplicates 
+]
+
+{ #category : #'key based' }
 CZDuplicateIdentifier >> withoutInternalKeyDuplicates: aBibSet [
 	"Returns a version without duplicated entries based on keys"
 	
@@ -35,6 +41,21 @@ CZDuplicateIdentifier >> withoutInternalKeyDuplicates: aBibSet [
 	duplicates := CZSet new.
 	prioritaryBibSet do: [:each | 
 				(withoutDuplications includesKey:  each key)
+					ifFalse: [withoutDuplications addEntry: each]
+					ifTrue: [duplicates addEntry: each ]].
+	^ withoutDuplications
+	
+]
+
+{ #category : #titlebased }
+CZDuplicateIdentifier >> withoutInternalTitleDuplicates: aBibSet [
+	"Returns a version without duplicated entries based on title"
+	
+	prioritaryBibSet := aBibSet.
+	withoutDuplications := CZSet new.
+	duplicates := CZSet new.
+	prioritaryBibSet do: [:each | 
+				(withoutDuplications anySatisfy: [:ent | ent at: #title])
 					ifFalse: [withoutDuplications addEntry: each]
 					ifTrue: [duplicates addEntry: each ]].
 	^ withoutDuplications
