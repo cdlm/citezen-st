@@ -3,7 +3,7 @@ There are no released versions yet, so this is needed to load anything:
 
 	((ConfigurationOfCitezen project) latestVersion: #development) load
 	
-	(ConfigurationOfCoolBrowser project version: '0.5') load: { 'Core' }.
+	(ConfigurationOfCoolBrowser project version: '0.5') load: { 'Core' . 'Tests'}.
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
 
@@ -159,7 +159,7 @@ ConfigurationOfCitezen class >> project [
 
 { #category : #synching }
 ConfigurationOfCitezen class >> push [ 
-	"self message: 'With message in the push' ; push"
+	"self message: 'Changed commentto load tests and duplicated based on title' ; push"
 
 	| packageNames |
 	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
