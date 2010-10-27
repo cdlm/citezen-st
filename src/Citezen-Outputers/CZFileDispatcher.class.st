@@ -85,12 +85,6 @@ CZFileDispatcher >> initialize [
 	blackListedFields := #()
 ]
 
-{ #category : #action }
-CZFileDispatcher >> onlyPublicFields [
-
-	blackListedFields := CZEntry privateFields
-]
-
 { #category : #options }
 CZFileDispatcher >> outputFilesDescription: pairCollection [
 	"pairCollection is for example of the form {true -> 'rmod.bib' . false -> 'other.bib'}"
