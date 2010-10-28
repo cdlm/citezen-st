@@ -3,8 +3,14 @@ CZDuplicateIdentifier is responsible to find duplicates into either a single bib
 
 | dup load |
 dup := CZDuplicateIdentifier new.
-dup withoutInternalDuplicates: (CZFileLoader bibFromFileNamed: 'rmod.bib') .
-(dup duplicates) inspect.
+dup withoutInternalKeyDuplicates: (CZFileLoader bibFromFileNamed: 'rmod.bib') .
+(dup keyBasedDuplicates) inspect.
+	
+
+| dup load |
+dup := CZDuplicateIdentifier new.
+dup withoutInternalTitleDuplicates: (CZFileLoader bibFromFileNamed: 'rmod.bib') .
+(dup titleBasedDuplicates) inspect.
 	
 "
 Class {
@@ -50,12 +56,12 @@ CZDuplicateIdentifier >> withoutInternalKeyDuplicates: aBibSet [
 { #category : #titlebased }
 CZDuplicateIdentifier >> withoutInternalTitleDuplicates: aBibSet [
 	"Returns a version without duplicated entries based on title"
-	
+
 	prioritaryBibSet := aBibSet.
 	withoutDuplications := CZSet new.
 	duplicates := CZSet new.
 	prioritaryBibSet do: [:each | 
-				(withoutDuplications anySatisfy: [:ent | ent at: #title])
+				(withoutDuplications anySatisfy: [:ent | (ent at: #title) value = (each at: #title) value])
 					ifFalse: [withoutDuplications addEntry: each]
 					ifTrue: [duplicates addEntry: each ]].
 	^ withoutDuplications
