@@ -220,7 +220,7 @@ CZDuplicateIdentifierTest >> testIdentifyDuplicate [
 	dup := CZDuplicateIdentifier new.
 	newBibset := (dup withoutInternalKeyDuplicates: self entriesWithInternalDuplicates).
 	self assert: (newBibset size = 3).
-	self assert: dup duplicates size = 2.
+	self assert: dup keyBasedDuplicates size = 2.
 ]
 
 { #category : #test }
@@ -230,6 +230,6 @@ CZDuplicateIdentifierTest >> testIdentifyDuplicateBasedOnTitle [
 	| dup newBibset |
 	dup := CZDuplicateIdentifier new.
 	newBibset := (dup withoutInternalTitleDuplicates: self entriesWithInternalDuplicatesBasedOnTitle).
-	self assert: (newBibset size = 4).
-	self assert: dup duplicates size = 1.
+	self assert: (newBibset size = 3).
+	self assert: dup keyBasedDuplicates size = 2.
 ]
