@@ -79,15 +79,22 @@ ConfigurationOfCitezen class >> ensureMetacello [
 
 { #category : #synching }
 ConfigurationOfCitezen class >> fetch [ 
-	
+	"fetch all snapshots"
+	self gofer fetch
 
-	| packageNames |
-	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
-	packageNames 
-		do: [:each | Gofer new
-		squeaksource: 'Citezen';
-		package: each;
-		fetch ]
+
+
+
+]
+
+{ #category : #synching }
+ConfigurationOfCitezen class >> gofer [ 
+	| gofer |
+	gofer := Gofer new squeaksource: 'Citezen'.
+	SystemOrganization categories
+		select: [:each | '*Citezen*' match: each ]
+		thenDo: [:each | gofer package: each ].
+	^ gofer
 
 
 
@@ -128,18 +135,6 @@ ConfigurationOfCitezen class >> loadNoWeb [
 	((ConfigurationOfCitezen project) latestVersion: #development) load: #NoWeb
 ]
 
-{ #category : #synching }
-ConfigurationOfCitezen class >> message [
-
-	^ message ifNil: [message := 'well you should use ConfigurationOfCitezen message: amessage ; push' ]
-]
-
-{ #category : #synching }
-ConfigurationOfCitezen class >> message: aString [
-
-	message := aString
-]
-
 { #category : #'metacello tool support' }
 ConfigurationOfCitezen class >> metacelloVersion: versionString loads: anArrayOrString [
 	"Stash the last version loaded and the list of packages loaded for that version. The list
@@ -158,15 +153,18 @@ ConfigurationOfCitezen class >> project [
 ConfigurationOfCitezen class >> push: aMessage [
 	"self  push: 'simpler message implementation' "
 
-	| packageNames |
-	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
-	packageNames 
-		do: [:each | Gofer new
-		squeaksource: 'Citezen';
-		package: each;
-		commit: self message ;
-		push ]
+	self gofer
+		commit: aMessage;
+		push
 
+
+
+
+]
+
+{ #category : #synching }
+ConfigurationOfCitezen class >> update [
+	self gofer update
 
 
 
