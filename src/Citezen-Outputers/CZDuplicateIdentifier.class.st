@@ -12,6 +12,11 @@ dup := CZDuplicateIdentifier new.
 dup withoutInternalTitleDuplicates: (CZFileLoader bibFromFileNamed: 'rmod.bib') .
 (dup titleBasedDuplicates) inspect.
 	
+| dup load |
+dup := CZDuplicateIdentifier new.
+dup keysThatAreIn: (CZFileLoader bibFromFileNamed: '/Users/ducasse/Workspace/SimpleFiles/LSEFiles/lse-bib/bib/rmod.bib') butNotIn:  (CZFileLoader bibFromFileNamed: '/Users/ducasse/Workspace/SimpleFiles/LSEFiles/lse-bib/bib/rmodWithDuplicatesButTag.bib')
+
+
 "
 Class {
 	#name : #CZDuplicateIdentifier,
