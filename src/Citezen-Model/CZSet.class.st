@@ -179,6 +179,12 @@ CZSet >> isEmpty [
 ]
 
 { #category : #accessing }
+CZSet >> keys [
+
+	^ self entries collect: [:each | each key ] 
+]
+
+{ #category : #accessing }
 CZSet >> lookupEntryAt: aSymbol [
 	"Return the entry named aSymbol, looking up the scope chain if necessary."
 	^ self entryAt: aSymbol ifAbsent: [scope ifNotNil: [scope lookupEntryAt: aSymbol]]
