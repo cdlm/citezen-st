@@ -135,6 +135,15 @@ ConfigurationOfCitezen class >> loadNoWeb [
 	((ConfigurationOfCitezen project) latestVersion: #development) load: #NoWeb
 ]
 
+{ #category : #synching }
+ConfigurationOfCitezen class >> merge [
+	self flag: 'doing a merge would probably be safer'
+	self gofer merge
+
+
+
+]
+
 { #category : #'metacello tool support' }
 ConfigurationOfCitezen class >> metacelloVersion: versionString loads: anArrayOrString [
 	"Stash the last version loaded and the list of packages loaded for that version. The list
@@ -164,6 +173,7 @@ ConfigurationOfCitezen class >> push: aMessage [
 
 { #category : #synching }
 ConfigurationOfCitezen class >> update [
+	self flag: 'doing a merge would probably be safer'
 	self gofer update
 
 
