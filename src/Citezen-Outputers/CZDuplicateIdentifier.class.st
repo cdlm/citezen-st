@@ -33,6 +33,15 @@ CZDuplicateIdentifier >> keyBasedDuplicates [
 ]
 
 { #category : #titlebased }
+CZDuplicateIdentifier >> keysThatAreIn: aBibSet butNotIn: anotherBibSet [
+	
+	^ aBibSet  keys difference: anotherBibSet keys 
+	
+
+	
+]
+
+{ #category : #titlebased }
 CZDuplicateIdentifier >> titleBasedDuplicates [ 
 	"Returns the duplicated entries identified when running withoutInternalTitleDuplicates:"
 	^ duplicates 
