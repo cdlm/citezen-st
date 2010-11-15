@@ -51,6 +51,8 @@ CZPersonalWebPageGenerator >> allDisplayPatternDefault [
 		"	separator: '---'; "
 			field: #impactfactor;
 			field: #rate;
+			field: #url;
+			field: #doi;
 			endsWith: '.'
 ]
 
@@ -160,6 +162,8 @@ CZPersonalWebPageGenerator >> conferenceDisplayPatternDefault [
 		"	separator: '---'; "
 			field: #impactfactor;
 			field: #rate;
+			field: #url;
+			field: #doi;
 			endsWith: '.'
 ]
 
@@ -461,7 +465,7 @@ CZPersonalWebPageGenerator >> typeOriented [
 	
 	self outputFileName: 'stef.html'.
 	self inputFileName: 'rmod.bib'.
-	self setDocument..
+	self setDocument.
 	self typeOrientedConfiguration.
 	
 ]
