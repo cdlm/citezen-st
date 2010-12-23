@@ -3,7 +3,7 @@ I am a fixed query which can be embedded in other documents.
 
 I represent an alternative interface to a BibFile.
 
-Instead of presenting a dynmaic interface to compose a query, the query is configured once with the help of Magritte.
+Instead of presenting a dynamic interface to compose a query, the query is configured once with the help of Magritte.
 
 "
 Class {

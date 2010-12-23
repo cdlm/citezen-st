@@ -86,7 +86,9 @@ CPBibEntry >> pierContentsFor: aQueryResult [
 
 { #category : #pier }
 CPBibEntry >> pierField: aFieldSelector [ 
-	^ ((CPPierRenderer forField: aFieldSelector) visit: self entry) contents
+	^ ((CPPierRenderer forField: aFieldSelector)
+			visit: self entry;
+			yourself) contents
 ]
 
 { #category : #pier }
@@ -96,7 +98,7 @@ CPBibEntry >> pierLinkFor: aQueryResult [
 
 { #category : #pier }
 CPBibEntry >> plainField: aFieldSelector [ 
-	^ ((CPPlainPierRenderer forField: aFieldSelector) visit: self entry) contents
+	^ ((CPPlainPierRenderer forField: aFieldSelector) visit: self entry; yourself) contents
 ]
 
 { #category : #rendering }
