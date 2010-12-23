@@ -41,7 +41,7 @@ CPBibTest >> createBibFilePage [
 	parent := PRKernel defaultRoot.
 	child := CPBibFile named: self bibFilePageName.
 	child maxResults: CPQuerySpec defaultMaxResults.
-	"child file: (MAReferenceFileModel fromRio: (Rio new: self bibFileName))."
+	child file: (MAReferenceFileModel fromRio: (Rio new: self bibFileName)).
 	parent addChild: child.
 	^ child
 ]
