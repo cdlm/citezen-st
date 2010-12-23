@@ -69,6 +69,55 @@ CPQueryResult >> renderByAuthorOn: html [
 ]
 
 { #category : #rendering }
+CPQueryResult >> renderByCategoryBy: field On: html [ 
+	| papers extracted drafts articles inproceedings tooldemos workshoppapers |
+	<ignoreForCoverage>
+
+	papers := bibList sortByAuthor.
+	
+	drafts := CPBibList new.
+	drafts := drafts + (papers extractSatisfying: [ :entry | entry containsKeyword: 'scg-wp' ]).
+	drafts := drafts + (papers extractSatisfying: [ :entry | entry containsKeyword: 'scg-sub' ]).
+
+	extracted := papers extractSatisfying: [ :entry | entry containsKeyword: 'invited' ].
+	self renderSubList: extracted named: 'Invited Papers' by: field on: html.
+
+	extracted := papers extractType: #book.
+	self renderSubList: extracted named: 'Books' by: field on: html.
+
+	articles := papers extractType: #article.
+	self renderSubList: articles named: 'Refereed Papers in International Journals' by: field on: html.
+	"journalpapers := articles extractSatisfying: [ :entry | entry containsKeyword: 'internationaljournal' ].
+	self renderSubList: journalpapers named: 'Refereed Papers in International Journals' by: field on: html.
+	self renderSubList: articles named: 'Other Articles' by: field on: html."
+
+	inproceedings := papers extractType: #inproceedings.
+	workshoppapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalworkshop' ].
+	"conferencepapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalconference' ]."
+	tooldemos := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'tooldemo' ].
+	self renderSubList: inproceedings named: 'Refereed Papers in International Conferences' by: field on: html.
+	self renderSubList: workshoppapers named: 'Refereed Papers in International Workshops' by: field on: html.
+
+	extracted := papers extractType: #incollection.
+	self renderSubList: extracted named: 'Book Chapters' by: field on: html.
+
+	extracted := papers extractSatisfying:  [ :entry |  entry type = #mastersthesis or: [ entry type = #phdthesis ] ].
+	self renderSubList: extracted named: 'Theses' by: field on: html.
+
+	extracted := papers extractType: #techreport.
+	self renderSubList: extracted named: 'Technical Reports' by: field on: html.
+
+	" #misc # #booklet  #inbook #manual #unpublished"
+	self renderSubList: papers named: 'Other publications' by: field on: html.
+	
+	self renderSubList: tooldemos named: 'Tool demos' by: field on: html.
+	self renderSubList: drafts named: 'Drafts' by: field on: html.
+
+	self renderTruncatedOn: html
+
+]
+
+{ #category : #rendering }
 CPQueryResult >> renderByCategoryOn: html [ 
 	| papers extracted drafts articles journalpapers inproceedings tooldemos workshoppapers |
 	<ignoreForCoverage>
@@ -80,37 +129,37 @@ CPQueryResult >> renderByCategoryOn: html [
 	drafts := drafts + (papers extractSatisfying: [ :entry | entry containsKeyword: 'scg-sub' ]).
 
 	extracted := papers extractSatisfying: [ :entry | entry containsKeyword: 'invited' ].
-	self renderSubList: extracted named: 'Invited Papers' on: html.
+	self renderSubList: extracted named: 'Invited Papers' by: #author on: html.
 
 	extracted := papers extractType: CZEntry book.
-	self renderSubList: extracted named: 'Books' on: html.
+	self renderSubList: extracted named: 'Books' by: #author on: html.
 
 	articles := papers extractType: CZEntry article.
 	journalpapers := articles extractSatisfying: [ :entry | entry containsKeyword: 'internationaljournal' ].
-	self renderSubList: journalpapers named: 'Refereed Papers in International Journals' on: html.
-	self renderSubList: articles named: 'Other Articles' on: html.
+	self renderSubList: journalpapers named: 'Refereed Papers in International Journals' by: #author on: html.
+	self renderSubList: articles named: 'Other Articles' by: #author on: html.
 
 	inproceedings := papers extractType: CZEntry inproceedings.
 	workshoppapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalworkshop' ].
 	"conferencepapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalconference' ]."
 	tooldemos := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'tooldemo' ].
-	self renderSubList: inproceedings named: 'Refereed Papers in International Conferences' on: html.
-	self renderSubList: workshoppapers named: 'Refereed Papers in International Workshops' on: html.
+	self renderSubList: inproceedings named: 'Refereed Papers in International Conferences' by: #author on: html.
+	self renderSubList: workshoppapers named: 'Refereed Papers in International Workshops' by: #author on: html.
 
 	extracted := papers extractType: CZEntry incollection.
-	self renderSubList: extracted named: 'Book Chapters' on: html.
+	self renderSubList: extracted named: 'Book Chapters' by: #author on: html.
 
 	extracted := papers extractSatisfying:  [ :entry |  entry type = CZEntry mastersthesis  or: [ entry type = CZEntry phdthesis ] ].
-	self renderSubList: extracted named: 'Theses' on: html.
+	self renderSubList: extracted named: 'Theses' by: #author on: html.
 
 	extracted := papers extractType: CZEntry techreport.
-	self renderSubList: extracted named: 'Technical Reports' on: html.
+	self renderSubList: extracted named: 'Technical Reports' by: #author on: html.
 
 	" #misc # #booklet  #inbook #manual #unpublished"
-	self renderSubList: papers named: 'Other publications' on: html.
+	self renderSubList: papers named: 'Other publications' by: #author on: html.
 	
-	self renderSubList: tooldemos named: 'Tool demos' on: html.
-	self renderSubList: drafts named: 'Drafts' on: html.
+	self renderSubList: tooldemos named: 'Tool demos' by: #author on: html.
+	self renderSubList: drafts named: 'Drafts' by: #author on: html.
 
 	self renderTruncatedOn: html
 
@@ -147,7 +196,9 @@ CPQueryResult >> renderContentOn: html [
 			querySpec sortBy = #year
 				ifTrue: [^ self renderByYearOn: html].
 			querySpec sortBy = #category
-				ifTrue: [^ self renderByCategoryOn: html]]
+				ifTrue: [^ self renderByCategoryBy: #author On: html].
+			querySpec sortBy = #categoryYear
+				ifTrue: [^ self renderByCategoryBy: #year On: html] ]
 ]
 
 { #category : #rendering }
@@ -223,6 +274,18 @@ CPQueryResult >> renderSortedBy: html [
 		on: #sortBy
 			of: querySpec;
 		beSubmitOnChange
+]
+
+{ #category : #rendering }
+CPQueryResult >> renderSubList: aBibList named: heading by: field on: html [ 
+	<ignoreForCoverage>
+	aBibList entries notEmpty
+		ifTrue: [html heading: heading.
+			html orderedList: [ |sortedSubList|
+				sortedSubList := (field == #author)
+					ifTrue: [ aBibList sortByAuthor entries ]
+					ifFalse: [ aBibList sortByYear entries ].
+				sortedSubList do: [:each | html listItem class: 'entry'; with: [self renderEntry: each on: html]]]]
 ]
 
 { #category : #rendering }
