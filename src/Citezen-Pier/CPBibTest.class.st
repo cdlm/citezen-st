@@ -5,7 +5,6 @@ Class {
 	#name : #CPBibTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'filesystem',
 		'testPage',
 		'testSpec'
 	],
@@ -25,11 +24,6 @@ CPBibTest class >> packageNamesUnderTest [
 	^ #('Citezen-Pier')
 ]
 
-{ #category : #running }
-CPBibTest >> bibFile [
-	^ self filesystem root resolve: self bibFilePath
-]
-
 { #category : #'test data' }
 CPBibTest >> bibFileName [
 	^ 'testData.bib'
@@ -40,45 +34,33 @@ CPBibTest >> bibFilePageName [
 	^ 'testData'
 ]
 
-{ #category : #running }
-CPBibTest >> bibFilePath [
-	^ FSPath * self bibFileName
-]
-
-{ #category : #running }
+{ #category : #'test data' }
 CPBibTest >> createBibFilePage [
 	"self new createBibFilePage"
 	| parent child |
 	parent := PRKernel defaultRoot.
 	child := CPBibFile named: self bibFilePageName.
 	child maxResults: CPQuerySpec defaultMaxResults.
-	child file: self bibFile.
-"	child file: (MAReferenceFileModel fromPath: self bibFilePath)."
+	child file: (MAReferenceFileModel fromRio: (Rio new: self bibFileName)).
 	parent addChild: child.
 	^ child
 ]
 
-{ #category : #running }
+{ #category : #'test data' }
 CPBibTest >> createTestBibFile [
 	"self new createTestBibFile"
-
-	self bibFile writeStream
-		nextPutAll: self scgbibSample withUnixLineEndings;
+	(FileDirectory default newFileNamed: self bibFileName)
+		nextPutAll: (self scgbibSample copyReplaceAll: String cr with: String lf);
 		close
 ]
 
-{ #category : #running }
+{ #category : #'test data' }
 CPBibTest >> deleteTestBibFile [
 	"self new deleteTestBibFile"
-	self bibFile delete
+	FileDirectory default deleteFileNamed: self bibFileName
 ]
 
 { #category : #running }
-CPBibTest >> filesystem [
-	^ filesystem ifNil: [ filesystem := FSMemoryFilesystem new ]
-]
-
-{ #category : #tests }
 CPBibTest >> queryMatchingAll [
 	^ testSpec queryString: '='; queryResult.
 ]
@@ -309,13 +291,13 @@ CPBibTest >> setUp [
 	testSpec := CPQuerySpec default bibFile: testPage.
 ]
 
-{ #category : #running }
+{ #category : #'test data' }
 CPBibTest >> tearDown [
 	"self new tearDown"
 	self deleteTestBibFile
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testAuthorQuery [
 	| query result |
 	query := CPAuthorQuerySpec default bibFile: testPage; queryString: 'Ducasse'; authorRegex: 'Ducasse'.
@@ -337,22 +319,22 @@ CPBibTest >> testBibFileExpiry [
 	self assert: oldTimestamp < testPage timestamp
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testBibListSize [
 	self assert: testPage invariant.
 	self assert: testPage bibList size = 8
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testExtractJournals [
 	| testResult extracted |
 	testResult := self queryMatchingAll.
-	extracted := testResult bibList extractType: CZEntry article.
+	extracted := testResult bibList extractType: #article.
 	self assert: extracted size = 1.
 	self assert: extracted entries first key = 'Duca06b'.
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testExtractTheses [
 	| testResult  extracted |
 	testResult := self queryMatchingAll.
@@ -361,7 +343,7 @@ CPBibTest >> testExtractTheses [
 	self assert: (extracted entries collect: [:each | each key]) asSet = #(Deri97a Reng06a) asSet.
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testHighLightedUrl [
 	| entry |
 	entry := (testPage query: 'PetitPetri') bibList entries first.
@@ -371,7 +353,7 @@ CPBibTest >> testHighLightedUrl [
 	self assert: ((entry pierField: #note) includes: $*).
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testKeywordQuery [
 	| result |
 	result := testPage query: 'scg-pub oscar'.
@@ -379,21 +361,21 @@ CPBibTest >> testKeywordQuery [
 	self assert: (result bibList entries first containsKeyword: 'oscar')
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testKeywordQueryCaseSenstive [
 	| result |
 	result := testPage queryCaseSensitive: 'scg-pub oscar'.
 	self assert: result bibList size = 0
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testMaxResults [
 	| result |
 	result := testSpec queryString: '='; maxResults: 2; queryResult.
 	self assert: result size = 2
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testMissingInfo [
 	| query result |
 	query := CPMissingInfoQuerySpec default bibFile: testPage; queryString: 'Acherman'; requiredInfoRegex: 'abstract\s+='.
@@ -401,7 +383,7 @@ CPBibTest >> testMissingInfo [
 	self assert: result size = 1
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testOperators [
 	| all some |
 	all := self queryMatchingAll bibList.
@@ -410,7 +392,7 @@ CPBibTest >> testOperators [
 	self assert: (((all - some) + some) size) = all size.
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testPierFields [
 	| entry |
 	entry := (testPage query: 'Bung09a') bibList entries first.
@@ -421,7 +403,7 @@ CPBibTest >> testPierFields [
 	self assert: (entry pierContents indexOfSubCollection: '!!' startingAt: 0) > 0.
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testQueryResultExpiry [
 	| oldTimestamp queryResult |
 	queryResult := self queryMatchingAll.
@@ -436,7 +418,7 @@ CPBibTest >> testQueryResultExpiry [
 	self assert: oldTimestamp < queryResult timestamp
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testQuerySpecDefaults [
 	self assert: testSpec sortBy = #author.
 	self assert: (CPQuerySpec sortList includes: testSpec sortBy).
@@ -449,21 +431,21 @@ CPBibTest >> testQuerySpecDefaults [
 	
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testRegexQuery [
 	| result |
 	result := testPage query: 'ach\w+ann'.
 	self assert: result size = 1
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testRegexQueryCaseSensitive [
 	| result |
 	result := testPage queryCaseSensitive: 'ach\w+ann'.
 	self assert: result size = 0
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testSortByAuthor [
 	| testResult sorted |
 	testResult := self queryMatchingAll.
@@ -472,7 +454,7 @@ CPBibTest >> testSortByAuthor [
 	self assert: sorted entries last key = 'Reng06a'.
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testSortByYear [
 	| testResult sorted |
 	testResult := self queryMatchingAll.
@@ -481,7 +463,7 @@ CPBibTest >> testSortByYear [
 	self assert: sorted entries first key = 'Bung09a'.
 ]
 
-{ #category : #tests }
+{ #category : #running }
 CPBibTest >> testValidity [
 	self assert: testPage isValid.
 	self assert: testPage errorString isEmpty.

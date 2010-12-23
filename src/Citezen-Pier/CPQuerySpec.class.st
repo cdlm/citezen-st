@@ -72,7 +72,7 @@ CPQuerySpec class >> displayList [
 
 { #category : #values }
 CPQuerySpec class >> sortList [
-	^ #(author year category)
+	^ #(author year category categoryYear)
 ]
 
 { #category : #accessing }
