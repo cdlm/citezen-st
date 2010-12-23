@@ -70,7 +70,7 @@ CPQueryResult >> renderByAuthorOn: html [
 
 { #category : #rendering }
 CPQueryResult >> renderByCategoryBy: field On: html [ 
-	| papers extracted drafts articles inproceedings tooldemos workshoppapers |
+	| papers extracted drafts articles inproceedings tooldemos posters workshoppapers |
 	<ignoreForCoverage>
 
 	papers := bibList sortByAuthor.
@@ -95,6 +95,8 @@ CPQueryResult >> renderByCategoryBy: field On: html [
 	workshoppapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalworkshop' ].
 	"conferencepapers := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'internationalconference' ]."
 	tooldemos := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'tooldemo' ].
+	posters := inproceedings extractSatisfying: [ :entry | entry containsKeyword: 'poster' ]..
+	
 	self renderSubList: inproceedings named: 'Refereed Papers in International Conferences' by: field on: html.
 	self renderSubList: workshoppapers named: 'Refereed Papers in International Workshops' by: field on: html.
 
@@ -111,6 +113,7 @@ CPQueryResult >> renderByCategoryBy: field On: html [
 	self renderSubList: papers named: 'Other publications' by: field on: html.
 	
 	self renderSubList: tooldemos named: 'Tool demos' by: field on: html.
+	self renderSubList: posters named: 'Posters' by: field on: html.
 	self renderSubList: drafts named: 'Drafts' by: field on: html.
 
 	self renderTruncatedOn: html
