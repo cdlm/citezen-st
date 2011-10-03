@@ -50,6 +50,8 @@ CZDocumentTest >> setUp [
 
 { #category : #'as yet unclassified' }
 CZDocumentTest >> testAddCommentAndTitle [
+	"self debug: #testAddCommentAndTitle"
+	
 	| generation |
 	generation := 
 		CZDocument new 
