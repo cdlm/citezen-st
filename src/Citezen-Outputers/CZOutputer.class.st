@@ -3,9 +3,9 @@ CZOutputer is an abstract class (all the visit*: messages are self subclassRespo
 It is a visitor, which can visit all the elements of a CZDocument.
 
 It defines 3 messages:
-- setOutputFile: aString -> gives the path for the field which will contain the result
-- getLastOutput -> returns the last output as a String
-- getOutputFor: aCZDocument -> opens the stream on the specified path (or, if setOutputFile: wasn't call, on String new) and generates the document
+	- setOutputFile: aString -> gives the path for the field which will contain the result
+	- getLastOutput -> returns the last output as a String
+	- getOutputFor: aCZDocument -> opens the stream on the specified path (or, if setOutputFile: wasn't call, on String new) and generates the document
 
 Note that the document is responsible of filtering fields that should not be considered.
 
@@ -126,7 +126,8 @@ CZOutputer >> visitCompositeValue: aCZCompositeValue [
 
 { #category : #visiting }
 CZOutputer >> visitDocument: aCZDocument [
-	self subclassResponsibility 
+	
+	aCZDocument elements do: [ :each | each acceptVisitor: self ]
 ]
 
 { #category : #visiting }

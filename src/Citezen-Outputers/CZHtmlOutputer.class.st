@@ -62,7 +62,7 @@ CZHtmlOutputer >> visitDocument: aCZDocument [
 			ifTrue: [ outputStream nextPutAll: aCZDocument header ]
 			ifFalse: [ outputStream nextPutAll: self defaultHeader ] ].
 	
-	aCZDocument elements do: [ :each | each acceptVisitor: self ].
+	super visitDocument: aCZDocument.
 	
 	aCZDocument getWithoutHeaderAndFooter ifFalse: [
 		(aCZDocument footer isNil not)
@@ -72,11 +72,11 @@ CZHtmlOutputer >> visitDocument: aCZDocument [
 
 { #category : #visiting }
 CZHtmlOutputer >> visitEntry: anEntry [
+	
 	| fields index sep|
 	index := 1.
 	fields := anEntry fields.
 	lastEntryVisited := lastEntryVisited + 1.
-	
 	
 	"sep := separators at: lastEntryVisited."
 	sep := defaultSeparator. self flag: 'suspicious, test code?'.
@@ -120,10 +120,9 @@ CZHtmlOutputer >> visitPeople: aCZPeople [
 
 { #category : #visiting }
 CZHtmlOutputer >> visitScript: aCZScript [
+
 	| list beginList endList entry fields sep |
-	
-	aCZScript generate.
-	
+	aCZScript generate.	
 	list := aCZScript document listIndex.
 	(list = 0)
 		ifTrue: [ beginList := '<ul>'. endList := '</ul>' ]

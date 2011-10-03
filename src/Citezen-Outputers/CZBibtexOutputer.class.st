@@ -13,6 +13,27 @@ CZBibtexOutputer class >> exporterEncoding [
 	^ #bib
 ]
 
+{ #category : #visiting }
+CZBibtexOutputer >> emitEntryHeader: anEntry [
+	"Add to the outputStream @type{key e.g.., @inproceedings{Key90a,"
+	outputStream  
+		nextPut: $@;
+		nextPutAll: anEntry type;
+		nextPut: ${;
+		nextPutAll: anEntry key;
+		nextPut: $,;
+		lf.
+	
+]
+
+{ #category : #visiting }
+CZBibtexOutputer >> emitEntyFooter: anEntry [
+	outputStream 
+		lf;
+		nextPut: $}
+
+]
+
 { #category : #conversion }
 CZBibtexOutputer >> entryToBibtexString: aCZEntry [
 	outputStream := String new writeStream.
@@ -52,30 +73,16 @@ CZBibtexOutputer >> visitDocument: aCZDocument. [
 		each acceptVisitor: self.
 		outputStream nextPut: $}; lf.].
 	outputStream lf.
-	aCZDocument elements do: [ :each | each acceptVisitor: self ]
-	
-
-
+	aCZDocument visitDocument: aCZDocument
 ]
 
 { #category : #visiting }
 CZBibtexOutputer >> visitEntry: anEntry [
-	outputStream  
-		nextPut: $@;
-		nextPutAll: anEntry type;
-		nextPut: ${;
-		nextPutAll: anEntry key;
-		nextPut: $,;
-		lf.
-		
+	self emitEntryHeader: anEntry.
 	(anEntry fields reject: [ :aField | (blackListedFields includes: aField key)])
 		do: [ :each | each acceptVisitor: self ]
 		separatedBy: [ outputStream nextPut: $,; lf ].
-		
-	outputStream 
-		lf;
-		nextPut: $}
-
+	self emitEntryFooter: anEntry
 ]
 
 { #category : #visiting }
