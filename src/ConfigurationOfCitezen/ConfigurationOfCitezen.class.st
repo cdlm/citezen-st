@@ -551,13 +551,13 @@ ConfigurationOfCitezen >> version06: spec [
 			author: 'StephaneDucasse';
 			description: 'With versions before my modifications'.
 		spec 
-			package: 'Citezen-Model' with: 'Citezen-StephaneDucasse.50' ;
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.50' ;
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-AdrienBarreau.20';
 			package: 'Citezen-Rendering' with: 'Citezen-StephaneDucasse.39';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.40';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Scripts-StephaneDucasse.20';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen--StephaneDucasse.20'.]
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.20'.]
 ]
 
 { #category : #versions }
@@ -570,11 +570,14 @@ ConfigurationOfCitezen >> version07: spec [
 			author: 'StephaneDucasse';
 			description: 'With versions starting to modify: adding latex support'.
 		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5' ;
 			package: 'Citezen-Model' with: 'Citezen-StephaneDucasse.50' ;
+		
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-AdrienBarreau.20';
 			package: 'Citezen-Rendering' with: 'Citezen-StephaneDucasse.39';
-			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.40';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.41';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
-			package: 'Citezen-Script' with: 'Citezen-Scripts-StephaneDucasse.20';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen--StephaneDucasse.20'.]
+			package: 'Citezen-Script' with: 'Citezen-Scripts-StephaneDucasse.21';
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.21';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.76'.]
 ]
