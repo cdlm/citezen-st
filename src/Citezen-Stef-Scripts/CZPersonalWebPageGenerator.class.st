@@ -2,6 +2,8 @@
 This class is a private class to play with the Script and Document to generate a couple of personal output. May be a generalization will be usefull to avoid that everybody is doing the same. but for now we are learning.
 
 May be this class should be a subclass of CZDocument
+
+Indeed we have to rethink that! Because I was also thinking that this class can be a subclass of CZDocument.
 "
 Class {
 	#name : #CZPersonalWebPageGenerator,
@@ -303,6 +305,7 @@ CZPersonalWebPageGenerator >> generateTypeOriented20062009 [
 	self document bibsetInput: self select20062009.
 	self typeOrientedConfiguration.
 	self configure.
+	self document exportAsHtml.
 	self document generate.
 	^ self document
 ]
@@ -353,6 +356,7 @@ CZPersonalWebPageGenerator >> invitedScript [
 { #category : #script }
 CZPersonalWebPageGenerator >> journalsScript [
 	^ CZScript new
+		id: 'journalsScript';
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor 
@@ -467,6 +471,7 @@ CZPersonalWebPageGenerator >> typeOriented [
 	self inputFileName: 'rmod.bib'.
 	self setDocument.
 	self typeOrientedConfiguration.
+	self document exportAsHtml.
 	
 ]
 
@@ -517,7 +522,6 @@ CZPersonalWebPageGenerator >> typeOrientedConfiguration [
 			addElement: (CZTitleElement new 
 							title: 'Vulgarisation'; htmlLevel: 4);
 		addElement: self vulgarisationsScript.
-	self document exportAsHtml. 
 	
 ]
 

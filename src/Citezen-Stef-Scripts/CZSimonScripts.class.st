@@ -130,8 +130,9 @@ CZSimonScripts >> typeOriented [
 	
 	self inputFileName: self bibInput.
 	self outputFileName: self htmlOutput.
-	self setDocument..
+	self setDocument.
 	self typeOrientedConfiguration.
+	self document exportAsHtml.
 
 ]
 

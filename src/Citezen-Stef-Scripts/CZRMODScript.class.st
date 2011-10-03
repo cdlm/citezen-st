@@ -16,6 +16,7 @@ CZRMODScript >> generateTypeOriented20072010 [
 	
 	self document bibsetInput: self select20062009.
 	self typeOrientedConfiguration.
+	self document exportAsHtml.
 	self configure.
 	self document restartOrderedListAtEachScript.
 	self document generate.
