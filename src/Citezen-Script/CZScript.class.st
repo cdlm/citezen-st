@@ -40,7 +40,8 @@ Class {
 		'displayPattern',
 		'defaultSeparator',
 		'generatingCollection',
-		'document'
+		'document',
+		'id'
 	],
 	#classInstVars : [
 		'sortMatching'
@@ -103,6 +104,7 @@ CZScript class >> typeSymbol [
 
 { #category : #private }
 CZScript >> acceptVisitor: aVisitor [
+	self id = 'journalsScript' ifTrue: [self halt.].
 	aVisitor visitScript: self
 ]
 
@@ -292,6 +294,20 @@ CZScript >> generatingCollection [
 	^ generatingCollection 
 ]
 
+{ #category : #accessing }
+CZScript >> id [ 
+	"Return the id of the script - handy to debug."
+	
+	^ id
+]
+
+{ #category : #accessing }
+CZScript >> id: anId [
+	"anId can be anything."
+	
+	id := anId.
+]
+
 { #category : #initialize }
 CZScript >> initialize [
 	super initialize.
@@ -321,7 +337,7 @@ CZScript >> query: aQuery [
 CZScript >> removeEntries [ 
 	"This method removes all the entries which match at least one of these two cases :
 		- To be in the blackListBlock 
-		- To have a type whiwh is not include in the displayOrder"
+		- To have a type which is not included in the displayOrder"
 
 	| trueBlock blackListBlock displayOrderBlock condition |
 

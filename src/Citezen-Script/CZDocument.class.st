@@ -100,6 +100,7 @@ CZDocument class >> htmlExporterEncoding [
 
 { #category : #'as yet unclassified' }
 CZDocument class >> initializeExportTypeMatching [
+	"self initializeExportTypeMatching"
 	
 	exportTypeMatching := Dictionary new.
 	CZOutputer allSubclassesDo: [:each |
@@ -170,7 +171,7 @@ CZDocument >> displayShortenedName [
 	authorDisplay := CZPeople displayShortenedName
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> doNotRestartOrderedListAtEachScript [
 	restartOrdered := false
 ]
@@ -183,21 +184,26 @@ CZDocument >> elements [
 
 { #category : #accessing }
 CZDocument >> entitiesAlreadyTreated [
-
+	"Return the list of entities that have been already considered by probably an exporter."
 	^ entriesAlreadyDisplayed
 ]
 
-{ #category : #'public interface' }
+{ #category : #export }
 CZDocument >> exportAsBib [
 	self exporterType: CZBibtexOutputer exporterEncoding
 ]
 
-{ #category : #'public interface' }
+{ #category : #export }
 CZDocument >> exportAsHtml [
 	self exporterType: CZHtmlOutputer exporterEncoding
 ]
 
-{ #category : #'public interface' }
+{ #category : #export }
+CZDocument >> exportAsLaTeX [
+	self exporterType: CZLaTeXOutputer exporterEncoding
+]
+
+{ #category : #export }
 CZDocument >> exportAsText [
 	self exporterType: CZTextOutputer exporterEncoding
 ]
@@ -218,12 +224,12 @@ CZDocument >> fillUpOriginalSet [
 
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> footer [
 	^ footer
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> footer: aString [
 	footer := aString 
 ]
@@ -253,25 +259,25 @@ CZDocument >> getLastOutput [
 	^ outputer getLastOutput
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> getWithoutHeaderAndFooter [
 	^ withoutHeaderAndFooter 
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> header [ 
 	^ header 
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> header: aString [
 	header := aString 
 ]
 
 { #category : #initialize }
 CZDocument >> initialize [ 
+
 	super initialize.
-	
 	changed := false.
 	elements := OrderedCollection with: (CZScript new document: self).
 	self withDoubles.
@@ -286,12 +292,12 @@ CZDocument >> inputFile: aString [
 	inputFile := aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZDocument >> listIndex [
 	^ listIndex
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> orderedList [
 	listIndex := 1.
 	restartOrdered := true
@@ -313,7 +319,6 @@ CZDocument >> requestBibset [
 	"this method looks difficult to understand to me. Should change it"
 
 	| newBibSet |
-
 	withoutDoubles ifFalse: [ ^ lastBibsetRequested := originalBibset copyTwoLevel ].
 	lastBibsetRequested ifNil: [ ^ lastBibsetRequested := originalBibset copyTwoLevel ].
 	
@@ -327,12 +332,12 @@ CZDocument >> requestBibset [
 	^ lastBibsetRequested := newBibSet
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> restartOrderedListAtEachScript [
 	restartOrdered := true
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> unorderedList [
 	listIndex := 0
 ]
@@ -348,7 +353,7 @@ CZDocument >> withDoubles [
 	withoutDoubles := false
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> withHeaderAndFooter [
 	withoutHeaderAndFooter := false
 ]
@@ -358,7 +363,7 @@ CZDocument >> withoutDoubles [
 	withoutDoubles := true
 ]
 
-{ #category : #'interface-html' }
+{ #category : #'output template' }
 CZDocument >> withoutHeaderAndFooter [
 	withoutHeaderAndFooter := true
 ]
