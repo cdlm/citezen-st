@@ -79,22 +79,15 @@ ConfigurationOfCitezen class >> ensureMetacello [
 
 { #category : #synching }
 ConfigurationOfCitezen class >> fetch [ 
-	"fetch all snapshots"
-	self gofer fetch
+	
 
-
-
-
-]
-
-{ #category : #synching }
-ConfigurationOfCitezen class >> gofer [ 
-	| gofer |
-	gofer := Gofer new squeaksource: 'Citezen'.
-	SystemOrganization categories
-		select: [:each | '*Citezen*' match: each ]
-		thenDo: [:each | gofer package: each ].
-	^ gofer
+	| packageNames |
+	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
+	packageNames 
+		do: [:each | Gofer new
+		squeaksource: 'Citezen';
+		package: each;
+		fetch ]
 
 
 
@@ -136,12 +129,15 @@ ConfigurationOfCitezen class >> loadNoWeb [
 ]
 
 { #category : #synching }
-ConfigurationOfCitezen class >> merge [
-	self flag: 'doing a merge would probably be safer'
-	self gofer merge
+ConfigurationOfCitezen class >> message [
 
+	^ message ifNil: [message := 'well you should use ConfigurationOfCitezen message: amessage ; push' ]
+]
 
+{ #category : #synching }
+ConfigurationOfCitezen class >> message: aString [
 
+	message := aString
 ]
 
 { #category : #'metacello tool support' }
@@ -162,19 +158,15 @@ ConfigurationOfCitezen class >> project [
 ConfigurationOfCitezen class >> push: aMessage [
 	"self  push: 'simpler message implementation' "
 
-	self gofer
-		commit: aMessage;
-		push
+	| packageNames |
+	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
+	packageNames 
+		do: [:each | Gofer new
+		squeaksource: 'Citezen';
+		package: each;
+		commit: self message ;
+		push ]
 
-
-
-
-]
-
-{ #category : #synching }
-ConfigurationOfCitezen class >> update [
-	self flag: 'doing a merge would probably be safer'
-	self gofer update
 
 
 
@@ -547,4 +539,42 @@ ConfigurationOfCitezen >> version05: spec [
 			author: 'StephaneDucasse';
 			description: 'Added Stef Scripts'
 	]
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version06: spec [
+	<version: '0.6' imports: #('0.5-baseline')>
+	
+	spec for: #common do: [
+		spec
+			blessing: #development;
+			author: 'StephaneDucasse';
+			description: 'With versions before my modifications'.
+		spec 
+			package: 'Citezen-Model' with: 'Citezen-StephaneDucasse.50' ;
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-AdrienBarreau.20';
+			package: 'Citezen-Rendering' with: 'Citezen-StephaneDucasse.39';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.40';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
+			package: 'Citezen-Script' with: 'Citezen-Scripts-StephaneDucasse.20';
+			package: 'Citezen-Stef-Scripts' with: 'Citezen--StephaneDucasse.20'.]
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version07: spec [
+	<version: '0.7' imports: #('0.5-baseline')>
+	
+	spec for: #common do: [
+		spec
+			blessing: #development;
+			author: 'StephaneDucasse';
+			description: 'With versions starting to modify: adding latex support'.
+		spec 
+			package: 'Citezen-Model' with: 'Citezen-StephaneDucasse.50' ;
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-AdrienBarreau.20';
+			package: 'Citezen-Rendering' with: 'Citezen-StephaneDucasse.39';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.40';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
+			package: 'Citezen-Script' with: 'Citezen-Scripts-StephaneDucasse.20';
+			package: 'Citezen-Stef-Scripts' with: 'Citezen--StephaneDucasse.20'.]
 ]
