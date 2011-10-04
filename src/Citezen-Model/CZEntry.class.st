@@ -83,24 +83,7 @@ CZEntry class >> incollection [
 { #category : #metadata }
 CZEntry class >> initialize [
 	"self initialize"
-	neededFieldsDictionary := Dictionary new.
-	
-	neededFieldsDictionary 
-		at: #article put: #(author title journal year);
-		at: #book put: #(author editor title publisher year);
-		at: #booklet put: #(title);
-		at: #conference put: #(author title booktitle year);
-		at: #inbook put: #(author editor title chapter pages publisher year);
-		at: #incollection put: #(author title booktitle year);
-		at: #inproceedings put: #(author title booktitle year);
-		at: #manual put: #(title);
-		at: #mastersthesis put: #(author title school year);
-		at: #misc put: #();
-		at: #phdthesis put: #(author title school year);
-		at: #proceedings put: #(title year);
-		at: #techreport put: #(author title institution year);
-		at: #unpublished put: #(author title note).
-		
+			
 	optionalFieldsDictionary := Dictionary new.
 	
 	optionalFieldsDictionary 
@@ -118,6 +101,31 @@ CZEntry class >> initialize [
 		at: #proceedings put: #(editor publisher organization address month note key),self inriaFields;
 		at: #techreport put: #(type number address month note key),self inriaFields;
 		at: #unpublished put: #(month year key),self inriaFields
+		
+	
+]
+
+{ #category : #metadata }
+CZEntry class >> initializeNeededFields [
+	"self initializeNeededFields"
+	neededFieldsDictionary := Dictionary new.
+	
+	neededFieldsDictionary 
+		at: #article put: {Author . Title . Journal . Year};
+		at: #book put: {Author . Editor . Title . Publisher . Year};
+		at: #booklet put: {Title};
+		at: #conference put: {Author .  Title . Booktitle . Year};
+		at: #inbook put: {Author . Editor . Title . Chapter . Pages . Publisher . Year};
+		at: #incollection put: {Author . Title . Booktitle . Year};
+		at: #inproceedings put: {Author . Title . Booktitle . Year};
+		at: #manual put: {Title};
+		at: #mastersthesis put: {Author . Title . School . Year};
+		at: #misc put: #();
+		at: #phdthesis put: {Author . Title . School . Year};
+		at: #proceedings put: {Title . Year};
+		at: #techreport put: {Author . Title . Institution . Year};
+		at: #unpublished put: {Author . Title . Note}.
+	^ neededFieldsDictionary 
 		
 	
 ]
@@ -468,7 +476,7 @@ CZEntry >> sortFields: aList [
 { #category : #'predefined accessing' }
 CZEntry >> title [
 
-	^ self at: #title
+	^ self at: Title
 ]
 
 { #category : #accessing }
@@ -490,5 +498,5 @@ CZEntry >> url [
 { #category : #'predefined accessing' }
 CZEntry >> year [
 
-	^ self at: #year
+	^ self at: Year 
 ]
