@@ -1,6 +1,9 @@
+"
+A hack right now to generate document for a team.
+"
 Class {
 	#name : #CZRMODScript,
-	#superclass : #CZPersonalWebPageGenerator,
+	#superclass : #CZWebPageGenerator,
 	#category : #'Citezen-Stef-Scripts'
 }
 

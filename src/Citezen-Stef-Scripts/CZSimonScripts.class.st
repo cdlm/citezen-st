@@ -1,6 +1,6 @@
 Class {
 	#name : #CZSimonScripts,
-	#superclass : #CZPersonalWebPageGenerator,
+	#superclass : #CZPersonalGenerator,
 	#category : #'Citezen-Stef-Scripts'
 }
 
