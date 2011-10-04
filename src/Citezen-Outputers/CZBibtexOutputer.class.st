@@ -14,6 +14,14 @@ CZBibtexOutputer class >> exporterEncoding [
 ]
 
 { #category : #visiting }
+CZBibtexOutputer >> emitEntryFooter: anEntry [
+	outputStream 
+		lf;
+		nextPut: $}
+
+]
+
+{ #category : #visiting }
 CZBibtexOutputer >> emitEntryHeader: anEntry [
 	"Add to the outputStream @type{key e.g.., @inproceedings{Key90a,"
 	outputStream  
@@ -24,14 +32,6 @@ CZBibtexOutputer >> emitEntryHeader: anEntry [
 		nextPut: $,;
 		lf.
 	
-]
-
-{ #category : #visiting }
-CZBibtexOutputer >> emitEntyFooter: anEntry [
-	outputStream 
-		lf;
-		nextPut: $}
-
 ]
 
 { #category : #conversion }
@@ -81,7 +81,7 @@ CZBibtexOutputer >> visitEntry: anEntry [
 	self emitEntryHeader: anEntry.
 	(anEntry fields reject: [ :aField | (blackListedFields includes: aField key)])
 		do: [ :each | each acceptVisitor: self ]
-		separatedBy: [ outputStream nextPut: $,; lf ].
+		separatedBy: [ outputStream nextPut: self fieldSeparator; lf ].
 	self emitEntryFooter: anEntry
 ]
 
@@ -93,11 +93,6 @@ CZBibtexOutputer >> visitField: aField [
 		nextPutAll: aField key;
 		nextPutAll: ' = '.
 	aField dispatchVisitor: self
-]
-
-{ #category : #visiting }
-CZBibtexOutputer >> visitInteger: aCZInteger [
-	outputStream nextPutAll: aCZInteger notExpanded asString 
 ]
 
 { #category : #visiting }
@@ -123,33 +118,26 @@ CZBibtexOutputer >> visitPeople: aCZPeople [
 
 { #category : #visiting }
 CZBibtexOutputer >> visitScript: aCZScript [
-	| list beginList endList entry fields sep |
 
-	aCZScript generate.
-	
+	| list beginList endList entry fields sep |
+	aCZScript generate.	
+		
+	"There is something fondamentally wrong here.
+	why we do not simply invoke the visitor on the list of entries?"	
 	aCZScript generatingCollection do: [ :assoc | 
 		entry := assoc key.
 		fields := assoc value key.
 		sep := assoc value value.
 		
-		outputStream 
-			nextPut: $@;
-			nextPutAll: entry type;
-			nextPutAll: ' {';
-			nextPutAll: entry key;
-			nextPut: $,;
-			lf.
+		self emitEntryHeader: entry.
+		
 		1 to: fields size do: [ :cpt | 
 			outputStream 
 				lf;
 				nextPutAll: '  '.
 			(entry at: (fields at: cpt)) acceptVisitor: self.
 			(cpt = fields size) ifFalse: [ outputStream nextPut: $, ] ].
-		outputStream
-			lf; 
-			nextPutAll: '}';
-			lf;
-			lf
+		self emitEntryFooter: entry.
 	].
 
 ]

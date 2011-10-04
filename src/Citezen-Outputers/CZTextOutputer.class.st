@@ -33,12 +33,8 @@ CZTextOutputer >> visitDocument: aCZDocument [
 
 { #category : #visiting }
 CZTextOutputer >> visitField: aField [
+	
 	aField dispatchVisitor: self
-]
-
-{ #category : #visiting }
-CZTextOutputer >> visitInteger: aCZInteger [
-	outputStream nextPutAll: aCZInteger notExpanded asString 
 ]
 
 { #category : #visiting }
@@ -63,6 +59,8 @@ CZTextOutputer >> visitScript: aCZScript [
 		fields := assoc value key.
 		sep := assoc value value.
 		
+		"There is something fondamentally wrong here.
+	why we do not simply invoke the visitor on the list of entries?"	
 		outputStream nextPut: $-.
 		1 to: fields size do: [ :cpt | 
 			outputStream nextPutAll: (sep at: cpt).

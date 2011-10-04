@@ -22,9 +22,12 @@ Class {
 		'lastOutput',
 		'outputStream',
 		'lastEntryVisited',
-		'defaultSeparator',
 		'authorDisplay',
-		'blackListedFields'
+		'blackListedFields',
+		'fieldSeparator'
+	],
+	#pools : [
+		'CZPool'
 	],
 	#classInstVars : [
 		'blackList'
@@ -55,6 +58,15 @@ CZOutputer >> contents [
 	^  outputStream contents trimBoth
 ]
 
+{ #category : #visiting }
+CZOutputer >> emitEntryFooter: anEntry [
+]
+
+{ #category : #visiting }
+CZOutputer >> emitEntryHeader: anEntry [
+	"Add to the outputStream a header for the correponding anEntry if needed."
+]
+
 { #category : #accessing }
 CZOutputer >> entriesToString: aCollection [
 	outputStream := String new writeStream.
@@ -70,6 +82,18 @@ CZOutputer >> entryToString: aCZEntry [
 	self visitEntry: aCZEntry.
 	outputStream close.
 	^ outputStream contents
+]
+
+{ #category : #accessing }
+CZOutputer >> fieldSeparator [ 
+
+	^ fieldSeparator 
+]
+
+{ #category : #accessing }
+CZOutputer >> fieldSeparator: aCharacter [
+
+	fieldSeparator := aCharacter
 ]
 
 { #category : #accessing }
@@ -94,6 +118,7 @@ CZOutputer >> initialize [
 
 	super initialize.
 	blackListedFields := #().
+	fieldSeparator := $, .
 ]
 
 { #category : #initialize }
@@ -132,7 +157,11 @@ CZOutputer >> visitDocument: aCZDocument [
 
 { #category : #visiting }
 CZOutputer >> visitEntry: anEntry [
-	self subclassResponsibility 
+	self emitEntryHeader: anEntry.
+	(anEntry fields reject: [ :aField | (blackListedFields includes: aField key)])
+		do: [ :each | each acceptVisitor: self ]
+		separatedBy: [ outputStream nextPut: self fieldSeparator; lf ].
+	self emitEntryFooter: anEntry
 ]
 
 { #category : #visiting }
@@ -142,7 +171,7 @@ CZOutputer >> visitField: aField [
 
 { #category : #visiting }
 CZOutputer >> visitInteger: aCZInteger [
-	self subclassResponsibility 
+	outputStream nextPutAll: aCZInteger notExpanded asString 
 ]
 
 { #category : #visiting }
@@ -157,7 +186,29 @@ CZOutputer >> visitPeople: aCZPeople [
 
 { #category : #visiting }
 CZOutputer >> visitScript: aCZScript [
-	self subclassResponsibility
+
+	| list beginList endList entry fields sep |
+	aCZScript generate.	
+
+		
+	outputStream nextPutAll: '\begin{itemize}'; lf.
+	
+	aCZScript generatingCollection do: [ :assoc |
+		entry := assoc key.
+		fields := assoc value key.
+		sep := assoc value value.
+		
+		"This part sucks! why this is not in the visitEntry?"
+		
+		outputStream nextPutAll: '\pub'.
+		1 to: fields size do: [ :cpt | 
+			outputStream nextPutAll: (sep at: cpt).
+			(entry at: (fields at: cpt)) acceptVisitor: self ].
+		outputStream nextPutAll: sep last.
+		outputStream nextPutAll: '.'; lf ].
+	
+	outputStream nextPutAll: '\end{itemize}'; lf; lf.
+
 ]
 
 { #category : #visiting }
@@ -167,10 +218,17 @@ CZOutputer >> visitSet: aSet [
 
 { #category : #visiting }
 CZOutputer >> visitString: aCZString [
-	self subclassResponsibility 
+
+	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZString notExpanded)
 ]
 
 { #category : #visiting }
 CZOutputer >> visitTitle: aCZTitleElement [
-	self subclassResponsibility 
+	
+	outputStream 
+		nextPutAll: '\section{';
+		nextPutAll: aCZTitleElement title;
+		nextPutAll: '}';
+		lf;
+		lf
 ]

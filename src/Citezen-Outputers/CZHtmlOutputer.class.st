@@ -79,7 +79,7 @@ CZHtmlOutputer >> visitEntry: anEntry [
 	lastEntryVisited := lastEntryVisited + 1.
 	
 	"sep := separators at: lastEntryVisited."
-	sep := defaultSeparator. self flag: 'suspicious, test code?'.
+	sep := fieldSeparator. self flag: 'suspicious, test code?'.
 	outputStream nextPutAll: (sep at: 1 ifAbsent: 'Hop').
 	fields do: [ :each |
 		each acceptVisitor: self.
@@ -100,11 +100,6 @@ CZHtmlOutputer >> visitField: aField [
 	aField isDoi
 		ifTrue: [outputStream nextPutAll: '">DOI</a>'].
 	outputStream nextPutAll: '</span>'.
-]
-
-{ #category : #visiting }
-CZHtmlOutputer >> visitInteger: aCZInteger [
-	outputStream nextPutAll: aCZInteger notExpanded asString 
 ]
 
 { #category : #visiting }
@@ -130,6 +125,8 @@ CZHtmlOutputer >> visitScript: aCZScript [
 		
 	outputStream nextPutAll: beginList; lf.
 	
+	"There is something fondamentally wrong here.
+	why we do not simply invoke the visitor on the list of entries?"	
 	aCZScript generatingCollection do: [ :assoc |
 		entry := assoc key.
 		fields := assoc value key.
