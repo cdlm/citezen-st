@@ -3,7 +3,7 @@ There are no released versions yet, so this is needed to load anything:
 
 	((ConfigurationOfCitezen project) latestVersion: #development) load
 	
-	(ConfigurationOfCitezen project version: '0.5') load: { 'NoWeb'}.
+	(ConfigurationOfCitezen project version: '0.7') load: { 'NoWeb'}.
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
 
@@ -633,7 +633,7 @@ ConfigurationOfCitezen >> version06: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version07: spec [
-	<version: '0.6' imports: #('0.6-baseline')>
+	<version: '0.7' imports: #('0.6-baseline')>
 	
 	spec for: #common do: [
 		spec
