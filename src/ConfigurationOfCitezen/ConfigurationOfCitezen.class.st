@@ -624,7 +624,7 @@ ConfigurationOfCitezen >> version06: spec [
 		spec 
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.50' ;
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-AdrienBarreau.20';
-			package: 'Citezen-Rendering' with: 'Citezen-StephaneDucasse.39';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.39';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.40';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Scripts-StephaneDucasse.20';
@@ -645,7 +645,7 @@ ConfigurationOfCitezen >> version07: spec [
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.50' ;
 		
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-AdrienBarreau.20';
-			package: 'Citezen-Rendering' with: 'Citezen-StephaneDucasse.39';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.39';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.41';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Scripts-StephaneDucasse.21';
