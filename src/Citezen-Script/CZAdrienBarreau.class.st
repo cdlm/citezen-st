@@ -18,16 +18,6 @@ CZAdrienBarreau class >> bib [
 ]
 
 { #category : #script }
-CZAdrienBarreau class >> bib2 [
-	^ (CZScript new)
-		sortByField: #annote;
-		exportAsBib;
-		query: ((field named: #year checks: (fieldValue <= 2005 OR: (fieldValue > 2005))) AND: (field named: #annote matches: '*ot*'));
-		blackList: #(u2); 
-		displayOrder: #(unpublished * article)
-]
-
-{ #category : #script }
 CZAdrienBarreau class >> html [
 	^ (CZScript new)
 "		sortByField: #annote;"

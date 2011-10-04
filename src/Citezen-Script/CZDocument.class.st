@@ -339,6 +339,7 @@ CZDocument >> restartOrderedListAtEachScript [
 
 { #category : #'output template' }
 CZDocument >> unorderedList [
+	
 	listIndex := 0
 ]
 

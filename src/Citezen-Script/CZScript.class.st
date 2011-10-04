@@ -104,7 +104,7 @@ CZScript class >> typeSymbol [
 
 { #category : #private }
 CZScript >> acceptVisitor: aVisitor [
-	self id = 'journalsScript' ifTrue: [self halt.].
+	"self id = 'journalsScript' ifTrue: [self halt.]."
 	aVisitor visitScript: self
 ]
 
