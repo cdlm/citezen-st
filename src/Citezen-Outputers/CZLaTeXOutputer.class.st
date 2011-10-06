@@ -100,3 +100,8 @@ CZLaTeXOutputer >> visitPeople: aCZPeople [
 	aCZPeople expandOption: authorDisplay.
 	outputStream nextPutAll:  aCZPeople expanded
 ]
+
+{ #category : #visiting }
+CZLaTeXOutputer >> visitString: aCZString [
+	outputStream nextPutAll: aCZString notExpanded
+]

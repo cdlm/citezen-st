@@ -204,8 +204,7 @@ CZOutputer >> visitScript: aCZScript [
 		1 to: fields size do: [ :cpt | 
 			outputStream nextPutAll: (sep at: cpt).
 			(entry at: (fields at: cpt)) acceptVisitor: self ].
-		outputStream nextPutAll: sep last.
-		outputStream nextPutAll: '.'; lf ].
+		outputStream nextPutAll: sep last; lf ].
 	
 	outputStream nextPutAll: '\end{itemize}'; lf; lf.
 

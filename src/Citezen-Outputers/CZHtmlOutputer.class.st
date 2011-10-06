@@ -39,6 +39,13 @@ CZHtmlOutputer >> defaultHeader [
 ]
 
 { #category : #visiting }
+CZHtmlOutputer >> initialize [ 
+
+	super initialize.
+	lastEntryVisited := 0.
+]
+
+{ #category : #visiting }
 CZHtmlOutputer >> visitComment: aCZCommentElement [
 	outputStream 
 		nextPutAll: '<!-- ';
@@ -80,10 +87,11 @@ CZHtmlOutputer >> visitEntry: anEntry [
 	
 	"sep := separators at: lastEntryVisited."
 	sep := fieldSeparator. self flag: 'suspicious, test code?'.
-	outputStream nextPutAll: (sep at: 1 ifAbsent: 'Hop').
+	
+	outputStream nextPut: fieldSeparator.
 	fields do: [ :each |
 		each acceptVisitor: self.
-		outputStream nextPutAll: (sep at: (index := index + 1) ifAbsent: 'poh')].
+		outputStream nextPut: fieldSeparator]
 ]
 
 { #category : #visiting }
