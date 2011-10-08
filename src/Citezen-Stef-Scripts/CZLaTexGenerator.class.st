@@ -96,9 +96,9 @@ CZLaTexGenerator >> typeOrientedConfiguration [
 		addElement: (CZTitleElement new 
 							title: 'Refereed Articles in International Workshops');
 		addElement: self internationalWorkshopScript;
-		addElement: (CZTitleElement new 
+		"addElement: (CZTitleElement new 
 							title: 'PhD and Habilitation');
-		addElement: self PhDAndHabilitation;
+		addElement: self PhDAndHabilitation;"
 			addElement: (CZTitleElement new 
 							title: 'Tool Demos');
 		addElement: self toolDemosScript ;

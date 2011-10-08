@@ -158,27 +158,28 @@ CZWebPageGenerator >> typeOriented [
 CZWebPageGenerator >> typeOrientedConfiguration [
 	"self new typeOrientedConfiguration"
 	
+	"the htmlLevel: sucks!"
+	self english.
 	self document 
 		displayFullName ;
 		orderedList ;
 		doNotRestartOrderedListAtEachScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in International Journals'; htmlLevel: 4);
+		addElement: (CZTitleElement new title: localization  internationalReviewedJournal; htmlLevel: 4);
 		addElement: self journalsScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in Top Conferences'; htmlLevel: 4);
+		
+		addElement: (CZTitleElement new title:  localization topConferences; htmlLevel: 4);
 		addElement: self topConferencesScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in French Journals'; htmlLevel: 4);					
+		
+		addElement: (CZTitleElement new title: localization nationalReviewedJournal ; htmlLevel: 4);					
 		addElement: self nationalJournalsScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in International Conferences'; htmlLevel: 4);
+		
+		addElement: (CZTitleElement new title: localization internationalConference; htmlLevel: 4);
 		addElement: self conferencesScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in National Conferences'; htmlLevel: 4);
+		
+		addElement: (CZTitleElement new title: localization nationalReviewedConference; htmlLevel: 4);
 		addElement: self nationalConferencesScript;
 		addElement: (CZTitleElement new 
-							title: 'Invited Articles'; htmlLevel: 4);
+							title: localization invitedPapers; htmlLevel: 4);
 		addElement: self invitedScript;
 		addElement: (CZTitleElement new 
 							title: 'Book Chapters'; htmlLevel: 4);
@@ -192,9 +193,9 @@ CZWebPageGenerator >> typeOrientedConfiguration [
 		addElement: (CZTitleElement new 
 							title: 'Refereed Articles in International Workshops'; htmlLevel: 4);
 		addElement: self internationalWorkshopScript;
-		addElement: (CZTitleElement new 
+		"addElement: (CZTitleElement new 
 							title: 'PhD and Habilitation'; htmlLevel: 4);
-		addElement: self PhDAndHabilitation;
+		addElement: self PhDAndHabilitation;"
 			addElement: (CZTitleElement new 
 							title: 'Tool Demos'; htmlLevel: 4);
 		addElement: self toolDemosScript ;

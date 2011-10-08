@@ -16,7 +16,8 @@ Class {
 		'conferenceDisplayPattern',
 		'articleDisplayPattern',
 		'allDisplayPattern',
-		'author'
+		'author',
+		'localization'
 	],
 	#pools : [
 		'CZPool'
@@ -27,6 +28,7 @@ Class {
 { #category : #script }
 CZPersonalGenerator >> PhDAndHabilitation [
 	^ CZScript new
+		id: 'PhDAndHabilitationScript';
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: Year;
 		query: (self withAuthor 
@@ -125,13 +127,13 @@ CZPersonalGenerator >> articleDisplayPatternNoWeb [
 			endsWith: '.'
 ]
 
-{ #category : #parameters }
+{ #category : #accessing }
 CZPersonalGenerator >> author [
 
 	^ author ifNil: [ author := '*Ducasse*']
 ]
 
-{ #category : #parameters }
+{ #category : #accessing }
 CZPersonalGenerator >> author: aPatternedMatchingAuthorNameString [
 	" '*Ducasse*' "
 	
@@ -141,6 +143,7 @@ CZPersonalGenerator >> author: aPatternedMatchingAuthorNameString [
 { #category : #script }
 CZPersonalGenerator >> bookChapterScript [ 
 	^ CZScript new
+		id: 'bookChapterScript';
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor AND: (self withType: '*articlebook*') )
@@ -149,6 +152,7 @@ CZPersonalGenerator >> bookChapterScript [
 { #category : #script }
 CZPersonalGenerator >> booksScript [
 	^ CZScript new
+		id: 'booksScript';
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor 
@@ -202,6 +206,7 @@ CZPersonalGenerator >> conferenceDisplayPatternNoWeb [
 { #category : #script }
 CZPersonalGenerator >> conferencesScript [
 	^ CZScript new
+		id: 'conferencesScript';
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor 
@@ -221,6 +226,7 @@ CZPersonalGenerator >> document [
 CZPersonalGenerator >> editorScript [
 	
 	^ CZScript new
+		id: 'editorScript';
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: ((CZFieldQuery named: #editor checks: [ :value | self author match: value ])
@@ -230,12 +236,31 @@ CZPersonalGenerator >> editorScript [
 					OR: (self withType: '*workshopproceedings*') )
 ]
 
+{ #category : #parameters }
+CZPersonalGenerator >> english [
+
+	localization english
+]
+
+{ #category : #parameters }
+CZPersonalGenerator >> french [
+
+	localization french.
+]
+
 { #category : #public }
 CZPersonalGenerator >> generate [
 	"Once fully configured generate the document."
 	
 	self document generate.
 	^ self document
+]
+
+{ #category : #initialize }
+CZPersonalGenerator >> initialize [
+
+	super initialize.
+	localization := CZLocalisation new.
 ]
 
 { #category : #'file parameter' }
@@ -251,6 +276,7 @@ CZPersonalGenerator >> inputFileName: aString [
 { #category : #script }
 CZPersonalGenerator >> internationalWorkshopScript [
 	^ CZScript new
+		id: 'internationalWorkshopScript';
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor AND: (self withType: '*internationalworkshop*') )
@@ -259,6 +285,7 @@ CZPersonalGenerator >> internationalWorkshopScript [
 { #category : #script }
 CZPersonalGenerator >> invitedScript [
 	^ CZScript new
+		id: 'invitedScript';
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor AND: (self withType: '*invited*') )
@@ -283,6 +310,7 @@ CZPersonalGenerator >> metadata [
 { #category : #script }
 CZPersonalGenerator >> nationalConferencesScript [
 	^ CZScript new
+		id: 'nationalConferencesScript';
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor AND: (self withType: 'nationalconference*') )
@@ -291,6 +319,7 @@ CZPersonalGenerator >> nationalConferencesScript [
 { #category : #script }
 CZPersonalGenerator >> nationalJournalsScript [ 
 	^ CZScript new
+		id: 'nationalJournalsScript';
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor 
@@ -348,6 +377,7 @@ CZPersonalGenerator >> setDocument [
 { #category : #script }
 CZPersonalGenerator >> toolDemosScript [
 	^ CZScript new
+		id: 'toolDemosScript';
 		displayPattern: self articleDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor 
@@ -357,6 +387,7 @@ CZPersonalGenerator >> toolDemosScript [
 { #category : #script }
 CZPersonalGenerator >> topConferencesScript [
 	^ CZScript new
+		id: 'topConferencesScript';
 		displayPattern: self conferenceDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor 
@@ -366,6 +397,7 @@ CZPersonalGenerator >> topConferencesScript [
 { #category : #script }
 CZPersonalGenerator >> vulgarisationsScript [
 	^ CZScript new
+		id: 'vulgarisationsScript';
 		displayPattern: self allDisplayPattern;
 		reversedSortByField: #year;
 		query: (self withAuthor 
@@ -389,6 +421,7 @@ CZPersonalGenerator >> withType: aQueryString [
 CZPersonalGenerator >> yearScript: aYear [
  
 	^ CZScript new
+		id: 'yearScript';
 		displayPattern: self allDisplayPattern;
 		sortByField: #author;
 		query: (self withAuthor 
