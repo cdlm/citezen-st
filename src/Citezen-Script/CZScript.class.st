@@ -128,13 +128,11 @@ CZScript >> blackList: aList [
 
 { #category : #interface }
 CZScript >> displayOrder: aList [
-	| collection |
-	
+
 	(aList isNil not) 
 		ifTrue: [
 			sortCollection addFirst: (self class typeSymbol -> false).
-			collection := aList asOrderedCollection.
-			displayOrder := collection ]
+			displayOrder := aList asOrderedCollection ]
 		ifFalse: [ displayOrder := #() ]
 		
 		
@@ -385,16 +383,19 @@ CZScript >> sort [
 
 { #category : #interface }
 CZScript >> sortByField: aSymbol [
+	
 	self addSort: aSymbol reversed: false
 ]
 
 { #category : #interface }
 CZScript >> sortByKey [
+	
 	self addSort: (self class keySymbol) reversed: false
 ]
 
 { #category : #interface }
 CZScript >> sortByType [
+	self class typeSymbol isNil ifTrue: [self halt].
 	self addSort: (self class typeSymbol) reversed: false
 ]
 

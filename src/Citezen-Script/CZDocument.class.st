@@ -279,7 +279,7 @@ CZDocument >> initialize [
 
 	super initialize.
 	changed := false.
-	elements := OrderedCollection with: (CZScript new document: self).
+	elements := OrderedCollection with: (CZScript new id: 'documentscript' ; document: self).
 	self withDoubles.
 	self displayFullName.
 	self withHeaderAndFooter.
