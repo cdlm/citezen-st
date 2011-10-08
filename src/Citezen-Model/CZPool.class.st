@@ -20,8 +20,7 @@ Class {
 		'Series',
 		'Title',
 		'Volume',
-		'Year',
-		'uthor'
+		'Year'
 	],
 	#category : #'Citezen-Model'
 }
