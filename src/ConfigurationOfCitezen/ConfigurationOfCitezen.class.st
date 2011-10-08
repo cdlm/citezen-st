@@ -642,13 +642,13 @@ ConfigurationOfCitezen >> version07: spec [
 			description: 'With versions starting to modify: adding latex support for Pharo1.4'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5' ;
-			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.53' ;
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.54' ;
 		
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-AdrienBarreau.20';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.39';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.43';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
-			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.43';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.23';
+			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.44';
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.24';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.77'.]
 ]
