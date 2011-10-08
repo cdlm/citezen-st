@@ -25,6 +25,9 @@ Class {
 		'TopConferences',
 		'Vulgarisation'
 	],
+	#pools : [
+		'CZPool'
+	],
 	#category : #'Citezen-Stef-Scripts'
 }
 
@@ -50,7 +53,7 @@ CZLocalisation class >> initializeEnglishEntries [
  	English at: Book put: 'Books'.
 	English at: BookChapter put: 'Book Chapters'.
 	English at: InvitedPaper put: 'Invited Articles'.
-	English at: CZEditor put: 'Editor'.
+	English at: Editor put: 'Editor'.
 	English at: InternationalReviewedWorkshop put: 'Refereed Articles in International Workshops'.
 	English at: PhD put: 'PhD'.
 	English at: HDR put: 'Habilitation'.
@@ -73,7 +76,7 @@ CZLocalisation class >> initializeFrenchEntries [
  	French at: Book put: 'Livres'.
 	French at: BookChapter put: 'Articles dans un ouvrage collectif'.
 	French at: InvitedPaper put: 'Articles invit\''es'.
-	French at: CZEditor put: 'Editeur'.
+	French at: Editor put: 'Editeur'.
 	French at: InternationalReviewedWorkshop put: 'Articles de workshop internationaux avec comit\''e de lecture'.
 	French at: PhD put: 'Th\`ese'.
 	French at: HDR put: 'Habilitation \''a diriger des recherches'.
