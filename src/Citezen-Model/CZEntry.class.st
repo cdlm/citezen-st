@@ -37,6 +37,9 @@ Class {
 		'key',
 		'fields'
 	],
+	#pools : [
+		'CZPool'
+	],
 	#classInstVars : [
 		'neededFieldsDictionary',
 		'optionalFieldsDictionary'
@@ -114,10 +117,10 @@ CZEntry class >> initializeNeededFields [
 		at: #article put: {Author . Title . Journal . Year};
 		at: #book put: {Author . Editor . Title . Publisher . Year};
 		at: #booklet put: {Title};
-		at: #conference put: {Author .  Title . Booktitle . Year};
+		at: #conference put: {Author .  Title . BookTitle . Year};
 		at: #inbook put: {Author . Editor . Title . Chapter . Pages . Publisher . Year};
-		at: #incollection put: {Author . Title . Booktitle . Year};
-		at: #inproceedings put: {Author . Title . Booktitle . Year};
+		at: #incollection put: {Author . Title . BookTitle . Year};
+		at: #inproceedings put: {Author . Title . BookTitle . Year};
 		at: #manual put: {Title};
 		at: #mastersthesis put: {Author . Title . School . Year};
 		at: #misc put: #();
@@ -174,6 +177,19 @@ CZEntry class >> requiredFieldsFor: aSymbol [
 { #category : #metadata }
 CZEntry class >> techreport [
 	^ #techreport
+]
+
+{ #category : #metadata }
+CZEntry class >> test [
+	"self test"
+	^  {Author . Title . Journal . Title}
+
+]
+
+{ #category : #metadata }
+CZEntry class >> test2 [
+	"self test"
+	^  Author
 ]
 
 { #category : #'instance creation' }

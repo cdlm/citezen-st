@@ -19,12 +19,14 @@ Class {
 		'School',
 		'Series',
 		'Title',
-		'Volume'
+		'Volume',
+		'Year',
+		'uthor'
 	],
 	#category : #'Citezen-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialize }
 CZPool class >> initialize [
 	"self initialize"
 	
