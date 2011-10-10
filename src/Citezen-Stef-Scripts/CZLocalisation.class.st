@@ -109,15 +109,15 @@ CZLocalisation class >> initializeTypes [
 ]
 
 { #category : #accessing }
-CZLocalisation >> book [
+CZLocalisation >> bookChapters [
 
-	^ language at: Book
+	^ language at: BookChapter
 ]
 
 { #category : #accessing }
-CZLocalisation >> bookChapter [
+CZLocalisation >> books [
 
-	^ language at: BookChapter
+	^ language at: Book
 ]
 
 { #category : #accessing }
@@ -161,6 +161,12 @@ CZLocalisation >> internationalConference [
 CZLocalisation >> internationalReviewedJournal [
 
 	^ language at: InternationalReviewedJournal
+]
+
+{ #category : #accessing }
+CZLocalisation >> internationalReviewedWorkshops [
+
+	^ language at: InternationalReviewedWorkshop
 ]
 
 { #category : #accessing }

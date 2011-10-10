@@ -12,6 +12,7 @@ CZLaTexGenerator class >> forStef [
 	"self forStef"
 	
 	self new
+		french;
 		author: '*Ducasse*';
 		outputFileName: Date today yyyymmdd, '-stefFull.tex';
 		inputFileName: 'rmod.bib'; 
@@ -66,44 +67,36 @@ CZLaTexGenerator >> typeOrientedConfiguration [
 		displayFullName ;
 		orderedList ;
 		doNotRestartOrderedListAtEachScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in International Journals');
+		addElement: (CZTitleElement new title: localization  internationalReviewedJournal; htmlLevel: 4);
 		addElement: self journalsScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in Top Conferences');
+		
+		addElement: (CZTitleElement new title:  localization topConferences; htmlLevel: 4);
 		addElement: self topConferencesScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in French Journals');					
+		
+		addElement: (CZTitleElement new title: localization nationalReviewedJournal ; htmlLevel: 4);					
 		addElement: self nationalJournalsScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in International Conferences');
+		
+		addElement: (CZTitleElement new title: localization internationalConference; htmlLevel: 4);
 		addElement: self conferencesScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in National Conferences');
+		
+		addElement: (CZTitleElement new title: localization nationalReviewedConference; htmlLevel: 4);
 		addElement: self nationalConferencesScript;
-		addElement: (CZTitleElement new 
-							title: 'Invited Articles');
+		addElement: (CZTitleElement new  title: localization invitedPapers; htmlLevel: 4);
 		addElement: self invitedScript;
-		addElement: (CZTitleElement new 
-							title: 'Book Chapters');
+		addElement: (CZTitleElement new  title: localization bookChapters; htmlLevel: 4);
 		addElement: self bookChapterScript;
-		addElement: (CZTitleElement new 
-							title: 'Books');
+		addElement: (CZTitleElement new  title: localization books; htmlLevel: 4);
 		addElement: self booksScript;
-		addElement: (CZTitleElement new 
-							title: 'Editor');
+		addElement: (CZTitleElement new  title: localization editor; htmlLevel: 4);
 		addElement: self editorScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in International Workshops');
+		addElement: (CZTitleElement new  title: localization internationalReviewedWorkshops; htmlLevel: 4);
 		addElement: self internationalWorkshopScript;
 		"addElement: (CZTitleElement new 
-							title: 'PhD and Habilitation');
+							title: 'PhD and Habilitation'; htmlLevel: 4);
 		addElement: self PhDAndHabilitation;"
-			addElement: (CZTitleElement new 
-							title: 'Tool Demos');
+			addElement: (CZTitleElement new  title: localization toolDemo; htmlLevel: 4);
 		addElement: self toolDemosScript ;
-			addElement: (CZTitleElement new 
-							title: 'Vulgarisation');
+			addElement: (CZTitleElement new  title: localization vulgarisation; htmlLevel: 4);
 		addElement: self vulgarisationsScript.
 	
 ]

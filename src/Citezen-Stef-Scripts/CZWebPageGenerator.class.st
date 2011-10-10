@@ -16,6 +16,7 @@ CZWebPageGenerator class >> forStef [
 	"self forStef"
 	
 	self new
+		french; 
 		author: '*Ducasse*';
 		outputFileName: Date today yyyymmdd, '-stefFull.html';
 		inputFileName: 'rmod.bib'; 
@@ -159,7 +160,6 @@ CZWebPageGenerator >> typeOrientedConfiguration [
 	"self new typeOrientedConfiguration"
 	
 	"the htmlLevel: sucks!"
-	self english.
 	self document 
 		displayFullName ;
 		orderedList ;
@@ -178,29 +178,22 @@ CZWebPageGenerator >> typeOrientedConfiguration [
 		
 		addElement: (CZTitleElement new title: localization nationalReviewedConference; htmlLevel: 4);
 		addElement: self nationalConferencesScript;
-		addElement: (CZTitleElement new 
-							title: localization invitedPapers; htmlLevel: 4);
+		addElement: (CZTitleElement new  title: localization invitedPapers; htmlLevel: 4);
 		addElement: self invitedScript;
-		addElement: (CZTitleElement new 
-							title: 'Book Chapters'; htmlLevel: 4);
+		addElement: (CZTitleElement new  title: localization bookChapters; htmlLevel: 4);
 		addElement: self bookChapterScript;
-		addElement: (CZTitleElement new 
-							title: 'Books'; htmlLevel: 4);
+		addElement: (CZTitleElement new  title: localization books; htmlLevel: 4);
 		addElement: self booksScript;
-		addElement: (CZTitleElement new 
-							title: 'Editor'; htmlLevel: 4);
+		addElement: (CZTitleElement new  title: localization editor; htmlLevel: 4);
 		addElement: self editorScript;
-		addElement: (CZTitleElement new 
-							title: 'Refereed Articles in International Workshops'; htmlLevel: 4);
+		addElement: (CZTitleElement new  title: localization internationalReviewedWorkshops; htmlLevel: 4);
 		addElement: self internationalWorkshopScript;
 		"addElement: (CZTitleElement new 
 							title: 'PhD and Habilitation'; htmlLevel: 4);
 		addElement: self PhDAndHabilitation;"
-			addElement: (CZTitleElement new 
-							title: 'Tool Demos'; htmlLevel: 4);
+			addElement: (CZTitleElement new  title: localization toolDemo; htmlLevel: 4);
 		addElement: self toolDemosScript ;
-			addElement: (CZTitleElement new 
-							title: 'Vulgarisation'; htmlLevel: 4);
+			addElement: (CZTitleElement new  title: localization vulgarisation; htmlLevel: 4);
 		addElement: self vulgarisationsScript.
 	
 ]
