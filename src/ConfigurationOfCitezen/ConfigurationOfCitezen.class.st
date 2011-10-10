@@ -639,7 +639,7 @@ ConfigurationOfCitezen >> version07: spec [
 		spec
 			blessing: #development;
 			author: 'StephaneDucasse';
-			description: 'With versions starting to modify: adding latex support for Pharo1.4'.
+			description: 'Localization in latex generation'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5' ;
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.54' ;
@@ -649,6 +649,6 @@ ConfigurationOfCitezen >> version07: spec [
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.43';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.44';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.25';
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.26';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.77'.]
 ]
