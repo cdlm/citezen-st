@@ -56,7 +56,7 @@ CZDocumentTest >> testAddCommentAndTitle [
 	generation := 
 		CZDocument new 
 			addElement: (CZCommentElement newComment: 'Citezen power!');
-			addElement: (CZTitleElement newTitle: 'Default script:');
+			addElement: (CZTitleElement titleString: 'Default script:');
 			addElement: (CZCommentElement newComment: 'Another comment');
 			bibsetInput: bibset;
 			exportAsText;
@@ -198,7 +198,7 @@ CZDocumentTest >> testAddTitleElement [
 	| generation |
 	generation := 
 		CZDocument new 
-			addElement: (CZTitleElement newTitle: 'Default script:');
+			addElement: (CZTitleElement titleString: 'Default script:');
 			bibsetInput: bibset;
 			exportAsText;
 			generate.
