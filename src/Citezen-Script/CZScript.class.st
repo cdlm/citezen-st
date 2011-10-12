@@ -24,6 +24,10 @@ All messages in the interface protocol can be used to create your script:
 - fieldsToRemove: aList -> don't display the fields specified in the collection (by default, this list is empty)
 - query: aQuery -> a query that the entries should respect. Take a look at the Citezen-Query package (by default, there is no query)
 - sortByKey and reversedSortByKey, sortByType and reversedSortByType, and sortByField: aSymbol and reversedSortByField: aSymbol, add a sort option. The order is important: in the example, the entries will be sorted by the value of their fields #year, and then,  all the entries which have the same year are sorted by the value of their keys. A little tip: don't add any sort option after sortByKey because keys are unique, so no other sort option can be used after it (by default, there is no sort option)
+
+
+A script can have a title. This is to make sure that we can have labelled list of entries but that 
+when there is no entries we can control the display of the title (and generally avoid it).
 "
 Class {
 	#name : #CZScript,
@@ -41,7 +45,8 @@ Class {
 		'defaultSeparator',
 		'generatingCollection',
 		'document',
-		'id'
+		'id',
+		'title'
 	],
 	#classInstVars : [
 		'sortMatching'
@@ -293,6 +298,12 @@ CZScript >> generatingCollection [
 ]
 
 { #category : #accessing }
+CZScript >> hasTitle [
+	
+	^ self title isNil not
+]
+
+{ #category : #accessing }
 CZScript >> id [ 
 	"Return the id of the script - handy to debug."
 	
@@ -431,4 +442,25 @@ CZScript >> sortStartingAt: anIndex value: value [
 	
 	^ sortedValues 
 
+]
+
+{ #category : #accessing }
+CZScript >> title [
+	"Return a aCZTitleElement"
+	^ title
+	
+]
+
+{ #category : #accessing }
+CZScript >> title: aCZTitleElement [
+
+	title := aCZTitleElement
+	
+]
+
+{ #category : #accessing }
+CZScript >> titleString: aString [
+
+	title := CZTitleElement new title: aString.
+	
 ]

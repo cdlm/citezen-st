@@ -20,13 +20,8 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CZTitleElement class >> newTitle: aString [ 
+CZTitleElement class >> titleString: aString [
 	^ self new title: aString; yourself
-]
-
-{ #category : #'as yet unclassified' }
-CZTitleElement class >> newTitle: aString htmlLevel: anInteger [
-	^ self new title: aString; htmlLevel: anInteger; yourself
 ]
 
 { #category : #'as yet unclassified' }
