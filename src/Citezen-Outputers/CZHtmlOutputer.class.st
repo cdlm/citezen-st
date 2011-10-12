@@ -126,6 +126,11 @@ CZHtmlOutputer >> visitScript: aCZScript [
 
 	| list beginList endList entry fields sep |
 	aCZScript generate.	
+	aCZScript generatingCollection isEmpty ifTrue: [^self].
+	"should be factored out because this the same in latexOutputer"
+	aCZScript hasTitle
+		ifTrue: [aCZScript title acceptVisitor: self].
+		
 	list := aCZScript document listIndex.
 	(list = 0)
 		ifTrue: [ beginList := '<ul>'. endList := '</ul>' ]
@@ -180,13 +185,12 @@ CZHtmlOutputer >> visitString: aCZString [
 
 { #category : #visiting }
 CZHtmlOutputer >> visitTitle: aCZTitleElement [
+
 	outputStream 
-		nextPutAll: '<h'; 
-		nextPutAll: aCZTitleElement htmlLevel asString;
+		nextPutAll: '<h4'; 
 		nextPutAll: '>';
-		nextPutAll: aCZTitleElement title;
-		nextPutAll: '</h';
-		nextPutAll: aCZTitleElement htmlLevel asString;
+		nextPutAll: (CZAccentuateCharactersParser parse: aCZTitleElement title);
+		nextPutAll: '</h4';
 		nextPutAll: '>';
 		lf;
 		lf

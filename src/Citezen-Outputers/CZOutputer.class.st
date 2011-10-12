@@ -189,7 +189,10 @@ CZOutputer >> visitScript: aCZScript [
 
 	| list beginList endList entry fields sep |
 	aCZScript generate.	
-
+	aCZScript generatingCollection isEmpty ifTrue: [^self].
+	
+	aCZScript hasTitle
+		ifTrue: [aCZScript title acceptVisitor: self].
 		
 	outputStream nextPutAll: '\begin{itemize}'; lf.
 	
