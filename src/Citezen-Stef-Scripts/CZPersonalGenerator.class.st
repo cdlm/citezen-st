@@ -394,6 +394,31 @@ CZPersonalGenerator >> topConferencesScript [
 					AND: (self withType: '*topconference*') )
 ]
 
+{ #category : #document }
+CZPersonalGenerator >> typeOrientedConfiguration [
+	"self new typeOrientedConfiguration"
+	
+	self document 
+		displayFullName ;
+		orderedList ;
+		doNotRestartOrderedListAtEachScript;
+		addElement: (self journalsScript titleString: localization  internationalReviewedJournal);
+		addElement: (self topConferencesScript titleString:  localization topConferences);				
+		addElement: (self nationalJournalsScript titleString: localization nationalReviewedJournal);
+		addElement: (self conferencesScript  titleString: localization internationalConference);
+		addElement: (self nationalConferencesScript titleString: localization nationalReviewedConference);
+		addElement: (self invitedScript titleString: localization invitedPapers);
+		addElement: (self bookChapterScript titleString: localization bookChapters);
+		addElement: (self booksScript titleString: localization books);
+		addElement: (self editorScript titleString: localization editor);
+		addElement: (self internationalWorkshopScript titleString: localization internationalReviewedWorkshops);
+		addElement: (self PhDAndHabilitation titleString: localization phdAndHdr);
+
+		addElement: (self toolDemosScript   titleString: localization toolDemo) ;
+		addElement: (self vulgarisationsScript titleString: localization vulgarisation).
+	
+]
+
 { #category : #script }
 CZPersonalGenerator >> vulgarisationsScript [
 	^ CZScript new
