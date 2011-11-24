@@ -649,6 +649,6 @@ ConfigurationOfCitezen >> version07: spec [
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.44';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.45';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.27';
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.28';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.78'.]
 ]
