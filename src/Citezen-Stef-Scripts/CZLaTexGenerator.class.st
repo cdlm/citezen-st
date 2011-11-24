@@ -8,6 +8,19 @@ Class {
 }
 
 { #category : #'instance creation' }
+CZLaTexGenerator class >> forCassou [
+	"self forCassou"
+	
+	CZLaTexGenerator new
+		french;
+		author: '*Cassou*';
+		outputFileName: Date today yyyymmdd, '-cassou.tex';
+		inputFileName: 'rmod.bib'; 
+		typeOriented;
+		generate.
+]
+
+{ #category : #'instance creation' }
 CZLaTexGenerator class >> forNicolas [
 	"self forNicolas"
 	
