@@ -67,16 +67,16 @@ CZLaTeXOutputer >> visitComment: aCZCommentElement [
 CZLaTeXOutputer >> visitDocument: aCZDocument [
 	
 	aCZDocument getWithoutHeaderAndFooter ifFalse: [
-		(aCZDocument header isNil not)
-			ifTrue: [ outputStream nextPutAll: aCZDocument header ]
-			ifFalse: [ outputStream nextPutAll: self defaultHeader ] ].
+		(aCZDocument header isNil)
+			ifFalse: [ outputStream nextPutAll: aCZDocument header ]
+			ifTrue: [ outputStream nextPutAll: self defaultHeader ] ].
 	
 	super visitDocument: aCZDocument.
 	
 	aCZDocument getWithoutHeaderAndFooter ifFalse: [
-		(aCZDocument footer isNil not)
-			ifTrue: [ outputStream nextPutAll: aCZDocument footer ]
-			ifFalse: [ outputStream nextPutAll: self defaultFooter ] ].
+		(aCZDocument footer isNil)
+			ifTrue: [ outputStream nextPutAll: self defaultFooter ]
+			ifFalse: [ outputStream nextPutAll: aCZDocument footer ] ].
 ]
 
 { #category : #visiting }
@@ -103,5 +103,5 @@ CZLaTeXOutputer >> visitPeople: aCZPeople [
 
 { #category : #visiting }
 CZLaTeXOutputer >> visitString: aCZString [
-	outputStream nextPutAll: aCZString notExpanded
+	outputStream nextPutAll: aCZString notExpanded asString
 ]

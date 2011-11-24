@@ -123,6 +123,9 @@ CZOutputer >> initialize [
 
 { #category : #initialize }
 CZOutputer >> initializeOutputStream [
+	self flag: #fixme.
+	"what a fuck?" 
+	"why do we have this logic - sd"
 	(fileName isNil) 
 		ifTrue: [ outputStream := String new writeStream ]
 		ifFalse: [ outputStream := FileStream newFileNamed: fileName ].
