@@ -31,6 +31,16 @@ CZFileDispatcher class >> example [
 		generate
 ]
 
+{ #category : #'as yet unclassified' }
+CZFileDispatcher class >> pharoPubs [
+	"self pharoPubs"
+	^ self new
+		inBibset: (CZFileLoader  bibFromFileNamed: 'rmod.bib');
+		outputFilesDescription: {true -> 'pharo.bib' . false -> 'plouf.bib'};
+		dispatchBlock: [:each | each isPharoPub];
+		generate
+]
+
 { #category : #action }
 CZFileDispatcher >> blackListedFields [
 	
