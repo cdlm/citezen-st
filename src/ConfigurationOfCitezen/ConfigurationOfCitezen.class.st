@@ -642,13 +642,13 @@ ConfigurationOfCitezen >> version07: spec [
 			description: 'Localization in latex generation'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5' ;
-			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.54' ;
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.55' ;
 		
-			package: 'Citezen-Parsers' with: 'Citezen-Parsers-AdrienBarreau.20';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-DamienCassou.21';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.39';
-			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.45';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.46';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.45';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.28';
-			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.78'.]
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.29';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.79'.]
 ]
