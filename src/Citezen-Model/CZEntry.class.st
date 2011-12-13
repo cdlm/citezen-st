@@ -362,10 +362,28 @@ CZEntry >> isPhDThesis [
 	^ self type = #phdthesis
 ]
 
+{ #category : #'team utils' }
+CZEntry >> isPharoPub [
+	
+	| keys |
+	keys := (self at: #keywords) value.
+	^ '*Pharo*' match: keys
+]
+
 { #category : #'entry type testing' }
 CZEntry >> isProceedings [
 
 	^ self type = #proceedings
+]
+
+{ #category : #'team utils' }
+CZEntry >> isTeamEntry [
+	
+	| author |
+	
+	author := self author value.
+	^ #( '*Ducasse*S*' '*Denker*M*' '*Anquetil*N*' '*Pollet*D*' '*Abdeen*H*' '*Laval*J*' '*Peirs*R*' '*Falleri*' '*Denier*S*' '*Hora*'
+		'*Casaccio*G*' '*Martinez-Peck*' '*Uquillas*' '*Arnaud*J*B*' '*Bhatti*U*' '*Fernandes*H*' '*Razavizadeh*A*' ) anySatisfy: [ :each | each match: author ]
 ]
 
 { #category : #'entry type testing' }
