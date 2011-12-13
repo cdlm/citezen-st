@@ -32,7 +32,7 @@ CZEntryTest >> setUp [
  address = {Piscataway, NJ, USA}
  }'.
 
-inproceedingsEntry := CZBibParser parse: '	
+inproceedingsEntry := (CZBibParser parse: '	
 @inproceedings{Nier04d,
   Abstract     = {In this paper we briefly review various kinds of
                   software changes and the issues that arise from
@@ -45,16 +45,16 @@ inproceedingsEntry := CZBibParser parse: '
   Author       = {Oscar Nierstrasz and Marcus Denker},
   Booktitle    = {OOPSLA Workshop on Revival of Dynamic Languages},
   Cvs	       = {RDLchange},
-  Keywords     = {snf05 scg-pub skip-doi jb05 fromscgbib},
+  Keywords     = {snf05 scg-pub skip-doi jb05 pharo fromscgbib},
   Month	       = oct,
   Title	       = {Supporting Software Change in the Programming
                   Language},
   Url	       =
                   {http://rmod.lille.inria.fr/archives/workshops/Nier04d-RDL04-Change.pdf},
   Year	       = {2004}
-}'.
+}') entries at: 1.
 
-masterEntry := CZBibParser parse: '	
+masterEntry := (CZBibParser parse: '	
 @mastersthesis{Peirs08a,
   author       = {Romain Peirs},
   title	       = {Enhanced Dependency Structure Matrix},
@@ -75,29 +75,8 @@ masterEntry := CZBibParser parse: '
                   Europe with the RMoD Team led by S. Ducasse.},
   annote       = {master cook},
   school       = {Enseita}
- }'.
+ }') entries at: 1.
 
-team := (CZEntry type: CZEntry inproceedings)
-				key: #Abde08a;
-				at: #author put: 'Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen';
-				at: #title put: 'Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships';
-				at: #Aeres	 put: 'ACT';
- 				at: #Aeresstatus   put:  'aeres08';
-				at: #Annote       put:  'internationalconference stefPub';
- 				at: #Booktitle    put: 'European Conference on Software Maintenance and Reengineering (CSMR)';
-  				at: #Inria	        put: 'ADAM';
-  				at: #Keywords     put:  'moose-pub';
-  				at: #Location     put: 'Athens, Greece';
-  				at: #Misc	       put:  'Acceptance rate: 24/87 = 27\%';
-  				at: #AcceptTotal  put:  87;
-  				at: #AcceptNum    put:  24;
-  				at: #Pages	       put:  '213--222';
-  				at: #Publisher    put:  'IEEE Computer Society Press';
-  				at: #Rate	       put:  '27%';
-  				at: #Selectif     put:  'oui';
-   				at: #Url	       put:  'http://scg.unibe.ch/archive/external/Abde08a.pdf';
-   				at: #Year	       put:  2008;
-   				at: #'Bdsk-Url-1'  put: 'http://scg.unibe.ch/archive/external/Abde08a.pdf'.
 				
 dirty := (CZEntry type: CZEntry inproceedings)
 				key: #Abde08a;
@@ -155,7 +134,7 @@ CZEntryTest >> testAt [
 { #category : #tests }
 CZEntryTest >> testClean [
 	"self debug: #testClean"
-	
+
 	self assert: (dirty  hasField: #aeres).
 	self assert: (dirty  hasField: #aeresstatus).
 	self assert: (dirty  hasField: #'bdsk-url-1').
@@ -184,6 +163,18 @@ CZEntryTest >> testKey [
 	self assert: (entry key = #testUnpublished).
 	entry key: #test.
 	self assert: (entry key = #test)
+]
+
+{ #category : #tests }
+CZEntryTest >> testKeywords [
+	"self debug: #testKeywords"
+	
+	| keywords |
+	self assert: (inproceedingsEntry hasField: #author).
+	keywords := inproceedingsEntry at: #keywords.
+	self assert: keywords value = 'snf05 scg-pub skip-doi jb05 pharo fromscgbib'.
+	self assert: inproceedingsEntry isPharoPub
+
 ]
 
 { #category : #tests }
