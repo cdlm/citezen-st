@@ -552,6 +552,15 @@ ConfigurationOfCitezen >> project [
 		project ]
 ]
 
+{ #category : #'symbolic versions' }
+ConfigurationOfCitezen >> stable: spec [
+	<symbolicVersion: #'stable'>
+
+	spec for: #'pharo' version: '0.7'.
+	spec for: #'pharo1.3.x' version: '0.7'.
+
+]
+
 { #category : #versions }
 ConfigurationOfCitezen >> version01: spec [
 	<version: '0.1' imports: #('0.1-baseline')>
