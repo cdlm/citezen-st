@@ -651,7 +651,7 @@ ConfigurationOfCitezen >> version07: spec [
 			description: 'Localization in latex generation'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5' ;
-			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.55' ;
+			package: 'Citezen-Model' with: 'Citezen-Model-sd.56' ;
 		
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-DamienCassou.21';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.39';
@@ -659,5 +659,5 @@ ConfigurationOfCitezen >> version07: spec [
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.45';
 			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.29';
-			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.79'.]
+			package: 'Citezen-Tests' with: 'Citezen-Tests-sd.80'.]
 ]
