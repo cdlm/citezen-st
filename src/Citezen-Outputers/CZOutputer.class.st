@@ -69,6 +69,8 @@ CZOutputer >> emitEntryHeader: anEntry [
 
 { #category : #accessing }
 CZOutputer >> entriesToString: aCollection [
+
+	self flag: #tofix. "again code that cannot not be streamed."
 	outputStream := String new writeStream.
 	aCollection do: [:each | 
 		self visitEntry: each] separatedBy: [outputStream lf].
@@ -133,6 +135,12 @@ CZOutputer >> initializeOutputStream [
 ]
 
 { #category : #accessing }
+CZOutputer >> outputStream: aStream [
+
+	outputStream := aStream 
+]
+
+{ #category : #accessing }
 CZOutputer >> setAuthorDisplayOption: aSymbol [
 	authorDisplay := aSymbol
 ]
@@ -140,6 +148,14 @@ CZOutputer >> setAuthorDisplayOption: aSymbol [
 { #category : #accessing }
 CZOutputer >> setOutputFile: aString [	
 	fileName := aString
+]
+
+{ #category : #accessing }
+CZOutputer >> treatEntries: aCollection in: aStream [
+
+	self outputStream: aStream. 
+	aCollection do: [:each | 
+		self visitEntry: each] separatedBy: [aStream lf].
 ]
 
 { #category : #visiting }
