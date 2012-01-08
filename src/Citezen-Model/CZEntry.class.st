@@ -271,6 +271,18 @@ CZEntry >> do: aBlock [
 	fields do: aBlock
 ]
 
+{ #category : #enumerating }
+CZEntry >> fieldSortedFollowingKeys: aCol [
+	"Returns a collection of fields as specified by the keys given in aCol, if a key is not present skip it."
+	| col |
+	col := OrderedCollection new: aCol size.
+	aCol do: [:each | 
+				| res |
+				res := self at: each ifAbsent: nil.
+				res ifNotNil: [col add: res] ].
+	^ col
+]
+
 { #category : #accessing }
 CZEntry >> fields [
 	^ fields 
@@ -398,6 +410,15 @@ CZEntry >> isUnpublished [
 	^ self type = #unpublished
 ]
 
+{ #category : #'add/remove' }
+CZEntry >> keepFields: aCollectionOfFieldKeys [
+	
+	self fields copy
+		do: [:each | (aCollectionOfFieldKeys includes: each key)
+						ifFalse: [self removeField: each ]]
+	
+]
+
 { #category : #accessing }
 CZEntry >> key [
 	^ key
@@ -442,6 +463,14 @@ CZEntry >> removeField: aCZField [
 CZEntry >> removeFieldWithKey: aSymbol [
 
 	 fields := fields reject: [:each | each key = aSymbol  ]
+]
+
+{ #category : #'add/remove' }
+CZEntry >> removeFields: aCollectionOfFieldKeys [
+
+	aCollectionOfFieldKeys
+		do: [:each |  self removeFieldWithKey: each ]
+	
 ]
 
 { #category : #accessing }
