@@ -150,12 +150,47 @@ CZEntryTest >> testClean [
 ]
 
 { #category : #tests }
+CZEntryTest >> testFieldSorted [
+	"self debug: #testFieldSorted"
+
+	| res |
+	res := dirty fieldSortedFollowingKeys: #(#author #title #annote #booktitle #location #misc #accepttotal #acceptnum #pages #publisher #rate  #url #year).
+	self assert: res size = #(#author #title #annote #booktitle #location #misc #accepttotal #acceptnum #pages #publisher #rate  #url #year) size.
+	
+
+	res := dirty fieldSortedFollowingKeys: #(#ZORKTHEGREAT #title #annote #booktitle #location #misc #accepttotal #acceptnum #pages #publisher #rate  #url #year).
+	self assert: res size = #(#title #annote #booktitle #location #misc #accepttotal #acceptnum #pages #publisher #rate  #url #year) size.
+	
+]
+
+{ #category : #tests }
 CZEntryTest >> testHasField [
 	self assert: (entry hasField: #author).
 	self assert: (entry hasField: #title).
 	self assert: (entry hasField: #pages).
 	self deny: (entry hasField: #anotherField).
 	self deny: (entry hasField: '').
+]
+
+{ #category : #tests }
+CZEntryTest >> testKeepFields [
+	"self debug: #testKeepFields"
+	
+	self assert: (dirty  hasField: #aeres).
+	self assert: (dirty  hasField: #aeresstatus).
+	self assert: (dirty  hasField: #'bdsk-url-1').
+	self assert: (dirty  hasField: #'date-added').
+	self assert: (dirty  hasField: #'date-modified').
+	dirty keepFields: #(#aeres #'bdsk-url-1').
+	self assert: (dirty  hasField: #aeres).
+	self deny: (dirty hasField: #author).
+	self deny: (dirty  hasField: #aeresstatus).
+	self assert: (dirty  hasField: #'bdsk-url-1').
+	self deny: (dirty  hasField: #'date-added').
+	self deny: (dirty  hasField: #'date-modified').
+	
+
+
 ]
 
 { #category : #tests }
@@ -219,6 +254,26 @@ CZEntryTest >> testRemoveField [
 	self deny: (dirty  hasField: #aeres).
 	self assert: (dirty  hasField: #aeresstatus).
 	self assert: (dirty  hasField: #'bdsk-url-1').
+	self assert: (dirty  hasField: #'date-added').
+	self assert: (dirty  hasField: #'date-modified').
+	
+
+
+]
+
+{ #category : #tests }
+CZEntryTest >> testRemoveFields [
+	"self debug: #testRemoveFields"
+	
+	self assert: (dirty  hasField: #aeres).
+	self assert: (dirty  hasField: #aeresstatus).
+	self assert: (dirty  hasField: #'bdsk-url-1').
+	self assert: (dirty  hasField: #'date-added').
+	self assert: (dirty  hasField: #'date-modified').
+	dirty removeFields: #(#aeres #'bdsk-url-1').
+	self deny: (dirty  hasField: #aeres).
+	self assert: (dirty  hasField: #aeresstatus).
+	self deny: (dirty  hasField: #'bdsk-url-1').
 	self assert: (dirty  hasField: #'date-added').
 	self assert: (dirty  hasField: #'date-modified').
 	
