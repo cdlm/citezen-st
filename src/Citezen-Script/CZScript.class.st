@@ -221,6 +221,7 @@ CZScript >> generate [
 	self 
 		bibsetInput: document requestBibset;
 		removeEntries;
+		removeInSubmission;
 		filter;
 		sort;
 		generateSeparatorsAndFieldsCollection
@@ -366,6 +367,17 @@ CZScript >> removeEntries [
 		bibset entries select: [ :each | 
 			condition value: each ]).
 		
+
+]
+
+{ #category : #private }
+CZScript >> removeInSubmission [
+
+
+	bibset entries: ( 
+		bibset entries reject: (CZFieldQuery 
+							named: #keywords 
+							checks: [ :value | '*insubmission*' match: value ]))
 
 ]
 
