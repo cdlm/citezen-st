@@ -155,7 +155,7 @@ CZOutputer >> treatEntries: aCollection in: aStream [
 
 	self outputStream: aStream. 
 	aCollection do: [:each | 
-		self visitEntry: each] separatedBy: [aStream lf].
+		self visitEntry: each] separatedBy: [aStream cr].
 ]
 
 { #category : #visiting }

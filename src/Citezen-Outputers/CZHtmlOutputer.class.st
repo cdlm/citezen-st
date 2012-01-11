@@ -96,6 +96,10 @@ CZHtmlOutputer >> visitEntry: anEntry [
 
 { #category : #visiting }
 CZHtmlOutputer >> visitField: aField [
+
+
+
+
 	outputStream nextPutAll: '<span class="',aField key,'">'.
 	
 	aField isURL
