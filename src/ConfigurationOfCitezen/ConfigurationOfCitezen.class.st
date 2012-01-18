@@ -539,6 +539,15 @@ ConfigurationOfCitezen >> baseline06: spec [
 	]
 ]
 
+{ #category : #'symbolic versions' }
+ConfigurationOfCitezen >> develoment: spec [
+	<symbolicVersion: #'development'>
+
+	spec for: #'pharo1.3.x' version: '0.7'.
+	spec for: #'pharo1.4.x' version: #broken.
+
+]
+
 { #category : #accessing }
 ConfigurationOfCitezen >> project [
 
@@ -558,6 +567,7 @@ ConfigurationOfCitezen >> stable: spec [
 
 	spec for: #'pharo' version: '0.7'.
 	spec for: #'pharo1.3.x' version: '0.7'.
+	spec for: #'pharo1.4.x' version: #broken.
 
 ]
 
