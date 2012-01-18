@@ -655,9 +655,9 @@ ConfigurationOfCitezen >> version07: spec [
 		
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-DamienCassou.21';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.39';
-			package: 'Citezen-Outputers' with: 'Citezen-Outputers-sd.47';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-sd.48';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
-			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.45';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.29';
+			package: 'Citezen-Script' with: 'Citezen-Script-sd.46';
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-sd.30';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-sd.80'.]
 ]
