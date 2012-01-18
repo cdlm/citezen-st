@@ -24,6 +24,12 @@ CZWebPageGenerator class >> forStef [
 		generate.
 ]
 
+{ #category : #'as yet unclassified' }
+CZWebPageGenerator class >> todo [
+
+	^ 'the exporters should work on a potentially external stream'
+]
+
 { #category : #document }
 CZWebPageGenerator >> configure [
 

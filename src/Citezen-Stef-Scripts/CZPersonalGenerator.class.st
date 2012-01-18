@@ -256,6 +256,17 @@ CZPersonalGenerator >> generate [
 	^ self document
 ]
 
+{ #category : #script }
+CZPersonalGenerator >> inSubmission [
+	^ CZScript new
+		id: 'inSubmission';
+		displayPattern: self articleDisplayPattern;
+		reversedSortByField: Year;
+		query: (CZFieldQuery 
+					named: #keywords 
+					checks: [ :value | '*insubmission*' match: value ])
+]
+
 { #category : #initialize }
 CZPersonalGenerator >> initialize [
 
