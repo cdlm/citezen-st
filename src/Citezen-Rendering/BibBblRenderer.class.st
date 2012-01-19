@@ -1,3 +1,6 @@
+"
+Renders bibliographic objects to the .bbl format used by LaTeX & BibTeX.
+"
 Class {
 	#name : #BibBblRenderer,
 	#superclass : #BibTextRenderer,

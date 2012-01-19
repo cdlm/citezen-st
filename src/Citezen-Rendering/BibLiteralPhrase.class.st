@@ -1,3 +1,6 @@
+"
+A BibLiteralPhrase specifies a fixed textual decoration.
+"
 Class {
 	#name : #BibLiteralPhrase,
 	#superclass : #BibPhrase,

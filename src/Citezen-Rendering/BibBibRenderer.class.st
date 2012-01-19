@@ -1,3 +1,6 @@
+"
+A BibBibRenderer renders bibliographic objects back to BibTeX's .bib database format.
+"
 Class {
 	#name : #BibBibRenderer,
 	#superclass : #BibTextRenderer,

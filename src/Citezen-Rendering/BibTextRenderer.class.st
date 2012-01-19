@@ -1,3 +1,6 @@
+"
+BibTextRenderer renders bibliographic objects to plain-text-based formats.
+"
 Class {
 	#name : #BibTextRenderer,
 	#superclass : #BibRenderer,

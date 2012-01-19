@@ -1,3 +1,6 @@
+"
+The superclass for visitors of Citezen objects.
+"
 Class {
 	#name : #BibVisitor,
 	#superclass : #Object,
