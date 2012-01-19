@@ -44,10 +44,10 @@ CZLaTeXOutputer >> initialize [
 CZLaTeXOutputer >> initializeFieldEmbellishingTable [
 
 	fieldEmbellishingTable := Dictionary new. 
-	fieldEmbellishingTable at: Author put: '\emph{'.
-	fieldEmbellishingTable at: BookTitle put: 'In \emph{'.
-	fieldEmbellishingTable at: Title put: '\emph{'.
-	fieldEmbellishingTable at: Journal put: 'In \emph{'.
+	fieldEmbellishingTable at: CZPool author put: '\emph{'.
+	fieldEmbellishingTable at: CZPool booktitle put: 'In \emph{'.
+	fieldEmbellishingTable at: CZPool title put: '\emph{'.
+	fieldEmbellishingTable at: CZPool journal put: 'In \emph{'.
 
 	
 	
@@ -84,13 +84,13 @@ CZLaTeXOutputer >> visitField: aField [
 	
 	"We should probably use phrases instead of doing everything ourselves."
 	
-	aField key = Volume ifTrue: [outputStream nextPutAll: 'Volume '].
-	aField key = Pages ifTrue: [outputStream nextPutAll: 'pp. '].
+	aField key = CZPool volume ifTrue: [outputStream nextPutAll: 'Volume '].
+	aField key = CZPool pages ifTrue: [outputStream nextPutAll: 'pp. '].
 
 	fieldEmbellishingTable at: aField key ifPresent: [:t | outputStream nextPutAll: ' ', t].
 	aField dispatchVisitor: self.
 	fieldEmbellishingTable at: aField key ifPresent: [:t | outputStream nextPutAll: '}'].
-	aField key = Editor
+	aField key = CZPool editor
 		ifTrue: [ outputStream nextPutAll: ' ed.'].
 ]
 
