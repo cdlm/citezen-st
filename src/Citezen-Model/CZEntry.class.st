@@ -114,20 +114,66 @@ CZEntry class >> initializeNeededFields [
 	neededFieldsDictionary := Dictionary new.
 	
 	neededFieldsDictionary 
-		at: #article put: {Author . Title . Journal . Year};
-		at: #book put: {Author . Editor . Title . Publisher . Year};
-		at: #booklet put: {Title};
-		at: #conference put: {Author .  Title . BookTitle . Year};
-		at: #inbook put: {Author . Editor . Title . Chapter . Pages . Publisher . Year};
-		at: #incollection put: {Author . Title . BookTitle . Year};
-		at: #inproceedings put: {Author . Title . BookTitle . Year};
-		at: #manual put: {Title};
-		at: #mastersthesis put: {Author . Title . School . Year};
+		at: #article put: {
+			CZPool author.
+			CZPool title.
+			CZPool journal.
+			CZPool year. };
+		at: #book put: {
+			CZPool author .
+			CZPool editor .
+			CZPool title .
+			CZPool publisher .
+			CZPool year. };
+		at: #booklet put: { CZPool title };
+		at: #conference put: {
+			CZPool author.
+			CZPool title.
+			CZPool booktitle.
+			CZPool year. };
+		at: #inbook put: {
+			CZPool author.
+			CZPool editor.
+			CZPool title. 
+			CZPool chapter.
+			CZPool pages.
+			CZPool publisher.
+			CZPool year. };
+		at: #incollection put: {
+			CZPool author.
+			CZPool title.
+			CZPool booktitle.
+			CZPool year. };
+		at: #inproceedings put: {
+			CZPool author.
+			CZPool title.
+			CZPool booktitle.
+			CZPool year. };
+		at: #manual put: { CZPool title };
+		at: #mastersthesis put: {
+			CZPool author.
+			CZPool title.
+			CZPool school.
+			CZPool year. };
 		at: #misc put: #();
-		at: #phdthesis put: {Author . Title . School . Year};
-		at: #proceedings put: {Title . Year};
-		at: #techreport put: {Author . Title . Institution . Year};
-		at: #unpublished put: {Author . Title . Note}.
+		at: #phdthesis put: {
+			CZPool author.
+			CZPool title.
+			CZPool school.
+			CZPool year. };
+		at: #proceedings put: {
+			CZPool title. 
+			CZPool year. };
+		at: #techreport put: {
+			CZPool author.
+			CZPool title.
+			CZPool institution.
+			CZPool year. };
+		at: #unpublished put: {
+			CZPool author.
+			CZPool title.
+			CZPool note. }.
+
 	^ neededFieldsDictionary 
 		
 	
@@ -182,14 +228,14 @@ CZEntry class >> techreport [
 { #category : #metadata }
 CZEntry class >> test [
 	"self test"
-	^  {Author . Title . Journal . Title}
+	^  { CZPool author . CZPool title . CZPool journal . CZPool title }
 
 ]
 
 { #category : #metadata }
 CZEntry class >> test2 [
 	"self test"
-	^  Author
+	^  CZPool author
 ]
 
 { #category : #'instance creation' }
@@ -539,7 +585,7 @@ CZEntry >> sortFields: aList [
 { #category : #'predefined accessing' }
 CZEntry >> title [
 
-	^ self at: Title
+	^ self at: CZPool title
 ]
 
 { #category : #accessing }
@@ -561,5 +607,5 @@ CZEntry >> url [
 { #category : #'predefined accessing' }
 CZEntry >> year [
 
-	^ self at: Year 
+	^ self at: CZPool year 
 ]
