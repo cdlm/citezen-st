@@ -30,7 +30,7 @@ CZPersonalGenerator >> PhDAndHabilitation [
 	^ CZScript new
 		id: 'PhDAndHabilitationScript';
 		displayPattern: self articleDisplayPattern;
-		reversedSortByField: Year;
+		reversedSortByField: CZPool year;
 		query: (self withAuthor 
 					AND: ((CZTypeQuery checks: [ :each | each = #phdthesis]) 
 							OR: (CZFieldQuery 
@@ -50,8 +50,8 @@ CZPersonalGenerator >> allDisplayPatternDefault [
 	^ CZDisplayPattern new 
 			defaultSeparator: ', ';
 			field: #author;
-			field: Title;
-			field: Journal;
+			field: CZPool title;
+			field: CZPool journal;
 			field: #booktitle;
 			field: #volume;
 			field: #pages;
@@ -261,7 +261,7 @@ CZPersonalGenerator >> inSubmission [
 	^ CZScript new
 		id: 'inSubmission';
 		displayPattern: self articleDisplayPattern;
-		reversedSortByField: Year;
+		reversedSortByField: CZPool year;
 		query: (CZFieldQuery 
 					named: #keywords 
 					checks: [ :value | '*insubmission*' match: value ])
