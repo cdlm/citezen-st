@@ -172,6 +172,17 @@ ConfigurationOfCitezen class >> push: aMessage [
 
 ]
 
+{ #category : #'development support' }
+ConfigurationOfCitezen class >> saveModifiedPackagesAndConfiguration: commitMessage [
+	"Save modified mcz files, update the #development version and then save the configuration."
+
+	"self saveModifiedPackagesAndConfiguration: '- fixed bug'"
+
+	<apiDocumentation>
+	self ensureMetacello.
+	(Smalltalk at: #MetacelloToolBox) saveModifiedPackagesAndConfigurationIn: self description: commitMessage
+]
+
 { #category : #baselines }
 ConfigurationOfCitezen >> baseline01: spec [
 	<version: '0.1-baseline'>
@@ -544,7 +555,7 @@ ConfigurationOfCitezen >> develoment: spec [
 	<symbolicVersion: #'development'>
 
 	spec for: #'pharo1.3.x' version: '0.7'.
-	spec for: #'pharo1.4.x' version: #broken.
+	spec for: #'pharo1.4.x' version: '0.7'.
 
 ]
 
@@ -567,13 +578,13 @@ ConfigurationOfCitezen >> stable: spec [
 
 	spec for: #'pharo' version: '0.7'.
 	spec for: #'pharo1.3.x' version: '0.7'.
-	spec for: #'pharo1.4.x' version: #broken.
+	spec for: #'pharo1.4.x' version: '0.7'.
 
 ]
 
 { #category : #versions }
 ConfigurationOfCitezen >> version01: spec [
-	<version: '0.1' imports: #('0.1-baseline')>
+"	<version: '0.1' imports: #('0.1-baseline')>"
 	
 	spec for: #common do: [
 		spec
@@ -585,7 +596,7 @@ ConfigurationOfCitezen >> version01: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version02: spec [
-	<version: '0.2' imports: #('0.2-baseline')>
+"	<version: '0.2' imports: #('0.2-baseline')>"
 	
 	spec for: #common do: [
 		spec
@@ -597,7 +608,7 @@ ConfigurationOfCitezen >> version02: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version03: spec [
-	<version: '0.3' imports: #('0.3-baseline')>
+	"<version: '0.3' imports: #('0.3-baseline')>"
 	
 	spec for: #common do: [
 		spec
@@ -609,7 +620,7 @@ ConfigurationOfCitezen >> version03: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version04: spec [
-	<version: '0.4' imports: #('0.4-baseline')>
+	"<version: '0.4' imports: #('0.4-baseline')>"
 	
 	spec for: #common do: [
 		spec
@@ -621,7 +632,7 @@ ConfigurationOfCitezen >> version04: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version05: spec [
-	<version: '0.5' imports: #('0.5-baseline')>
+	"<version: '0.5' imports: #('0.5-baseline')>"
 	
 	spec for: #common do: [
 		spec
@@ -652,22 +663,23 @@ ConfigurationOfCitezen >> version06: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version07: spec [
-	<version: '0.7' imports: #('0.6-baseline')>
-	
-	spec for: #common do: [
-		spec
-			blessing: #development;
-			author: 'StephaneDucasse';
-			description: 'Localization in latex generation'.
+	<version: '0.7' imports: #('0.6-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'development'.
+		spec description: 'Localization in latex generation.
+Eliminate shared pool use of CZPool, replace with class methods'.
+		spec author: 'DamienPollet'.
+		spec timestamp: '1/19/2012 19:42'.
 		spec 
-			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5' ;
-			package: 'Citezen-Model' with: 'Citezen-Model-sd.56' ;
-		
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
+			package: 'Citezen-Model' with: 'Citezen-Model-DamienPollet.57';
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-DamienCassou.21';
-			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.39';
-			package: 'Citezen-Outputers' with: 'Citezen-Outputers-sd.48';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-DamienPollet.49';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Script-sd.46';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-sd.30';
-			package: 'Citezen-Tests' with: 'Citezen-Tests-sd.80'.]
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-DamienPollet.31';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-DamienPollet.81'. ].
+
 ]
