@@ -541,7 +541,7 @@ ConfigurationOfCitezen >> baseline06: spec [
 			package: 'Citezen-Tests' with: [ spec requires: #('Core') ].
 			
 		spec
-			group: 'default' with: #('NoWeb' 'Web');
+			group: 'default' with: #('NoWeb');
 			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
 			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script' 'Citezen-Checking' 'Citezen-Stef-Scripts');
 			group: 'CommandLine' with: #('NoWeb' 'Citezen-CommandLine');
