@@ -123,7 +123,7 @@ CZLocalisation >> books [
 { #category : #accessing }
 CZLocalisation >> editor [
 
-	^ language at: Editor
+	^ language at: #editor
 ]
 
 { #category : #setting }
