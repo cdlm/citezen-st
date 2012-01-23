@@ -37,9 +37,6 @@ Class {
 		'key',
 		'fields'
 	],
-	#pools : [
-		'CZPool'
-	],
 	#classInstVars : [
 		'neededFieldsDictionary',
 		'optionalFieldsDictionary'

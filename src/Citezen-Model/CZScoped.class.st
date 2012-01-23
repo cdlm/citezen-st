@@ -7,9 +7,6 @@ Class {
 	#instVars : [
 		'scope'
 	],
-	#pools : [
-		'CZPool'
-	],
 	#category : #'Citezen-Model'
 }
 
