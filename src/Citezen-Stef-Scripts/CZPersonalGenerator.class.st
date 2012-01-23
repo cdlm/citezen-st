@@ -19,9 +19,6 @@ Class {
 		'author',
 		'localization'
 	],
-	#pools : [
-		'CZPool'
-	],
 	#category : #'Citezen-Stef-Scripts'
 }
 
