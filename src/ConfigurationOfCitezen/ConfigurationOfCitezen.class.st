@@ -668,18 +668,19 @@ ConfigurationOfCitezen >> version07: spec [
 	spec for: #'common' do: [
 		spec blessing: #'development'.
 		spec description: 'Localization in latex generation
-Reload only the CZPool use elimination'.
+Reload only the CZPool use elimination
+Really stop using CZPool variables'.
 		spec author: 'DamienPollet'.
-		spec timestamp: '1/23/2012 17:58'.
+		spec timestamp: '1/23/2012 18:13'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
-			package: 'Citezen-Model' with: 'Citezen-Model-DamienPollet.58';
+			package: 'Citezen-Model' with: 'Citezen-Model-DamienPollet.59';
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-DamienCassou.21';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
-			package: 'Citezen-Outputers' with: 'Citezen-Outputers-DamienPollet.49';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-DamienPollet.50';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
 			package: 'Citezen-Script' with: 'Citezen-Script-sd.46';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-DamienPollet.32';
-			package: 'Citezen-Tests' with: 'Citezen-Tests-DamienPollet.81'. ].
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-DamienPollet.33';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-DamienPollet.82'. ].
 
 ]
