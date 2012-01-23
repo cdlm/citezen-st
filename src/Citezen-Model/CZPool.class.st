@@ -3,9 +3,24 @@ Defines all the constants for fields and types of entries.
 "
 Class {
 	#name : #CZPool,
-	#superclass : #Object,
+	#superclass : #SharedPool,
 	#classVars : [
-		'RequiredFields'
+		'Author',
+		'BookTitle',
+		'Chapter',
+		'Editor',
+		'Institution',
+		'Journal',
+		'Note',
+		'Number',
+		'Pages',
+		'Publisher',
+		'RequiredFields',
+		'School',
+		'Series',
+		'Title',
+		'Volume',
+		'Year'
 	],
 	#category : #'Citezen-Model'
 }
