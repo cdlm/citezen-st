@@ -26,9 +26,6 @@ Class {
 		'blackListedFields',
 		'fieldSeparator'
 	],
-	#pools : [
-		'CZPool'
-	],
 	#classInstVars : [
 		'blackList'
 	],
