@@ -7,9 +7,6 @@ Class {
 		'result',
 		'entry2'
 	],
-	#pools : [
-		'CZPool'
-	],
 	#category : #'Citezen-Tests'
 }
 
