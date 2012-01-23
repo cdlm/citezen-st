@@ -673,7 +673,7 @@ Eliminate shared pool use of CZPool, replace with class methods'.
 		spec timestamp: '1/19/2012 19:42'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
-			package: 'Citezen-Model' with: 'Citezen-Model-DamienPollet.57';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.58';
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-DamienCassou.21';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-DamienPollet.49';
