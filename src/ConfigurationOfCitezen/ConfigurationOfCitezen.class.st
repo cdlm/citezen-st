@@ -578,7 +578,7 @@ ConfigurationOfCitezen >> stable: spec [
 
 	spec for: #'pharo' version: '0.7'.
 	spec for: #'pharo1.3.x' version: '0.7'.
-	spec for: #'pharo1.4.x' version: '0.7'.
+	spec for: #'pharo1.4.x' version: #broken.
 
 ]
 
@@ -663,28 +663,6 @@ ConfigurationOfCitezen >> version06: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version07: spec [
-	<version: '0.7' imports: #('0.6-baseline')>
-	
-	spec for: #common do: [
-		spec
-			blessing: #development;
-			author: 'StephaneDucasse';
-			description: 'Localization in latex generation'.
-		spec 
-			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5' ;
-			package: 'Citezen-Model' with: 'Citezen-Model-sd.56' ;
-		
-			package: 'Citezen-Parsers' with: 'Citezen-Parsers-DamienCassou.21';
-			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.39';
-			package: 'Citezen-Outputers' with: 'Citezen-Outputers-sd.48';
-			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
-			package: 'Citezen-Script' with: 'Citezen-Script-sd.46';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-sd.30';
-			package: 'Citezen-Tests' with: 'Citezen-Tests-sd.80'.]
-]
-
-{ #category : #versions }
-ConfigurationOfCitezen >> version07working: spec [
 	<version: '0.7' imports: #('0.6-baseline')>
 	
 	spec for: #common do: [
