@@ -54,6 +54,11 @@ CZPool class >> initialize [
 ]
 
 { #category : #constants }
+CZPool class >> institution [ 
+	^ #institution 
+]
+
+{ #category : #constants }
 CZPool class >> journal [
 	^ #journal
 ]
