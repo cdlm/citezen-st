@@ -1,5 +1,6 @@
 "
-Some useful queries, on class side.
+I make no sense please remove me...
+
 "
 Class {
 	#name : #CZUsefulQueries,
