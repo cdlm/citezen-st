@@ -7,18 +7,3 @@ Class {
 	#superclass : #Object,
 	#category : #'Citezen-Script'
 }
-
-{ #category : #'as yet unclassified' }
-CZPersonalScript class >> me [
-	^ ''
-]
-
-{ #category : #'as yet unclassified' }
-CZPersonalScript class >> notWrittenByMe [
-	^ CZUsefulScripts notWrittenBy: self me
-]
-
-{ #category : #'as yet unclassified' }
-CZPersonalScript class >> writtenByMe [ 
-	^ CZUsefulScripts writtenBy: self me
-]
