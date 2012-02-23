@@ -124,7 +124,7 @@ CZFileFormatGenerator >> visitBibSet: aSet [
 	self line.
 ]
 
-{ #category : #visit }
+{ #category : #'visit doc' }
 CZFileFormatGenerator >> visitDoc: aCZDoc [
 
 	CZAccentuateCharactersParser toAccentedCharTable.
