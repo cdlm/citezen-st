@@ -13,10 +13,38 @@ Class {
 		'doc',
 		'authorMatchingString',
 		'originalBibSet',
-		'workingBibSet'
+		'workingBibSet',
+		'localization'
 	],
 	#category : #'Citezen-Reborn'
 }
+
+{ #category : #queries }
+CZDocBuilder >> PhDAndHabilitationQuery [
+
+	^(CZTypeQuery checks: [ :each | each = #phdthesis]) 
+			OR: (self annotationWithType:  '*habilitation*')
+]
+
+{ #category : #building }
+CZDocBuilder >> addBibSection: aQuery withTitle: aString [
+
+	(workingBib select: aQuery)
+]
+
+{ #category : #building }
+CZDocBuilder >> addTitle: aTitle [
+
+	doc add: aTitle
+]
+
+{ #category : #'utility-queries' }
+CZDocBuilder >> annotationWithType: aString [
+
+	^  CZFieldQuery 
+			named: #annote 
+			checks: [ :value | aString match: value ]
+]
 
 { #category : #queries }
 CZDocBuilder >> authorInternationalJournalQuery [
@@ -52,26 +80,84 @@ CZDocBuilder >> bibset: aBibSet [
 ]
 
 { #category : #queries }
+CZDocBuilder >> bookChapterConferenceQuery [
+	
+	^ CZFieldQuery 
+			named: #annote 
+			checks: [ :value | '*articlebook*' match: value ]
+]
+
+{ #category : #queries }
 CZDocBuilder >> bookQuery [
 
-	^ CZTypeQuery checks: [ :each | each = #book] 
+	^ (CZTypeQuery checks: [ :each | each = #book] )
+]
+
+{ #category : #building }
+CZDocBuilder >> build [
+]
+
+{ #category : #queries }
+CZDocBuilder >> conferencesQuery [
+
+	^ (CZFieldQuery named: #editor checks: [ :value | self authorMatchingString match: value ])
+					"AND: (CZBibFieldQuery 
+								named: #annote 
+								checks: [ :value | '*editor*' match: value ])"
+					OR: (self annotationWithType:  '*workshopproceedings*')
+]
+
+{ #category : #building }
+CZDocBuilder >> doNotRestartNumberingAfterSection [
+]
+
+{ #category : #building }
+CZDocBuilder >> document [
+
+	self build.
+	^ doc
+]
+
+{ #category : #initialize }
+CZDocBuilder >> english [
+
+	localization english
+]
+
+{ #category : #initialize }
+CZDocBuilder >> french [
+
+	localization french.
 ]
 
 { #category : #queries }
 CZDocBuilder >> inSubmissionQuery [
 
-	^ CZFieldQuery 
-		named: #keywords 
-		checks: [ :value | '*insubmission*' match: value ]
+	^ (CZFieldQuery 
+			named: #keywords 
+			checks: [ :value | '*insubmission*' match: value ])
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialize }
 CZDocBuilder >> initialize [
 
 	super initialize.
 	doc := CZDoc new.
-	self authorMatchingString: '*'
+	self authorMatchingString: '*'.
+	localization := CZLocalisation new.
 	
+]
+
+{ #category : #queries }
+CZDocBuilder >> internationalWorkshopQuery [
+
+	^ self annotationWithType:  '*internationalworkshop*'
+]
+
+{ #category : #queries }
+CZDocBuilder >> invitedQuery [
+
+	^ self annotationWithType:  '*invited*'
 ]
 
 { #category : #queries }
@@ -89,6 +175,38 @@ CZDocBuilder >> journals [
 	(dictionary at: false) do: [:each | workingBibSet removeEntry: each].
 	^ dictionary at: true.			
 	
+]
+
+{ #category : #queries }
+CZDocBuilder >> nationalConferenceQuery [
+
+	^ self annotationWithType:  '*nationalconference*'
+]
+
+{ #category : #queries }
+CZDocBuilder >> nationalJournalQuery [
+
+	^ (CZFieldQuery 
+			named: #annote 
+			checks: [ :value | ('*nationaljournal*' match: value) and: [('*internationaljournal*' match: value) not] ])
+]
+
+{ #category : #queries }
+CZDocBuilder >> toolDemoQuery [
+
+	^ self annotationWithType:  '*tooldemo*'
+]
+
+{ #category : #queries }
+CZDocBuilder >> topConferenceQuery [
+	
+	^ self withAnnotationType:  '*topconference*'
+]
+
+{ #category : #queries }
+CZDocBuilder >> vulgarisationQuery [
+	
+	^ self withAnnotationType:  '*vulgarisation*'
 ]
 
 { #category : #accessing }

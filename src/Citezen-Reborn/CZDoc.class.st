@@ -12,6 +12,7 @@ Class {
 CZDoc >> add: anElement [
 
 	elements add: anElement.
+	anElement doc: self.
 	^ anElement
 ]
 
@@ -40,6 +41,7 @@ CZDoc >> elements [
 CZDoc >> initialize [
 
 	super initialize.
+	elements := OrderedCollection new.
 	self title: self defaultTitle
 	
 ]

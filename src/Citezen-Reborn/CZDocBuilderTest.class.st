@@ -95,6 +95,7 @@ accepttotal = {87}
 
 @article{Duca12a,
      author = {St\''ephane Ducasse and Zork Ranger},
+	annote = {internationaljournal},
      title = {Woa},
      journal = {Journal of Information System},
      Url	       = {obsoleteData.pdf},
@@ -114,7 +115,20 @@ CZDocBuilderTest >> testJournals [
 					authorMatchingString: '*S*Ducasse*';
 					bibset: bibset.
 	self assert: builder workingBibSet size = 6.				
-	self assert: (builder workingBibSet select: builder journalQuery) size = 3
+	self assert: (builder workingBibSet select: builder journalQuery) size = 2
+]
+
+{ #category : #tests }
+CZDocBuilderTest >> testTitle [
+	"self  debug: #testTitle"
+	
+	| builder |
+	builder := CZDocBuilder new 
+					authorMatchingString: '*S*Ducasse*';
+					bibset: bibset.
+	builder addTitle: CZTitle new.
+	builder document.
+	self assert: builder document elements size = 1
 ]
 
 { #category : #tests }

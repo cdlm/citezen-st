@@ -1,5 +1,5 @@
 Class {
-	#name : #CZText,
+	#name : #CZHeader,
 	#superclass : #CZDocElement,
 	#category : #'Citezen-Reborn'
 }
