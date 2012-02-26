@@ -1,30 +1,16 @@
+"
+A CZFileFormatGenerator is mainly generated text into a file.
+Its subclasses are more interested.
+"
 Class {
 	#name : #CZFileFormatGenerator,
 	#superclass : #CZVisitor,
 	#instVars : [
-		'fieldOrder',
 		'outputStream',
 		'fieldSeparatorString'
 	],
 	#category : #'Citezen-Reborn'
 }
-
-{ #category : #configuration }
-CZFileFormatGenerator >> defaultFieldOrder [
-
-	^ #(#author 
-			  #title 
-			  #journal 
-			  #booktitle 
-			  #volume 
-			  #pages 
-			  #publisher  
-			  #year 
-			  #impactfactor 
-			  #rate 
-			  #url 
-			  #doi)
-]
 
 { #category : #configuration }
 CZFileFormatGenerator >> defaultFieldSeparatorString [
@@ -85,7 +71,6 @@ CZFileFormatGenerator >> filename: aString [
 CZFileFormatGenerator >> initialize [
 	
 	super initialize.
-	fieldOrder := self defaultFieldOrder.
 	"by default we write to a simple in memory stream"
 	self outputStream:  String new writeStream.
 	self fieldSeparatorString: self defaultFieldSeparatorString
@@ -115,7 +100,7 @@ CZFileFormatGenerator >> visit: anObject [
 	anObject acceptVisitor: self.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visit }
 CZFileFormatGenerator >> visitBibSet: aSet [
 
 	self line.
@@ -124,31 +109,48 @@ CZFileFormatGenerator >> visitBibSet: aSet [
 	self line.
 ]
 
-{ #category : #'visit doc' }
-CZFileFormatGenerator >> visitDoc: aCZDoc [
+{ #category : #visit }
+CZFileFormatGenerator >> visitCompositeValue: aCZCompositeValue [
+	aCZCompositeValue 
+		do: [ :each | each acceptVisitor: self] 
+		separatedBy: [ self outputStream nextPutAll: ' ' ].
+]
 
-	CZAccentuateCharactersParser toAccentedCharTable.
-	super visitDocument: aCZDoc
+{ #category : #'visit doc' }
+CZFileFormatGenerator >> visitDoc: aCZDocument [
+	"CZAccentuateCharactersParser toAccentedCharTable."
+	"i do not get how I can go from  \'e to é"
+	
+	super visitDoc: aCZDocument
+	
 ]
 
 { #category : #visit }
 CZFileFormatGenerator >> visitEntry: anEntry [
 
-
+	| fields |
+	fields := anEntry fieldSortedFollowingKeys: fieldOrder. 
 	self emitEntryHeader: anEntry.
-
-	(anEntry fields reject: [ :aField | (blackListedFields includes: aField key)])
-		do: [ :each | each acceptVisitor: self ]
-		separatedBy: [ self outputStream nextPutAll: self fieldSeparatorString].		
-	"we should pay attention since the order should also be respected"
-
+	fields
+		 do: [ :each | each acceptVisitor: self]
+		 separatedBy: [outputStream nextPutAll: self fieldSeparatorString].
 	self emitEntryFooter: anEntry
 ]
 
 { #category : #visit }
 CZFileFormatGenerator >> visitField: aField [
 	
-	aField dispatchVisitor: self
+	"this is not good since it shortcuts the visitString: ... we will see later
+	in particular for document like section we do not want to generate CZString for now.
+	may be we should."
+	
+	self outputStream nextPutAll: 
+				(CZAccentuateCharactersParser parse: aField value asString)
+]
+
+{ #category : #visit }
+CZFileFormatGenerator >> visitMacroReference: aCZMacroReference [
+	self outputStream nextPutAll: aCZMacroReference expanded 
 ]
 
 { #category : #visit }
@@ -156,6 +158,12 @@ CZFileFormatGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.
 	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
+]
+
+{ #category : #visit }
+CZFileFormatGenerator >> visitSection: aCZSection [
+
+	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZSection name)
 ]
 
 { #category : #visit }

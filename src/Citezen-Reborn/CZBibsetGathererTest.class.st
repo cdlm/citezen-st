@@ -1,3 +1,6 @@
+"
+A CZBibsetGathererTest is a test suite
+"
 Class {
 	#name : #CZBibsetGathererTest,
 	#superclass : #TestCase,

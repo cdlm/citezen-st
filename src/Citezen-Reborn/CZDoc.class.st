@@ -1,3 +1,7 @@
+"
+A CZDoc is document composed of CZDocElements.
+I'm also a walkable structure using a CZVisitor.
+"
 Class {
 	#name : #CZDoc,
 	#superclass : #Object,
@@ -8,11 +12,17 @@ Class {
 	#category : #'Citezen-Reborn'
 }
 
+{ #category : #visitor }
+CZDoc >> acceptVisitor: aVisitor [
+
+	aVisitor visitDoc: self.
+]
+
 { #category : #'initialize-release' }
 CZDoc >> add: anElement [
 
 	elements add: anElement.
-	anElement doc: self.
+	"does not work for CZEntry :(     anElement doc: self."
 	^ anElement
 ]
 

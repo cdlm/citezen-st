@@ -1,10 +1,12 @@
+"
+A CZVisitor is visitor handling both CZEntries and CZDocuments
+"
 Class {
 	#name : #CZVisitor,
 	#superclass : #Object,
 	#instVars : [
-		'blackListedFields',
 		'expandOption',
-		'shouldFilter'
+		'fieldOrder'
 	],
 	#category : #'Citezen-Reborn'
 }
@@ -17,47 +19,42 @@ CZVisitor >> authorNameExpandOption [
 
 ]
 
-{ #category : #accessing }
-CZVisitor >> blackListedFields [
-	"return the list of fields entries that should be filtered out, for example organizations may force to add new fields. Have a look at CZEntry privateFields for a first list of potential fields that should not be treated."
-	
-	^ blackListedFields
+{ #category : #configuration }
+CZVisitor >> defaultFieldOrder [
+
+	^ #(#author 
+			  #title 
+			  #journal 
+			  #booktitle 
+			  #volume 
+			  #pages 
+			  #publisher  
+			  #year 
+			  #impactfactor 
+			  #rate 
+			  #url 
+			  #doi)
 ]
 
 { #category : #accessing }
-CZVisitor >> blackListedFields: aList [
-
-	
-	blackListedFields := aList
+CZVisitor >> fieldOrder [
+	^ fieldOrder 
 ]
 
 { #category : #accessing }
-CZVisitor >> defaultBlackListedFields [
+CZVisitor >> fieldOrder: aCollection [
+	"The collection of field aCollection is used to filter and order the fields. You can then customize to filter private fields, web information and others."
 
-	^ #()
-]
-
-{ #category : #'team related' }
-CZVisitor >> inSubmissionQuery [
-
-	^ CZFieldQuery 
-		named: #keywords 
-		checks: [ :value | '*insubmission*' match: value ]
+	fieldOrder := aCollection
 ]
 
 { #category : #'initialize-release' }
 CZVisitor >> initialize [
 
 	super initialize.
-	self blackListedFields: self defaultBlackListedFields.
 	self setAuthorDisplayAsFullName.
-	self setFilteringOn.
-]
+	fieldOrder := self defaultFieldOrder.
 
-{ #category : #accessing }
-CZVisitor >> keysOfBlacklistedEntries [
-
-	^ #()
 ]
 
 { #category : #configuration }
@@ -78,50 +75,41 @@ CZVisitor >> setAuthorDisplayAsShortenedName [
 	expandOption := #displayShortenedName
 ]
 
-{ #category : #accessing }
-CZVisitor >> setFilteringOff [
-
-	shouldFilter := false
-]
-
-{ #category : #accessing }
-CZVisitor >> setFilteringOn [
-
-	shouldFilter := true
-]
-
-{ #category : #accessing }
-CZVisitor >> shouldFilter [
-
-	^ shouldFilter
-]
-
 { #category : #visiting }
 CZVisitor >> visitBibSet: aCZSet [
 	
-	| newCZSet |
-	newCZSet := self shouldFilter
-						ifTrue: [ aCZSet reject: self inSubmissionQuery	]
-						ifFalse: [aCZSet].
-	newCZSet entries do: [ :each | each acceptVisitor: self].
+	aCZSet entries do: [ :each | each acceptVisitor: self].
 
 	
 ]
 
-{ #category : #visiting }
-CZVisitor >> visitDocument: aDocument [
+{ #category : #'visiting doc' }
+CZVisitor >> visitDoc: aDocument [
 
 	aDocument elements do: [ :each | each acceptVisitor: self ]
 ]
 
 { #category : #visiting }
+CZVisitor >> visitInteger: aCZInteger [
+	
+	self outputStream nextPutAll:  aCZInteger notExpanded asString 
+]
+
+{ #category : #'visiting doc' }
+CZVisitor >> visitMacroReference: aCZMacroReference [
+	
+]
+
+{ #category : #'visiting doc' }
+CZVisitor >> visitSection: aSection [
+
+	
+]
+
+{ #category : #visiting }
 CZVisitor >> visitSet: aCZSet [
 	
-	| newCZSet |
-	newCZSet := self shouldFilter
-						ifTrue: [ aCZSet reject: self inSubmissionQuery	]
-						ifFalse: [aCZSet].
-	newCZSet entries do: [ :each | each acceptVisitor: self].
+	aCZSet entries do: [ :each | each acceptVisitor: self].
 
 	
 ]

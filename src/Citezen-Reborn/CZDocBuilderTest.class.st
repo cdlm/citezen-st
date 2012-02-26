@@ -1,3 +1,6 @@
+"
+testing the builder
+"
 Class {
 	#name : #CZDocBuilderTest,
 	#superclass : #TestCase,
@@ -7,15 +10,19 @@ Class {
 	#category : #'Citezen-Reborn'
 }
 
-{ #category : #setUp }
-CZDocBuilderTest >> setUp [
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> aDoc [
 
-	bibset := self someArticles.
+	^ (StefPublicationsDocBuilder new 
+					bibset: self someArticles;
+					authorMatchingString: '*S*Ducasse*';
+					build;
+					document)
 ]
 
-{ #category : #setUp }
-CZDocBuilderTest >> someArticles [
-	"self new someArticles"
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> someArticles [
+	"self  someArticles"
 ^
 (CZBibParser parse: 
 '@article{Abde10a,
@@ -76,6 +83,7 @@ CZDocBuilderTest >> someArticles [
 
 @article{Duca10a,
 author = {St\''ephane Ducasse and Damien Pollet},
+keywords = {insubmission},
 title = {Fingerprints},
 journal = {Journal of Information System},
 year = 2010
@@ -106,14 +114,56 @@ accepttotal = {87}
 )  
 ]
 
+{ #category : #setUp }
+CZDocBuilderTest >> setUp [
+
+	bibset := self someArticles.
+]
+
+{ #category : #setUp }
+CZDocBuilderTest >> someArticles [
+	"self new someArticles"
+	^ self class someArticles 
+]
+
+{ #category : #tests }
+CZDocBuilderTest >> testBibSection [
+	"self debug: #testBibSection"
+	
+	self assert: (StefPublicationsDocBuilder new 
+					bibset: CZDocBuilderTest someArticles;
+					authorMatchingString: '*S*Ducasse*';
+					build;
+					document) elements size = 4
+	
+]
+
+{ #category : #tests }
+CZDocBuilderTest >> testBlackListedEntries [
+	"self debug: #testBlackListedEntries"
+	
+	| builder |
+	builder := CZDocBuilder new bibset: bibset.
+	"filtering not invoked"				
+	self assert: builder workingBibSet size = 6.		
+			
+	"now testing that we remove the insubmission"				
+	builder setFilteringOn.
+	builder filter.
+	self assert: builder workingBibSet size = 5.		
+	
+	"now testing that we removed the keys we do not want"	
+	builder keysOfBlackListedEntries: #(Abde10a Chev11a).
+	builder filter.
+	self assert: builder workingBibSet size = 3.	
+]
+
 { #category : #tests }
 CZDocBuilderTest >> testJournals [
 	"self debug: #testJournals"
 	
 	| builder |
-	builder := CZDocBuilder new 
-					authorMatchingString: '*S*Ducasse*';
-					bibset: bibset.
+	builder := CZDocBuilder new  bibset: bibset.
 	self assert: builder workingBibSet size = 6.				
 	self assert: (builder workingBibSet select: builder journalQuery) size = 2
 ]
@@ -123,9 +173,7 @@ CZDocBuilderTest >> testTitle [
 	"self  debug: #testTitle"
 	
 	| builder |
-	builder := CZDocBuilder new 
-					authorMatchingString: '*S*Ducasse*';
-					bibset: bibset.
+	builder := CZDocBuilder new bibset: bibset.
 	builder addTitle: CZTitle new.
 	builder document.
 	self assert: builder document elements size = 1

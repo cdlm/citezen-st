@@ -1,3 +1,6 @@
+"
+A CZHTMLGeneratorTest is test
+"
 Class {
 	#name : #CZHTMLGeneratorTest,
 	#superclass : #CZFileFormatGeneratorTest,
@@ -17,7 +20,12 @@ CZHTMLGeneratorTest >> testSet [
 	| visitor |
 	visitor := self generatorClass new.
 	visitor visit: bibset.
-	self assert: (visitor outputStream contents =  '<ol>
-<li>St&eacute;phane Ducasse and Florence Ducasse, La maledication de la fille de la femme crocodile, Journal of Hatred, 2012.</li><li>St&eacute;phane Ducasse, Botsinc: Learning programming in Squeak, Apress, 2005.</li></ol>'
-).
+	self assert: (visitor outputStream contents = '<ol>
+<li>
+Ducasse, St\''ephane and Ducasse, Florence, La maledication de la fille de la femme crocodile, Journal of Hatred, 2012.
+</li>
+<li>
+Ducasse, St\''ephane, Botsinc: Learning programming in Squeak, Apress, 2005.
+</li>
+</ol>')
 ]

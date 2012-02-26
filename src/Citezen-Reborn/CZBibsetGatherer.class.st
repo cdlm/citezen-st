@@ -40,6 +40,7 @@ CZBibsetGatherer >> visitBibSet: aSet [
 
 { #category : #visiting }
 CZBibsetGatherer >> visitEntry: anEntry [
+	"We do not treat enttry ie we do not filed fields because we may want to do analysis"
 	
 	bibset addEntry: anEntry.
 ]

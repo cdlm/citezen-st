@@ -7,14 +7,14 @@ Class {
 	#name : #CZDocBuilder,
 	#superclass : #Object,
 	#instVars : [
-		'author',
-		'title',
-		'bibset',
 		'doc',
 		'authorMatchingString',
 		'originalBibSet',
 		'workingBibSet',
-		'localization'
+		'localization',
+		'noEmptySection',
+		'shouldFilterNonPublic',
+		'keysOfBlackListedEntries'
 	],
 	#category : #'Citezen-Reborn'
 }
@@ -28,8 +28,22 @@ CZDocBuilder >> PhDAndHabilitationQuery [
 
 { #category : #building }
 CZDocBuilder >> addBibSection: aQuery withTitle: aString [
+	
+	| entries |
+	entries := (workingBibSet select: aQuery).
+	(noEmptySection & entries size isZero)
+		ifTrue: [^ self].
+	entries sortByDateReverse.	
+	self addSection: (CZSection new name: aString; yourself).
+	
+	self document add:  entries
+	"may be the sorting should be an option"
+]
 
-	(workingBib select: aQuery)
+{ #category : #building }
+CZDocBuilder >> addSection: aSection [
+
+	doc add: aSection
 ]
 
 { #category : #building }
@@ -38,18 +52,18 @@ CZDocBuilder >> addTitle: aTitle [
 	doc add: aTitle
 ]
 
+{ #category : #configuration }
+CZDocBuilder >> allowEmptySections [
+	
+	noEmptySection := false
+]
+
 { #category : #'utility-queries' }
 CZDocBuilder >> annotationWithType: aString [
 
 	^  CZFieldQuery 
 			named: #annote 
 			checks: [ :value | aString match: value ]
-]
-
-{ #category : #queries }
-CZDocBuilder >> authorInternationalJournalQuery [
-
-	^ (self authorQuery AND: CZQuery isInternationalJournalQuery)
 ]
 
 { #category : #accessing }
@@ -80,7 +94,7 @@ CZDocBuilder >> bibset: aBibSet [
 ]
 
 { #category : #queries }
-CZDocBuilder >> bookChapterConferenceQuery [
+CZDocBuilder >> bookChapterQuery [
 	
 	^ CZFieldQuery 
 			named: #annote 
@@ -95,16 +109,20 @@ CZDocBuilder >> bookQuery [
 
 { #category : #building }
 CZDocBuilder >> build [
+
+	self filter
 ]
 
-{ #category : #queries }
-CZDocBuilder >> conferencesQuery [
+{ #category : #initialize }
+CZDocBuilder >> defaultKeysOfBlackListedEntries [ 
 
-	^ (CZFieldQuery named: #editor checks: [ :value | self authorMatchingString match: value ])
-					"AND: (CZBibFieldQuery 
-								named: #annote 
-								checks: [ :value | '*editor*' match: value ])"
-					OR: (self annotationWithType:  '*workshopproceedings*')
+	^ #()
+]
+
+{ #category : #configuration }
+CZDocBuilder >> doNotAllowEmptySections [
+	
+	noEmptySection := true
 ]
 
 { #category : #building }
@@ -114,17 +132,37 @@ CZDocBuilder >> doNotRestartNumberingAfterSection [
 { #category : #building }
 CZDocBuilder >> document [
 
-	self build.
 	^ doc
 ]
 
-{ #category : #initialize }
+{ #category : #queries }
+CZDocBuilder >> editorQuery [
+
+	^ ((CZFieldQuery named: #editor checks: [ :value | self authorMatchingString match: value ])
+					"AND: (CZBibFieldQuery 
+								named: #annote 
+								checks: [ :value | '*editor*' match: value ])"
+			OR: (self annotationWithType: '*workshopproceedings*') )
+]
+
+{ #category : #configuration }
 CZDocBuilder >> english [
 
 	localization english
 ]
 
-{ #category : #initialize }
+{ #category : #building }
+CZDocBuilder >> filter [
+	"Filter insubmission and other not blacklisted entries"
+	
+	self shouldFilterNonPublic ifFalse: [^ self].
+	workingBibSet := workingBibSet reject: self inSubmissionQuery.
+	workingBibSet := workingBibSet reject: [:each | keysOfBlackListedEntries includes: each key] 
+	
+	
+]
+
+{ #category : #configuration }
 CZDocBuilder >> french [
 
 	localization french.
@@ -145,7 +183,15 @@ CZDocBuilder >> initialize [
 	doc := CZDoc new.
 	self authorMatchingString: '*'.
 	localization := CZLocalisation new.
-	
+	self doNotAllowEmptySections.
+	self setFilteringOn.
+	self keysOfBlackListedEntries: self defaultKeysOfBlackListedEntries 
+]
+
+{ #category : #queries }
+CZDocBuilder >> internationalConferenceQuery [
+
+	^ self annotationWithType:  '*internationalconference*'
 ]
 
 { #category : #queries }
@@ -177,10 +223,23 @@ CZDocBuilder >> journals [
 	
 ]
 
+{ #category : #accessing }
+CZDocBuilder >> keysOfBlackListedEntries [
+
+	^ keysOfBlackListedEntries
+]
+
+{ #category : #accessing }
+CZDocBuilder >> keysOfBlackListedEntries: aCol [ 
+
+	keysOfBlackListedEntries := aCol
+]
+
 { #category : #queries }
 CZDocBuilder >> nationalConferenceQuery [
 
-	^ self annotationWithType:  '*nationalconference*'
+	"pay attention not to put a star else internationalconference will be matched too"
+	^ self annotationWithType:  'nationalconference*'
 ]
 
 { #category : #queries }
@@ -189,6 +248,25 @@ CZDocBuilder >> nationalJournalQuery [
 	^ (CZFieldQuery 
 			named: #annote 
 			checks: [ :value | ('*nationaljournal*' match: value) and: [('*internationaljournal*' match: value) not] ])
+]
+
+{ #category : #configuration }
+CZDocBuilder >> setFilteringOff [
+
+	shouldFilterNonPublic := false
+]
+
+{ #category : #configuration }
+CZDocBuilder >> setFilteringOn [
+	"to filter private entries and others insubmissions"
+	
+	shouldFilterNonPublic := true
+]
+
+{ #category : #testing }
+CZDocBuilder >> shouldFilterNonPublic [
+
+	^ shouldFilterNonPublic
 ]
 
 { #category : #queries }
@@ -200,13 +278,13 @@ CZDocBuilder >> toolDemoQuery [
 { #category : #queries }
 CZDocBuilder >> topConferenceQuery [
 	
-	^ self withAnnotationType:  '*topconference*'
+	^ self annotationWithType:  '*topconference*'
 ]
 
 { #category : #queries }
 CZDocBuilder >> vulgarisationQuery [
 	
-	^ self withAnnotationType:  '*vulgarisation*'
+	^ self annotationWithType:  '*vulgarisation*'
 ]
 
 { #category : #accessing }

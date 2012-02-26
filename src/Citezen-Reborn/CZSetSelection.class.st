@@ -13,36 +13,6 @@ Class {
 	#category : #'Citezen-Reborn'
 }
 
-{ #category : #accessing }
-CZSetSelection >> entries [
-
-	^ self select: filteringPredicate
-]
-
-{ #category : #accessing }
-CZSetSelection >> filteringPredicate [
-	^ filteringPredicate
-]
-
-{ #category : #accessing }
-CZSetSelection >> filteringPredicate: aQuery [
-	filteringPredicate := aQuery
-]
-
-{ #category : #accessing }
-CZSetSelection >> id [ 
-	"Return the id of the script - handy to debug."
-	
-	^ id
-]
-
-{ #category : #accessing }
-CZSetSelection >> id: anId [
-	"anId can be anything."
-	
-	id := anId.
-]
-
 { #category : #'initialize-release' }
 CZSetSelection >> initialize [
 
@@ -73,12 +43,6 @@ CZSetSelection >> reversed: aBoolean [
 	reversed := aBoolean
 
 	
-]
-
-{ #category : #'to change in CZEntry' }
-CZSetSelection >> select: aBlock [
-	^ self class new
-		setEntries: (entries select: aBlock)
 ]
 
 { #category : #accessing }

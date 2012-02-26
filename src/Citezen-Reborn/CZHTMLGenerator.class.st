@@ -1,3 +1,6 @@
+"
+A CZHTMLGenerator is generating nice html for us. 
+"
 Class {
 	#name : #CZHTMLGenerator,
 	#superclass : #CZFileFormatGenerator,
@@ -26,6 +29,21 @@ CZHTMLGenerator >> defaultHeader [
 ') withUnixLineEndings
 ]
 
+{ #category : #entries }
+CZHTMLGenerator >> emitEntryFooter: anEntry [
+
+	super emitEntryFooter: anEntry.
+	self outputStream nextPutAll: '</li>'.
+	self line.
+]
+
+{ #category : #entries }
+CZHTMLGenerator >> emitEntryHeader: anEntry [
+
+	self outputStream nextPutAll: '<li>'.
+	self line.
+]
+
 { #category : #'as yet unclassified' }
 CZHTMLGenerator >> visitBibSet: aSet [	
 	
@@ -39,24 +57,47 @@ CZHTMLGenerator >> visitBibSet: aSet [
 ]
 
 { #category : #visiting }
-CZHTMLGenerator >> visitDocument: aCZDoc [
+CZHTMLGenerator >> visitDoc: aCZDoc [
 
-	
+	CZAccentuateCharactersParser toHtmlTable.
+	super visitDoc: aCZDoc.
 ]
 
 { #category : #visiting }
-CZHTMLGenerator >> visitEntry: anEntry [
+CZHTMLGenerator >> visitField: aField [
+
+	self outputStream nextPutAll: '<span class="',aField key,'">'.
 	
-	| fields |
-	fields := anEntry fieldSortedFollowingKeys: fieldOrder. 
+	aField isURL
+		ifTrue: [outputStream nextPutAll: '<a href="'].
+	aField isDoi
+		ifTrue: [outputStream nextPutAll: '<a href="http://dx.doi.org/'].	
+	aField dispatchVisitor: self.
+	aField isURL
+		ifTrue: [outputStream nextPutAll: '">PDF</a>'].
+	aField isDoi
+		ifTrue: [outputStream nextPutAll: '">DOI</a>'].
+	outputStream nextPutAll: '</span>'.
+]
+
+{ #category : #visiting }
+CZHTMLGenerator >> visitPeople: aCZPeople [
+
+	aCZPeople perform: expandOption.
+	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
+]
+
+{ #category : #visiting }
+CZHTMLGenerator >> visitSection: aCZSection [
+	
 	outputStream 
-		nextPutAll: '<li>'.
-	fields
-		 do: [ :each | each acceptVisitor: self]
-		 separatedBy: [outputStream nextPutAll: ', '].
-	outputStream nextPut: $. .
-	outputStream 
-		nextPutAll: '</li>'.
+		nextPutAll: '<h4'; 
+		nextPutAll: '>';
+		nextPutAll: (CZAccentuateCharactersParser parse: aCZSection name);
+		nextPutAll: '</h4';
+		nextPutAll: '>';
+		lf;
+		lf
 ]
 
 { #category : #visiting }
@@ -69,4 +110,18 @@ CZHTMLGenerator >> visitSet: aSet [
 		].
 	outputStream nextPutAll: '</ol>'.
 
+]
+
+{ #category : #visiting }
+CZHTMLGenerator >> visitTitle: aCZTitleElement [
+	"this is not the same title: here this is the still the legacy from CZDocument of adrian"
+	
+	outputStream 
+		nextPutAll: '<h4'; 
+		nextPutAll: '>';
+		nextPutAll: (CZAccentuateCharactersParser parse: aCZTitleElement title);
+		nextPutAll: '</h4';
+		nextPutAll: '>';
+		lf;
+		lf
 ]
