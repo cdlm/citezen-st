@@ -1,3 +1,6 @@
+"
+I manage the localisation of files and entries
+"
 Class {
 	#name : #CZLocalisation,
 	#superclass : #Object,
@@ -78,7 +81,7 @@ CZLocalisation class >> initializeFrenchEntries [
 	French at: PhD put: 'Th\`ese'.
 	French at: HDR put: 'Habilitation \''a diriger des recherches'.
 	French at: PHDAndHdr put: 'Th\`ese et Habilitation \''a diriger des recherches'.
-	French at: ToolDemo put: 'Demonstrations d''outils'.
+	French at: ToolDemo put: 'D\''emonstrations d''outils'.
 	French at: Vulgarisation put: 'Articles de vulgarisation'.
 	
 

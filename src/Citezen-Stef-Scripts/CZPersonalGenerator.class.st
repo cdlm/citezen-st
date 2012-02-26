@@ -272,11 +272,6 @@ CZPersonalGenerator >> initialize [
 ]
 
 { #category : #'file parameter' }
-CZPersonalGenerator >> inputFileName [
-	^ inputFileName
-]
-
-{ #category : #'file parameter' }
 CZPersonalGenerator >> inputFileName: aString [
 	inputFileName := aString
 ]
@@ -344,11 +339,6 @@ CZPersonalGenerator >> noWebFormat [
 	self setConferenceDisplayPattern:  self conferenceDisplayPatternNoWeb.
 	
 
-]
-
-{ #category : #'file parameter' }
-CZPersonalGenerator >> outputFileName [
-	^ outputFileName 
 ]
 
 { #category : #'file parameter' }
