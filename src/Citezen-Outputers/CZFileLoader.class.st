@@ -1,3 +1,6 @@
+"
+A CZFileLoader loads and parse a file from a file.
+"
 Class {
 	#name : #CZFileLoader,
 	#superclass : #CZTool,
