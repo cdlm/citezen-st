@@ -294,7 +294,7 @@ CZSet >> sortByAuthor [
 
 { #category : #'arranging - combining' }
 CZSet >> sortByDateReverse [
-	self sortBy: [:x :y | (x year) value >= (y year) value]
+	self sortBy: [:x :y | x year value >= y year value]
 ]
 
 { #category : #'initialize-release' }
