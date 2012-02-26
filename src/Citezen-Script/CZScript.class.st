@@ -35,7 +35,6 @@ Class {
 	#instVars : [
 		'bibset',
 		'outputer',
-		'outputFile',
 		'blackList',
 		'fieldsToRemove',
 		'sortCollection',
@@ -376,8 +375,8 @@ CZScript >> removeInSubmission [
 
 	bibset entries: ( 
 		bibset entries reject: (CZFieldQuery 
-									named: #keywords 
-									checks: [ :value | '*insubmission*' match: value ]))
+							named: #keywords 
+							checks: [ :value | '*insubmission*' match: value ]))
 
 ]
 
