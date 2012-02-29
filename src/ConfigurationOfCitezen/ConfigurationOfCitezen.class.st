@@ -869,6 +869,6 @@ ConfigurationOfCitezen >> version09: spec [
 			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.48';
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.6';
 			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.34';
-			package: 'Citezen-Tests' with: 'Citezen-Tests-DamienPollet.82'. ].
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.83'. ].
 
 ]
