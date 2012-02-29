@@ -36,7 +36,8 @@ CZDocBuilder >> addBibSection: aQuery withTitle: aString [
 	entries sortByDateReverse.	
 	self addSection: (CZSection new name: aString; yourself).
 	
-	self document add:  entries
+	self document add:  (CZSet new addAll: entries ; yourself)
+	"we recreate a CZ so that we can manage groups of bib in the outputers"
 	"may be the sorting should be an option"
 ]
 

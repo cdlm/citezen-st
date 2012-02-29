@@ -10,6 +10,9 @@ StefPublicationsDocBuilder new
 StefPublicationsDocBuilder doit
 
 StefPublicationsDocBuilder bibtex
+
+StefPublicationsDocBuilder latex
+
 "
 Class {
 	#name : #StefPublicationsDocBuilder,
@@ -90,6 +93,29 @@ StefPublicationsDocBuilder class >> doit2 [
 	"here we extract the associated bib"		
 	CZBibTexGenerator new 
 			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-stefFull.bib'); 
+			visit: doc
+		
+		"ugly because the name of the bib file referenced to in the footer should be the same as the generated one - ugly ugly ugly because this should be done automatically"
+	
+]
+
+{ #category : #doit }
+StefPublicationsDocBuilder class >> latex [
+	"self latex"
+	"clearly to reconsider to make it nicer to compose"
+	
+	| builder doc |
+	builder := self new
+		fileNamed: 'rmod.bib';
+		toLatex;
+		french; 
+		setFilteringOn;
+		yourself.
+	doc := builder build document.
+	
+	"here we extract the associated bib"		
+	CZLaTeXGenerator new 
+			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-stefFull.tex'); 
 			visit: doc
 		
 	
@@ -189,7 +215,7 @@ StefPublicationsDocBuilder >> toLatex [
 { #category : #building }
 StefPublicationsDocBuilder >> xhtmlFooter [
 	^ '<h4>BibTex Files of the Publications</h4>
-<A HREF="stef.bib">BibTex File</A> </div>  <!-- div xmlns= class="paperList" -->
+<A HREF="', Date today yyyymmdd, '-stefFull.bib', '">BibTex File</A> </div>  <!-- div xmlns= class="paperList" -->
 	 </div><!-- mainContent -->
    </body>
 </html>

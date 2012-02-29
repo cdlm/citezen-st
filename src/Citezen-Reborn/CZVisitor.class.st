@@ -78,6 +78,7 @@ CZVisitor >> setAuthorDisplayAsShortenedName [
 { #category : #visiting }
 CZVisitor >> visitBibSet: aCZSet [
 	
+	aCZSet macros do: [ :each | each acceptVisitor: self].
 	aCZSet entries do: [ :each | each acceptVisitor: self].
 
 	
@@ -131,15 +132,6 @@ CZVisitor >> visitMacroReference: aCZMacroReference [
 
 { #category : #'visiting doc' }
 CZVisitor >> visitSection: aSection [
-
-	
-]
-
-{ #category : #visiting }
-CZVisitor >> visitSet: aCZSet [
-	
-	aCZSet macros do: [ :each | each acceptVisitor: self].
-	aCZSet entries do: [ :each | each acceptVisitor: self].
 
 	
 ]

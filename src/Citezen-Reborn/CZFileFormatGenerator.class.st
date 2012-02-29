@@ -182,7 +182,7 @@ CZFileFormatGenerator >> visitMacroReference: aCZMacroReference [
 CZFileFormatGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.
-	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
+	self outputStream nextPutAll: aCZPeople expanded
 ]
 
 { #category : #visit }
