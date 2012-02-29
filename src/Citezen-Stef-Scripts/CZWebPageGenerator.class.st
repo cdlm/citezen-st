@@ -123,24 +123,6 @@ CZWebPageGenerator >> generateTypeOriented20062009 [
 ]
 
 { #category : #oldexperiments }
-CZWebPageGenerator >> generateTypeOrientedAssociatedBibFile [
-	"self new generateTypeOrientedAssociatedBibFile"
-	
-	| newbib |
-	self typeOriented.
-	self document fillUpOriginalSet.
-	newbib := CZBibSetGatherer bibsetFrom: self document.
-	newbib clean.
-	^ CZBibtexOutputer new 
-		setOutputFile: 'stef.bib';
-		blackListedFields: CZEntry privateFields;
-			"here we could use a display pattern"
-		initializeOutputStream; 
-		visitSet: newbib;
-		contents
-]
-
-{ #category : #oldexperiments }
 CZWebPageGenerator >> select20062009 [
 	
 	| rmod selected|	
