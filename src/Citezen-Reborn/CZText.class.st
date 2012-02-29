@@ -10,6 +10,12 @@ Class {
 	#category : #'Citezen-Reborn'
 }
 
+{ #category : #testing }
+CZText >> isDefined [
+
+	^ text isNil not
+]
+
 { #category : #accessing }
 CZText >> text [
 

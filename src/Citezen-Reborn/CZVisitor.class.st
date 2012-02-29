@@ -83,14 +83,33 @@ CZVisitor >> visitBibSet: aCZSet [
 	
 ]
 
+{ #category : #visiting }
+CZVisitor >> visitComment: aCZCommentElement [
+	self outputStream 
+		nextPutAll: '<!-- ';
+		nextPutAll: aCZCommentElement comment;
+		nextPutAll: ' -->'.
+	
+]
+
 { #category : #'visiting doc' }
 CZVisitor >> visitDoc: aDocument [
 
-	aDocument elements do: [ :each | each acceptVisitor: self ]
+	aDocument header acceptVisitor: self.
+	aDocument elements do: [ :each | each acceptVisitor: self ].
+	aDocument footer acceptVisitor: self.
+]
+
+{ #category : #'visiting doc' }
+CZVisitor >> visitFooter: aCZHeader [
+
+
+	
 ]
 
 { #category : #'visiting doc' }
 CZVisitor >> visitHeader: aCZHeader [
+
 
 	
 ]
@@ -99,6 +118,10 @@ CZVisitor >> visitHeader: aCZHeader [
 CZVisitor >> visitInteger: aCZInteger [
 	
 	self outputStream nextPutAll:  aCZInteger notExpanded asString 
+]
+
+{ #category : #'visiting doc' }
+CZVisitor >> visitMacro: aCZField [
 ]
 
 { #category : #'visiting doc' }
@@ -115,7 +138,14 @@ CZVisitor >> visitSection: aSection [
 { #category : #visiting }
 CZVisitor >> visitSet: aCZSet [
 	
+	aCZSet macros do: [ :each | each acceptVisitor: self].
 	aCZSet entries do: [ :each | each acceptVisitor: self].
+
+	
+]
+
+{ #category : #visiting }
+CZVisitor >> visitString: aCZString [
 
 	
 ]

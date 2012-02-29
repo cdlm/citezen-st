@@ -57,6 +57,15 @@ CZHTMLGenerator >> visitBibSet: aSet [
 ]
 
 { #category : #visiting }
+CZHTMLGenerator >> visitComment: aCZCommentElement [
+	self outputStream 
+		nextPutAll: '<!-- ';
+		nextPutAll: aCZCommentElement comment;
+		nextPutAll: ' -->'.
+	self line
+]
+
+{ #category : #visiting }
 CZHTMLGenerator >> visitDoc: aCZDoc [
 
 	CZAccentuateCharactersParser toHtmlTable.
@@ -81,15 +90,8 @@ CZHTMLGenerator >> visitField: aField [
 ]
 
 { #category : #visiting }
-CZHTMLGenerator >> visitFooter: aCZFooter [
-
-	self outputStream nextPutAll: aCZFooter text
-]
-
-{ #category : #visiting }
-CZHTMLGenerator >> visitHeader: aCZHeader [
-
-	self outputStream nextPutAll: aCZHeader text
+CZHTMLGenerator >> visitMacroReference: aCZMacroReference [
+	outputStream nextPutAll: aCZMacroReference expanded 
 ]
 
 { #category : #visiting }

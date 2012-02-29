@@ -39,6 +39,11 @@ CZFileFormatGenerator >> emitEntryHeader: anEntry [
 	"Add to the outputStream a header for the correponding anEntry if needed."
 ]
 
+{ #category : #visit }
+CZFileFormatGenerator >> emitFieldSeparation [
+	^ self outputStream nextPutAll: self fieldSeparatorString
+]
+
 { #category : #accessing }
 CZFileFormatGenerator >> fieldOrder [
 	^ fieldOrder 
@@ -110,6 +115,12 @@ CZFileFormatGenerator >> visitBibSet: aSet [
 ]
 
 { #category : #visit }
+CZFileFormatGenerator >> visitComment: aCZCommentElement [
+	super visitComment: aCZCommentElement.
+	self line.
+]
+
+{ #category : #visit }
 CZFileFormatGenerator >> visitCompositeValue: aCZCompositeValue [
 	aCZCompositeValue 
 		do: [ :each | each acceptVisitor: self] 
@@ -127,13 +138,10 @@ CZFileFormatGenerator >> visitDoc: aCZDocument [
 
 { #category : #visit }
 CZFileFormatGenerator >> visitEntry: anEntry [
-
 	| fields |
-	fields := anEntry fieldSortedFollowingKeys: fieldOrder. 
+	fields := anEntry fieldSortedFollowingKeys: fieldOrder.
 	self emitEntryHeader: anEntry.
-	fields
-		 do: [ :each | each acceptVisitor: self]
-		 separatedBy: [outputStream nextPutAll: self fieldSeparatorString].
+	fields do: [ :each | each acceptVisitor: self ] separatedBy: [ self emitFieldSeparation ].
 	self emitEntryFooter: anEntry
 ]
 
@@ -151,13 +159,18 @@ CZFileFormatGenerator >> visitField: aField [
 { #category : #'visit doc' }
 CZFileFormatGenerator >> visitFooter: aCZFooter [
 
-	self outputStream nextPutAll: aCZFooter text
+	aCZFooter isDefined
+		ifTrue: [self outputStream nextPutAll: aCZFooter text]
+		ifFalse: [self outputStream nextPutAll: self defaultFooter]
 ]
 
 { #category : #'visit doc' }
 CZFileFormatGenerator >> visitHeader: aCZHeader [
 
-	self outputStream nextPutAll: aCZHeader text
+	aCZHeader isDefined
+		ifTrue: [self outputStream nextPutAll: aCZHeader text]
+		ifFalse: [self outputStream nextPutAll: self defaultHeader].
+	self line.
 ]
 
 { #category : #visit }

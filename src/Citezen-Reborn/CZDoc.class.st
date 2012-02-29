@@ -7,7 +7,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'elements',
-		'title'
+		'title',
+		'header',
+		'footer'
 	],
 	#category : #'Citezen-Reborn'
 }
@@ -47,12 +49,37 @@ CZDoc >> elements [
 	^ elements
 ]
 
+{ #category : #accessing }
+CZDoc >> footer [
+	^ footer
+]
+
+{ #category : #accessing }
+CZDoc >> footer: anObject [
+	footer := anObject
+]
+
+{ #category : #accessing }
+CZDoc >> header [
+	^ header
+]
+
+{ #category : #accessing }
+CZDoc >> header: anObject [
+	header := anObject
+]
+
 { #category : #'initialize-release' }
 CZDoc >> initialize [
 
 	super initialize.
 	elements := OrderedCollection new.
-	self title: self defaultTitle
+	self title: self defaultTitle.
+	
+	"not cool to define a footer for nothing but like that the visitor can walk 
+	without tests"
+	footer := CZFooter new.
+	header := CZHeader new
 	
 ]
 
