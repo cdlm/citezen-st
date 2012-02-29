@@ -856,7 +856,7 @@ ConfigurationOfCitezen >> version09: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #'development'.
-		spec description: 'Adding reborn'.
+		spec description: 'Latex + Bibtex generator + header /footer '.
 		spec author: 'StephaneDucasse'.
 		spec timestamp: '2/26/2012 18:13'.
 		spec 
@@ -865,10 +865,10 @@ ConfigurationOfCitezen >> version09: spec [
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-DamienCassou.21';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.51';
-			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.15';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.16';
 			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.48';
-			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.6';
-			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.34';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.9';
+			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.36';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.83'. ].
 
 ]
