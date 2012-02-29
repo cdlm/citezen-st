@@ -8,10 +8,3 @@ Class {
 CZHTMLOutputerTest >> rendererClass [
 	^ CZHtmlOutputer
 ]
-
-{ #category : #hooks }
-CZHTMLOutputerTest >> testLongArticle [
-	"self debug: #testLongArticle"
-	super testLongArticle.
-	self assert: result = ''
-]
