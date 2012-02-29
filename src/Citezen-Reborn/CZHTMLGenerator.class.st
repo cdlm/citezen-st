@@ -44,7 +44,7 @@ CZHTMLGenerator >> emitEntryHeader: anEntry [
 	self line.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visit }
 CZHTMLGenerator >> visitBibSet: aSet [	
 	
 	self outputStream nextPutAll: '<ol>'; lf.
@@ -78,6 +78,18 @@ CZHTMLGenerator >> visitField: aField [
 	aField isDoi
 		ifTrue: [outputStream nextPutAll: '">DOI</a>'].
 	outputStream nextPutAll: '</span>'.
+]
+
+{ #category : #visiting }
+CZHTMLGenerator >> visitFooter: aCZFooter [
+
+	self outputStream nextPutAll: aCZFooter text
+]
+
+{ #category : #visiting }
+CZHTMLGenerator >> visitHeader: aCZHeader [
+
+	self outputStream nextPutAll: aCZHeader text
 ]
 
 { #category : #visiting }

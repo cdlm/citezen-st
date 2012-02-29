@@ -41,6 +41,16 @@ CZDocBuilder >> addBibSection: aQuery withTitle: aString [
 ]
 
 { #category : #building }
+CZDocBuilder >> addFooter [
+
+	
+]
+
+{ #category : #building }
+CZDocBuilder >> addHeader [
+]
+
+{ #category : #building }
 CZDocBuilder >> addSection: aSection [
 
 	doc add: aSection
@@ -52,7 +62,7 @@ CZDocBuilder >> addTitle: aTitle [
 	doc add: aTitle
 ]
 
-{ #category : #configuration }
+{ #category : #'configuration public api' }
 CZDocBuilder >> allowEmptySections [
 	
 	noEmptySection := false
@@ -72,7 +82,7 @@ CZDocBuilder >> authorMatchingString [
 	^ authorMatchingString
 ]
 
-{ #category : #accessing }
+{ #category : #'public api' }
 CZDocBuilder >> authorMatchingString: aString [
 
 	authorMatchingString := aString
@@ -86,7 +96,7 @@ CZDocBuilder >> authorQuery [
 		checks: [ :value | self authorMatchingString match: value ]
 ]
 
-{ #category : #accessing }
+{ #category : #'public api' }
 CZDocBuilder >> bibset: aBibSet [
 
 	originalBibSet := aBibSet.
@@ -107,10 +117,14 @@ CZDocBuilder >> bookQuery [
 	^ (CZTypeQuery checks: [ :each | each = #book] )
 ]
 
-{ #category : #building }
+{ #category : #'public api' }
 CZDocBuilder >> build [
-
-	self filter
+	"public API"
+	
+	self addHeader.
+	self filter.
+	self buildBody.
+	self addFooter.
 ]
 
 { #category : #initialize }
@@ -119,19 +133,21 @@ CZDocBuilder >> defaultKeysOfBlackListedEntries [
 	^ #()
 ]
 
-{ #category : #configuration }
+{ #category : #'configuration public api' }
 CZDocBuilder >> doNotAllowEmptySections [
 	
 	noEmptySection := true
 ]
 
-{ #category : #building }
+{ #category : #'configuration public api' }
 CZDocBuilder >> doNotRestartNumberingAfterSection [
+
+	self flag: #youpi
 ]
 
-{ #category : #building }
+{ #category : #'public api' }
 CZDocBuilder >> document [
-
+	"public API"
 	^ doc
 ]
 
@@ -145,7 +161,7 @@ CZDocBuilder >> editorQuery [
 			OR: (self annotationWithType: '*workshopproceedings*') )
 ]
 
-{ #category : #configuration }
+{ #category : #'configuration public api' }
 CZDocBuilder >> english [
 
 	localization english
@@ -162,7 +178,7 @@ CZDocBuilder >> filter [
 	
 ]
 
-{ #category : #configuration }
+{ #category : #'configuration public api' }
 CZDocBuilder >> french [
 
 	localization french.
@@ -212,7 +228,7 @@ CZDocBuilder >> journalQuery [
 	^ CZQuery isInternationalJournalQuery
 ]
 
-{ #category : #accessing }
+{ #category : #junk }
 CZDocBuilder >> journals [
 	"remove the journals from the working set and return them"
 	
@@ -229,7 +245,7 @@ CZDocBuilder >> keysOfBlackListedEntries [
 	^ keysOfBlackListedEntries
 ]
 
-{ #category : #accessing }
+{ #category : #'public api' }
 CZDocBuilder >> keysOfBlackListedEntries: aCol [ 
 
 	keysOfBlackListedEntries := aCol
@@ -250,13 +266,13 @@ CZDocBuilder >> nationalJournalQuery [
 			checks: [ :value | ('*nationaljournal*' match: value) and: [('*internationaljournal*' match: value) not] ])
 ]
 
-{ #category : #configuration }
+{ #category : #'configuration public api' }
 CZDocBuilder >> setFilteringOff [
 
 	shouldFilterNonPublic := false
 ]
 
-{ #category : #configuration }
+{ #category : #'configuration public api' }
 CZDocBuilder >> setFilteringOn [
 	"to filter private entries and others insubmissions"
 	

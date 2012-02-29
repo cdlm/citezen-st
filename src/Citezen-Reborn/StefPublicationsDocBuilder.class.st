@@ -4,14 +4,21 @@ StefPublicationsDocBuilder new
 	authorMatchingString: '*S*Ducasse*';
 	build;
 	document
+	
+
+
+StefPublicationsDocBuilder doit
 "
 Class {
 	#name : #StefPublicationsDocBuilder,
 	#superclass : #CZSingleAuthorDocBuilder,
+	#instVars : [
+		'xhtml'
+	],
 	#category : #'Citezen-Reborn'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #doit }
 StefPublicationsDocBuilder class >> doit [
 	"self doit"
 	"clearly to reconsider to make it nicer to compose"
@@ -24,7 +31,7 @@ StefPublicationsDocBuilder class >> doit [
 		french; 
 		setFilteringOn;
 		authorMatchingString: '*Ducasse*';
-		"outputFileName: Date today yyyymmdd, '-stefFull.html';"
+		"outputFileName: Date today yyyymmdd, '-NewStefFull.html';"
 		bibset: bibset;
 		yourself.
 	
@@ -36,9 +43,65 @@ StefPublicationsDocBuilder class >> doit [
 ]
 
 { #category : #building }
-StefPublicationsDocBuilder >> build [
+StefPublicationsDocBuilder >> addFooter [
 
-	super build.
+	xhtml 
+		ifTrue: [
+	doc add: (CZFooter new text: '<h4>BibTex Files of the Publications</h4>
+<A HREF="stef.bib">BibTex File</A> </div>  <!-- div xmlns= class="paperList" -->
+	 </div><!-- mainContent -->
+   </body>
+</html>
+')]
+		ifFalse: [
+			
+			
+			
+			]
+]
+
+{ #category : #building }
+StefPublicationsDocBuilder >> addHeader [
+
+	doc add: (CZHeader new text: '<?xml version="1.0" encoding="ISO-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+   <link rel="stylesheet" href="stef.css"/>
+   <head>
+      <title>Prof. Dr. St&eacute;phane Ducasse</title>
+   </head>
+   <body>
+      <div id="header">
+         <div id="headerSiteTitle">St&eacute;phane Ducasse</div>
+         <div id="headerPageTitle">Publications</div>
+      </div><!-- header-->
+      <div xmlns="" id="menu">
+         <div id="toc">
+            <div id="tocItem"> <a href="index.html">Home</a> </div>
+            <div id="tocItem"> <a href="Publications.html">Publications</a> </div>
+			<div id="tocItem"> <a href="Supervised.html">PhDs and Masters</a> </div>
+            <div id="tocItem"> <a href="Books.html">Books and Columns</a> </div>
+			<div id="tocItem"> <a href="FreeBooks.html">Free Smalltalk Books</a> </div>
+			<div id="tocItem"> <a href="Resources.html">Downloads/Resources</a> </div>
+            <div id="tocItem"> <a href="Teaching.html">Lectures</a> </div>
+			<div id="tocItem"> <A HREF= "skweek2.htm">Skweek ...Strikes Back</a></div>
+            <div id="tocItem"> <A HREF= "index.html#coor">Coordinates</A> </div>
+         </div><!-- toc-->
+         <div id="copyright">last revision: ', Date today printString, '<br/></div>
+				
+		<div xmlns="" id="personalDetails">
+            <div id="personalDetailsItem"> <A HREF="http://rmod.inria.lille.fr">Rmod</A></div>
+		</div>		
+      </div> <!-- menu-->
+      <div id="mainContent">
+	  <div xmlns="" class="paperList"><style type="text/css">
+<!--
+-->
+</style>')
+]
+
+{ #category : #building }
+StefPublicationsDocBuilder >> buildBody [
+
 	self addBibSection: (self journalQuery) withTitle: localization  internationalReviewedJournal;
 		addBibSection: (self topConferenceQuery) withTitle:  localization topConferences;				
 		addBibSection: (self nationalJournalQuery) withTitle: localization nationalReviewedJournal;
@@ -55,9 +118,9 @@ StefPublicationsDocBuilder >> build [
 		addBibSection: (self vulgarisationQuery) withTitle: localization vulgarisation.
 ]
 
-{ #category : #building }
-StefPublicationsDocBuilder >> filter [
+{ #category : #initialize }
+StefPublicationsDocBuilder >> initialize [
 
-	super filter.
-	workingBibSet
+	super initialize.
+	xhtml := true
 ]

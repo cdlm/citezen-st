@@ -148,6 +148,18 @@ CZFileFormatGenerator >> visitField: aField [
 				(CZAccentuateCharactersParser parse: aField value asString)
 ]
 
+{ #category : #'visit doc' }
+CZFileFormatGenerator >> visitFooter: aCZFooter [
+
+	self outputStream nextPutAll: aCZFooter text
+]
+
+{ #category : #'visit doc' }
+CZFileFormatGenerator >> visitHeader: aCZHeader [
+
+	self outputStream nextPutAll: aCZHeader text
+]
+
 { #category : #visit }
 CZFileFormatGenerator >> visitMacroReference: aCZMacroReference [
 	self outputStream nextPutAll: aCZMacroReference expanded 

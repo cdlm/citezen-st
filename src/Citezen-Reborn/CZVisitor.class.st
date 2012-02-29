@@ -89,6 +89,12 @@ CZVisitor >> visitDoc: aDocument [
 	aDocument elements do: [ :each | each acceptVisitor: self ]
 ]
 
+{ #category : #'visiting doc' }
+CZVisitor >> visitHeader: aCZHeader [
+
+	
+]
+
 { #category : #visiting }
 CZVisitor >> visitInteger: aCZInteger [
 	
