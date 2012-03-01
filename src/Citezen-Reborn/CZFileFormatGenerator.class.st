@@ -147,13 +147,12 @@ CZFileFormatGenerator >> visitEntry: anEntry [
 
 { #category : #visit }
 CZFileFormatGenerator >> visitField: aField [
-	
 	"this is not good since it shortcuts the visitString: ... we will see later
 	in particular for document like section we do not want to generate CZString for now.
 	may be we should."
 	
-	self outputStream nextPutAll: 
-				(CZAccentuateCharactersParser parse: aField value asString)
+	self outputStream nextPutAll: aField value asString.
+				"(CZAccentuateCharactersParser parse: aField value asString)"
 ]
 
 { #category : #'visit doc' }
@@ -182,7 +181,10 @@ CZFileFormatGenerator >> visitMacroReference: aCZMacroReference [
 CZFileFormatGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.
-	self outputStream nextPutAll: aCZPeople expanded
+	"self outputStream nextPutAll: aCZPeople expanded"
+	self halt.
+	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
+			
 ]
 
 { #category : #visit }

@@ -16,8 +16,147 @@ CZDocBuilderTest class >> aDoc [
 	^ (StefPublicationsDocBuilder new 
 					bibset: self someArticles;
 					authorMatchingString: '*S*Ducasse*';
+					noHeader;
 					build;
 					document)
+]
+
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> article1 [
+	"self  article1"
+^
+(CZBibParser parse: 
+'@article{Abde10a,
+	Aeres = {ACL},
+	Aeresstatus = {aeres12},
+	Annote = {internationaljournal},
+	Author = {Hani Abdeen and St\''ephane Ducasse and Damien Pollet and Ilham Alloui},
+	Doi = {10.1016/j.infsof.2010.07.005},
+	Hal-Id = {inria-00531496},
+	Impactfactor = {ISI impact factor 1.821 (2010)},
+	Inria = {RMOD},
+	Inriareport = {2010},
+	Journal = {Information and Software Technology Journal},
+	Keywords = {moose remoose2 lse-pub cook kzVisualisation},
+	Pages = {1312-1330},
+	Secondurl = {http://rmod.lille.inria.fr/archives/papers/Abde10a-IST-packageFingerprints.pdf},
+	Title = {Package Fingerprint: a visual summary of package interfaces and relationships},
+	Url = {http://rmod.lille.inria.fr/archives/papers/Abde10a-IST-Official-packageFingerprints.pdf},
+	Volume = {52},
+	X-Editorial-Board = {yes},
+	X-International-Audience = {yes},
+	X-Proceedings = {yes},
+	Year = 2010,
+	Bdsk-Url-1 = {http://rmod.lille.inria.fr/archives/papers/Abde10a-IST-Official-packageFingerprints.pdf},
+	Bdsk-Url-2 = {http://dx.doi.org/10.1016/j.infsof.2010.07.005}}
+
+'
+)  
+]
+
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> article2 [
+	"self  article2"
+^
+(CZBibParser parse: 
+'@inproceedings{Denk08b,
+  Annote       = {internationalconference},
+  Author       = {Marcus Denker and Mathieu Suen and St\''ephane
+                  Ducasse},
+  Booktitle    = {Proceedings of TOOLS EUROPE 2008},
+  peer	       = {yes},
+  pages	       = {218--237},
+  aeres	       = {ACT},
+  aeresstatus  = {aeres12},
+  inria	       = {RMOD},
+  selectif     = {non},
+  ISSN	       = {1865-1348},
+  Keywords     = {scg-pub jb08 fb08 snf08 reflectivity},
+  labo 		= {dans},
+  Publisher    = {Springer-Verlag},
+  Series       = {LNBIP},
+  Volume       = 11,
+  Doi	       = {10.1007/978-3-540-69824-1_13},
+  Url	       = {http://scg.unibe.ch/archive/papers/Denk08bMetaContextLNBIP.pdf},
+  Title	       = {The Meta in Meta-object Architectures},
+  hal          = {inria-00271286,p56w09p},
+  Year	       = 2008
+}
+'
+)  
+]
+
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> article3 [
+	"self  article3"
+^
+(CZBibParser parse: 
+'
+@inproceedings{Chev11a,
+	author = {Chevalier-Boisvert, Maxime and Lavoie, Erick and Feeley, Marc and Dufour, Bruno},
+	booktitle = {Dynamic Language Symposium},
+	title = {Bootstrapping a Self-Hosted Research Virtual Machine for JavaScript},
+	year = 2011
+}
+'
+)  
+]
+
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> article4 [
+	"self  article4"
+^
+(CZBibParser parse: 
+'
+@inproceedings{Chev11a,
+	author = {Chevalier-Boisvert, Maxime and Lavoie, Erick and Feeley, Marc and Dufour, Bruno},
+	booktitle = {Dynamic Language Symposium},
+	title = {Bootstrapping a Self-Hosted Research Virtual Machine for JavaScript},
+	year = 2011
+}
+'
+)  
+]
+
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> article5 [
+	"self  article5"
+^
+(CZBibParser parse: 
+'
+@inproceedings{Abde08a,
+author = {Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen},
+title = {Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships},
+booktitle = {European Conference on Software Maintenance and Reengineering (CSMR)},
+pages = {213--222},
+publisher = {IEEE Computer Society Press},
+year = 2008,
+acceptnum = {24},
+accepttotal = {87}
+}
+
+'
+)  
+]
+
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> article6 [
+	"self  article6"
+^
+(CZBibParser parse: 
+'
+
+@article{Duca12a,
+     author = {St\''ephane Ducasse and Zork Ranger},
+	annote = {internationaljournal},
+     title = {Woa},
+     journal = {Journal of Information System},
+     Url	       = {obsoleteData.pdf},
+     year = 2010
+}
+
+'
+)  
 ]
 
 { #category : #'examples for tests' }
@@ -86,7 +225,7 @@ author = {St\''ephane Ducasse and Damien Pollet},
 keywords = {insubmission},
 title = {Fingerprints},
 journal = {Journal of Information System},
-year = 2010
+year = {2010}
 }
 
 @inproceedings{Abde08a,
@@ -95,7 +234,7 @@ title = {Package Reference Fingerprint: a Rich and Compact Visualization to Unde
 booktitle = {European Conference on Software Maintenance and Reengineering (CSMR)},
 pages = {213--222},
 publisher = {IEEE Computer Society Press},
-year = 2008,
+year = {2008},
 acceptnum = {24},
 accepttotal = {87}
 }
@@ -107,7 +246,7 @@ accepttotal = {87}
      title = {Woa},
      journal = {Journal of Information System},
      Url	       = {obsoleteData.pdf},
-     year = 2010
+     year = {2010}
 }
 
 '

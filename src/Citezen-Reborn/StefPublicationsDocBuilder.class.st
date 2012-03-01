@@ -125,6 +125,7 @@ StefPublicationsDocBuilder class >> latex [
 StefPublicationsDocBuilder >> addFooter [
 	"ugly conditional but this is my code :)"
 
+	xhtml isNil ifTrue: [^self].
 	doc footer:
 			(CZFooter new
 				text:
@@ -135,6 +136,8 @@ StefPublicationsDocBuilder >> addFooter [
 
 { #category : #building }
 StefPublicationsDocBuilder >> addHeader [
+	
+	xhtml isNil ifTrue: [^self].
 	doc header:
 			(CZHeader new
 				text:
@@ -205,6 +208,11 @@ StefPublicationsDocBuilder >> latexHeader [
 	\item[\bf{[\arabic{publi}]}]}
 	
 	'
+]
+
+{ #category : #accessing }
+StefPublicationsDocBuilder >> noHeader [
+	xhtml := nil
 ]
 
 { #category : #accessing }

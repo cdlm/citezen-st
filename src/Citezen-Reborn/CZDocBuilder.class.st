@@ -128,6 +128,11 @@ CZDocBuilder >> build [
 	self addFooter.
 ]
 
+{ #category : #'public api' }
+CZDocBuilder >> buildBody [
+	"empty hook"
+]
+
 { #category : #initialize }
 CZDocBuilder >> defaultKeysOfBlackListedEntries [ 
 
