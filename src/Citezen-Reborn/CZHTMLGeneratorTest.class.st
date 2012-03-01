@@ -27,5 +27,5 @@ CZHTMLGeneratorTest >> testSet [
 <li>
 <span class="author">St&eacute;phane Ducasse</span>, <span class="title">Botsinc: Learning programming in Squeak</span>, <span class="journal">Apress</span>, <span class="year">2005</span>.
 </li>
-</ol>')
+</ol>' )
 ]
