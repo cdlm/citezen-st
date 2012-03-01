@@ -15,10 +15,10 @@ CZLaTeXOutputerTest >> testArticle [
 	
 	super testArticle.
 	
-	self assert: result  = '\pub  \emph{S. Ducasse and D. Pollet},
+	self assert: result =  '\pub  \emph{S. Ducasse and D. Pollet},
  \emph{Fingerprints},
  In \emph{Journal of Information System},
-2010'
+2010'  
 ]
 
 { #category : #'as yet unclassified' }
@@ -42,7 +42,7 @@ IEEE Computer Society Press,
 oui,
 http://scg.unibe.ch/archive/external/Abde08a.pdf,
 2008,
-http://scg.unibe.ch/archive/external/Abde08a.pdf'
+http://scg.unibe.ch/archive/external/Abde08a.pdf' 
 ]
 
 { #category : #'as yet unclassified' }
