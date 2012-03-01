@@ -962,7 +962,7 @@ ConfigurationOfCitezen >> version10: spec [
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.17';
 			package: 'Citezen-Script' with: 'Citezen-Script-StephaneDucasse.49';
-			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.10';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.11';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.37';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.84'. ].
