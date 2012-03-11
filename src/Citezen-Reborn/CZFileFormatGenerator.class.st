@@ -84,7 +84,7 @@ CZFileFormatGenerator >> initialize [
 { #category : #visit }
 CZFileFormatGenerator >> line [
 	"so that we can change that after"
-	self outputStream lf
+	self outputStream cr
 ]
 
 { #category : #accessing }
@@ -182,7 +182,6 @@ CZFileFormatGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.
 	"self outputStream nextPutAll: aCZPeople expanded"
-	self halt.
 	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
 			
 ]

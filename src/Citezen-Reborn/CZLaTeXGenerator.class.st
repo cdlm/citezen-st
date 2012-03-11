@@ -38,7 +38,7 @@ CZLaTeXGenerator >> emitEntryHeader: anEntry [
 	outputStream nextPutAll: '\pub '.
 ]
 
-{ #category : #configuration }
+{ #category : #initialize }
 CZLaTeXGenerator >> initialize [
 
 	super initialize.
@@ -46,7 +46,7 @@ CZLaTeXGenerator >> initialize [
 
 ]
 
-{ #category : #configuration }
+{ #category : #initialize }
 CZLaTeXGenerator >> initializeFieldEmbellishingTable [
 	"Rather ugly but it works!"
 	
@@ -59,7 +59,7 @@ CZLaTeXGenerator >> initializeFieldEmbellishingTable [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZLaTeXGenerator >> visitBibSet: aCZSet [
 	
 	"we should test and do not do anything if size is empty"
@@ -69,7 +69,7 @@ CZLaTeXGenerator >> visitBibSet: aCZSet [
 	self outputStream nextPutAll: '\end{itemize}'
 ]
 
-{ #category : #configuration }
+{ #category : #visiting }
 CZLaTeXGenerator >> visitComment: aCZCommentElement [
 
 	self outputStream 
@@ -79,7 +79,7 @@ CZLaTeXGenerator >> visitComment: aCZCommentElement [
 	
 ]
 
-{ #category : #configuration }
+{ #category : #visiting }
 CZLaTeXGenerator >> visitField: aField [
 	"We should probably use phrases instead of doing everything ourselves."
 	
@@ -93,7 +93,7 @@ CZLaTeXGenerator >> visitField: aField [
 		ifTrue: [ self outputStream nextPutAll: ' ed.'].
 ]
 
-{ #category : #configuration }
+{ #category : #visiting }
 CZLaTeXGenerator >> visitSection: aCZSection [
 
 	self outputStream 
@@ -103,7 +103,7 @@ CZLaTeXGenerator >> visitSection: aCZSection [
 	self line
 ]
 
-{ #category : #configuration }
+{ #category : #visiting }
 CZLaTeXGenerator >> visitString: aCZString [
 	outputStream nextPutAll: aCZString notExpanded asString
 ]
