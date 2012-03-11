@@ -20,7 +20,7 @@ CZHTMLGeneratorTest >> testSet [
 	| visitor |
 	visitor := self generatorClass new.
 	visitor visit: bibset.
-	self assert: (visitor outputStream contents =  '<ol>
+	self assert: (visitor outputStream contents = '<ol>
 <li>
 <span class="author">St&eacute;phane Ducasse and Florence Ducasse</span>, <span class="title">La maledication de la fille de la femme crocodile</span>, <span class="journal">Journal of Hatred</span>, <span class="year">2012</span>.
 </li>
