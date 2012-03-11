@@ -47,7 +47,8 @@ CZHTMLGenerator >> emitEntryHeader: anEntry [
 { #category : #visit }
 CZHTMLGenerator >> visitBibSet: aSet [	
 	
-	self outputStream nextPutAll: '<ol>'; lf.
+	self outputStream nextPutAll: '<ol>'.
+	self line.
 
 	aSet entries do: [ :each | 
 		each acceptVisitor: self.
@@ -117,7 +118,8 @@ CZHTMLGenerator >> visitSection: aCZSection [
 { #category : #visiting }
 CZHTMLGenerator >> visitSet: aSet [	
 	
-	self outputStream nextPutAll: '<ol>'; lf.
+	self outputStream nextPutAll: '<ol>'.
+	self line.
 
 	aSet entries do: [ :each | 
 		each acceptVisitor: self.
@@ -135,7 +137,6 @@ CZHTMLGenerator >> visitTitle: aCZTitleElement [
 		nextPutAll: '>';
 		nextPutAll: (CZAccentuateCharactersParser parse: aCZTitleElement title);
 		nextPutAll: '</h4';
-		nextPutAll: '>';
-		lf;
-		lf
+		nextPutAll: '>'.
+	self line ; line. 
 ]
