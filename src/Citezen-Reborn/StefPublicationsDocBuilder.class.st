@@ -81,6 +81,7 @@ StefPublicationsDocBuilder class >> doit2 [
 	| builder doc |
 	builder := self new
 		fileNamed: 'rmod.bib';
+		"bibset: ... a bibset"
 		french; 
 		setFilteringOn;
 		yourself.
