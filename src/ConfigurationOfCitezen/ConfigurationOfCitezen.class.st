@@ -4,6 +4,8 @@ There are no released versions yet, so this is needed to load anything:
 	((ConfigurationOfCitezen project) latestVersion: #development) load
 	
 	(ConfigurationOfCitezen project version: '0.9') load: { 'NoWeb'}.
+	
+	(ConfigurationOfCitezen project version: '1.0') load: { 'Citezen-Seaside'}.
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
 
@@ -708,6 +710,7 @@ ConfigurationOfCitezen >> baseline09: spec [
 				spec
 					className: 'ConfigurationOfSeaside30';
 					file: 'ConfigurationOfSeaside30';
+					versionString: #stable;
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
 			project: 'Magritte' copyFrom: 'Seaside' with: [
 				spec
