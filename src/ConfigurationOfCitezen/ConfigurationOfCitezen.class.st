@@ -769,6 +769,81 @@ ConfigurationOfCitezen >> baseline09: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfCitezen >> baseline10: spec [
+	<version: '1.0-baseline'>
+
+	spec for: #common do: [
+		spec blessing: #baseline.
+		spec description: 'Making sure that we only load Seaside Base and not the Development tools because it loads OB and blocks on Moose'.
+		spec author: 'StephaneDucasse'.
+		spec repository: 'http://ss3.gemstone.com/ss/citezen'.
+		
+		spec
+			project: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfSeaside30';
+					file: 'ConfigurationOfSeaside30';
+					versionString: #stable;
+					loads: #('Base');
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Magritte' copyFrom: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfMagritte2';
+					loads: #('Core' 'Magritte-Seaside');
+					file: 'ConfigurationOfMagritte2';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Pier' copyFrom: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfPier2';
+					loads: #('Core');
+					file: 'ConfigurationOfPier2';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Grease Core' with: [
+				spec
+					className: 'ConfigurationOfGrease';
+					loads: #('Core' );
+					file: 'ConfigurationOfGrease';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'OSProcess' with: [
+				spec
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'SmaCC' with: [
+				spec
+					className: 'ConfigurationOfSmaCC';
+					file: 'ConfigurationOfSmaCC';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+			
+
+		spec
+			package: 'Citezen-Model';
+			package: 'Citezen-Parsers' with: [ spec requires: #('Citezen-Model' 'SmaCC')];
+			package: 'Citezen-Rendering' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Outputers' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Tools' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Query' with: [ spec requires: 'Citezen-Model'];
+			package: 'Citezen-Reborn' with: [spec requires: 'Citezen-Model'];
+			package: 'Citezen-Script';
+			package: 'Citezen-Stef-Scripts' with: [ spec requires: #('Citezen-Model' 'Citezen-Outputers' 'Citezen-Query') ];
+			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside') ];
+			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
+			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte') ];
+			package: 'Citezen-Checking' with: [ spec requires: 'Core' ];
+			package: 'Citezen-CommandLine' with: [ spec requires: #('Core' 'OSProcess') ];
+			package: 'Citezen-Tests' with: [ spec requires: #('Core') ].
+			
+		spec
+			group: 'default' with: #('NoWeb');
+			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
+			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script' 'Citezen-Checking' 'Citezen-Reborn' 'Citezen-Tools' 'Citezen-Stef-Scripts');
+			group: 'CommandLine' with: #('NoWeb' 'Citezen-CommandLine');
+			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
+			group: 'Tests' with: #('Citezen-Tests')
+	]
+]
+
 { #category : #'symbolic versions' }
 ConfigurationOfCitezen >> develoment: spec [
 	<symbolicVersion: #'development'>
@@ -950,7 +1025,7 @@ ConfigurationOfCitezen >> version09: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version10: spec [
-	<version: '1.0' imports: #('0.9-baseline' )>
+	<version: '1.0' imports: #('1.0-baseline' )>
 
 	spec for: #'common' do: [
 		spec blessing: #'development'.
