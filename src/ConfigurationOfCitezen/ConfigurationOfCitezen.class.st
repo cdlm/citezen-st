@@ -827,8 +827,8 @@ ConfigurationOfCitezen >> baseline10: spec [
 			package: 'Citezen-Reborn' with: [spec requires: 'Citezen-Model'];
 			package: 'Citezen-Script';
 			package: 'Citezen-Stef-Scripts' with: [ spec requires: #('Citezen-Model' 'Citezen-Outputers' 'Citezen-Query') ];
-			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside') ];
-			package:  'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
+			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside'  'Citezen-Tests' 'Citezen-Magritte') ]; "ugly and wrong it also requires Magritte"
+			package: 'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
 			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte') ];
 			package: 'Citezen-Checking' with: [ spec requires: 'Core' ];
 			package: 'Citezen-CommandLine' with: [ spec requires: #('Core' 'OSProcess') ];
