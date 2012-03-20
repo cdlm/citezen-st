@@ -5,7 +5,7 @@ There are no released versions yet, so this is needed to load anything:
 	
 	(ConfigurationOfCitezen project version: '0.9') load: { 'NoWeb'}.
 	
-	(ConfigurationOfCitezen project version: '1.0') load: { 'Citezen-Seaside'}.
+	(ConfigurationOfCitezen project version: '1.1') load: { 'Citezen-Seaside'}.
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
 
@@ -844,11 +844,84 @@ ConfigurationOfCitezen >> baseline10: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfCitezen >> baseline11: spec [
+	<version: '1.0-baseline'>
+
+	spec for: #common do: [
+		spec blessing: #baseline.
+		spec description: 'Removing script packages'.
+		spec author: 'StephaneDucasse'.
+		spec repository: 'http://ss3.gemstone.com/ss/citezen'.
+		
+		spec
+			project: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfSeaside30';
+					file: 'ConfigurationOfSeaside30';
+					versionString: #stable;
+					loads: #('Base');
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Magritte' copyFrom: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfMagritte2';
+					loads: #('Core' 'Magritte-Seaside');
+					file: 'ConfigurationOfMagritte2';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Pier' copyFrom: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfPier2';
+					loads: #('Core');
+					file: 'ConfigurationOfPier2';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Grease Core' with: [
+				spec
+					className: 'ConfigurationOfGrease';
+					loads: #('Core' );
+					file: 'ConfigurationOfGrease';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'OSProcess' with: [
+				spec
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'SmaCC' with: [
+				spec
+					className: 'ConfigurationOfSmaCC';
+					file: 'ConfigurationOfSmaCC';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+			
+
+		spec
+			package: 'Citezen-Model';
+			package: 'Citezen-Parsers' with: [ spec requires: #('Citezen-Model' 'SmaCC')];
+			package: 'Citezen-Rendering' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Outputers' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Tools' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Query' with: [ spec requires: 'Citezen-Model'];
+			package: 'Citezen-Reborn' with: [spec requires: 'Citezen-Model'];
+			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside'  'Citezen-Tests' 'Citezen-Magritte') ]; "ugly and wrong it also requires Magritte"
+			package: 'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
+			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte') ];
+			package: 'Citezen-Checking' with: [ spec requires: 'Core' ];
+			package: 'Citezen-CommandLine' with: [ spec requires: #('Core' 'OSProcess') ];
+			package: 'Citezen-Tests' with: [ spec requires: #('Core') ].
+			
+		spec
+			group: 'default' with: #('NoWeb');
+			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
+			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script' 'Citezen-Checking' 'Citezen-Reborn' 'Citezen-Tools' 'Citezen-Stef-Scripts');
+			group: 'CommandLine' with: #('NoWeb' 'Citezen-CommandLine');
+			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
+			group: 'Tests' with: #('Citezen-Tests')
+	]
+]
+
 { #category : #'symbolic versions' }
 ConfigurationOfCitezen >> develoment: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'pharo1.4.x' version: '1.0'.
+	spec for: #'pharo1.4.x' version: '1.1'.
 
 ]
 
@@ -1044,5 +1117,27 @@ ConfigurationOfCitezen >> version10: spec [
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Stef-Scripts' with: 'Citezen-Stef-Scripts-StephaneDucasse.37';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.85'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version11: spec [
+	<version: '1.1' imports: #('1.0-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #'development'.
+		spec description: 'Removing script packages'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '20/3/2012 18:13'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.61';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.22';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.17';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.16';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
 
 ]
