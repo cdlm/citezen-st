@@ -16,14 +16,16 @@ CZSection >> acceptVisitor: aVisitor [
 	aVisitor visitSection: self
 ]
 
-{ #category : #accessing }
+{ #category : #deprecated }
 CZSection >> name [
+	"deprecated"
 	
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : #deprecated }
 CZSection >> name: aString [
+	"deprecated"
 	
 	name := aString
 ]
@@ -33,4 +35,16 @@ CZSection >> printOn: aStream [
 
 	super printOn: aStream.
 	name ifNotNil: [aStream nextPutAll: '('; nextPutAll: name; nextPutAll: ')']
+]
+
+{ #category : #accessing }
+CZSection >> title [
+	
+	^ name
+]
+
+{ #category : #accessing }
+CZSection >> title: aString [
+	
+	name := aString
 ]

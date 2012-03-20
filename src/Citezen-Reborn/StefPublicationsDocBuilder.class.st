@@ -18,8 +18,8 @@ Class {
 	#name : #StefPublicationsDocBuilder,
 	#superclass : #CZSingleAuthorDocBuilder,
 	#instVars : [
-		'xhtml',
-		'bibset'
+		'noHeader',
+		'xhtml'
 	],
 	#category : #'Citezen-Reborn'
 }
@@ -126,7 +126,7 @@ StefPublicationsDocBuilder class >> latex [
 StefPublicationsDocBuilder >> addFooter [
 	"ugly conditional but this is my code :)"
 
-	xhtml isNil ifTrue: [^self].
+	noHeader ifTrue: [^self].
 	doc footer:
 			(CZFooter new
 				text:
@@ -138,7 +138,7 @@ StefPublicationsDocBuilder >> addFooter [
 { #category : #building }
 StefPublicationsDocBuilder >> addHeader [
 	
-	xhtml isNil ifTrue: [^self].
+	noHeader ifTrue: [^self].
 	doc header:
 			(CZHeader new
 				text:
@@ -181,6 +181,7 @@ StefPublicationsDocBuilder >> fileNamed: aStringDotBib [
 StefPublicationsDocBuilder >> initialize [
 
 	super initialize.
+	noHeader := false.
 	xhtml := true.
 	self authorMatchingString: '*Ducasse*'.
 ]
@@ -213,12 +214,24 @@ StefPublicationsDocBuilder >> latexHeader [
 
 { #category : #accessing }
 StefPublicationsDocBuilder >> noHeader [
-	xhtml := nil
+
+	noHeader := true
 ]
 
 { #category : #accessing }
 StefPublicationsDocBuilder >> toLatex [
 	xhtml := false
+]
+
+{ #category : #accessing }
+StefPublicationsDocBuilder >> toXhtml [
+	xhtml := true
+]
+
+{ #category : #accessing }
+StefPublicationsDocBuilder >> withHeader [
+
+	noHeader := false
 ]
 
 { #category : #building }
