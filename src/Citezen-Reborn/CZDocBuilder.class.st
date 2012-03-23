@@ -173,6 +173,16 @@ CZDocBuilder >> english [
 	localization english
 ]
 
+{ #category : #'public api' }
+CZDocBuilder >> fileNamed: aStringDotBib [
+	
+	| bibset2 | 
+	bibset2 := CZBibParser parse: ((FileStream readOnlyFileNamed: aStringDotBib) contents).
+	bibset2 scope: CZSet standardDefinitions.
+	self bibset:  bibset2
+	
+]
+
 { #category : #building }
 CZDocBuilder >> filter [
 	"Filter insubmission and other not blacklisted entries"
