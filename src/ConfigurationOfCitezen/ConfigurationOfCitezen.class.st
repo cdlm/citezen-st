@@ -1,7 +1,7 @@
 "
 Now version 1.1 is released, so this is needed to load anything:
 	
-	(ConfigurationOfCitezen project version: '1.1') load: { 'NoWeb'}.
+	(ConfigurationOfCitezen project version: '1.2') load: { 'NoWeb'}.
 	(ConfigurationOfCitezen project version: #development) load: { 'NoWeb'}.
 	(ConfigurationOfCitezen project version: '1.1') load: { 'Citezen-Seaside'}.
 
@@ -1230,11 +1230,11 @@ ConfigurationOfCitezen >> version11: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version12: spec [
-	<version: '1.2' imports: #('1.2-baseline' )>
+	<version: '1.3' imports: #('1.2-baseline' )>
 
 	spec for: #'common' do: [
 		spec blessing: #release.
-		spec description: 'Stef-Script'.
+		spec description: 'cleaning sites and publications'.
 		spec author: 'StephaneDucasse'.
 		spec timestamp: '23/3/2012 11:13'.
 		spec 
@@ -1244,8 +1244,8 @@ ConfigurationOfCitezen >> version12: spec [
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.17';
-			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.17';
-			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.1';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.18';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.2';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
 
