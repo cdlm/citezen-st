@@ -846,7 +846,7 @@ ConfigurationOfCitezen >> baseline10: spec [
 
 { #category : #baselines }
 ConfigurationOfCitezen >> baseline11: spec [
-	<version: '1.0-baseline'>
+	<version: '1.1-baseline'>
 
 	spec for: #common do: [
 		spec blessing: #baseline.
