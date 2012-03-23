@@ -1,13 +1,5 @@
 "
-StefPublicationsDocBuilder new 
-	bibset: CZDocBuilderTest someArticles;
-	authorMatchingString: '*S*Ducasse*';
-	build;
-	document
-	
-
-
-StefPublicationsDocBuilder doit
+StefPublicationsDocBuilder xhtml
 
 StefPublicationsDocBuilder bibtex
 
@@ -17,135 +9,8 @@ StefPublicationsDocBuilder latex
 Class {
 	#name : #StefPublicationsDocBuilder,
 	#superclass : #CZSingleAuthorDocBuilder,
-	#instVars : [
-		'noHeader',
-		'xhtml'
-	],
 	#category : #'Citezen-Stef'
 }
-
-{ #category : #doit }
-StefPublicationsDocBuilder class >> bibtex [
-	"self bibtex"
-	"clearly to reconsider to make it nicer to compose"
-	
-	| builder doc |
-	builder := self new
-		fileNamed: 'rmod.bib';
-		french; 
-		setFilteringOn;
-		yourself.
-	doc := builder build document.
-	
-	"here we extract the associated bib"		
-	CZBibTexGenerator new 
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-stefFull.bib'); 
-			visit: doc
-		
-	
-]
-
-{ #category : #doit }
-StefPublicationsDocBuilder class >> doit [
-	"self doit"
-	"clearly to reconsider to make it nicer to compose"
-	
-	| bibset builder doc |
-	bibset := CZBibParser parse: ((FileStream readOnlyFileNamed: 'rmod.bib') contents).
-	bibset scope: CZSet standardDefinitions.
-	
-	builder :=  self new
-		french; 
-		setFilteringOn;
-		authorMatchingString: '*Ducasse*';
-		bibset: bibset;
-		yourself.
-	doc := builder build document.
-	CZHTMLGenerator new 
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-stefFull.html'); 
-			visit: doc.
-	
-	"here we extract the associated bib"		
-	CZBibTexGenerator new 
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-stefFull.bib'); 
-			visit: doc
-		
-	
-]
-
-{ #category : #doit }
-StefPublicationsDocBuilder class >> doit2 [
-	"self doit2"
-	"clearly to reconsider to make it nicer to compose"
-	
-	| builder doc |
-	builder := self new
-		fileNamed: 'rmod.bib';
-		"bibset: ... a bibset"
-		french; 
-		setFilteringOn;
-		yourself.
-	doc := builder build document.
-	
-	CZHTMLGenerator new 
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-stefFull.html'); 
-			visit: doc.
-	
-	"here we extract the associated bib"		
-	CZBibTexGenerator new 
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-stefFull.bib'); 
-			visit: doc
-		
-		"ugly because the name of the bib file referenced to in the footer should be the same as the generated one - ugly ugly ugly because this should be done automatically"
-	
-]
-
-{ #category : #doit }
-StefPublicationsDocBuilder class >> latex [
-	"self latex"
-	"clearly to reconsider to make it nicer to compose"
-	
-	| builder doc |
-	builder := self new
-		fileNamed: 'rmod.bib';
-		toLatex;
-		french; 
-		setFilteringOn;
-		yourself.
-	doc := builder build document.
-	
-	"here we extract the associated bib"		
-	CZLaTeXGenerator new 
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-stefFull.tex'); 
-			visit: doc
-		
-	
-]
-
-{ #category : #building }
-StefPublicationsDocBuilder >> addFooter [
-	"ugly conditional but this is my code :)"
-
-	noHeader ifTrue: [^self].
-	doc footer:
-			(CZFooter new
-				text:
-					(xhtml
-						ifTrue: [ self xhtmlFooter ]
-						ifFalse: [ self latexFooter ]))
-]
-
-{ #category : #building }
-StefPublicationsDocBuilder >> addHeader [
-	
-	noHeader ifTrue: [^self].
-	doc header:
-			(CZHeader new
-				text:
-					(xhtml
-						ifTrue: [ self xhtmlHeader ]
-						ifFalse: [ self latexHeader ]))
-]
 
 { #category : #building }
 StefPublicationsDocBuilder >> buildBody [
@@ -166,82 +31,17 @@ StefPublicationsDocBuilder >> buildBody [
 		addBibSection: (self vulgarisationQuery) withTitle: localization vulgarisation.
 ]
 
-{ #category : #'configuration public api' }
-StefPublicationsDocBuilder >> fileNamed: aStringDotBib [
-	
-	| bibset2 | 
-	bibset2 := CZBibParser parse: ((FileStream readOnlyFileNamed: aStringDotBib) contents).
-	bibset2 scope: CZSet standardDefinitions.
-	self bibset:  bibset2
-	
-	
-]
-
 { #category : #initialize }
 StefPublicationsDocBuilder >> initialize [
 
 	super initialize.
-	noHeader := false.
-	xhtml := true.
 	self authorMatchingString: '*Ducasse*'.
 ]
 
 { #category : #building }
-StefPublicationsDocBuilder >> latexFooter [
-	^ '\end{document}'
-]
+StefPublicationsDocBuilder >> latexName [
 
-{ #category : #building }
-StefPublicationsDocBuilder >> latexHeader [
-	^ '\documentclass{article}
-\usepackage[french]{babel}
-\usepackage{times}
-\usepackage[unitcntnoreset]{bibtopic}
-\usepackage[numbers,sort&compress]{natbib}
-
-\title{{\bf Prof. Dr. St\''ephane Ducasse}\\[0.5cm]
-{\bf }}
-\author{}
-\begin{document}
-\maketitle
-\newcounter{publi}
-\newcommand{\pub}[0]
-	{\stepcounter{publi}
-	\item[\bf{[\arabic{publi}]}]}
-	
-	'
-]
-
-{ #category : #accessing }
-StefPublicationsDocBuilder >> noHeader [
-
-	noHeader := true
-]
-
-{ #category : #accessing }
-StefPublicationsDocBuilder >> toLatex [
-	xhtml := false
-]
-
-{ #category : #accessing }
-StefPublicationsDocBuilder >> toXhtml [
-	xhtml := true
-]
-
-{ #category : #accessing }
-StefPublicationsDocBuilder >> withHeader [
-
-	noHeader := false
-]
-
-{ #category : #building }
-StefPublicationsDocBuilder >> xhtmlFooter [
-	^ '<h4>BibTex Files of the Publications</h4>
-<A HREF="', Date today yyyymmdd, '-stefFull.bib', '">BibTex File</A> </div>  <!-- div xmlns= class="paperList" -->
-	 </div><!-- mainContent -->
-   </body>
-</html>
-'
+	^  'Dr. St\''ephane Ducasse'
 ]
 
 { #category : #building }
@@ -250,11 +50,11 @@ StefPublicationsDocBuilder >> xhtmlHeader [
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
    <link rel="stylesheet" href="stef.css"/>
    <head>
-      <title>Prof. Dr. St&eacute;phane Ducasse</title>
+      <title>', self xhtmlName, '</title>
    </head>
    <body>
       <div id="header">
-         <div id="headerSiteTitle">St&eacute;phane Ducasse</div>
+         <div id="headerSiteTitle">', self xhtmlName, '</div>
          <div id="headerPageTitle">Publications</div>
       </div><!-- header-->
       <div xmlns="" id="menu">
@@ -282,4 +82,10 @@ StefPublicationsDocBuilder >> xhtmlHeader [
 <!--
 -->
 </style>'
+]
+
+{ #category : #building }
+StefPublicationsDocBuilder >> xhtmlName [
+
+	^ 'Dr. S. Ducasse'
 ]
