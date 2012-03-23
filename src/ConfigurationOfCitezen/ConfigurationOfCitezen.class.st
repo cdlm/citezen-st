@@ -1,11 +1,8 @@
 "
-There are no released versions yet, so this is needed to load anything:
-
-	((ConfigurationOfCitezen project) latestVersion: #development) load: 
+Now version 1.1 is released, so this is needed to load anything:
 	
-	(ConfigurationOfCitezen project version: '0.9') load: { 'NoWeb'}.
+	(ConfigurationOfCitezen project version: '1.1') load: { 'NoWeb'}.
 	(ConfigurationOfCitezen project version: #development) load: { 'NoWeb'}.
-	
 	(ConfigurationOfCitezen project version: '1.1') load: { 'Citezen-Seaside'}.
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
@@ -950,7 +947,8 @@ ConfigurationOfCitezen >> stable: spec [
 
 	spec for: #'pharo' version: '0.8'.
 	spec for: #'pharo1.3.x' version: '0.8'.
-	spec for: #'pharo1.4.x' version: '0.8'.
+	"spec for: #'pharo1.4.x' version: '1.1'. previous stable"
+	spec for: #'pharo1.4.x' version: '1.1'.
 
 ]
 
@@ -1131,10 +1129,10 @@ ConfigurationOfCitezen >> version11: spec [
 	<version: '1.1' imports: #('1.1-baseline' )>
 
 	spec for: #'common' do: [
-		spec blessing: #'development'.
-		spec description: 'Removing script packages'.
+		spec blessing: #release.
+		spec description: 'New visitor, new object model for document, removed scripts and ugly code'.
 		spec author: 'StephaneDucasse'.
-		spec timestamp: '20/3/2012 18:13'.
+		spec timestamp: '23/3/2012 11:13'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.61';
