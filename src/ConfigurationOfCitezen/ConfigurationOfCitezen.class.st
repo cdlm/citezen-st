@@ -1,9 +1,10 @@
 "
 There are no released versions yet, so this is needed to load anything:
 
-	((ConfigurationOfCitezen project) latestVersion: #development) load
+	((ConfigurationOfCitezen project) latestVersion: #development) load: 
 	
 	(ConfigurationOfCitezen project version: '0.9') load: { 'NoWeb'}.
+	(ConfigurationOfCitezen project version: #development) load: { 'NoWeb'}.
 	
 	(ConfigurationOfCitezen project version: '1.1') load: { 'Citezen-Seaside'}.
 
@@ -20,9 +21,7 @@ To sync
  	'Citezen-Model'
  	'Citezen-Outputters'
  	'Citezen-Query'
- 	'Citezen-Script'
  	'Citezen-Tests'
- 	'Citezen-Stef-Scripts'
 	)
 do: [:each | Gofer new
 	squeaksource: 'Citezen';
@@ -910,7 +909,7 @@ ConfigurationOfCitezen >> baseline11: spec [
 		spec
 			group: 'default' with: #('NoWeb');
 			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
-			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query' 'Citezen-Script' 'Citezen-Checking' 'Citezen-Reborn' 'Citezen-Tools' 'Citezen-Stef-Scripts');
+			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query''Citezen-Checking' 'Citezen-Reborn' 'Citezen-Tools');
 			group: 'CommandLine' with: #('NoWeb' 'Citezen-CommandLine');
 			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
 			group: 'Tests' with: #('Citezen-Tests')
