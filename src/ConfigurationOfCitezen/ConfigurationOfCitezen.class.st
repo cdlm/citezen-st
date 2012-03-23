@@ -909,7 +909,14 @@ ConfigurationOfCitezen >> baseline11: spec [
 		spec
 			group: 'default' with: #('NoWeb');
 			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
-			group: 'Core' with: #('Citezen-Model' 'Citezen-Parsers' 'Citezen-Rendering' 'Citezen-Outputers' 'Citezen-Query''Citezen-Checking' 'Citezen-Reborn' 'Citezen-Tools');
+			group: 'Core' with: #('Citezen-Model'
+							 'Citezen-Parsers'
+							 'Citezen-Rendering'
+							 'Citezen-Outputers'
+							 'Citezen-Query'
+							 'Citezen-Checking'
+							 'Citezen-Reborn'
+							 'Citezen-Tools');
 			group: 'CommandLine' with: #('NoWeb' 'Citezen-CommandLine');
 			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
 			group: 'Tests' with: #('Citezen-Tests')
