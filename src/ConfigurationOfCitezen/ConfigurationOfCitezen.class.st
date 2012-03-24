@@ -1230,7 +1230,7 @@ ConfigurationOfCitezen >> version11: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version12: spec [
-	<version: '1.3' imports: #('1.2-baseline' )>
+	<version: '1.2' imports: #('1.2-baseline' )>
 
 	spec for: #'common' do: [
 		spec blessing: #release.
