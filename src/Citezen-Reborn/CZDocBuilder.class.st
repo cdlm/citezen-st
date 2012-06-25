@@ -14,7 +14,8 @@ Class {
 		'localization',
 		'noEmptySection',
 		'shouldFilterNonPublic',
-		'keysOfBlackListedEntries'
+		'keysOfBlackListedEntries',
+		'fieldOrder'
 	],
 	#category : #'Citezen-Reborn'
 }
@@ -173,6 +174,14 @@ CZDocBuilder >> english [
 	localization english
 ]
 
+{ #category : #'configuration public api' }
+CZDocBuilder >> fieldOrder: aCol [
+	"to specify the order and fields that should be displayed"
+	
+	
+	fieldOrder := aCol 
+]
+
 { #category : #'public api' }
 CZDocBuilder >> fileNamed: aStringDotBib [
 	
@@ -223,7 +232,7 @@ CZDocBuilder >> initialize [
 { #category : #queries }
 CZDocBuilder >> internationalConferenceQuery [
 
-	^ self annotationWithType:  '*internationalconference*'
+	^ (self annotationWithType:  '*internationalconference*') AND: (self topConferenceQuery) NOT
 ]
 
 { #category : #queries }

@@ -1,5 +1,8 @@
 "
 A CZLaTeXGenerator is a generator generating nice latex.
+
+Currently there is a problem with the generation because it is not simple to see that there is a _ or & in the input text since looking for only one character does not really work (usually we put \& and \_ so more logic should be done.).
+
 "
 Class {
 	#name : #CZLaTeXGenerator,
@@ -42,7 +45,7 @@ CZLaTeXGenerator >> emitEntryHeader: anEntry [
 CZLaTeXGenerator >> initialize [
 
 	super initialize.
-	self initializeFieldEmbellishingTable
+	self initializeFieldEmbellishingTable.
 
 ]
 
@@ -91,6 +94,13 @@ CZLaTeXGenerator >> visitField: aField [
 	fieldEmbellishingTable at: aField key ifPresent: [:t | self outputStream nextPutAll: '}'].
 	aField key = CZPool editor
 		ifTrue: [ self outputStream nextPutAll: ' ed.'].
+]
+
+{ #category : #visiting }
+CZLaTeXGenerator >> visitPeople: aCZPeople [
+
+	aCZPeople perform:  expandOption.
+	self outputStream nextPutAll:  aCZPeople expanded "so that we are sure that we get \'' for é"
 ]
 
 { #category : #visiting }

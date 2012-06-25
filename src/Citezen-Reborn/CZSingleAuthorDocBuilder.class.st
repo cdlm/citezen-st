@@ -1,7 +1,7 @@
 "
 I manage author filtering.
 
-Pay attention the latex and bibtex builder emit wrong accents.
+Now this is not easy to pass the settings to the visitor (like the order of the fields)
 "
 Class {
 	#name : #CZSingleAuthorDocBuilder,
@@ -33,6 +33,16 @@ CZSingleAuthorDocBuilder class >> latex [
 		fileNamed: 'rmod.bib';
 		toLatex;
 		french; 
+		fieldOrder: #(#author 
+			  #title 
+			  #journal 
+			  #booktitle 
+			  #volume 
+			  #pages 
+			  #publisher  
+			  #year 
+			  #impactfactor 
+			  #rate); "removed doi and url since they may contain _ and the generator does not handle that well for the moment."
 		setFilteringOn;
 		yourself.
 	builder generateLatexFile.
@@ -119,9 +129,11 @@ CZSingleAuthorDocBuilder >> generateBibtexFile [
 { #category : #utils }
 CZSingleAuthorDocBuilder >> generateBibtexFileFor: aDoc [
 
-	CZBibTexGenerator new 
-			outputStream: (FileStream newFileNamed: self bibtexFileName); 
-			visit: aDoc
+	| visitor | 
+	visitor := CZBibTexGenerator new.
+	fieldOrder ifNotNil: [visitor fieldOrder: fieldOrder].
+	visitor outputStream: (FileStream newFileNamed: self bibtexFileName). 
+	visitor visit: aDoc
 ]
 
 { #category : #utils }
@@ -133,10 +145,12 @@ CZSingleAuthorDocBuilder >> generateLatexFile [
 { #category : #utils }
 CZSingleAuthorDocBuilder >> generateLatexFileFor: aDoc [
 
-	CZLaTeXGenerator new 
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-Full.tex'); 
-			visit: aDoc
-		
+	| visitor | 
+	visitor := CZLaTeXGenerator new.
+	fieldOrder ifNotNil: [visitor fieldOrder: fieldOrder].
+	visitor outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-Full.tex').
+	visitor visit: aDoc
+	
 ]
 
 { #category : #utils }
@@ -148,7 +162,10 @@ CZSingleAuthorDocBuilder >> generateXHTMLFile [
 { #category : #utils }
 CZSingleAuthorDocBuilder >> generateXHTMLFileFor: aDoc [
 
-	CZHTMLGenerator new 
+	| visitor |
+	visitor := CZHTMLGenerator new.
+	fieldOrder ifNotNilDo: [ visitor fieldOrder: fieldOrder].
+	visitor	
 			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-Full.html'); 
 			visit: aDoc.
 ]
@@ -174,7 +191,7 @@ CZSingleAuthorDocBuilder >> latexHeader [
 \usepackage[unitcntnoreset]{bibtopic}
 \usepackage[numbers,sort&compress]{natbib}
 
-\title{{\bf ', self name, '}\\[0.5cm]
+\title{{\bf ', self latexName, '}\\[0.5cm]
 {\bf }}
 \author{}
 \begin{document}

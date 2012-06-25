@@ -182,6 +182,7 @@ CZFileFormatGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.
 	"self outputStream nextPutAll: aCZPeople expanded"
+	self halt.
 	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
 			
 ]

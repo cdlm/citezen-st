@@ -76,7 +76,8 @@ CZBibTexGenerator >> visitMacro: aCZField [
 CZBibTexGenerator >> visitPeople: aCZPeople [
 
 	self outputStream nextPut: ${.
-	super visitPeople: aCZPeople.
+	aCZPeople perform: expandOption.
+	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded).
 	self outputStream nextPut: $}.
 ]
 
