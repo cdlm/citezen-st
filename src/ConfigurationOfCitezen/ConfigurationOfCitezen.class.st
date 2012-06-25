@@ -1234,9 +1234,12 @@ ConfigurationOfCitezen >> version12: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #release.
-		spec description: 'cleaning sites and publications'.
+		spec description: '- Fixed builder passing to visitor fields.
+						- Fixed encoding of latex.
+						- Fixed international = international and not top. 
+							'.
 		spec author: 'StephaneDucasse'.
-		spec timestamp: '23/3/2012 11:13'.
+		spec timestamp: '25/06/2012 11:13'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.61';
@@ -1244,7 +1247,7 @@ ConfigurationOfCitezen >> version12: spec [
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.17';
-			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.18';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.19';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.2';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
