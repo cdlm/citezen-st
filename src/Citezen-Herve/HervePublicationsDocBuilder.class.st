@@ -5,6 +5,56 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+HervePublicationsDocBuilder class >> bibtex [
+	"self bibtex"
+	| builder|
+	builder := super new
+		fileNamed: '/Volumes/WIN/home/hv/minimized/listic/data/publications/biblst/trunk/bibtex/biblst.bib';
+		setFilteringOn;
+		yourself.
+	builder generateBibtexFile
+]
+
+{ #category : #'as yet unclassified' }
+HervePublicationsDocBuilder class >> latex [
+	"self latex"
+	
+	| builder |
+	builder := super new
+		fileNamed: '/Volumes/WIN/home/hv/minimized/listic/data/publications/biblst/trunk/bibtex/biblst.bib';
+		toLatex;
+		french; 
+		fieldOrder: #(#author 
+			  #title 
+			  #journal 
+			  #booktitle 
+			  #volume 
+			  #pages 
+			  #publisher  
+			  #year 
+			  #impactfactor 
+			  #rate); "removed doi and url since they may contain _ and the generator does not handle that well for the moment."
+		setFilteringOn;
+		yourself.
+	builder generateLatexFile.
+	
+]
+
+{ #category : #'as yet unclassified' }
+HervePublicationsDocBuilder class >> xhtml [
+	"self xhtml"
+		
+	|  builder|
+	builder :=  super new
+		french; 
+		fileNamed: '/Volumes/WIN/home/hv/minimized/listic/data/publications/biblst/trunk/bibtex/biblst.bib';
+		setFilteringOn;
+		yourself.
+	builder generateXHTMLFile.
+	builder generateBibtexFile.
+]
+
+{ #category : #'as yet unclassified' }
 HervePublicationsDocBuilder >> buildBody [
 
 	self addBibSection: (self journalQuery) withTitle: localization  internationalReviewedJournal;
