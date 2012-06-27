@@ -23,7 +23,7 @@ HervePublicationsDocBuilder class >> latex [
 	builder := super new
 		fileNamed: '/Volumes/WIN/home/hv/minimized/listic/data/publications/biblst/trunk/bibtex/biblst.bib';
 		toLatex;
-		french; 
+		english;  "french"
 		fieldOrder: #(#author 
 			  #title 
 			  #journal 
@@ -46,7 +46,7 @@ HervePublicationsDocBuilder class >> xhtml [
 		
 	|  builder|
 	builder :=  super new
-		french; 
+		english; 
 		fileNamed: '/Volumes/WIN/home/hv/minimized/listic/data/publications/biblst/trunk/bibtex/biblst.bib';
 		setFilteringOn;
 		yourself.
@@ -67,6 +67,8 @@ HervePublicationsDocBuilder >> buildBody [
 		addBibSection: (self bookQuery) withTitle: localization books;
 		addBibSection: (self editorQuery) withTitle: localization editor;
 		addBibSection: (self internationalWorkshopQuery) withTitle: localization internationalReviewedWorkshops;
+		addBibSection: (self nationalWorkshopQuery) withTitle: localization nationalWorkshops;
+
 		addBibSection: (self PhDAndHabilitationQuery) withTitle: localization phdAndHdr;
 
 		addBibSection: (self deliverableQuery)   withTitle: localization deliverable;
