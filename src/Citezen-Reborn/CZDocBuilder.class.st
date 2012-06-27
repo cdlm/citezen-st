@@ -298,6 +298,12 @@ CZDocBuilder >> nationalJournalQuery [
 ]
 
 { #category : #queries }
+CZDocBuilder >> nationalWorkshopQuery [
+
+	^ self annotationWithType:  'nationalworkshop*'
+]
+
+{ #category : #queries }
 CZDocBuilder >> periodicalQuery [
 
 	^ self annotationWithType:  '*periodical*'

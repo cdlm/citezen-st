@@ -23,6 +23,7 @@ Class {
 		'NationalReviewedConference',
 		'NationalReviewedConferences',
 		'NationalReviewedJournal',
+		'NationalWorkshop',
 		'PHDAndHdr',
 		'Periodical',
 		'PhD',
@@ -58,6 +59,7 @@ CZLocalisation class >> initializeEnglishEntries [
 	English at: InvitedPaper put: 'Invited Articles'.
 	English at: #editor put: 'Editor'.
 	English at: InternationalReviewedWorkshop put: 'Refereed Articles in International Workshops'.
+	English at: NationalWorkshop put: 'Articles in National Workshops'.
 	English at: PhD put: 'PhD'.
 	English at: HDR put: 'Habilitation'.
 	English at: PHDAndHdr put: 'PhD and Habilitation'.
@@ -84,6 +86,7 @@ CZLocalisation class >> initializeFrenchEntries [
 	French at: InvitedPaper put: 'Articles invit\''es'.
 	French at: #editor put: 'Editeur'.
 	French at: InternationalReviewedWorkshop put: 'Articles de workshop internationaux avec comit\''e de lecture'.
+	French at: NationalWorkshop put: 'Articles de workshop nationaux avec comit\''e de lecture ou de s\''election'.
 	French at: PhD put: 'Th\`ese'.
 	French at: HDR put: 'Habilitation \''a diriger des recherches'.
 	French at: PHDAndHdr put: 'Th\`ese et Habilitation \''a diriger des recherches'.
@@ -110,6 +113,7 @@ CZLocalisation class >> initializeTypes [
 	InvitedPaper := #invitedPapers.
 	"Editor := #editor."
 	InternationalReviewedWorkshop := #internationalWorkshop.
+	NationalWorkshop := #nationalWorkshop.
 	PhD := #phd.
 	HDR := #hdr.
 	PHDAndHdr := #phdAndHdr.
@@ -204,6 +208,12 @@ CZLocalisation >> nationalReviewedConference [
 CZLocalisation >> nationalReviewedJournal [
 
 	^ language at: NationalReviewedJournal
+]
+
+{ #category : #accessing }
+CZLocalisation >> nationalWorkshops [
+
+	^ language at: NationalWorkshop
 ]
 
 { #category : #accessing }
