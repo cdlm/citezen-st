@@ -10,6 +10,7 @@ Class {
 	#classVars : [
 		'Book',
 		'BookChapter',
+		'Deliverable',
 		'English',
 		'French',
 		'HDR',
@@ -23,7 +24,9 @@ Class {
 		'NationalReviewedConferences',
 		'NationalReviewedJournal',
 		'PHDAndHdr',
+		'Periodical',
 		'PhD',
+		'TechnicalReport',
 		'ToolDemo',
 		'TopConferences',
 		'Vulgarisation'
@@ -58,7 +61,10 @@ CZLocalisation class >> initializeEnglishEntries [
 	English at: PhD put: 'PhD'.
 	English at: HDR put: 'Habilitation'.
 	English at: PHDAndHdr put: 'PhD and Habilitation'.
+	English at: Deliverable put: 'Project Deliverables'.
+	English at: TechnicalReport put: 'Technical Reports'.
 	English at: ToolDemo put: 'Tool Demos'.
+	English at: Periodical put: 'Periodicals and Magazines'.
 	English at: Vulgarisation put: 'Vulgarisation Articles'.
 	
 ]
@@ -81,7 +87,10 @@ CZLocalisation class >> initializeFrenchEntries [
 	French at: PhD put: 'Th\`ese'.
 	French at: HDR put: 'Habilitation \''a diriger des recherches'.
 	French at: PHDAndHdr put: 'Th\`ese et Habilitation \''a diriger des recherches'.
+	French at: Deliverable put: 'Livrables de projets'.
+	French at: TechnicalReport put: 'Rapports scientifiques et/ou techniques'.
 	French at: ToolDemo put: 'D\''emonstrations d''outils'.
+	French at: Periodical put: 'Magazines'.
 	French at: Vulgarisation put: 'Articles de vulgarisation'.
 	
 
@@ -104,8 +113,12 @@ CZLocalisation class >> initializeTypes [
 	PhD := #phd.
 	HDR := #hdr.
 	PHDAndHdr := #phdAndHdr.
+	Deliverable := #deliverable.
+	TechnicalReport := #technicalReport.
 	ToolDemo := #tooldemo.
+	Periodical := #periodical.
 	Vulgarisation := #vulgarisation.
+	
 ]
 
 { #category : #accessing }
@@ -118,6 +131,12 @@ CZLocalisation >> bookChapters [
 CZLocalisation >> books [
 
 	^ language at: Book
+]
+
+{ #category : #accessing }
+CZLocalisation >> deliverable [
+
+	^ language at: Deliverable
 ]
 
 { #category : #accessing }
@@ -188,6 +207,12 @@ CZLocalisation >> nationalReviewedJournal [
 ]
 
 { #category : #accessing }
+CZLocalisation >> periodical [
+
+	^ language at: Periodical
+]
+
+{ #category : #accessing }
 CZLocalisation >> phd [
 
 	^ language at: PhD
@@ -197,6 +222,12 @@ CZLocalisation >> phd [
 CZLocalisation >> phdAndHdr [
 
 	^ language at: PHDAndHdr
+]
+
+{ #category : #accessing }
+CZLocalisation >> technicalReport [
+
+	^ language at: TechnicalReport
 ]
 
 { #category : #accessing }

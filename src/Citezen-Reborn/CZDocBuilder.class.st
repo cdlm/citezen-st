@@ -140,6 +140,12 @@ CZDocBuilder >> defaultKeysOfBlackListedEntries [
 	^ #()
 ]
 
+{ #category : #queries }
+CZDocBuilder >> deliverableQuery [
+
+	^ self annotationWithType:  '*deliverable*'
+]
+
 { #category : #'configuration public api' }
 CZDocBuilder >> doNotAllowEmptySections [
 	
@@ -291,6 +297,12 @@ CZDocBuilder >> nationalJournalQuery [
 			checks: [ :value | ('*nationaljournal*' match: value) and: [('*internationaljournal*' match: value) not] ])
 ]
 
+{ #category : #queries }
+CZDocBuilder >> periodicalQuery [
+
+	^ self annotationWithType:  '*periodical*'
+]
+
 { #category : #'configuration public api' }
 CZDocBuilder >> setFilteringOff [
 
@@ -308,6 +320,12 @@ CZDocBuilder >> setFilteringOn [
 CZDocBuilder >> shouldFilterNonPublic [
 
 	^ shouldFilterNonPublic
+]
+
+{ #category : #queries }
+CZDocBuilder >> technicalReportQuery [
+
+	^ self annotationWithType:  '*technicalreport*'
 ]
 
 { #category : #queries }
