@@ -1,7 +1,9 @@
 "
 Now version 1.1 is released, so this is needed to load anything:
 	
-	(ConfigurationOfCitezen project version: '1.2') load: { 'NoWeb'}.
+	(ConfigurationOfCitezen project version: '1.2') load: { 'NoWeb'}. 
+		""to load the latest development version... soon we should push it as stable because other projects such 
+		as Kozen use it heavily""
 	(ConfigurationOfCitezen project version: #development) load: { 'NoWeb'}.
 	(ConfigurationOfCitezen project version: '1.1') load: { 'Citezen-Seaside'}.
 
@@ -11,12 +13,11 @@ This configuration depends on the SmaCC runtime only; to work on the parsers thi
 	
 
 To sync
-
+SystemOrganization categories select: [:each |    '*Citezen*' match: each]
 
 #(	'Citezen-Checking' 
 	'Citezen-Model'
  	'Citezen-Model'
- 	'Citezen-Outputters'
  	'Citezen-Query'
  	'Citezen-Tests'
 	)
@@ -25,7 +26,7 @@ do: [:each | Gofer new
 	package: each;
 	push ]
 
-SystemOrganization categories select: [:each |    '*Citezen*' match: each]
+
 
 
 "
@@ -1003,7 +1004,7 @@ ConfigurationOfCitezen >> baseline12: spec [
 ]
 
 { #category : #'symbolic versions' }
-ConfigurationOfCitezen >> develoment: spec [
+ConfigurationOfCitezen >> development: spec [
 	<symbolicVersion: #'development'>
 
 	spec for: #'pharo1.4.x' version: '1.2'.
@@ -1234,12 +1235,9 @@ ConfigurationOfCitezen >> version12: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #release.
-		spec description: '- Fixed builder passing to visitor fields.
-						- Fixed encoding of latex.
-						- Fixed international = international and not top. 
-							'.
+		spec description: ' Use enhancements made by herve	verjus!'.
 		spec author: 'StephaneDucasse'.
-		spec timestamp: '25/06/2012 11:13'.
+		spec timestamp: '27/06/2012 12:43'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.61';
@@ -1247,7 +1245,7 @@ ConfigurationOfCitezen >> version12: spec [
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.17';
-			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.19';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-HerveVerjus.20';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.2';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
