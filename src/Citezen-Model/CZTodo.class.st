@@ -1,6 +1,10 @@
 "
+* apparently editor field does not contain people.
+
+
 we should add the fact that if a document is given a pattern for entries then all the entries get displayed
 using potentially in all the scripts associated to the document.
+
 
 notExpanded either returns a string or integer
 

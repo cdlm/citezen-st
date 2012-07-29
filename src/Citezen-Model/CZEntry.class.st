@@ -225,6 +225,13 @@ CZEntry class >> requiredFieldsFor: aSymbol [
 	^ neededFieldsDictionary at: aSymbol ifAbsent: #()
 ]
 
+{ #category : #'team ' }
+CZEntry class >> teamMemberPatterns [
+
+	^ #( '*Ducasse*S*' '*Denker*M*' '*Anquetil*N*' '*Pollet*D*' '*Abdeen*H*' '*Laval*J*' '*Peirs*R*' '*Falleri*' '*Denier*S*' '*Hora*'
+		'*Casaccio*G*' '*Bruni*C*' '*Martinez-Peck*' '*Uquillas*' '*Arnaud*J*B*' '*Bhatti*U*' '*Fernandes*H*' '*Razavizadeh*A*' '*Uquilla*')
+]
+
 { #category : #metadata }
 CZEntry class >> techreport [
 	^ #techreport
@@ -443,10 +450,8 @@ CZEntry >> isProceedings [
 CZEntry >> isTeamEntry [
 	
 	| author |
-	
 	author := self author value.
-	^ #( '*Ducasse*S*' '*Denker*M*' '*Anquetil*N*' '*Pollet*D*' '*Abdeen*H*' '*Laval*J*' '*Peirs*R*' '*Falleri*' '*Denier*S*' '*Hora*'
-		'*Casaccio*G*' '*Martinez-Peck*' '*Uquillas*' '*Arnaud*J*B*' '*Bhatti*U*' '*Fernandes*H*' '*Razavizadeh*A*' ) anySatisfy: [ :each | each match: author ]
+	^ author containsTeamMember: self class teamMemberPatterns
 ]
 
 { #category : #'entry type testing' }

@@ -73,6 +73,7 @@ CZField class >> valueClasses [
 
 { #category : #visitor }
 CZField >> acceptVisitor: aVisitor [
+
 	aVisitor visitField: self
 ]
 
