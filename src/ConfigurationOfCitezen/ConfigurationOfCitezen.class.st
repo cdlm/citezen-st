@@ -1091,7 +1091,7 @@ ConfigurationOfCitezen >> baseline13: spec [
 ConfigurationOfCitezen >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'pharo1.4.x' version: '1.3'.
+	spec for: #'pharo1.4.x' version: '1.4'.
 
 ]
 
@@ -1356,6 +1356,30 @@ ConfigurationOfCitezen >> version13: spec [
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-HerveVerjus.20';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.2';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.2';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version14: spec [
+	<version: '1.4' imports: #('1.3-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #release.
+		spec description: ' Add latest changes of Herve'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '28/07/2012 12:43'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.61';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.22';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.17';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-HerveVerjus.21';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.2';
+			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
 
