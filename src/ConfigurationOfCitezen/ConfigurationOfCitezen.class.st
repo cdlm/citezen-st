@@ -1367,7 +1367,7 @@ ConfigurationOfCitezen >> version14: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #release.
-		spec description: ' Add latest changes of Herve'.
+		spec description: ' Add latest changes of Herve and fix accent in bibtex'.
 		spec author: 'StephaneDucasse'.
 		spec timestamp: '28/07/2012 12:43'.
 		spec 
@@ -1377,8 +1377,8 @@ ConfigurationOfCitezen >> version14: spec [
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.17';
-			package: 'Citezen-Reborn' with: 'Citezen-Reborn-HerveVerjus.21';
-			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.2';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.22';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.3';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
