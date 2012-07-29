@@ -12,6 +12,20 @@ Class {
 	#category : #'Citezen-Stef'
 }
 
+{ #category : #generation }
+StefPublicationsDocBuilder class >> xhtml [
+	"self xhtml"
+		
+	|  builder|
+	builder :=  self new
+		english; 
+		fileNamed: 'rmod.bib';
+		setFilteringOn;
+		yourself.
+	builder generateXHTMLFile.
+	builder generateBibtexFile.
+]
+
 { #category : #building }
 StefPublicationsDocBuilder >> buildBody [
 
