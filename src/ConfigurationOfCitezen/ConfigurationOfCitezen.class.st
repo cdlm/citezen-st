@@ -1091,7 +1091,7 @@ ConfigurationOfCitezen >> baseline13: spec [
 ConfigurationOfCitezen >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'pharo1.4.x' version: '1.4'.
+	spec for: #'pharo1.4.x' version: '1.5'.
 
 ]
 
@@ -1379,6 +1379,30 @@ ConfigurationOfCitezen >> version14: spec [
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.17';
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.22';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.3';
+			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version15: spec [
+	<version: '1.5' imports: #('1.3-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #release.
+		spec description: ' RMOD Report working'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '28/07/2012 12:43'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.62';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.22';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.23';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.4';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
