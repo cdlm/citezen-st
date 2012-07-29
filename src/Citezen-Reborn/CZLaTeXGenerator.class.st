@@ -21,8 +21,12 @@ CZLaTeXGenerator >> defaultFooter [
 { #category : #configuration }
 CZLaTeXGenerator >> defaultHeader [
 	^ '\documentclass{article}
-\usepackage[french]{babel}
 \usepackage{times}
+
+\newcommand{\czauthors}[1]{#1}
+\newcommand{\cztitle}[1]{\emph{``#1''''}}
+\newcommand{\czjournal}[1]{#1}
+\newcommand{\czbooktitle}[1]{#1}
 
 \title{{\bf Prof. Dr. St\''ephane Ducasse}\\[0.5cm]
 {\bf }}
@@ -38,7 +42,8 @@ CZLaTeXGenerator >> defaultHeader [
 CZLaTeXGenerator >> emitEntryHeader: anEntry [
 	"Add to the outputStream a header for the correponding anEntry if needed."
 	
-	outputStream nextPutAll: '\pub '.
+	outputStream nextPutAll: '
+	\pub '.
 ]
 
 { #category : #initialize }
@@ -54,10 +59,10 @@ CZLaTeXGenerator >> initializeFieldEmbellishingTable [
 	"Rather ugly but it works!"
 	
 	fieldEmbellishingTable := Dictionary new. 
-	fieldEmbellishingTable at: CZPool author put: '\emph{'.
-	fieldEmbellishingTable at: CZPool booktitle put: 'In \emph{'.
-	fieldEmbellishingTable at: CZPool title put: '\emph{'.
-	fieldEmbellishingTable at: CZPool journal put: 'In \emph{'.
+	fieldEmbellishingTable at: CZPool author put: '\czauthors{'.
+	fieldEmbellishingTable at: CZPool booktitle put: 'In \czbooktitle{'.
+	fieldEmbellishingTable at: CZPool title put: '\cztitle{'.
+	fieldEmbellishingTable at: CZPool journal put: 'In \czjournal{'.
 
 	
 ]
@@ -91,6 +96,7 @@ CZLaTeXGenerator >> visitField: aField [
 
 	fieldEmbellishingTable at: aField key ifPresent: [:t | self outputStream nextPutAll: ' ', t].
 	aField dispatchVisitor: self.
+	"One day I have to think about this dispatch ugly point"
 	fieldEmbellishingTable at: aField key ifPresent: [:t | self outputStream nextPutAll: '}'].
 	aField key = CZPool editor
 		ifTrue: [ self outputStream nextPutAll: ' ed.'].
@@ -115,5 +121,11 @@ CZLaTeXGenerator >> visitSection: aCZSection [
 
 { #category : #visiting }
 CZLaTeXGenerator >> visitString: aCZString [
-	outputStream nextPutAll: aCZString notExpanded asString
+	
+	| latexifiedString |
+	latexifiedString := aCZString notExpanded asString.
+	
+	"latexifiedString := (latexifiedString copyReplaceAll: '&' with: '\&')."
+	"could be done smarter but no time to be smart"
+	outputStream nextPutAll: latexifiedString.
 ]

@@ -172,10 +172,7 @@ CZDocBuilder >> document [
 { #category : #queries }
 CZDocBuilder >> editorQuery [
 
-	^ ((CZFieldQuery named: #editor checks: [ :value | self authorMatchingString match: value ])
-					"AND: (CZBibFieldQuery 
-								named: #annote 
-								checks: [ :value | '*editor*' match: value ])"
+	^ ((CZFieldQuery named: #editor checks: [ :value | value containsTeamMember: CZEntry teamMemberPatterns ])
 			OR: (self annotationWithType: '*workshopproceedings*') )
 ]
 
@@ -261,7 +258,9 @@ CZDocBuilder >> invitedQuery [
 { #category : #queries }
 CZDocBuilder >> journalQuery [
 
-	^ CZQuery isInternationalJournalQuery
+	^ (CZFieldQuery 
+			named: #annote 
+			checks: [ :value | '*internationaljournal*' match: value ])
 ]
 
 { #category : #junk }
@@ -331,6 +330,12 @@ CZDocBuilder >> setFilteringOn [
 CZDocBuilder >> shouldFilterNonPublic [
 
 	^ shouldFilterNonPublic
+]
+
+{ #category : #queries }
+CZDocBuilder >> teamEntryQuery [
+	
+	^ CZEntryQuery checks: [:each | each isTeamEntry]
 ]
 
 { #category : #queries }

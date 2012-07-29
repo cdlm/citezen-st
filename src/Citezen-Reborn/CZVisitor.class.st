@@ -24,6 +24,7 @@ CZVisitor >> defaultFieldOrder [
 
 	^ #(#author 
 			  #title 
+			  #chapter
 			  #journal 
 			  #booktitle 
 			  #volume 
@@ -31,9 +32,10 @@ CZVisitor >> defaultFieldOrder [
 			  #publisher  
 			  #year 
 			  #impactfactor 
-			  #rate 
+			  #misc 
 			  #url 
 			  #doi)
+			"rate is bad because it does not have enough information"
 ]
 
 { #category : #accessing }

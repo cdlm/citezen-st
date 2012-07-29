@@ -42,7 +42,7 @@ CZSingleAuthorDocBuilder class >> latex [
 			  #publisher  
 			  #year 
 			  #impactfactor 
-			  #rate); "removed doi and url since they may contain _ and the generator does not handle that well for the moment."
+			  #misc); "removed doi and url since they may contain _ and the generator does not handle that well for the moment."
 		setFilteringOn;
 		yourself.
 	builder generateLatexFile.
@@ -185,11 +185,15 @@ CZSingleAuthorDocBuilder >> latexFooter [
 
 { #category : #latex }
 CZSingleAuthorDocBuilder >> latexHeader [
+	"there is something not working well since the visitor may require some different package so the logic should not really be totally define here. We will have to fix that. For now when a document as a header or footer it is used (not the one of the generator)"
+
 	^ '\documentclass{article}
-\usepackage[french]{babel}
 \usepackage{times}
-\usepackage[unitcntnoreset]{bibtopic}
-\usepackage[numbers,sort&compress]{natbib}
+
+\newcommand{\czauthors}[1]{#1}
+\newcommand{\cztitle}[1]{\emph{``#1''''}}
+\newcommand{\czjournal}[1]{#1}
+\newcommand{\czbooktitle}[1]{#1}
 
 \title{{\bf ', self latexName, '}\\[0.5cm]
 {\bf }}
