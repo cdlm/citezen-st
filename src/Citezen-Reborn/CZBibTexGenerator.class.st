@@ -77,7 +77,7 @@ CZBibTexGenerator >> visitPeople: aCZPeople [
 
 	self outputStream nextPut: ${.
 	aCZPeople perform: expandOption.
-	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded).
+	outputStream nextPutAll: aCZPeople expanded.
 	self outputStream nextPut: $}.
 ]
 
