@@ -29,7 +29,8 @@ RMODPublicationsDocBuilder class >> generateLatexForEval2008to2012 [
 			  #booktitle 
 			  #volume 
 			  #pages 
-			  #publisher  
+			  #publisher
+			  #school  
 			  #year 
 			  #impactfactor 
 			  #misc); 
