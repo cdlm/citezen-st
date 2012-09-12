@@ -41,6 +41,7 @@ CZSingleAuthorDocBuilder class >> latex [
 			  #pages 
 			  #publisher  
 			  #year 
+			  # school
 			  #impactfactor 
 			  #misc); "removed doi and url since they may contain _ and the generator does not handle that well for the moment."
 		setFilteringOn;
