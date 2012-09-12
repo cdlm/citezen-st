@@ -1401,8 +1401,8 @@ ConfigurationOfCitezen >> version15: spec [
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
-			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.23';
-			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.4';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.24';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.5';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
