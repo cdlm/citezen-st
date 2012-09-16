@@ -47,8 +47,9 @@ CZLaTeXGeneratorTest >> testArticle [
 	
 	| result |
 	result := (CZLaTeXGenerator new visit: entry) outputStream contents.
-	self assert: result = '\pub  \emph{St&eacute;phane Ducasse and Damien Pollet},  \emph{Fingerprints},  In \emph{Journal of Information System}, 2010.
-'
+	self assert: result =  '
+	\pub  \czauthors{St\''ephane Ducasse and Damien Pollet},  \cztitle{Fingerprints},  In \czjournal{Journal of Information System}, 2010.
+' 
 ]
 
 { #category : #setup }
@@ -58,6 +59,7 @@ CZLaTeXGeneratorTest >> testLongArticle [
 	| result |
 	result := (CZLaTeXGenerator new visit: entry2) outputStream contents.
 
-	self assert: result = '\pub  \emph{Hani Abdeen, Ilham Alloui, St&eacute;phane Ducasse, Damien Pollet and Mathieu Suen},  \emph{Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships},  In \emph{European Conference on Software Maintenance and Reengineering (CSMR)}, pp. 213--222, IEEE Computer Society Press, 2008, 27%, http://scg.unibe.ch/archive/external/Abde08a.pdf.
+	self assert: result = '
+	\pub  \czauthors{Hani Abdeen, Ilham Alloui, St\''ephane Ducasse, Damien Pollet and Mathieu Suen},  \cztitle{Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships},  In \czbooktitle{European Conference on Software Maintenance and Reengineering (CSMR)}, pp. 213--222, IEEE Computer Society Press, 2008, Acceptance rate: 24/87 = 27\%, http://scg.unibe.ch/archive/external/Abde08a.pdf.
 ' 
 ]
