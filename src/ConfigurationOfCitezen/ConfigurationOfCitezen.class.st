@@ -1,11 +1,14 @@
 "
-Now version 1.1 is released, so this is needed to load anything:
+Version 1.5 is now promoted as stable for 1.4.
+Let us know if you get some problems.
+
+	(ConfigurationOfCitezen project version: #stable) load: { 'NoWeb'}.
+
 	
-	(ConfigurationOfCitezen project version: '1.2') load: { 'NoWeb'}. 
-		""to load the latest development version... soon we should push it as stable because other projects such 
-		as Kozen use it heavily""
-	(ConfigurationOfCitezen project version: #development) load: { 'NoWeb'}.
+
+The following was somehow working in the past. But we did not test it recently. 
 	(ConfigurationOfCitezen project version: '1.1') load: { 'Citezen-Seaside'}.
+
 
 This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
 
@@ -1126,7 +1129,7 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo' version: '0.8'.
 	spec for: #'pharo1.3.x' version: '0.8'.
 	"spec for: #'pharo1.4.x' version: '1.1'. previous stable"
-	spec for: #'pharo1.4.x' version: '1.1'.
+	spec for: #'pharo1.4.x' version: '1.5'.
 
 ]
 
