@@ -18,13 +18,24 @@ SystemOrganization categories select: [:each |    '*Citezen*' match: each]
 #(	'Citezen-Checking' 
 	'Citezen-Model'
  	'Citezen-Model'
- 	'Citezen-Query'
+	'Citezen-Parsers'
+	 'Citezen-Query'
+	'Citezen-Reborn'
+	'Citezen-Stef'
+	'Citezen-Outputers'
+	'Citezen-Herve'
  	'Citezen-Tests'
+	'ConfigurationOfCitezen'
 	)
 do: [:each | Gofer new
-	squeaksource: 'Citezen';
+	squeaksource3: 'citezen';
 	package: each;
 	push ]
+
+Gofer new
+	squeaksource3: 'citezen';
+	package: 'ConfigurationOfCitezen';
+	push 
 
 
 
