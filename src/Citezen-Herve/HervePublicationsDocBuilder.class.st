@@ -8,7 +8,7 @@ Class {
 HervePublicationsDocBuilder class >> bibtex [
 	"self bibtex"
 	| builder|
-	builder := super new
+	builder := self new
 		fileNamed: '/Volumes/WIN/home/hv/minimized/listic/data/publications/biblst/trunk/bibtex/biblst.bib';
 		setFilteringOn;
 		yourself.
@@ -20,7 +20,7 @@ HervePublicationsDocBuilder class >> latex [
 	"self latex"
 	
 	| builder |
-	builder := super new
+	builder := self new
 		fileNamed: '/Volumes/WIN/home/hv/minimized/listic/data/publications/biblst/trunk/bibtex/biblst.bib';
 		toLatex;
 		english;  "french"
@@ -45,7 +45,7 @@ HervePublicationsDocBuilder class >> xhtml [
 	"self xhtml"
 		
 	|  builder|
-	builder :=  super new
+	builder :=  self new
 		english; 
 		fileNamed: '/Volumes/WIN/home/hv/minimized/listic/data/publications/biblst/trunk/bibtex/biblst.bib';
 		setFilteringOn;
@@ -60,10 +60,10 @@ HervePublicationsDocBuilder >> buildBody [
 	self addBibSection: (self journalQuery) withTitle: localization  internationalReviewedJournal;
 		addBibSection: (self topConferenceQuery) withTitle:  localization topConferences;				
 		addBibSection: (self nationalJournalQuery) withTitle: localization nationalReviewedJournal;
+		addBibSection: (self bookChapterQuery) withTitle: localization bookChapters;
 		addBibSection: (self internationalConferenceQuery)  withTitle: localization internationalConference;
 		addBibSection: (self nationalConferenceQuery) withTitle: localization nationalReviewedConference;
 		addBibSection: (self invitedQuery) withTitle: localization invitedPapers;
-		addBibSection: (self bookChapterQuery) withTitle: localization bookChapters;
 		addBibSection: (self bookQuery) withTitle: localization books;
 		addBibSection: (self editorQuery) withTitle: localization editor;
 		addBibSection: (self internationalWorkshopQuery) withTitle: localization internationalReviewedWorkshops;
