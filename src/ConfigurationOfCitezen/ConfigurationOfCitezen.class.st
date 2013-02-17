@@ -1101,12 +1101,96 @@ ConfigurationOfCitezen >> baseline13: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfCitezen >> baseline14: spec [
+	<version: '1.4-baseline'>
+
+	spec for: #common do: [
+		spec blessing: #baseline.
+		spec description: 'Migration to SmalltalkHub'.
+		spec author: 'StephaneDucasse'.
+		spec repository: 'http://smalltalkhub.com/mc/RMoD/Citezen/main'.
+		
+		spec
+			project: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfSeaside30';
+					file: 'ConfigurationOfSeaside30';
+					versionString: #stable;
+					loads: #('Base');
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Magritte' copyFrom: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfMagritte2';
+					loads: #('Core' 'Magritte-Seaside');
+					file: 'ConfigurationOfMagritte2';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Pier' copyFrom: 'Seaside' with: [
+				spec
+					className: 'ConfigurationOfPier2';
+					loads: #('Core');
+					file: 'ConfigurationOfPier2';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'Grease Core' with: [
+				spec
+					className: 'ConfigurationOfGrease';
+					loads: #('Core' );
+					file: 'ConfigurationOfGrease';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'OSProcess' with: [
+				spec
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'SmaCC' with: [
+				spec
+					className: 'ConfigurationOfSmaCC';
+					file: 'ConfigurationOfSmaCC';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+			
+
+		spec
+			package: 'Citezen-Model';
+			package: 'Citezen-Parsers' with: [ spec requires: #('Citezen-Model' 'SmaCC')];
+			package: 'Citezen-Rendering' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Outputers' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Tools' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Query' with: [ spec requires: 'Citezen-Model'];
+			package: 'Citezen-Reborn' with: [spec requires: 'Citezen-Model'];
+			package: 'Citezen-Seaside' with: [ spec requires: #('Core' 'Seaside'  'Citezen-Tests' 'Citezen-Magritte') ]; "ugly and wrong it also requires Magritte"
+			package: 'Citezen-Magritte' with: [ spec requires: 'Magritte' ];
+			package: 'Citezen-Pier' with: [ spec requires: #('Core' 'Pier' 'Citezen-Seaside' 'Citezen-Magritte') ];
+			package: 'Citezen-Checking' with: [ spec requires: 'Core' ];
+			package: 'Citezen-Stef' with: [ spec requires: 'Citezen-Reborn' ];
+			package: 'Citezen-Herve' with: [ spec requires: 'Citezen-Reborn' ];
+			package: 'Citezen-CommandLine' with: [ spec requires: #('Core' 'OSProcess') ];
+			package: 'Citezen-Tests' with: [ spec requires: #('Core') ].
+			
+		spec
+			group: 'default' with: #('NoWeb');
+			group: 'NoWeb' with: #('Core' 'Tests' 'Grease Core');
+			group: 'Core' with: #('Citezen-Model'
+							 'Citezen-Parsers'
+							 'Citezen-Rendering'
+							 'Citezen-Outputers'
+							 'Citezen-Query'
+							 'Citezen-Checking'
+							 'Citezen-Reborn'
+							 'Citezen-Tools'
+							'Citezen-Stef'
+							'Citezen-Herve'); "one day we will have to split core"
+			group: 'CommandLine' with: #('NoWeb' 'Citezen-CommandLine');
+			group: 'Web' with: #('Citezen-Seaside' 'Citezen-Magritte' 'Citezen-Pier');
+			group: 'Tests' with: #('Citezen-Tests')
+	]
+]
+
 { #category : #'symbolic versions' }
 ConfigurationOfCitezen >> development: spec [
 	<symbolicVersion: #'development'>
 
-	spec for: #'pharo1.4.x' version: '1.5'.
-	spec for: #'pharo2.x' version: '1.5'.
+	spec for: #'pharo1.4.x' version: '1.6'.
+	spec for: #'pharo2.x' version: '1.6'.
 
 ]
 
@@ -1130,8 +1214,8 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo' version: '0.8'.
 	spec for: #'pharo1.3.x' version: '0.8'.
 	"spec for: #'pharo1.4.x' version: '1.1'. previous stable"
-	spec for: #'pharo1.4.x' version: '1.5'.
-	spec for: #'pharo2.x' version: '1.5'.
+	spec for: #'pharo1.4.x' version: '1.6'.
+	spec for: #'pharo2.x' version: '1.6'.
 
 ]
 
@@ -1410,6 +1494,30 @@ ConfigurationOfCitezen >> version15: spec [
 		spec description: ' RMOD Report working'.
 		spec author: 'StephaneDucasse'.
 		spec timestamp: '28/07/2012 12:43'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.62';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.22';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.25';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.5';
+			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version16: spec [
+	<version: '1.6' imports: #('1.4-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #release.
+		spec description: 'Migration to SmalltalkHub'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '17/02/2013 16:43'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.62';
