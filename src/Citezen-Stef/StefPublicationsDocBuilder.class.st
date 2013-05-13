@@ -95,7 +95,16 @@ StefPublicationsDocBuilder >> xhtmlHeader [
 	  <div xmlns="" class="paperList"><style type="text/css">
 <!--
 -->
-</style>'
+</style>
+
+The author order of all my articles is meant to be read as follows:
+<li>Alphabetical order is used to represent the amount of time spend in writing the paper, implementing the idea and validating it. Alphabetical order is used to say that all authors equally contributed. </li>
+
+<li> When the first author is not the first alphabetically ordered it means that he was the main driver behind the work. But it does not mean that the others did not push hard... </li>
+<li> For example, Mario, Luigi, Sonic,  Dante and Rachet means that Mario worked a lot and was the main driver of the work, that Luigi and Sonic equally helped and that Danet and Rachet were less involved.  </li>
+
+<li> I''m against this idea that only the first author counts, because research is a human working in a team work and I hate that people start to count their energy and impact as soon as they are not first author.</li> 
+'
 ]
 
 { #category : #building }
