@@ -1190,7 +1190,7 @@ ConfigurationOfCitezen >> development: spec [
 	<symbolicVersion: #'development'>
 
 	spec for: #'pharo1.4.x' version: '1.6'.
-	spec for: #'pharo2.x' version: '1.6'.
+	spec for: #'pharo2.x' version: '1.7'.
 
 ]
 
@@ -1527,6 +1527,30 @@ ConfigurationOfCitezen >> version16: spec [
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.25';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.5';
+			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version17: spec [
+	<version: '1.7' imports: #('1.4-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #release.
+		spec description: 'adding publication principle in html but does not work when called from kozen'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '17/02/2013 16:43'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.62';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.22';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
+			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.53';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.25';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.6';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.2';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
