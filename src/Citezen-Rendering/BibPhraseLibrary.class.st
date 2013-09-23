@@ -367,7 +367,7 @@ BibPhraseLibrary class >> volumeNumber [
 
 { #category : #'formats-fields' }
 BibPhraseLibrary class >> year: aField [
-	^ BibLiteralPhrase text: aField value displayString
+	^ BibLiteralPhrase text: aField value
 ]
 
 { #category : #querying }
