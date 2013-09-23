@@ -1281,7 +1281,7 @@ ConfigurationOfCitezen >> development: spec [
 	<symbolicVersion: #'development'>
 
 	spec for: #'pharo1.4.x' version: '1.6'.
-	spec for: #'pharo2.x' version: '1.8'.
+	spec for: #'pharo2.x' version: '1.9'.
 
 ]
 
