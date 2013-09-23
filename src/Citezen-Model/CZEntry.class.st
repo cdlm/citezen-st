@@ -229,7 +229,7 @@ CZEntry class >> requiredFieldsFor: aSymbol [
 CZEntry class >> teamMemberPatterns [
 
 	^ #( '*Ducasse*S*' '*Denker*M*' '*Anquetil*N*' '*Pollet*D*' '*Abdeen*H*' '*Laval*J*' '*Peirs*R*' '*Falleri*' '*Denier*S*' '*Hora*'
-		'*Casaccio*G*' '*Bruni*C*' '*Martinez-Peck*' '*Uquillas*' '*Arnaud*J*B*' '*Bhatti*U*' '*Fernandes*H*' '*Razavizadeh*A*' '*Uquilla*')
+		'*Casaccio*G*' '*Bruni*C*' '*Martinez*Peck*' '*Uquillas*' '*Arnaud*J*B*' '*Bhatti*U*' '*Fernandes*H*' '*Razavizadeh*A*' '*Uquilla*' '*Dias*' '*Cassou*' '*Ryseghem*' '*Papoulias*')
 ]
 
 { #category : #metadata }
