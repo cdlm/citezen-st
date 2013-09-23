@@ -109,8 +109,7 @@ CZFileFormatGenerator >> visit: anObject [
 CZFileFormatGenerator >> visitBibSet: aSet [
 
 	self line.
-	aSet entries do: [ :each | 
-		each acceptVisitor: self].
+	super visitBibSet: aSet.
 	self line.
 ]
 

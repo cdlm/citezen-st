@@ -27,14 +27,14 @@ CZBibTexGenerator >> emitEntryHeader: anEntry [
 	
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> emitFieldSeparation [
 
 	super emitFieldSeparation.
 	self line.
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> visitComment: aCZCommentElement [
 	self outputStream 
 		nextPut: $#;
@@ -42,7 +42,7 @@ CZBibTexGenerator >> visitComment: aCZCommentElement [
 	self line.
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> visitField: aField [
 
 	self outputStream 
@@ -52,19 +52,19 @@ CZBibTexGenerator >> visitField: aField [
 	aField dispatchVisitor: self.
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> visitFooter: aCZString [
 	"we do not anything so that we do have to pay attention to footer if we got a document"
 		
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> visitHeader: aCZString [
 	"we do not anything so that we do have to pay attention to header if we got a document"
 		
 ]
 
-{ #category : #'visiting doc' }
+{ #category : #visiting }
 CZBibTexGenerator >> visitMacro: aCZField [
 	self outputStream nextPutAll: '@string{'.
 	self visitField: aCZField. 
@@ -72,7 +72,7 @@ CZBibTexGenerator >> visitMacro: aCZField [
 	self line
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> visitPeople: aCZPeople [
 
 	self outputStream nextPut: ${.
@@ -81,13 +81,13 @@ CZBibTexGenerator >> visitPeople: aCZPeople [
 	self outputStream nextPut: $}.
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> visitSection: aCSection [
 	"we do not anything so that we do have to pay attention to section if we got a document"
 		
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> visitSet: aSet [	
 	
 	aSet macros do: [ :each | 
@@ -98,7 +98,7 @@ CZBibTexGenerator >> visitSet: aSet [
 	
 ]
 
-{ #category : #visit }
+{ #category : #visiting }
 CZBibTexGenerator >> visitString: aCZString [
 	self outputStream 
 		nextPut: ${;

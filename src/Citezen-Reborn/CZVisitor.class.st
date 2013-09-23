@@ -1,5 +1,24 @@
 "
-A CZVisitor is visitor handling both CZEntries and CZDocuments
+A CZVisitor is visitor handling both CZEntries and CZDocuments.
+it is a new generation of visitor that should replace the Outputters package.
+
+
+todo: 
+CZVisitor should handle blackListedFields as the old CZBibtexOutputer was used to.
+
+visitEntry: anEntry
+	self emitEntryHeader: anEntry.
+	(anEntry fields reject: [ :aField | (blackListedFields includes: aField key)])
+		do: [ :each | each acceptVisitor: self ]
+		separatedBy: [ outputStream nextPut: self fieldSeparator; lf ].
+	self emitEntryFooter: anEntry
+	
+
+- what is the difference between visitSet: and visitBibSet:
+this should be addressed
+
+- write a couple of test for CZBibTexGenerator!
+
 "
 Class {
 	#name : #CZVisitor,
@@ -88,11 +107,11 @@ CZVisitor >> visitBibSet: aCZSet [
 
 { #category : #visiting }
 CZVisitor >> visitComment: aCZCommentElement [
-	self outputStream 
-		nextPutAll: '<!-- ';
-		nextPutAll: aCZCommentElement comment;
-		nextPutAll: ' -->'.
 	
+]
+
+{ #category : #'visiting doc' }
+CZVisitor >> visitCompositeValue: aCZCompositeValue [
 ]
 
 { #category : #'visiting doc' }
@@ -101,6 +120,13 @@ CZVisitor >> visitDoc: aDocument [
 	aDocument header acceptVisitor: self.
 	aDocument elements do: [ :each | each acceptVisitor: self ].
 	aDocument footer acceptVisitor: self.
+]
+
+{ #category : #'as yet unclassified' }
+CZVisitor >> visitEntry: anEntry [
+	"Visit a bib entry"
+	
+	
 ]
 
 { #category : #'visiting doc' }
@@ -130,6 +156,10 @@ CZVisitor >> visitMacro: aCZField [
 { #category : #'visiting doc' }
 CZVisitor >> visitMacroReference: aCZMacroReference [
 	
+]
+
+{ #category : #visiting }
+CZVisitor >> visitPeople: aCZPeople [
 ]
 
 { #category : #'visiting doc' }
