@@ -1685,7 +1685,7 @@ ConfigurationOfCitezen >> version19: spec [
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.5';
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.62';
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.22';
-			package: 'Citezen-Rendering' with: 'Citezen-Rendering-DamienPollet.40';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.41';
 			package: 'Citezen-Outputers' with: 'Citezen-Outputers-StephaneDucasse.54';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.26';
