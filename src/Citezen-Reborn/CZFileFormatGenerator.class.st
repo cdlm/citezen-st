@@ -45,16 +45,6 @@ CZFileFormatGenerator >> emitFieldSeparation [
 ]
 
 { #category : #accessing }
-CZFileFormatGenerator >> fieldOrder [
-	^ fieldOrder 
-]
-
-{ #category : #accessing }
-CZFileFormatGenerator >> fieldOrder: anObject [
-	fieldOrder := anObject
-]
-
-{ #category : #accessing }
 CZFileFormatGenerator >> fieldSeparatorString [
 
 	^ fieldSeparatorString
@@ -140,7 +130,9 @@ CZFileFormatGenerator >> visitEntry: anEntry [
 	| fields |
 	fields := anEntry fieldSortedFollowingKeys: fieldOrder.
 	self emitEntryHeader: anEntry.
-	fields do: [ :each | each acceptVisitor: self ] separatedBy: [ self emitFieldSeparation ].
+	fields 
+		do: [ :each | each acceptVisitor: self ] 
+		separatedBy: [ self emitFieldSeparation ].
 	self emitEntryFooter: anEntry
 ]
 
@@ -190,15 +182,6 @@ CZFileFormatGenerator >> visitPeople: aCZPeople [
 CZFileFormatGenerator >> visitSection: aCZSection [
 
 	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZSection name)
-]
-
-{ #category : #visit }
-CZFileFormatGenerator >> visitSet: aSet [
-
-	self line.
-	aSet entries do: [ :each | 
-		each acceptVisitor: self].
-	self line.
 ]
 
 { #category : #visit }

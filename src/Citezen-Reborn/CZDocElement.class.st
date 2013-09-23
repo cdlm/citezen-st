@@ -11,6 +11,12 @@ Class {
 	#category : #'Citezen-Reborn'
 }
 
+{ #category : #visiting }
+CZDocElement >> acceptVisitor: aVisitor [
+
+	self subclassResponsibility
+]
+
 { #category : #accessing }
 CZDocElement >> doc: aDocument [
 

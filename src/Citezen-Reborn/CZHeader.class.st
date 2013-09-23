@@ -7,7 +7,7 @@ Class {
 	#category : #'Citezen-Reborn'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZHeader >> acceptVisitor: aVisitor [
 
 	aVisitor visitHeader: self

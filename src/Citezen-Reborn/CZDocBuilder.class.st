@@ -34,7 +34,7 @@ CZDocBuilder >> PhDAndHabilitationQuery [
 
 { #category : #building }
 CZDocBuilder >> addBibSection: aQuery withTitle: aString [
-	
+	"adding a section just add a section and a list of entries following it."
 	| entries |
 	entries := (workingBibSet select: aQuery).
 	(noEmptySection & entries size isZero)
@@ -186,7 +186,6 @@ CZDocBuilder >> english [
 CZDocBuilder >> fieldOrder: aCol [
 	"to specify the order and fields that should be displayed"
 	
-	
 	fieldOrder := aCol 
 ]
 
@@ -261,17 +260,6 @@ CZDocBuilder >> journalQuery [
 	^ (CZFieldQuery 
 			named: #annote 
 			checks: [ :value | '*internationaljournal*' match: value ])
-]
-
-{ #category : #junk }
-CZDocBuilder >> journals [
-	"remove the journals from the working set and return them"
-	
-	| dictionary |
-	dictionary := workingBibSet groupedBy: self journalQuery.
-	(dictionary at: false) do: [:each | workingBibSet removeEntry: each].
-	^ dictionary at: true.			
-	
 ]
 
 { #category : #accessing }

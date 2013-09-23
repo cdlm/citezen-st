@@ -88,17 +88,6 @@ CZBibTexGenerator >> visitSection: aCSection [
 ]
 
 { #category : #visiting }
-CZBibTexGenerator >> visitSet: aSet [	
-	
-	aSet macros do: [ :each | 
-		each acceptVisitor: self].
-	self line.
-	aSet entries do: [ :each | 
-		each acceptVisitor: self].
-	
-]
-
-{ #category : #visiting }
 CZBibTexGenerator >> visitString: aCZString [
 	self outputStream 
 		nextPut: ${;

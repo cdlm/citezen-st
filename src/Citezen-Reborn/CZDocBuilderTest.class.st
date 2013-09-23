@@ -11,19 +11,29 @@ Class {
 }
 
 { #category : #'examples for tests' }
-CZDocBuilderTest class >> aDoc [
+CZDocBuilderTest class >> Abde08a [
+	"self  Abde08a"
+^
+(CZBibParser parse: 
+'
+@inproceedings{Abde08a,
+author = {Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen},
+title = {Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships},
+booktitle = {European Conference on Software Maintenance and Reengineering (CSMR)},
+pages = {213--222},
+publisher = {IEEE Computer Society Press},
+year = 2008,
+acceptnum = {24},
+accepttotal = {87}
+}
 
-	^ (StefPublicationsDocBuilder new 
-					bibset: self someArticles;
-					authorMatchingString: '*S*Ducasse*';
-					noHeader;
-					build;
-					document)
+'
+)  
 ]
 
 { #category : #'examples for tests' }
-CZDocBuilderTest class >> article1 [
-	"self  article1"
+CZDocBuilderTest class >> Abde10a [
+	"self  Abde10a"
 ^
 (CZBibParser parse: 
 '@article{Abde10a,
@@ -55,8 +65,24 @@ CZDocBuilderTest class >> article1 [
 ]
 
 { #category : #'examples for tests' }
-CZDocBuilderTest class >> article2 [
-	"self  article2"
+CZDocBuilderTest class >> Chev11a [
+	"self  Chev11a"
+^
+(CZBibParser parse: 
+'
+@inproceedings{Chev11a,
+	author = {Chevalier-Boisvert, Maxime and Lavoie, Erick and Feeley, Marc and Dufour, Bruno},
+	booktitle = {Dynamic Language Symposium},
+	title = {Bootstrapping a Self-Hosted Research Virtual Machine for JavaScript},
+	year = 2011
+}
+'
+)  
+]
+
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> Denk08b [
+	"self  Denk08b"
 ^
 (CZBibParser parse: 
 '@inproceedings{Denk08b,
@@ -87,52 +113,17 @@ CZDocBuilderTest class >> article2 [
 ]
 
 { #category : #'examples for tests' }
-CZDocBuilderTest class >> article3 [
-	"self  article3"
+CZDocBuilderTest class >> Duca10a [
+	"self  Duca10a"
 ^
 (CZBibParser parse: 
 '
-@inproceedings{Chev11a,
-	author = {Chevalier-Boisvert, Maxime and Lavoie, Erick and Feeley, Marc and Dufour, Bruno},
-	booktitle = {Dynamic Language Symposium},
-	title = {Bootstrapping a Self-Hosted Research Virtual Machine for JavaScript},
-	year = 2011
-}
-'
-)  
-]
-
-{ #category : #'examples for tests' }
-CZDocBuilderTest class >> article4 [
-	"self  article4"
-^
-(CZBibParser parse: 
-'
-@inproceedings{Chev11a,
-	author = {Chevalier-Boisvert, Maxime and Lavoie, Erick and Feeley, Marc and Dufour, Bruno},
-	booktitle = {Dynamic Language Symposium},
-	title = {Bootstrapping a Self-Hosted Research Virtual Machine for JavaScript},
-	year = 2011
-}
-'
-)  
-]
-
-{ #category : #'examples for tests' }
-CZDocBuilderTest class >> article5 [
-	"self  article5"
-^
-(CZBibParser parse: 
-'
-@inproceedings{Abde08a,
-author = {Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen},
-title = {Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships},
-booktitle = {European Conference on Software Maintenance and Reengineering (CSMR)},
-pages = {213--222},
-publisher = {IEEE Computer Society Press},
-year = 2008,
-acceptnum = {24},
-accepttotal = {87}
+@article{Duca10a,
+author = {St\''ephane Ducasse and Damien Pollet},
+keywords = {insubmission},
+title = {Fingerprints},
+journal = {Journal of Information System},
+year = {2010}
 }
 
 '
@@ -140,8 +131,8 @@ accepttotal = {87}
 ]
 
 { #category : #'examples for tests' }
-CZDocBuilderTest class >> article6 [
-	"self  article6"
+CZDocBuilderTest class >> Duca12a [
+	"self  Duca12a"
 ^
 (CZBibParser parse: 
 '
@@ -157,6 +148,17 @@ CZDocBuilderTest class >> article6 [
 
 '
 )  
+]
+
+{ #category : #'examples for tests' }
+CZDocBuilderTest class >> aDoc [
+
+	^ (CZSingleAuthorDocBuilder new 
+					bibset: self someArticles;
+					authorMatchingString: '*S*Ducasse*';
+					noHeader;
+					build;
+					document)
 ]
 
 { #category : #'examples for tests' }
@@ -266,19 +268,46 @@ CZDocBuilderTest >> someArticles [
 ]
 
 { #category : #tests }
-CZDocBuilderTest >> testBibSection [
-	"self debug: #testBibSection"
+CZDocBuilderTest >> testAnEmptyDocumentWithATitleHasJustOneElement [
+	"self  debug: #testAnEmptyDocumentWithATitleHasJustOneElement"
 	
-	self assert: (StefPublicationsDocBuilder new 
-					bibset: CZDocBuilderTest someArticles;
-					authorMatchingString: '*S*Ducasse*';
-					build;
-					document) elements size = 4
-	
+	| builder |
+	builder := CZDocBuilder new bibset: bibset.
+	builder addTitle: CZTitle new.
+	builder document.
+	self assert: builder document elements size = 1
 ]
 
 { #category : #tests }
-CZDocBuilderTest >> testBlackListedEntries [
+CZDocBuilderTest >> testAuthorMatchingSelectEntryWithCorrespondingAuthor [
+	"self debug: #testWithAuthor"
+	
+	| builder |
+	builder := CZDocBuilder new 
+					authorMatchingString: '*S*Ducasse*';
+					bibset: bibset.
+	self assert: builder workingBibSet size = 6.				
+	self assert: ( builder workingBibSet select: builder authorQuery) size = 5
+]
+
+{ #category : #tests }
+CZDocBuilderTest >> testBlackListedEntriesAlsoFiltersInSubmission [
+	"self debug: #testBlackListedEntriesAlsoFiltersInSubmission"
+	"it could be orthogonal but for now this is not the case."
+	
+	| builder |
+	builder := CZDocBuilder new bibset: bibset.
+	"filtering not invoked"				
+	self assert: builder workingBibSet size = 6.		
+	
+	"now testing that we removed the keys we do not want"	
+	builder keysOfBlackListedEntries: #(Abde10a Chev11a).
+	builder filter.
+	self assert: builder workingBibSet size = 3.	
+]
+
+{ #category : #tests }
+CZDocBuilderTest >> testInSubmissionPublicationAreRemovedWhenFilteringIsOn [
 	"self debug: #testBlackListedEntries"
 	
 	| builder |
@@ -291,41 +320,15 @@ CZDocBuilderTest >> testBlackListedEntries [
 	builder filter.
 	self assert: builder workingBibSet size = 5.		
 	
-	"now testing that we removed the keys we do not want"	
-	builder keysOfBlackListedEntries: #(Abde10a Chev11a).
-	builder filter.
-	self assert: builder workingBibSet size = 3.	
+	
 ]
 
 { #category : #tests }
-CZDocBuilderTest >> testJournals [
-	"self debug: #testJournals"
+CZDocBuilderTest >> testSelectingJournalEffectivelyReturnsOnlyJournals [
+	"self debug: #testSelectingJournalEffectivelyReturnsOnlyJournals"
 	
 	| builder |
 	builder := CZDocBuilder new  bibset: bibset.
 	self assert: builder workingBibSet size = 6.				
 	self assert: (builder workingBibSet select: builder journalQuery) size = 2
-]
-
-{ #category : #tests }
-CZDocBuilderTest >> testTitle [
-	"self  debug: #testTitle"
-	
-	| builder |
-	builder := CZDocBuilder new bibset: bibset.
-	builder addTitle: CZTitle new.
-	builder document.
-	self assert: builder document elements size = 1
-]
-
-{ #category : #tests }
-CZDocBuilderTest >> testWithAuthor [
-	"self debug: #testWithAuthor"
-	
-	| builder |
-	builder := CZDocBuilder new 
-					authorMatchingString: '*S*Ducasse*';
-					bibset: bibset.
-	self assert: builder workingBibSet size = 6.				
-	self assert: ( builder workingBibSet select: builder authorQuery) size = 5
 ]

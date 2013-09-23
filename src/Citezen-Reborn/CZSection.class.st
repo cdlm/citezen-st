@@ -1,5 +1,8 @@
 "
 A CZSection is a document section mainly a name.
+A Section does not contain bibset. 
+
+If we want to have section with list of entry we just build it that way for now.
 "
 Class {
 	#name : #CZSection,

@@ -3,17 +3,6 @@ A CZVisitor is visitor handling both CZEntries and CZDocuments.
 it is a new generation of visitor that should replace the Outputters package.
 
 
-todo: 
-CZVisitor should handle blackListedFields as the old CZBibtexOutputer was used to.
-
-visitEntry: anEntry
-	self emitEntryHeader: anEntry.
-	(anEntry fields reject: [ :aField | (blackListedFields includes: aField key)])
-		do: [ :each | each acceptVisitor: self ]
-		separatedBy: [ outputStream nextPut: self fieldSeparator; lf ].
-	self emitEntryFooter: anEntry
-	
-
 - what is the difference between visitSet: and visitBibSet:
 this should be addressed
 
@@ -97,10 +86,16 @@ CZVisitor >> setAuthorDisplayAsShortenedName [
 ]
 
 { #category : #visiting }
+CZVisitor >> visit: anObject [
+
+	^ anObject acceptVisitor: self
+]
+
+{ #category : #visiting }
 CZVisitor >> visitBibSet: aCZSet [
 	
-	aCZSet macros do: [ :each | each acceptVisitor: self].
-	aCZSet entries do: [ :each | each acceptVisitor: self].
+	aCZSet macros do: [ :each | self visit: each ].
+	aCZSet entries do: [ :each | self visit: each ].
 
 	
 ]
@@ -110,21 +105,23 @@ CZVisitor >> visitComment: aCZCommentElement [
 	
 ]
 
-{ #category : #'visiting doc' }
+{ #category : #visiting }
 CZVisitor >> visitCompositeValue: aCZCompositeValue [
 ]
 
 { #category : #'visiting doc' }
 CZVisitor >> visitDoc: aDocument [
 
-	aDocument header acceptVisitor: self.
-	aDocument elements do: [ :each | each acceptVisitor: self ].
-	aDocument footer acceptVisitor: self.
+	self visit: aDocument header.
+	aDocument elements do: [ :each | self visit: each ].
+	self visit: aDocument footer.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visiting }
 CZVisitor >> visitEntry: anEntry [
 	"Visit a bib entry"
+	
+	anEntry do: [:each | self visit: each]
 	
 	
 ]
@@ -149,11 +146,11 @@ CZVisitor >> visitInteger: aCZInteger [
 	self outputStream nextPutAll:  aCZInteger notExpanded asString 
 ]
 
-{ #category : #'visiting doc' }
+{ #category : #visiting }
 CZVisitor >> visitMacro: aCZField [
 ]
 
-{ #category : #'visiting doc' }
+{ #category : #visiting }
 CZVisitor >> visitMacroReference: aCZMacroReference [
 	
 ]
@@ -166,6 +163,12 @@ CZVisitor >> visitPeople: aCZPeople [
 CZVisitor >> visitSection: aSection [
 
 	
+]
+
+{ #category : #visiting }
+CZVisitor >> visitSet: aSet [	
+	
+	self visitBibSet: aSet
 ]
 
 { #category : #visiting }

@@ -116,19 +116,6 @@ CZHTMLGenerator >> visitSection: aCZSection [
 ]
 
 { #category : #visiting }
-CZHTMLGenerator >> visitSet: aSet [	
-	
-	self outputStream nextPutAll: '<ol>'.
-	self line.
-
-	aSet entries do: [ :each | 
-		each acceptVisitor: self.
-		].
-	outputStream nextPutAll: '</ol>'.
-
-]
-
-{ #category : #visiting }
 CZHTMLGenerator >> visitTitle: aCZTitleElement [
 	"this is not the same title: here this is the still the legacy from CZDocument of adrian"
 	
