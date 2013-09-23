@@ -6,7 +6,7 @@ CZFileDispatcher new
 	inBibset: (CZFileMerger new inputFiles: #('lse.bib' 'scg.bib') ; merge);
 	outputFilesDescription: {true -> 'rmod.bib' . false -> 'others.bib'};
 	dispatchBlock: [:each | each isTeamEntry];
-	generate 
+	generate
 "
 Class {
 	#name : #CZFileDispatcher,
@@ -73,12 +73,10 @@ CZFileDispatcher >> generate [
 	| splitDict |
 	splitDict := self dispatch.
 	outputFilesDescription associationsDo: [:ass |
-		CZBibtexOutputer new 
-			setOutputFile: ass value;
-			blackListedFields: self blackListedFields ;
-			initializeOutputStream; 
-			visitSet: (splitDict at: ass key);
-			contents]
+		CZBibTexGenerator new 
+			filename: ass value;
+			visitBibSet: (splitDict at: ass key)
+			]
 ]
 
 { #category : #options }
