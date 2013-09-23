@@ -2,55 +2,55 @@
 The superclass for visitors of Citezen objects.
 "
 Class {
-	#name : #BibVisitor,
+	#name : #BibPhraseVisitor,
 	#superclass : #Object,
 	#category : #'Citezen-Rendering'
 }
 
 { #category : #visiting }
-BibVisitor >> visit: anObject [
+BibPhraseVisitor >> visit: anObject [
 	^ anObject acceptVisitor: self
 ]
 
 { #category : #'visiting-phrases' }
-BibVisitor >> visitAlternativePhrase: aPhrase [ 
+BibPhraseVisitor >> visitAlternativePhrase: aPhrase [ 
 	"walk everywhere by default"
 	^ aPhrase do: [:each | self visit: each]
 ]
 
 { #category : #'visiting-bibsets' }
-BibVisitor >> visitBibSet: aBibSet [
+BibPhraseVisitor >> visitBibSet: aBibSet [
 	aBibSet do: [:each | self visit: each]
 ]
 
 { #category : #'visiting-phrases' }
-BibVisitor >> visitDeferredPhrase: aBibDeferredPhrase [ 
+BibPhraseVisitor >> visitDeferredPhrase: aBibDeferredPhrase [ 
 ]
 
 { #category : #'visiting-bibsets' }
-BibVisitor >> visitEntry: anEntry [
+BibPhraseVisitor >> visitEntry: anEntry [
 	anEntry do: [:each | self visit: each]
 ]
 
 { #category : #'visiting-bibsets' }
-BibVisitor >> visitField: aField [
+BibPhraseVisitor >> visitField: aField [
 	"do nothing"
 ]
 
 { #category : #'visiting-phrases' }
-BibVisitor >> visitFieldRef: aPhrase [
+BibPhraseVisitor >> visitFieldRef: aPhrase [
 ]
 
 { #category : #'visiting-phrases' }
-BibVisitor >> visitLiteralPhrase: aPhrase [
+BibPhraseVisitor >> visitLiteralPhrase: aPhrase [
 ]
 
 { #category : #'visiting-phrases' }
-BibVisitor >> visitNamedPhrase: aPhrase [ 
+BibPhraseVisitor >> visitNamedPhrase: aPhrase [ 
 	^ self visit: aPhrase subphrase
 ]
 
 { #category : #'visiting-phrases' }
-BibVisitor >> visitSequencePhrase: aPhrase [
+BibPhraseVisitor >> visitSequencePhrase: aPhrase [
 	^ aPhrase do: [:each | self visit: each]
 ]

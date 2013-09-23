@@ -8,7 +8,7 @@ Transcript show: ((CZHtmlRenderer library: BibPhraseLibrary default)
 "
 Class {
 	#name : #BibRenderer,
-	#superclass : #BibVisitor,
+	#superclass : #BibPhraseVisitor,
 	#instVars : [
 		'library',
 		'currentEntry'
