@@ -1,4 +1,9 @@
 "
+CZ so ugly and terrible
+to be rewritten from scratch.
+
+
+
 CZChecker is a class helping you to check your BibTeX files.
 It will check:
 - Syntax errors
@@ -289,7 +294,9 @@ CZChecker >> checks [
 					nextPut: Character tab; 
 					nextPutAll: 'for :'; 
 					cr;
-					nextPutAll: "assoc value; "(CZBibtexOutputer new entryToBibtexString: entry);
+					nextPutAll: "assoc value; "
+					
+					"(CZBibtexOutputer new entryToBibtexString:" entry	")";
 					cr.
 			].
 			toBeInclude 
