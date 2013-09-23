@@ -1,5 +1,5 @@
 "
-(ConfigurationOfCitezen project version: '1.8') load: { 'NoWeb'}.
+(ConfigurationOfCitezen project version: '1.9') load: { 'NoWeb'}.
 
 	
 
@@ -1225,6 +1225,7 @@ ConfigurationOfCitezen >> baseline15: spec [
 				spec
 					className: 'ConfigurationOfGrease';
 					loads: #('Core' );
+					versionString: #stable;
 					file: 'ConfigurationOfGrease';
 					repository: 'http://smalltalkhub.com/mc/Seaside/MetacelloConfigurations/main' ];
 			project: 'OSProcess' with: [
