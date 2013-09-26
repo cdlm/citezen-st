@@ -1310,7 +1310,7 @@ ConfigurationOfCitezen >> baseline16: spec [
 				spec
 					className: 'ConfigurationOfGrease';
 					loads: #('Core' );
-					versionString: '1.1.3';
+					versionString: #stable;
 					file: 'ConfigurationOfGrease';
 					repository: 'http://smalltalkhub.com/mc/Seaside/MetacelloConfigurations/main' ];
 			project: 'OSProcess' with: [
