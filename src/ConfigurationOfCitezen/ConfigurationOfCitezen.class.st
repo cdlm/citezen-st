@@ -1365,7 +1365,7 @@ ConfigurationOfCitezen >> baseline17: spec [
 
 	spec for: #common do: [
 		spec blessing: #baseline.
-		spec description: 'New seaside configuration'.
+		spec description: 'without grease in core'.
 		spec author: 'StephaneDucasse'.
 		spec repository: 'http://smalltalkhub.com/mc/RMoD/Citezen/main'.
 		
