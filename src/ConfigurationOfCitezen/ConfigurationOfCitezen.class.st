@@ -1846,13 +1846,13 @@ ConfigurationOfCitezen >> version21: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #release.
-		spec description: 'Without grease in core'.
+		spec description: 'Without grease in core and removing trimboth extension from parsers'.
 		spec author: 'StephaneDucasse'.
 		spec timestamp: '23/09/2013 16:43'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.63';
-			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.22';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.23';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.27';
