@@ -1,52 +1,7 @@
 "
-(ConfigurationOfCitezen project version: '2.0') load: { 'NoWeb'}.
+(ConfigurationOfCitezen project version: '2.1') load: { 'NoWeb'}.
 
 	
-
-
-
-Version 1.5 is now promoted as stable for 1.4.
-Let us know if you get some problems.
-
-	(ConfigurationOfCitezen project version: #stable) load: { 'NoWeb'}.
-
-	
-
-The following was somehow working in the past. But we did not test it recently. 
-	(ConfigurationOfCitezen project version: '1.1') load: { 'Citezen-Seaside'}.
-
-
-This configuration depends on the SmaCC runtime only; to work on the parsers this is needed:
-
-	ConfigurationOfSmaCC project latestVersion load: 'Tools'
-	
-
-To sync
-SystemOrganization categories select: [:each |    '*Citezen*' match: each]
-
-#(	'Citezen-Checking' 
-	'Citezen-Model'
- 	'Citezen-Model'
-	'Citezen-Parsers'
-	 'Citezen-Query'
-	'Citezen-Reborn'
-	'Citezen-Stef'
-	'Citezen-Outputers'
-	'Citezen-Herve'
- 	'Citezen-Tests'
-	'ConfigurationOfCitezen'
-	)
-do: [:each | Gofer new
-	squeaksource3: 'citezen';
-	package: each;
-	push ]
-
-Gofer new
-	squeaksource3: 'citezen';
-	package: 'ConfigurationOfCitezen';
-	push 
-
-
 
 
 "
@@ -1472,7 +1427,7 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo1.3.x' version: '0.8'.
 	"spec for: #'pharo1.4.x' version: '1.1'. previous stable"
 	spec for: #'pharo1.4.x' version: '1.6'.
-	spec for: #'pharo2.x' version: '2.0'.
+	spec for: #'pharo2.x' version: '2.1'.
 
 ]
 
@@ -1891,7 +1846,7 @@ ConfigurationOfCitezen >> version21: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #release.
-		spec description: 'Trying without grease in core'.
+		spec description: 'Without grease in core'.
 		spec author: 'StephaneDucasse'.
 		spec timestamp: '23/09/2013 16:43'.
 		spec 
