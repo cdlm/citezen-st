@@ -32,6 +32,50 @@ ConfigurationOfCitezen class >> bootstrapPackage: aString from: aPath [
 			version workingCopy repositoryGroup addRepository: repository]
 ]
 
+{ #category : #catalog }
+ConfigurationOfCitezen class >> catalogChangeLog [
+	"Returns a paragraph describing the most important changes in the configuration class."
+	^ '- 2.1 - 10 Feb 2014 - For Pharo 3.0 
+[[[
+	ConfigurationOfCitezen project version: ''2.1'' ) load					
+]]]
+- 2.1 - 10 Feb 2014 - For Pharo 2.0 
+[[[
+	ConfigurationOfCitezen project version: ''2.1'' ) load					
+]]]
+'
+]
+
+{ #category : #catalog }
+ConfigurationOfCitezen class >> catalogContactInfo [
+	"Returns a paragraph describing contact information such as email, mailing lists and website."
+	^ 'Contact Pharo4Stef@free.fr or Damien Pollet at damien.pollet@gmail.com'
+]
+
+{ #category : #catalog }
+ConfigurationOfCitezen class >> catalogDescription [
+	
+	^ 'Citezen is a library to parse, query and manage bibtex scientific citations.'
+]
+
+{ #category : #catalog }
+ConfigurationOfCitezen class >> catalogKeyClassesAndExample [
+	
+	^ '
+- ==CXDocBuilder== is responsible for building document. He works on a bib set and once all the filtering is done. Visitors such as ==CZBibTexGenerator== can render documents. 
+- ==CZFileLoader== is one of the tools that manage bib entries and collection.
+- ==CZFieldQuery==, ==CZTypeQuery== are nice queries that select entities based on some criteria.
+- ==CZEntry== represents the bib entries.
+'
+
+]
+
+{ #category : #catalog }
+ConfigurationOfCitezen class >> catalogKeywords [
+	
+	^ #(parser bibtex query latex printer)
+]
+
 { #category : #private }
 ConfigurationOfCitezen class >> ensureMetacello [
 	"Bootstrap Gofer (if necessary), bootstrap ConfigurationOfMetacello (using old Gofer API), then load the latest 
