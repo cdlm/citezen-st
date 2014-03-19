@@ -10,6 +10,15 @@ MAReferenceFileModel class >> baseDirectory [
 ]
 
 { #category : #'instance creation' }
+MAReferenceFileModel class >> fromFileReference: aFileReference [
+	^ self new
+		filename: aFileReference basename;
+		"base directory if absolute"
+		location: aFileReference parent pathSegments;
+		yourself
+]
+
+{ #category : #'instance creation' }
 MAReferenceFileModel class >> fromPath: aFSPath [
 	| parents |
 	self flag: 'Ugly, MAExternalFileModels should use FS objects in the 1st place'.
@@ -38,8 +47,8 @@ MAReferenceFileModel >> exists [
 { #category : #'accessing-dynamic' }
 MAReferenceFileModel >> filePath [
 	^ ((self location
-		inject: Cwd
-		into: [ :result :each | result / each ]) / filename) value
+		inject: FileSystem disk workingDirectory	
+		into: [ :result :each | result / each ]) / filename) fullName
 ]
 
 { #category : #'accessing-dynamic' }
