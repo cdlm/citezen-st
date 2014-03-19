@@ -23,7 +23,7 @@ Class {
 { #category : #accessing }
 CPBibFile class >> defaultFile [
 	^ MAReferenceFileModel
-		fromRio: (Rio new: '/home/scg/scgbib/scg.bib')
+		fromFileReference: '/home/scg/scgbib/scg.bib' asFileReference
 ]
 
 { #category : #'accessing-description' }
