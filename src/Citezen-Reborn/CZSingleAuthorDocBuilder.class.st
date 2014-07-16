@@ -95,6 +95,11 @@ CZSingleAuthorDocBuilder >> bibtexFileName [
 	^ Date today yyyymmdd, 'bibtex.bib'
 ]
 
+{ #category : #accessing }
+CZSingleAuthorDocBuilder >> bibtexGeneratorClass [
+	^ CZBibTexGenerator
+]
+
 { #category : #building }
 CZSingleAuthorDocBuilder >> buildBody [
 
@@ -129,11 +134,10 @@ CZSingleAuthorDocBuilder >> generateBibtexFile [
 
 { #category : #utils }
 CZSingleAuthorDocBuilder >> generateBibtexFileFor: aDoc [
-
-	| visitor | 
-	visitor := CZBibTexGenerator new.
-	fieldOrder ifNotNil: [visitor fieldOrder: fieldOrder].
-	visitor outputStream: (FileStream newFileNamed: self bibtexFileName). 
+	| visitor |
+	visitor := self bibtexGeneratorClass new.
+	fieldOrder ifNotNil: [ visitor fieldOrder: fieldOrder ].
+	visitor outputStream: (FileStream newFileNamed: self bibtexFileName).
 	visitor visit: aDoc
 ]
 
@@ -145,13 +149,11 @@ CZSingleAuthorDocBuilder >> generateLatexFile [
 
 { #category : #utils }
 CZSingleAuthorDocBuilder >> generateLatexFileFor: aDoc [
-
-	| visitor | 
-	visitor := CZLaTeXGenerator new.
-	fieldOrder ifNotNil: [visitor fieldOrder: fieldOrder].
-	visitor outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-Full.tex').
+	| visitor |
+	visitor := self latexGeneratorClass new.
+	fieldOrder ifNotNil: [ visitor fieldOrder: fieldOrder ].
+	visitor outputStream: (FileStream newFileNamed: Date today yyyymmdd , '-Full.tex').
 	visitor visit: aDoc
-	
 ]
 
 { #category : #utils }
@@ -162,13 +164,22 @@ CZSingleAuthorDocBuilder >> generateXHTMLFile [
 
 { #category : #utils }
 CZSingleAuthorDocBuilder >> generateXHTMLFileFor: aDoc [
-
 	| visitor |
-	visitor := CZHTMLGenerator new.
-	fieldOrder ifNotNilDo: [ visitor fieldOrder: fieldOrder].
-	visitor	
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-Full.html'); 
-			visit: aDoc.
+	visitor := self htmlGeneratorClass new.
+	fieldOrder ifNotNilDo: [ visitor fieldOrder: fieldOrder ].
+	visitor
+		outputStream: (FileStream newFileNamed: self htmlFileName);
+		visit: aDoc
+]
+
+{ #category : #utils }
+CZSingleAuthorDocBuilder >> htmlFileName [
+	^ Date today yyyymmdd , '-Full.html'
+]
+
+{ #category : #accessing }
+CZSingleAuthorDocBuilder >> htmlGeneratorClass [
+	^ CZHTMLGenerator
 ]
 
 { #category : #initialize }
@@ -182,6 +193,11 @@ CZSingleAuthorDocBuilder >> initialize [
 { #category : #latex }
 CZSingleAuthorDocBuilder >> latexFooter [
 	^ '\end{document}'
+]
+
+{ #category : #accessing }
+CZSingleAuthorDocBuilder >> latexGeneratorClass [
+	^ CZLaTeXGenerator
 ]
 
 { #category : #latex }
