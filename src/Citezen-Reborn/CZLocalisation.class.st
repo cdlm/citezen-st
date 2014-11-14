@@ -23,6 +23,7 @@ Class {
 		'NationalReviewedConference',
 		'NationalReviewedConferences',
 		'NationalReviewedJournal',
+		'NationalReviewedWorkshop',
 		'NationalWorkshop',
 		'PHDAndHdr',
 		'Periodical',
@@ -46,7 +47,7 @@ CZLocalisation class >> initialize [
 
 { #category : #initialize }
 CZLocalisation class >> initializeEnglishEntries [
-	"self initialize"
+	"self initializeEnglishEntries"
 	
 	English := Dictionary new.
 	English at: InternationalReviewedJournal put: 'Refereed Articles in International Journals'.
@@ -59,6 +60,7 @@ CZLocalisation class >> initializeEnglishEntries [
 	English at: InvitedPaper put: 'Invited Articles'.
 	English at: #editor put: 'Editor'.
 	English at: InternationalReviewedWorkshop put: 'Refereed Articles in International Workshops'.
+	English at: NationalReviewedWorkshop put: 'Refereed Articles in National Workshops'.
 	English at: NationalWorkshop put: 'Articles in National Workshops'.
 	English at: PhD put: 'PhD'.
 	English at: HDR put: 'Habilitation'.
@@ -113,6 +115,7 @@ CZLocalisation class >> initializeTypes [
 	InvitedPaper := #invitedPapers.
 	"Editor := #editor."
 	InternationalReviewedWorkshop := #internationalWorkshop.
+	NationalReviewedWorkshop := #nationalReviewedWorkshop.
 	NationalWorkshop := #nationalWorkshop.
 	PhD := #phd.
 	HDR := #hdr.
@@ -208,6 +211,12 @@ CZLocalisation >> nationalReviewedConference [
 CZLocalisation >> nationalReviewedJournal [
 
 	^ language at: NationalReviewedJournal
+]
+
+{ #category : #accessing }
+CZLocalisation >> nationalReviewedWorkshops [
+
+	^ language at: NationalReviewedWorkshop
 ]
 
 { #category : #accessing }
