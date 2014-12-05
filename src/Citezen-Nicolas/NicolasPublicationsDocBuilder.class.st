@@ -20,7 +20,12 @@ NicolasPublicationsDocBuilder class >> xhtml [
 { #category : #building }
 NicolasPublicationsDocBuilder >> buildBody [
 
-	self addBibSection: (self journalQuery) withTitle: localization  internationalReviewedJournal;
+	self document add: (CZHeader new text: '
+<p>You will find here my publications presented by category and in chronological order.
+In my <a href="themes.html">research themes page</a>, the same publications are organized by topics.</p>' ; yourself).
+	
+	self 
+	      addBibSection: (self journalQuery) withTitle: localization  internationalReviewedJournal;
 		"addBibSection: (self topConferenceQuery) withTitle:  localization topConferences;"
 		addBibSection: (self nationalJournalQuery) withTitle: 'Refereed Articles in National Journals';
 		addBibSection: (self internationalConferenceQuery)  withTitle: localization internationalConference;
@@ -37,15 +42,13 @@ NicolasPublicationsDocBuilder >> buildBody [
 ]
 
 { #category : #utils }
-NicolasPublicationsDocBuilder >> generateXHTMLFileFor: aDoc [
+NicolasPublicationsDocBuilder >> htmlFileName [
+	^ Date today yyyymmdd , '.html'
+]
 
-	| visitor |
-	visitor := CZNicolasHTMLGenerator new.
-	fieldOrder ifNotNilDo: [:x|  visitor fieldOrder: fieldOrder].
-	visitor	
-			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '.html'); 
-			visit: aDoc.
-	visitor outputStream   close.
+{ #category : #accessing }
+NicolasPublicationsDocBuilder >> htmlGeneratorClass [
+	^ CZNicolasHTMLGenerator
 ]
 
 { #category : #initialize }
@@ -61,7 +64,7 @@ NicolasPublicationsDocBuilder >> xhtmlFooter [
 		</div>
 		
 <div id="footer">
-			Copyright © 2014 | All Rights Reserved </div>
+			Copyright &copy; 2014 | All Rights Reserved </div>
 </body>
 </html>
 '
@@ -80,27 +83,39 @@ NicolasPublicationsDocBuilder >> xhtmlHeader [
 <body>
 		<div id="title">
 				<h1><font color="#0183E5">Nicolas Anquetil</font></h1>
-				<p>Publication list</p>
+	<p>'
+	
+	 , self xhtmlTitle ,
+	
+	'</p>
 </div>		
 		<div id="container">
-				<div id="sidebar">
-						
-						<h1>Main Menu</h1>
+				<div id="sidebarout">
+				<div id="sidebarin">
+					<h1>Main Menu</h1>
 		
 							<div id="menu">
 								<a href="nicolasAnquetil.html">Home</a><br />
 								<a href="publications.html">Publications</a><br />
+								<a href="themes.html">Research themes</a><br />
 								<a href="miscAcademy.html">Misc. Academia</a><br />
 								<a href="projects.html">Projects</a><br />
 								<a href="links.html">External links</a>
-				 			 </div>
+				 			</div>
+
 							 <p></p>
+
 							<div id="menu">
-Nicolas.Anquetil @ inria.fr<br />
-Research office: +33 (0)3 59 35 87 47, Room: 321, Inria building B<br />
-Teaching Office: +33 (0)3 20 43 47 14, Room: IUT-A, 3A049
-							</div>
+
+<p>Nicolas.Anquetil @ inria.fr<br />
+Research office: Room 321, Inria building B, +33 (0)3 59 35 87 47<br />
+Teaching Office: Room 3A049, IUT-A, +33 (0)3 20 43 47 14</p>
+
+		 			 </div>
 				</div>
+				</div>
+
+
 				<div id="content">
 				<h1>Publications</h1>
 '
@@ -110,4 +125,9 @@ Teaching Office: +33 (0)3 20 43 47 14, Room: IUT-A, 3A049
 NicolasPublicationsDocBuilder >> xhtmlName [
 
 	^ 'Nicolas Anquetil'
+]
+
+{ #category : #building }
+NicolasPublicationsDocBuilder >> xhtmlTitle [
+	^  'Publication list'
 ]
