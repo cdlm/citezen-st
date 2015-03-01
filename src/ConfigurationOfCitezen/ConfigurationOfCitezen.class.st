@@ -1448,6 +1448,7 @@ ConfigurationOfCitezen >> development: spec [
 	spec for: #'pharo1.4.x' version: '1.6'.
 	spec for: #'pharo2.x' version: '2.1'.
 	spec for: #'pharo3.x' version: '2.1'.
+	spec for: #'pharo4.x' version: '2.1'.
 
 ]
 
@@ -1474,6 +1475,7 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo1.4.x' version: '1.6'.
 	spec for: #'pharo2.x' version: '2.1'.
 	spec for: #'pharo3.x' version: '2.1'.
+	spec for: #'pharo4.x' version: '2.1'.
 
 ]
 
