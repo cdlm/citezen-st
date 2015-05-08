@@ -25,6 +25,9 @@ CZPillarGenerator >> treatString: aString [
 	s := s copyReplaceAll: '==' with: '='.
 	s := s copyReplaceAll: '@@' with: ''.
 	s := s copyReplaceAll: '""' with: '\"\"'.
+	s := s copyReplaceAll: String crlf with: String space. 
+	s := s copyReplaceAll: String cr with: String space. 
+	s := s copyReplaceAll: String lf with: String space. 
 	^ s
 ]
 
