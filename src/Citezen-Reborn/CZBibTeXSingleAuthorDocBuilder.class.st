@@ -10,6 +10,12 @@ CZBibTeXSingleAuthorDocBuilder >> bibtexFileName [
 	^ Date today yyyymmdd, 'bibtex.bib'
 ]
 
+{ #category : #'as yet unclassified' }
+CZBibTeXSingleAuthorDocBuilder >> extension [
+	
+	^ '-Full.bib'
+]
+
 { #category : #utils }
 CZBibTeXSingleAuthorDocBuilder >> fileName [
 

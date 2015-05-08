@@ -14,8 +14,7 @@ Class {
 { #category : #'as yet unclassified' }
 CZXHTMLSingleAuthorDocBuilder class >> build [
 
-
-	|  builder|
+	| builder |
 	builder :=  self new
 		french; 
 		fileNamed: 'rmod.bib';

@@ -74,7 +74,7 @@ CZFileFormatGenerator >> initialize [
 { #category : #visit }
 CZFileFormatGenerator >> line [
 	"so that we can change that after"
-	self outputStream cr
+	self outputStream crlf
 ]
 
 { #category : #accessing }
@@ -87,6 +87,12 @@ CZFileFormatGenerator >> outputStream [
 CZFileFormatGenerator >> outputStream: aStream [
 
 	outputStream := aStream
+]
+
+{ #category : #visit }
+CZFileFormatGenerator >> treatString: aString [
+
+	
 ]
 
 { #category : #visit }
@@ -143,7 +149,7 @@ CZFileFormatGenerator >> visitField: aField [
 	may be we should."
 	
 	self outputStream nextPutAll: aField value asString.
-				"(CZAccentuateCharactersParser parse: aField value asString)"
+	
 ]
 
 { #category : #'visit doc' }
@@ -187,5 +193,6 @@ CZFileFormatGenerator >> visitSection: aCZSection [
 { #category : #visit }
 CZFileFormatGenerator >> visitString: aCZString [
 
-	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZString notExpanded)
+	self outputStream nextPutAll: 
+		(self treatString: (CZAccentuateCharactersParser parse: aCZString notExpanded))
 ]

@@ -67,9 +67,9 @@ CZNewSingleAuthorDocBuilder >> buildBody [
 		addBibSection: (self vulgarisationQuery) withTitle: localization vulgarisation.
 ]
 
-{ #category : #utils }
+{ #category : #generate }
 CZNewSingleAuthorDocBuilder >> extension [
-	^ '.ttt'
+	^ '.txt'
 ]
 
 { #category : #building }
@@ -84,18 +84,23 @@ CZNewSingleAuthorDocBuilder >> footer [
 					
 ]
 
-{ #category : #utils }
+{ #category : #generate }
 CZNewSingleAuthorDocBuilder >> generate [
 
 	self generateFor: self build document.
 ]
 
-{ #category : #utils }
+{ #category : #generate }
 CZNewSingleAuthorDocBuilder >> generateFor: aDoc [
+	self generateFor: aDoc on: (FileStream newFileNamed: Date today yyyymmdd , self extension).
+]
+
+{ #category : #generate }
+CZNewSingleAuthorDocBuilder >> generateFor: aDoc on: aStream [
 	| visitor |
 	visitor := self generatorClass new.
 	fieldOrder ifNotNil: [ visitor fieldOrder: fieldOrder ].
-	visitor outputStream: (FileStream newFileNamed: Date today yyyymmdd , self extension).
+	visitor outputStream: aStream.
 	visitor visit: aDoc
 ]
 
