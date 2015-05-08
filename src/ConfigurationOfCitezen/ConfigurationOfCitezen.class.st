@@ -1926,7 +1926,7 @@ ConfigurationOfCitezen >> version22: spec [
 			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
-			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.29';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.30';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.6';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
