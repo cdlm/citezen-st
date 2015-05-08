@@ -1,5 +1,5 @@
 "
-(ConfigurationOfCitezen project version: '2.1') load: { 'NoWeb'}.
+(ConfigurationOfCitezen project version: '2.2') load: { 'NoWeb'}.
 
 	
 
@@ -1475,7 +1475,7 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo1.4.x' version: '1.6'.
 	spec for: #'pharo2.x' version: '2.1'.
 	spec for: #'pharo3.x' version: '2.1'.
-	spec for: #'pharo4.x' version: '2.1'.
+	spec for: #'pharo4.x' version: '2.2'.
 
 ]
 
@@ -1904,6 +1904,29 @@ ConfigurationOfCitezen >> version21: spec [
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.27';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.6';
+			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version22: spec [
+	<version: '2.2' imports: #('1.7-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #release.
+		spec description: 'Adding Pillar outputter'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '05/05/2015 16:43'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.63';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.29';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.6';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
