@@ -1,0 +1,81 @@
+"
+To build a document
+
+self build.
+
+"
+Class {
+	#name : #CZLaTeXSingleAuthorDocBuilder,
+	#superclass : #CZNewSingleAuthorDocBuilder,
+	#category : #'Citezen-Reborn'
+}
+
+{ #category : #'as yet unclassified' }
+CZLaTeXSingleAuthorDocBuilder class >> build [
+	
+	| builder |
+	builder := self new
+		fileNamed: 'rmod.bib';
+		french; 
+		fieldOrder: #(#author 
+			  #title 
+			  #journal 
+			  #booktitle 
+			  #volume 
+			  #pages 
+			  #publisher  
+			  #year 
+			  # school
+			  #impactfactor 
+			  #misc); "removed doi and url since they may contain _ and the generator does not handle that well for the moment."
+		setFilteringOn;
+		yourself.
+	builder generate.
+	
+]
+
+{ #category : #utils }
+CZLaTeXSingleAuthorDocBuilder >> extension [
+	^ '-Full.tex'
+]
+
+{ #category : #building }
+CZLaTeXSingleAuthorDocBuilder >> footer [
+	^ '\end{document}'
+]
+
+{ #category : #utils }
+CZLaTeXSingleAuthorDocBuilder >> generatorClass [
+	^ CZLaTeXGenerator 
+]
+
+{ #category : #building }
+CZLaTeXSingleAuthorDocBuilder >> header [
+	"there is something not working well since the visitor may require some different package so the logic should not really be totally define here. We will have to fix that. For now when a document as a header or footer it is used (not the one of the generator)"
+
+	^ '\documentclass{article}
+\usepackage{times}
+
+\newcommand{\czauthors}[1]{#1}
+\newcommand{\cztitle}[1]{\emph{``#1''''}}
+\newcommand{\czjournal}[1]{#1}
+\newcommand{\czbooktitle}[1]{#1}
+
+\title{{\bf ', self latexName, '}\\[0.5cm]
+{\bf }}
+\author{}
+\begin{document}
+\maketitle
+\newcounter{publi}
+\newcommand{\pub}[0]
+	{\stepcounter{publi}
+	\item[\bf{[\arabic{publi}]}]}
+	
+	'
+]
+
+{ #category : #latex }
+CZLaTeXSingleAuthorDocBuilder >> latexName [
+
+	^ 'Foo'
+]
