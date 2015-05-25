@@ -46,6 +46,25 @@ CZPillarGenerator >> visitField: aField [
 ]
 
 { #category : #visit }
+CZPillarGenerator >> visitItem: anItem [
+	
+	outputStream 
+		nextPutAll: '- *'; 
+		nextPutAll: anItem name;
+		nextPutAll: '>';
+		nextPutAll: anItem link;
+		nextPutAll: '*'.
+		self line.
+
+]
+
+{ #category : #visit }
+CZPillarGenerator >> visitItemList: aList [
+
+	 aList elements do: [ :each | self visit: each ] 
+]
+
+{ #category : #visit }
 CZPillarGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.

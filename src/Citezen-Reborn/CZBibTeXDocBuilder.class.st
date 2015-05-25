@@ -1,28 +1,28 @@
 Class {
-	#name : #CZBibTeXSingleAuthorDocBuilder,
+	#name : #CZBibTeXDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
 	#category : #'Citezen-Reborn'
 }
 
 { #category : #utils }
-CZBibTeXSingleAuthorDocBuilder >> bibtexFileName [
+CZBibTeXDocBuilder >> bibtexFileName [
 
 	^ Date today yyyymmdd, 'bibtex.bib'
 ]
 
 { #category : #'as yet unclassified' }
-CZBibTeXSingleAuthorDocBuilder >> extension [
+CZBibTeXDocBuilder >> extension [
 	
 	^ '-Full.bib'
 ]
 
 { #category : #utils }
-CZBibTeXSingleAuthorDocBuilder >> fileName [
+CZBibTeXDocBuilder >> fileName [
 
 	^ Date today yyyymmdd, 'bibtex.bib'
 ]
 
 { #category : #utils }
-CZBibTeXSingleAuthorDocBuilder >> generatorClass [
+CZBibTeXDocBuilder >> generatorClass [
 	^ CZBibTexGenerator 
 ]

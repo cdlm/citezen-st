@@ -26,7 +26,6 @@ CZDoc >> acceptVisitor: aVisitor [
 CZDoc >> add: anElement [
 
 	elements add: anElement.
-	"does not work for CZEntry :(     anElement doc: self."
 	^ anElement
 ]
 
@@ -93,8 +92,8 @@ CZDoc >> title [
 ]
 
 { #category : #accessing }
-CZDoc >> title: aName [
+CZDoc >> title: aString [
 
-	title := aName
+	title := CZString with: aString
 	
 ]

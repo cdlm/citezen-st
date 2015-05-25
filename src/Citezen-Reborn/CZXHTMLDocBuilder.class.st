@@ -6,13 +6,13 @@ self build
 Normally since we refer to the bibtex file we should invoke the CZBibSingleAuthorDocBuilder, but this is to be done. 
 "
 Class {
-	#name : #CZXHTMLSingleAuthorDocBuilder,
+	#name : #CZXHTMLDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
 	#category : #'Citezen-Reborn'
 }
 
 { #category : #'as yet unclassified' }
-CZXHTMLSingleAuthorDocBuilder class >> build [
+CZXHTMLDocBuilder class >> build [
 
 	| builder |
 	builder :=  self new
@@ -25,19 +25,19 @@ CZXHTMLSingleAuthorDocBuilder class >> build [
 ]
 
 { #category : #xhtml }
-CZXHTMLSingleAuthorDocBuilder >> bibtexFileName [
+CZXHTMLDocBuilder >> bibtexFileName [
 
 	^ Date today yyyymmdd, 'bibtex.bib'
 ]
 
 { #category : #utils }
-CZXHTMLSingleAuthorDocBuilder >> extension [
+CZXHTMLDocBuilder >> extension [
 
 	^ '-Full.html'
 ]
 
 { #category : #xhtml }
-CZXHTMLSingleAuthorDocBuilder >> footer [
+CZXHTMLDocBuilder >> footer [
 	^ '<h4>BibTex Files of the Publications</h4>
 <A HREF="', self bibtexFileName,  '">BibTex File</A> </div>  <!-- div xmlns= class="paperList" -->
 	 </div><!-- mainContent -->
@@ -47,13 +47,13 @@ CZXHTMLSingleAuthorDocBuilder >> footer [
 ]
 
 { #category : #utils }
-CZXHTMLSingleAuthorDocBuilder >> generatorClass [
+CZXHTMLDocBuilder >> generatorClass [
 	^ CZHTMLGenerator
 	
 ]
 
 { #category : #xhtml }
-CZXHTMLSingleAuthorDocBuilder >> header [
+CZXHTMLDocBuilder >> header [
 	^ '<?xml version="1.0" encoding="ISO-8859-1"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
    <head>
@@ -72,7 +72,7 @@ CZXHTMLSingleAuthorDocBuilder >> header [
 ]
 
 { #category : #xhtml }
-CZXHTMLSingleAuthorDocBuilder >> xhtmlName [
+CZXHTMLDocBuilder >> xhtmlName [
 
 	^ 'Foo'
 ]

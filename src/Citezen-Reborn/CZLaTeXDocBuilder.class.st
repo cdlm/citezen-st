@@ -25,28 +25,28 @@ builder := self new
 
 "
 Class {
-	#name : #CZLaTeXSingleAuthorDocBuilder,
+	#name : #CZLaTeXDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
 	#category : #'Citezen-Reborn'
 }
 
 { #category : #utils }
-CZLaTeXSingleAuthorDocBuilder >> extension [
+CZLaTeXDocBuilder >> extension [
 	^ '-Full.tex'
 ]
 
 { #category : #building }
-CZLaTeXSingleAuthorDocBuilder >> footer [
+CZLaTeXDocBuilder >> footer [
 	^ '\end{document}'
 ]
 
 { #category : #utils }
-CZLaTeXSingleAuthorDocBuilder >> generatorClass [
+CZLaTeXDocBuilder >> generatorClass [
 	^ CZLaTeXGenerator 
 ]
 
 { #category : #building }
-CZLaTeXSingleAuthorDocBuilder >> header [
+CZLaTeXDocBuilder >> header [
 	"there is something not working well since the visitor may require some different package so the logic should not really be totally define here. We will have to fix that. For now when a document as a header or footer it is used (not the one of the generator)"
 
 	^ '\documentclass{article}
@@ -71,7 +71,7 @@ CZLaTeXSingleAuthorDocBuilder >> header [
 ]
 
 { #category : #latex }
-CZLaTeXSingleAuthorDocBuilder >> latexName [
+CZLaTeXDocBuilder >> latexName [
 
 	^ 'Foo'
 ]
