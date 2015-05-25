@@ -3,11 +3,11 @@ To generate XHTML
 
 self build
 
-Normally since we refer to the bibtex file we should invoke the CZBibSingleAuthorDocBuilder, but this is do be done. 
+Normally since we refer to the bibtex file we should invoke the CZBibSingleAuthorDocBuilder, but this is to be done. 
 "
 Class {
 	#name : #CZXHTMLSingleAuthorDocBuilder,
-	#superclass : #CZNewSingleAuthorDocBuilder,
+	#superclass : #CZDecoratedDocBuilder,
 	#category : #'Citezen-Reborn'
 }
 

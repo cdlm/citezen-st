@@ -1,6 +1,6 @@
 Class {
 	#name : #CZBibTeXSingleAuthorDocBuilder,
-	#superclass : #CZNewSingleAuthorDocBuilder,
+	#superclass : #CZDecoratedDocBuilder,
 	#category : #'Citezen-Reborn'
 }
 

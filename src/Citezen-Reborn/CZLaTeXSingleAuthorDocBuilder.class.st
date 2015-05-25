@@ -1,21 +1,11 @@
 "
-To build a document
+To build a latex document
 
-self build.
 
-"
-Class {
-	#name : #CZLaTeXSingleAuthorDocBuilder,
-	#superclass : #CZNewSingleAuthorDocBuilder,
-	#category : #'Citezen-Reborn'
-}
-
-{ #category : #'as yet unclassified' }
-CZLaTeXSingleAuthorDocBuilder class >> build [
-	
-	| builder |
-	builder := self new
+| builder |
+builder := self new
 		fileNamed: 'rmod.bib';
+		authorMatchingString: '*Ducasse*';
 		french; 
 		fieldOrder: #(#author 
 			  #title 
@@ -25,14 +15,20 @@ CZLaTeXSingleAuthorDocBuilder class >> build [
 			  #pages 
 			  #publisher  
 			  #year 
-			  # school
+			  #school
 			  #impactfactor 
-			  #misc); "removed doi and url since they may contain _ and the generator does not handle that well for the moment."
-		setFilteringOn;
-		yourself.
-	builder generate.
-	
-]
+			  #misc); ""removed doi and url since they may contain _ and the generator does not handle that well for the moment.""
+		setFilteringOn.
+	builder generate.	
+		
+
+
+"
+Class {
+	#name : #CZLaTeXSingleAuthorDocBuilder,
+	#superclass : #CZDecoratedDocBuilder,
+	#category : #'Citezen-Reborn'
+}
 
 { #category : #utils }
 CZLaTeXSingleAuthorDocBuilder >> extension [

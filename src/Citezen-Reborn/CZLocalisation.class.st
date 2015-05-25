@@ -126,6 +126,24 @@ CZLocalisation class >> initializeTypes [
 ]
 
 { #category : #accessing }
+CZLocalisation >> PhDAndHabilitation [
+
+	^ language at: PHDAndHdr
+]
+
+{ #category : #accessing }
+CZLocalisation >> book [
+
+	^ language at: Book
+]
+
+{ #category : #accessing }
+CZLocalisation >> bookChapter [
+
+	^ language at: BookChapter
+]
+
+{ #category : #accessing }
 CZLocalisation >> bookChapters [
 
 	^ language at: BookChapter
@@ -181,6 +199,12 @@ CZLocalisation >> internationalConference [
 ]
 
 { #category : #accessing }
+CZLocalisation >> internationalJournal [
+
+	^ language at: InternationalReviewedJournal
+]
+
+{ #category : #accessing }
 CZLocalisation >> internationalReviewedJournal [
 
 	^ language at: InternationalReviewedJournal
@@ -193,9 +217,39 @@ CZLocalisation >> internationalReviewedWorkshops [
 ]
 
 { #category : #accessing }
+CZLocalisation >> internationalWorkshop [
+
+	^ language at: InternationalReviewedWorkshop
+]
+
+{ #category : #accessing }
+CZLocalisation >> internationalWorkshops [
+
+	^ language at: InternationalReviewedWorkshop
+]
+
+{ #category : #accessing }
+CZLocalisation >> invitedPaper [
+
+	^ language at: InvitedPaper
+]
+
+{ #category : #accessing }
 CZLocalisation >> invitedPapers [
 
 	^ language at: InvitedPaper
+]
+
+{ #category : #accessing }
+CZLocalisation >> nationalConference [
+
+	^ language at: NationalReviewedConference
+]
+
+{ #category : #accessing }
+CZLocalisation >> nationalJournal [
+
+	^ language at: NationalReviewedJournal
 ]
 
 { #category : #accessing }
@@ -244,6 +298,12 @@ CZLocalisation >> technicalReport [
 CZLocalisation >> toolDemo [
 
 	^ language at: ToolDemo
+]
+
+{ #category : #accessing }
+CZLocalisation >> topConference [
+
+	^ language at: TopConferences
 ]
 
 { #category : #accessing }
