@@ -1447,8 +1447,8 @@ ConfigurationOfCitezen >> development: spec [
 
 	spec for: #'pharo1.4.x' version: '1.6'.
 	spec for: #'pharo2.x' version: '2.1'.
-	spec for: #'pharo3.x' version: '2.1'.
-	spec for: #'pharo4.x' version: '2.1'.
+	spec for: #'pharo3.x' version: '2.3'.
+	spec for: #'pharo4.x' version: '2.3'.
 
 ]
 
@@ -1474,8 +1474,8 @@ ConfigurationOfCitezen >> stable: spec [
 	"spec for: #'pharo1.4.x' version: '1.1'. previous stable"
 	spec for: #'pharo1.4.x' version: '1.6'.
 	spec for: #'pharo2.x' version: '2.1'.
-	spec for: #'pharo3.x' version: '2.2'.
-	spec for: #'pharo4.x' version: '2.2'.
+	spec for: #'pharo3.x' version: '2.3'.
+	spec for: #'pharo4.x' version: '2.3'.
 
 ]
 
@@ -1927,6 +1927,29 @@ ConfigurationOfCitezen >> version22: spec [
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.31';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.6';
+			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version23: spec [
+	<version: '2.3' imports: #('1.7-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #release.
+		spec description: 'Doing another pass to support Kozen plugin and Citezen plugin'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '25/05/2015 16:43'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.63';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.33';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.6';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
