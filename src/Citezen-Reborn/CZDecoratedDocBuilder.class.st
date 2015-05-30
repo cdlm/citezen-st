@@ -28,6 +28,7 @@ builder := self new
 		fileNamed: 'rmod.bib';
 		authorMatchingString: '*Ducasse*';
 		french; 
+		sectionSpecification: #(#internationalJournal #topConference #nationalJournal #internationalConference #nationalConference #invitedPaper #bookChapter #book #editor #internationalWorkshop #PhDAndHabilitation #toolDemo #vulgarisation));
 		fieldOrder: #(#author 
 			  #title 
 			  #journal 
@@ -43,9 +44,6 @@ builder := self new
 	builder generate.	
 		
 
-! Public API 
-
--
 "
 Class {
 	#name : #CZDecoratedDocBuilder,
