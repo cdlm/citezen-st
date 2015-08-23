@@ -21,3 +21,11 @@ CZString >> acceptVisitor: aVisitor [
 CZString >> expanded [
 	^ value asString reject: [ :each | each = ${ or: [ each = $} ] ]
 ]
+
+{ #category : #printing }
+CZString >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream nextPutAll: '  '.
+	aStream nextPutAll: value
+]

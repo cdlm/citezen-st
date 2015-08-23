@@ -68,7 +68,6 @@ CZPeople >> expandOption: aSymbol [
 { #category : #accessing }
 CZPeople >> expanded [
 	people ifNil: [ people := CZAuthorParser parse: value ].
-	
 	(expandOption = self class displayNormalizedName) ifTrue: [ ^ self normalizedName ].
 	(expandOption = self class displayFullName) ifTrue: [ ^ self fullName ].
 	^ self shortenedName
@@ -117,6 +116,12 @@ CZPeople >> normalizedName [
 		
 	ret close.
 	^ ret contents
+]
+
+{ #category : #printing }
+CZPeople >> printOn: aStream [
+	super printOn: aStream.
+	aStream nextPutAll: ' ', self expanded printString.
 ]
 
 { #category : #accessing }
