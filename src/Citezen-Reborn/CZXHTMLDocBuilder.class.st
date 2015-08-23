@@ -54,9 +54,10 @@ CZXHTMLDocBuilder >> generatorClass [
 
 { #category : #xhtml }
 CZXHTMLDocBuilder >> header [
-	^ '<?xml version="1.0" encoding="ISO-8859-1"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-   <head>
+	^ '<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
       <title>', self xhtmlName, '</title>
    </head>
    <body>
@@ -68,7 +69,7 @@ CZXHTMLDocBuilder >> header [
 	  <div xmlns="" class="paperList"><style type="text/css">
 <!--
 -->
-</style>'
+</style>' withUnixLineEndings 
 ]
 
 { #category : #xhtml }

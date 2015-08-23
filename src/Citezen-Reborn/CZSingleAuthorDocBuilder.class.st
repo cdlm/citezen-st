@@ -154,6 +154,23 @@ CZSingleAuthorDocBuilder >> generateLatexFileFor: aDoc [
 	
 ]
 
+{ #category : #utils }
+CZSingleAuthorDocBuilder >> generateXHTMLFile [
+
+	self generateXHTMLFileFor: self build document.
+]
+
+{ #category : #utils }
+CZSingleAuthorDocBuilder >> generateXHTMLFileFor: aDoc [
+
+	| visitor |
+	visitor := CZHTMLGenerator new.
+	fieldOrder ifNotNilDo: [ visitor fieldOrder: fieldOrder].
+	visitor	
+			outputStream: (FileStream newFileNamed:  Date today yyyymmdd, '-Full.html'); 
+			visit: aDoc.
+]
+
 { #category : #initialize }
 CZSingleAuthorDocBuilder >> initialize [
 

@@ -18,11 +18,12 @@ CZHTMLGenerator >> defaultHeader [
 	
 	"should probably do something for the title"
 	
-	^ ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+	^ ('<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
 	<head>
-		<title>    </title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>  Put A title here  </title>
 	</head>
 <body>
 
@@ -97,7 +98,7 @@ CZHTMLGenerator >> visitMacroReference: aCZMacroReference [
 
 { #category : #visiting }
 CZHTMLGenerator >> visitPeople: aCZPeople [
-
+	"self halt: aCZPeople printString."
 	aCZPeople perform: expandOption.
 	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
 ]

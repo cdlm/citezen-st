@@ -91,6 +91,7 @@ CZFileFormatGenerator >> outputStream: aStream [
 
 { #category : #visit }
 CZFileFormatGenerator >> treatString: aString [
+	^ aString
 
 	
 ]
@@ -162,7 +163,7 @@ CZFileFormatGenerator >> visitFooter: aCZFooter [
 
 { #category : #'visit doc' }
 CZFileFormatGenerator >> visitHeader: aCZHeader [
-
+	
 	aCZHeader isDefined
 		ifTrue: [self outputStream nextPutAll: aCZHeader text]
 		ifFalse: [self outputStream nextPutAll: self defaultHeader].
@@ -179,7 +180,6 @@ CZFileFormatGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.
 	"self outputStream nextPutAll: aCZPeople expanded"
-	self halt.
 	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
 			
 ]
@@ -195,4 +195,9 @@ CZFileFormatGenerator >> visitString: aCZString [
 
 	self outputStream nextPutAll: 
 		(self treatString: (CZAccentuateCharactersParser parse: aCZString notExpanded))
+]
+
+{ #category : #visit }
+CZFileFormatGenerator >> visitValue: aValue [
+	self halt: aValue
 ]
