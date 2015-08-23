@@ -1,9 +1,12 @@
 "
-(ConfigurationOfCitezen project version: '2.2') load: { 'NoWeb'}.
+(ConfigurationOfCitezen project version: '2.3') load: { 'NoWeb'}.
 
 	
-
-
+To Do:
+	- create a new configuration without seaside.
+	- build a pillar object exporter.
+	- use converters to make sure that the input/output are correctly encoded. 
+	- pass header/footer probably using Mustache.
 "
 Class {
 	#name : #ConfigurationOfCitezen,
@@ -1950,6 +1953,29 @@ ConfigurationOfCitezen >> version23: spec [
 			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
 			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
 			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.34';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.6';
+			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version24: spec [
+	<version: '2.4' imports: #('1.7-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #release.
+		spec description: 'Making XHTML working for real'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '23/08/2015 16:43'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.7';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.64';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.35';
 			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.6';
 			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
