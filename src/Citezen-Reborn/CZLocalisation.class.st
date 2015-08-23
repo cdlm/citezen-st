@@ -32,7 +32,7 @@ Class {
 		'TopConferences',
 		'Vulgarisation'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocModel'
 }
 
 { #category : #initialize }

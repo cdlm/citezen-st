@@ -50,5 +50,5 @@ CZPillarDocBuilder >> generatorClass [
 { #category : #initialize }
 CZPillarDocBuilder >> initialize [
 	super initialize.
-	noHeader := true.
+	self noHeader.
 ]

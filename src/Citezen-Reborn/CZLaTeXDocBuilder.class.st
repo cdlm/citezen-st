@@ -30,24 +30,13 @@ Class {
 	#category : #'Citezen-Reborn'
 }
 
-{ #category : #utils }
-CZLaTeXDocBuilder >> extension [
-	^ '-Full.tex'
-]
-
 { #category : #building }
-CZLaTeXDocBuilder >> footer [
+CZLaTeXDocBuilder >> defaultFooterString [
 	^ '\end{document}'
 ]
 
-{ #category : #utils }
-CZLaTeXDocBuilder >> generatorClass [
-	^ CZLaTeXGenerator 
-]
-
 { #category : #building }
-CZLaTeXDocBuilder >> header [
-	"there is something not working well since the visitor may require some different package so the logic should not really be totally define here. We will have to fix that. For now when a document as a header or footer it is used (not the one of the generator)"
+CZLaTeXDocBuilder >> defaultHeaderString [
 
 	^ '\documentclass{article}
 \usepackage{times}
@@ -68,6 +57,16 @@ CZLaTeXDocBuilder >> header [
 	\item[\bf{[\arabic{publi}]}]}
 	
 	'
+]
+
+{ #category : #utils }
+CZLaTeXDocBuilder >> extension [
+	^ '-Full.tex'
+]
+
+{ #category : #utils }
+CZLaTeXDocBuilder >> generatorClass [
+	^ CZLaTeXGenerator 
 ]
 
 { #category : #latex }

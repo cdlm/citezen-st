@@ -16,7 +16,7 @@ Class {
 		'expandOption',
 		'fieldOrder'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-Core-Visitor'
 }
 
 { #category : #accessing }

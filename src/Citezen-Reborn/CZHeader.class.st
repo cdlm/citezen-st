@@ -4,7 +4,7 @@ May be not needed
 Class {
 	#name : #CZHeader,
 	#superclass : #CZText,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocModel'
 }
 
 { #category : #visiting }

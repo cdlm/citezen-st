@@ -13,7 +13,7 @@ Class {
 		'header',
 		'footer'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocModel'
 }
 
 { #category : #visitor }

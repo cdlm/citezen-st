@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'text'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocModel'
 }
 
 { #category : #testing }

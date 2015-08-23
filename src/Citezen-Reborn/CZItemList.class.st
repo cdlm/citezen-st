@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'elements'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocModel'
 }
 
 { #category : #visiting }

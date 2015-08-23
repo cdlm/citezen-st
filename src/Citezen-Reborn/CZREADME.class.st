@@ -3,6 +3,29 @@
 
 - There is a bug in transforming characters. Should probably use Zn-Encoders.
 
+Here is some more code to play with:
+
+FileLocator desktop / 'foo.txt' readStreamDo: [ :in |
+	in binary.
+	FileLocator desktop / 'bar.txt' writeStreamDo: [ :out |
+		out binary.
+		ZnUtils 
+			streamFrom: (ZnCharacterReadStream on: in encoding: #utf8) 
+			to: (ZnCharacterWriteStream on: out encoding: #utf8) ] ].
+
+FileLocator desktop / 'foo.txt' readStreamDo: [ :in |
+	in binary.
+	(ZnCharacterReadStream on: in encoding: #utf8) upToEnd ].
+
+(FileLocator desktop / 'bar.txt') ensureDelete; writeStreamDo: [ :out |
+	out binary.
+	(ZnCharacterWriteStream on: out encoding: #utf8) << 'élève - Français'; lf ].
+
+I added the explicit 'encoding: #utf8' but it is not necessary as it is the default. Note the explicit switch to binary before usage, that is to prevent any default (which would be UTF-8 anyway).
+
+Start by making sure your source is UTF-8 (read it with the second expression).
+
+
 
 - should generate HTML50
 <!DOCTYPE html>

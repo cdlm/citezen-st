@@ -30,14 +30,8 @@ CZXHTMLDocBuilder >> bibtexFileName [
 	^ Date today yyyymmdd, 'bibtex.bib'
 ]
 
-{ #category : #utils }
-CZXHTMLDocBuilder >> extension [
-
-	^ '-Full.html'
-]
-
 { #category : #xhtml }
-CZXHTMLDocBuilder >> footer [
+CZXHTMLDocBuilder >> defaultFooterString [
 	^ '<h4>BibTex Files of the Publications</h4>
 <A HREF="', self bibtexFileName,  '">BibTex File</A> </div>  <!-- div xmlns= class="paperList" -->
 	 </div><!-- mainContent -->
@@ -46,14 +40,8 @@ CZXHTMLDocBuilder >> footer [
 '
 ]
 
-{ #category : #utils }
-CZXHTMLDocBuilder >> generatorClass [
-	^ CZHTMLGenerator
-	
-]
-
 { #category : #xhtml }
-CZXHTMLDocBuilder >> header [
+CZXHTMLDocBuilder >> defaultHeaderString [
 	^ '<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,6 +58,28 @@ CZXHTMLDocBuilder >> header [
 <!--
 -->
 </style>' withUnixLineEndings 
+]
+
+{ #category : #utils }
+CZXHTMLDocBuilder >> extension [
+
+	^ '-Full.html'
+]
+
+{ #category : #xhtml }
+CZXHTMLDocBuilder >> footerString [
+	^ '<h4>BibTex Files of the Publications</h4>
+<A HREF="', self bibtexFileName,  '">BibTex File</A> </div>  <!-- div xmlns= class="paperList" -->
+	 </div><!-- mainContent -->
+   </body>
+</html>
+'
+]
+
+{ #category : #utils }
+CZXHTMLDocBuilder >> generatorClass [
+	^ CZHTMLGenerator
+	
 ]
 
 { #category : #xhtml }

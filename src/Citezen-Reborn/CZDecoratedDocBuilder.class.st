@@ -51,7 +51,9 @@ Class {
 	#instVars : [
 		'noHeader',
 		'xhtml',
-		'bodySpecification'
+		'bodySpecification',
+		'footerString',
+		'headerString'
 	],
 	#category : #'Citezen-Reborn'
 }
@@ -85,7 +87,7 @@ CZDecoratedDocBuilder class >> xhtml [
 CZDecoratedDocBuilder >> addFooter [
 
 	noHeader ifTrue: [^self].
-	doc footer: (CZFooter new text: self footer)
+	doc footer: (CZFooter new text: self footerString)
 					
 ]
 
@@ -93,7 +95,7 @@ CZDecoratedDocBuilder >> addFooter [
 CZDecoratedDocBuilder >> addHeader [
 	
 	noHeader ifTrue: [^self].
-	doc header: (CZHeader new text: self header)
+	doc header: (CZHeader new text: self headerString)
 ]
 
 { #category : #building }
@@ -104,6 +106,18 @@ CZDecoratedDocBuilder >> buildBody [
 				self 
 					addBibSection: (self perform: (each, #Query) asSymbol)  
 					withTitle: (localization  perform: each) ] 
+					
+]
+
+{ #category : #initialize }
+CZDecoratedDocBuilder >> defaultFooterString [
+	^ ''
+					
+]
+
+{ #category : #initialize }
+CZDecoratedDocBuilder >> defaultHeaderString [
+	^ ''
 					
 ]
 
@@ -125,9 +139,15 @@ CZDecoratedDocBuilder >> filter [
 	workingBibSet := workingBibSet select: self authorQuery
 ]
 
-{ #category : #building }
-CZDecoratedDocBuilder >> footer [
-	^ ''
+{ #category : #accessing }
+CZDecoratedDocBuilder >> footerString [
+	^ footerString ifNil: [ footerString := self defaultFooterString ]
+					
+]
+
+{ #category : #accessing }
+CZDecoratedDocBuilder >> footerString: aString [
+	footerString := aString
 					
 ]
 
@@ -151,32 +171,39 @@ CZDecoratedDocBuilder >> generateFor: aDoc on: aStream [
 	visitor visit: aDoc
 ]
 
-{ #category : #building }
-CZDecoratedDocBuilder >> header [
-	^ ''
+{ #category : #accessing }
+CZDecoratedDocBuilder >> headerString [
+	
+	^ headerString ifNil: [ headerString := self defaultHeaderString ]
+]
+
+{ #category : #accessing }
+CZDecoratedDocBuilder >> headerString: aString [
+	
+	headerString := aString
 ]
 
 { #category : #initialize }
 CZDecoratedDocBuilder >> initialize [
 
 	super initialize.
-	noHeader := false.
+	self withHeader.
 	bodySpecification := self defaultSectionSpecification. 
 
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 CZDecoratedDocBuilder >> noHeader [
 
 	noHeader := true
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 CZDecoratedDocBuilder >> sectionSpecification [
 	^ bodySpecification 
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 CZDecoratedDocBuilder >> sectionSpecification: aColl [ 
 	"Set the list and order of section in the document body. aColl is a list of symbols taken from the following one (which can be obtained doing self new defaultSectionSpecification)
 	
@@ -185,7 +212,7 @@ CZDecoratedDocBuilder >> sectionSpecification: aColl [
 	bodySpecification := aColl
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 CZDecoratedDocBuilder >> withHeader [
 
 	noHeader := false

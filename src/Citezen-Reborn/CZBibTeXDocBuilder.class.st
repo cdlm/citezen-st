@@ -10,7 +10,7 @@ CZBibTeXDocBuilder >> bibtexFileName [
 	^ Date today yyyymmdd, 'bibtex.bib'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generate }
 CZBibTeXDocBuilder >> extension [
 	
 	^ '-Full.bib'
@@ -25,4 +25,11 @@ CZBibTeXDocBuilder >> fileName [
 { #category : #utils }
 CZBibTeXDocBuilder >> generatorClass [
 	^ CZBibTexGenerator 
+]
+
+{ #category : #initialization }
+CZBibTeXDocBuilder >> initialize [
+
+	super initialize.
+	self noHeader.
 ]

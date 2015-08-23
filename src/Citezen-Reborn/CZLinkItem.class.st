@@ -5,7 +5,7 @@ Class {
 		'name',
 		'link'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocModel'
 }
 
 { #category : #'as yet unclassified' }
