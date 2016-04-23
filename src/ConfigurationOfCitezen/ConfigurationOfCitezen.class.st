@@ -1,5 +1,5 @@
 "
-(ConfigurationOfCitezen project version: '2.5') load: { 'NoWeb'}.
+(ConfigurationOfCitezen project version: '2.6') load
 
 	
 To Do:
@@ -1370,7 +1370,6 @@ ConfigurationOfCitezen >> baseline17: spec [
 		spec description: 'without grease in core'.
 		spec author: 'StephaneDucasse'.
 		spec repository: 'http://smalltalkhub.com/mc/RMoD/Citezen/main'.
-		
 		spec
 			project: 'Seaside' with: [
 				spec
@@ -1408,8 +1407,6 @@ ConfigurationOfCitezen >> baseline17: spec [
 					className: 'ConfigurationOfSmaCC';
 					file: 'ConfigurationOfSmaCC';
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
-			
-
 		spec
 			package: 'Citezen-Model';
 			package: 'Citezen-Parsers' with: [ spec requires: #('Citezen-Model' 'SmaCC')];
@@ -1444,6 +1441,56 @@ ConfigurationOfCitezen >> baseline17: spec [
 	]
 ]
 
+{ #category : #baselines }
+ConfigurationOfCitezen >> baseline18: spec [
+	<version: '1.8-baseline'>
+
+	spec for: #common do: [
+		spec blessing: #baseline.
+		spec description: 'cleaning: without seaside and magritte'.
+		spec author: 'StephaneDucasse'.
+		spec repository: 'http://smalltalkhub.com/mc/RMoD/Citezen/main'.
+		spec
+			project: 'OSProcess' with: [
+				spec
+					className: 'ConfigurationOfOSProcess';
+					file: 'ConfigurationOfOSProcess';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			project: 'SmaCC' with: [
+				spec
+					className: 'ConfigurationOfSmaCC';
+					file: 'ConfigurationOfSmaCC';
+					repository: 'http://www.squeaksource.com/MetacelloRepository' ].
+		spec
+			package: 'Citezen-Model';
+			package: 'Citezen-Parsers' with: [ spec requires: #('Citezen-Model' 'SmaCC')];
+			package: 'Citezen-Rendering' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Tools' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Query' with: [ spec requires: 'Citezen-Model'];
+			package: 'Citezen-Reborn' with: [spec requires: 'Citezen-Model'];
+			package: 'Citezen-Checking' with: [ spec requires: 'Citezen-Model' ];
+			package: 'Citezen-Stef' with: [ spec requires: 'Citezen-Reborn' ];
+			package: 'Citezen-Herve' with: [ spec requires: 'Citezen-Reborn' ];
+			package: 'Citezen-CommandLine' with: [ spec requires: #('Core' 'OSProcess') ];
+			package: 'Citezen-Tests' with: [ spec requires: #('Core') ].
+			
+		spec
+			group: 'default' with: #('CoreAndTests');
+			group: 'CoreAndTests' with: #('Core' 'Tests');
+			group: 'Core' with: #('Citezen-Model'
+							 'Citezen-Parsers'
+							 'Citezen-Rendering'
+							 'Citezen-Query'
+							 'Citezen-Checking'
+							 'Citezen-Reborn'
+							 'Citezen-Tools'
+							'Citezen-Stef'
+							'Citezen-Herve'); "one day we will have to split core"
+			group: 'CommandLine' with: #('CoreAndTests' 'Citezen-CommandLine');
+			group: 'Tests' with: #('Citezen-Tests')
+	]
+]
+
 { #category : #'symbolic versions' }
 ConfigurationOfCitezen >> development: spec [
 	<symbolicVersion: #'development'>
@@ -1452,7 +1499,7 @@ ConfigurationOfCitezen >> development: spec [
 	spec for: #'pharo2.x' version: '2.1'.
 	spec for: #'pharo3.x' version: '2.3'.
 	spec for: #'pharo4.x' version:  '1.7-baseline'.
-	spec for: #'pharo5.x' version:  '1.7-baseline'.
+	spec for: #'pharo5.x' version:  '1.8-baseline'.
 
 ]
 
@@ -1480,7 +1527,7 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo2.x' version: '2.1'.
 	spec for: #'pharo3.x' version: '2.3'.
 	spec for: #'pharo4.x' version: '2.5'.
-	spec for: #'pharo5.x' version: '2.5'.
+	spec for: #'pharo5.x' version: '2.6'.
 
 ]
 
@@ -1994,6 +2041,29 @@ ConfigurationOfCitezen >> version25: spec [
 		spec description: 'fixed space in front of school which breaks in Pharo 50'.
 		spec author: 'StephaneDucasse'.
 		spec timestamp: '19/10/2015 16:43'.
+		spec 
+			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
+			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.64';
+			package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+			package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.42';
+			package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.18';
+			package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.37';
+			package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.9';
+			package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
+
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version26: spec [
+	<version: '2.6' imports: #('1.8-baseline' )>
+
+	spec for: #'common' do: [
+		spec blessing: #release.
+		spec description: 'Removing pier seaside and other dependencies'.
+		spec author: 'StephaneDucasse'.
+		spec timestamp: '04/24/2016 16:43'.
 		spec 
 			package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
 			package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.64';
