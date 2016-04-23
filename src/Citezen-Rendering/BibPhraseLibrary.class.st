@@ -155,7 +155,7 @@ BibPhraseLibrary class >> formatFor: aField [
 	"Return a phrase representing the value of this field."
 	| selector |
 	selector := (aField key copyWith: $:) asSymbol.
-	^ ((self class allMethodsInCategory: 'formats-fields') includes: selector)
+	^ ((self class allSelectorsInProtocol: 'formats-fields') includes: selector)
 		ifTrue: [self perform: selector with: aField]
 		ifFalse: [self defaultFormat: aField]
 ]
@@ -307,8 +307,8 @@ BibPhraseLibrary class >> phraseFor: anEntry [
 	"Return a template phrase, named by the entry type, and built from the matching method in protocol phrases-entries."
 	| selector |
 	selector := anEntry type.
-	^ ((self class allMethodsInCategory: 'phrases-entries') includes: selector)
-		ifTrue: [(self perform: selector) named: selector]
+	^ ((self class allSelectorsInProtocol: 'phrases-entries') includes: selector)
+ "BibPhraseLibrary class"		ifTrue: [(self perform: selector) named: selector]
 		ifFalse: [self errorPhrase: anEntry]
 ]
 
