@@ -3,6 +3,10 @@ Since a bibentry is also used inside documents,  there is a need to have a docum
 A CZDoc is built using a CZDocBuilder which is able to add entries (bibentries) structured as sections or other in a document. 
 
 I'm also a walkable structure using a CZVisitor.
+
+
+This model should probably be removed and pillar model should be used. 
+
 "
 Class {
 	#name : #CZDoc,

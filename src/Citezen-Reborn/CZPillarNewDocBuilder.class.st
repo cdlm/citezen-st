@@ -1,5 +1,5 @@
 "
-Generate pillar descriptions
+Generate pillar descriptions. Should replaced (and be renamed into CZPillarDocBuilder)
 
 !!Supported features
 
@@ -25,32 +25,30 @@ builder := self new
 			  #year 
 			  #school
 			  #impactfactor 
-			  #misc
-			#doi
-			#url	) ""removed doi and url since they may contain _ and the generator does not handle that well for the moment."".
+			  #misc); ""removed doi and url since they may contain _ and the generator does not handle that well for the moment.""
+		setFilteringOn.
 	builder generate.	
 		
 "
 Class {
-	#name : #CZPillarDocBuilder,
+	#name : #CZPillarNewDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
 	#category : #'Citezen-Reborn'
 }
 
-{ #category : #initialize }
-CZPillarDocBuilder >> extension [
+{ #category : #generate }
+CZPillarNewDocBuilder >> extension [
 
 	^ '-Full.pillar'
 ]
 
-{ #category : #initialize }
-CZPillarDocBuilder >> generatorClass [
-	^ CZPillarGenerator 
+{ #category : #utils }
+CZPillarNewDocBuilder >> generatorClass [
+	^ CZPillarNewGenerator 
 ]
 
 { #category : #initialize }
-CZPillarDocBuilder >> initialize [
+CZPillarNewDocBuilder >> initialize [
 	super initialize.
 	self noHeader.
-	self setFilteringOn.
 ]
