@@ -39,7 +39,8 @@ Class {
 	],
 	#classInstVars : [
 		'neededFieldsDictionary',
-		'optionalFieldsDictionary'
+		'optionalFieldsDictionary',
+		'teamMemberPatterns'
 	],
 	#category : #'Citezen-Model'
 }
@@ -227,9 +228,49 @@ CZEntry class >> requiredFieldsFor: aSymbol [
 
 { #category : #'team ' }
 CZEntry class >> teamMemberPatterns [
+	^ teamMemberPatterns ifNil: [ teamMemberPatterns := 
+			#( '*Ducasse*S*' 
+				'*Denker*M*' 
+				'*Auverlot*'
+				'*Larcheveque*'
+				'*Anquetil*' 
+				'*Govin*'
+				'*Pollet*' 
+				'*Abdeen*' 
+				'*Laval*' 
+				'*Peirs*' 
+				'*Falleri*' 
+				'*Denier*' 
+			'*Marr*'
+			'*Hora*' 
+			'*Etien*' 
+			'*Blondeau*'
+			'*Casaccio*' 
+			'*Bruni*'
+			'*Tesone*'
+			'*Teruel*'
+			'*Polito*' 
+			'*Martinez*Peck*' 
+			'*Uquillas*' 
+			'*Arnaud*' 
+			'*Bhatti*U*' 
+			'*Fernandes*' 
+			'*Razavizadeh*' 
+			'*Uquilla*' 
+			'*Dias*' 
+			'*Cassou*' 
+			'*Ryseghem*' 
+			'*Papoulias*' 
+			'*Demarey*' 
+			'*Bera*' 
+			'*Santos*')]
+]
 
-	^ #( '*Ducasse*S*' '*Denker*M*' '*Anquetil*N*' '*Pollet*D*' '*Abdeen*H*' '*Laval*J*' '*Peirs*R*' '*Falleri*' '*Denier*S*' '*Hora*'
-		'*Casaccio*G*' '*Bruni*C*' '*Martinez*Peck*' '*Uquillas*' '*Arnaud*J*B*' '*Bhatti*U*' '*Fernandes*H*' '*Razavizadeh*A*' '*Uquilla*' '*Dias*' '*Cassou*' '*Ryseghem*' '*Papoulias*')
+{ #category : #'team ' }
+CZEntry class >> teamMemberPatterns: array [
+	"array should be in the following form: #( '*Ducasse*S*' '*Denker*M*' '*Auverlot*' '*Larcheveque*' '*Anquetil*' )"
+	
+	teamMemberPatterns := array	
 ]
 
 { #category : #metadata }
