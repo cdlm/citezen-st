@@ -25,7 +25,7 @@ Class {
 	#category : #'Citezen-Query'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 CZEntryQuery class >> checks: aBlock [
 	^ self new block: aBlock 
 ]

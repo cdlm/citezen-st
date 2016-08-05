@@ -35,12 +35,12 @@ Class {
 	#category : #'Citezen-Query'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 CZFieldQuery class >> existingFieldNamed: aSymbol [
 	^ (CZEntryQuery checks: [ :entry | entry hasField: aSymbol ])
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 CZFieldQuery class >> named: aSymbol checks: aBlock [
 	^ (self checks: aBlock) field: aSymbol 
 ]
