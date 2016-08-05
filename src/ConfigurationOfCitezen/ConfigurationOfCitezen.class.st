@@ -1,5 +1,5 @@
 "
-(ConfigurationOfCitezen project version: '2.6') load
+(ConfigurationOfCitezen project version: '2.7') load
 
 	
 To Do:
@@ -1518,9 +1518,8 @@ ConfigurationOfCitezen >> project [
 
 { #category : #'symbolic versions' }
 ConfigurationOfCitezen >> stable: spec [
-	<symbolicVersion: #'stable'>
-
-	spec for: #'pharo' version: '0.8'.
+	<symbolicVersion: #stable>
+	spec for: #pharo version: '0.8'.
 	spec for: #'pharo1.3.x' version: '0.8'.
 	"spec for: #'pharo1.4.x' version: '1.1'. previous stable"
 	spec for: #'pharo1.4.x' version: '1.6'.
@@ -1528,7 +1527,7 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo3.x' version: '2.3'.
 	spec for: #'pharo4.x' version: '2.5'.
 	spec for: #'pharo5.x' version: '2.6'.
-
+	spec for: #'pharo6.x' version: '2.6'
 ]
 
 { #category : #versions }
@@ -2099,4 +2098,26 @@ ConfigurationOfCitezen >> version27: spec [
 			package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
 			package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86'. ].
 
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version28: spec [
+	<version: '2.8' imports: #('1.8-baseline')>
+	spec
+		for: #common
+		do: [ spec blessing: #release.
+			spec description: 'improving while doing the eval report'.
+			spec author: 'StephaneDucasse'.
+			spec timestamp: '08/04/2016 16:43'.
+			spec
+				package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
+				package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.65';
+				package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+				package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.43';
+				package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.19';
+				package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.37';
+				package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.10';
+				package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86' ]
 ]
