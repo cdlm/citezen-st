@@ -6,6 +6,10 @@ So far having just a title and sections is just enough. In the future we should 
 to easily add a bibtex file synchronized with the entries.
 
 
+Implementation notes.
+
+- workingSet is a private field. The public API is to use bibset: to specify the bib set to work with
+
 "
 Class {
 	#name : #CZDocBuilder,
@@ -26,24 +30,31 @@ Class {
 
 { #category : #queries }
 CZDocBuilder >> PhDAndHabilitationQuery [
-
-	^(CZTypeQuery checks: [ :each | each = #phdthesis]) 
-			OR: (self annotationWithType:  '*habilitation*')
+	^ CZQuery PhDAndHabilitation
 ]
 
 { #category : #building }
 CZDocBuilder >> addBibSection: aQuery withTitle: aString [
-	"adding a section just add a section and a list of entries following it."
+	"Adding a section just add a section and a list of entries following it.
+	By default, empty sections are not created and entries are sorted to get more recent on the top. Pay attention that the items of a section are a new group of items. "
+
 	| entries |
-	entries := (workingBibSet select: aQuery).
-	(noEmptySection & entries size isZero)
-		ifTrue: [^ self].
-	entries sortByDateReverse.	
-	self addSection: (CZSection new title: aString; yourself).
-	
-	self document add:  (CZSet new addAll: entries ; yourself)
-	"we recreate a CZ so that we can manage groups of bib in the outputers"
-	"may be the sorting should be an option"
+	entries := workingBibSet select: aQuery.
+	noEmptySection & entries size isZero
+		ifTrue: [ ^ self ].
+	entries sortByDateReverse.
+	self
+		addSection:
+			(CZSection new
+				title: aString;
+				yourself).
+	"we recreate a CZ so that we can manage groups of bib in the outputers"			
+	self document
+		add:
+			(CZSet new
+				addAll: entries;
+				yourself)
+
 ]
 
 { #category : #building }
@@ -70,7 +81,7 @@ CZDocBuilder >> addTitle: aTitle [
 
 { #category : #'configuration public api' }
 CZDocBuilder >> allowEmptySections [
-	
+	"It can be useful for document or bibfile debugging purposes to see the empty section of a document. By default it is turn off. "
 	noEmptySection := false
 ]
 
@@ -104,33 +115,29 @@ CZDocBuilder >> authorQuery [
 
 { #category : #'public api' }
 CZDocBuilder >> bibset: aBibSet [
-
+	"We copy the original to be sure that we can always refer to it, even if we destructively change the working set."
 	originalBibSet := aBibSet.
-	workingBibSet := aBibSet copy.
+	workingBibSet := aBibSet copy
 ]
 
 { #category : #queries }
 CZDocBuilder >> bookChapterQuery [
-	
-	^ CZFieldQuery 
-			named: #annote 
-			checks: [ :value | '*articlebook*' match: value ]
+	^ CZQuery bookChapter
 ]
 
 { #category : #queries }
 CZDocBuilder >> bookQuery [
-
-	^ (CZTypeQuery checks: [ :each | each = #book] )
+	^ CZQuery book
 ]
 
 { #category : #'public api' }
 CZDocBuilder >> build [
-	"public API"
-	
+	"Build the current document: i.e., add a document header and footer, filter entities that not desirable and build the document body."
+
 	self addHeader.
 	self filter.
 	self buildBody.
-	self addFooter.
+	self addFooter
 ]
 
 { #category : #'public api' }
@@ -146,8 +153,7 @@ CZDocBuilder >> defaultKeysOfBlackListedEntries [
 
 { #category : #queries }
 CZDocBuilder >> deliverableQuery [
-
-	^ self annotationWithType:  '*deliverable*'
+	^ CZQuery deliverable
 ]
 
 { #category : #'configuration public api' }
@@ -158,8 +164,9 @@ CZDocBuilder >> doNotAllowEmptySections [
 
 { #category : #'configuration public api' }
 CZDocBuilder >> doNotRestartNumberingAfterSection [
-
 	self flag: #youpi
+	"this should be done to be able to count the entity kind in a document. 
+	Now a numbering spawing over multiple section is good to impress people with your publication number :)"
 ]
 
 { #category : #'public api' }
@@ -170,9 +177,8 @@ CZDocBuilder >> document [
 
 { #category : #queries }
 CZDocBuilder >> editorQuery [
-
-	^ ((CZFieldQuery named: #editor checks: [ :value | value containsTeamMember: CZEntry teamMemberPatterns ])
-			OR: (self annotationWithType: '*workshopproceedings*') )
+	^ CZQuery editor
+	
 ]
 
 { #category : #'configuration public api' }
@@ -183,30 +189,30 @@ CZDocBuilder >> english [
 
 { #category : #'configuration public api' }
 CZDocBuilder >> fieldOrder: aCol [
-	"to specify the order and fields that should be displayed"
-	
-	fieldOrder := aCol 
+	"To specify the order and fields that should be displayed, for example, 
+	#(#author #title #chapter #journal #booktitle #volume #pages #publisher #school #year #url #doi)."
+
+	fieldOrder := aCol
 ]
 
 { #category : #'public api' }
 CZDocBuilder >> fileNamed: aStringDotBib [
-	
-	| bibset2 | 
-	bibset2 := CZBibParser parse: ((FileStream readOnlyFileNamed: aStringDotBib) contents).
+	"Parser and set the bib file."
+	| bibset2 |
+	bibset2 := CZBibParser parse: (FileStream readOnlyFileNamed: aStringDotBib) contents.
 	bibset2 scope: CZSet standardDefinitions.
-	self bibset:  bibset2
-	
+	self bibset: bibset2
 ]
 
 { #category : #building }
 CZDocBuilder >> filter [
-	"Filter insubmission and other not blacklisted entries"
-	
-	self shouldFilterNonPublic ifFalse: [^ self].
+	"Filter insubmission and other blacklisted entries"
+
+	self shouldFilterNonPublic
+		ifFalse: [ ^ self ].
 	workingBibSet := workingBibSet reject: self inSubmissionQuery.
-	workingBibSet := workingBibSet reject: [:each | keysOfBlackListedEntries includes: each key] 
-	
-	
+	workingBibSet := workingBibSet
+		reject: [ :each | keysOfBlackListedEntries includes: each key ]
 ]
 
 { #category : #'configuration public api' }
@@ -217,22 +223,19 @@ CZDocBuilder >> french [
 
 { #category : #queries }
 CZDocBuilder >> inSubmissionQuery [
-
-	^ (CZFieldQuery 
-			named: #keywords 
-			checks: [ :value | '*insubmission*' match: value ])
+	^ CZQuery inSubmission
 ]
 
 { #category : #initialize }
 CZDocBuilder >> initialize [
-
 	super initialize.
 	doc := CZDoc new.
 	self authorMatchingString: '*'.
 	localization := CZLocalisation new.
+	self fieldOrder: #(#author #title #chapter #journal #booktitle #volume #pages #publisher #school #year #url #doi).
 	self doNotAllowEmptySections.
 	self setFilteringOn.
-	self keysOfBlackListedEntries: self defaultKeysOfBlackListedEntries 
+	self keysOfBlackListedEntries: self defaultKeysOfBlackListedEntries
 ]
 
 { #category : #queries }
@@ -251,8 +254,12 @@ CZDocBuilder >> internationalJournalQuery [
 
 { #category : #queries }
 CZDocBuilder >> internationalWorkshopQuery [
+	^ CZQuery internationalWorkshop
+]
 
-	^ self annotationWithType:  '*internationalworkshop*'
+{ #category : #queries }
+CZDocBuilder >> invited [
+	^ CZQuery invited
 ]
 
 { #category : #queries }
@@ -269,15 +276,13 @@ CZDocBuilder >> invitedQuery [
 
 { #category : #queries }
 CZDocBuilder >> journalQuery [
-
-	^ (CZFieldQuery 
-			named: #annote 
-			checks: [ :value | '*internationaljournal*' match: value ])
+	^ CZQuery journal
 ]
 
 { #category : #accessing }
 CZDocBuilder >> keysOfBlackListedEntries [
-
+	"Returns the list of entities (identfied via their bib key) that should not be taken into account when building a document."
+	
 	^ keysOfBlackListedEntries
 ]
 
@@ -289,29 +294,24 @@ CZDocBuilder >> keysOfBlackListedEntries: aCol [
 
 { #category : #queries }
 CZDocBuilder >> nationalConferenceQuery [
-
 	"pay attention not to put a star else internationalconference will be matched too"
-	^ self annotationWithType:  'nationalconference*'
+
+	^ CZQuery nationalConference
 ]
 
 { #category : #queries }
 CZDocBuilder >> nationalJournalQuery [
-
-	^ (CZFieldQuery 
-			named: #annote 
-			checks: [ :value | ('*nationaljournal*' match: value) and: [('*internationaljournal*' match: value) not] ])
+	^ CZQuery nationalJournal
 ]
 
 { #category : #queries }
 CZDocBuilder >> nationalWorkshopQuery [
-
-	^ self annotationWithType:  'nationalworkshop*'
+	^ CZQuery nationalWorkshop
 ]
 
 { #category : #queries }
 CZDocBuilder >> periodicalQuery [
-
-	^ self annotationWithType:  '*periodical*'
+	^ CZQuery periodical
 ]
 
 { #category : #'configuration public api' }
@@ -335,32 +335,27 @@ CZDocBuilder >> shouldFilterNonPublic [
 
 { #category : #queries }
 CZDocBuilder >> teamEntryQuery [
-	
-	^ CZEntryQuery checks: [:each | each isTeamEntry]
+	^ CZQuery teamEntry
 ]
 
 { #category : #queries }
 CZDocBuilder >> technicalReportQuery [
-
-	^ self annotationWithType:  '*technicalreport*'
+	^ CZQuery techreport
 ]
 
 { #category : #queries }
 CZDocBuilder >> toolDemoQuery [
-
-	^ self annotationWithType:  '*tooldemo*'
+	^ CZQuery toolDemo
 ]
 
 { #category : #queries }
 CZDocBuilder >> topConferenceQuery [
-	
-	^ self annotationWithType:  '*topconference*'
+	^ CZQuery topConference
 ]
 
 { #category : #queries }
 CZDocBuilder >> vulgarisationQuery [
-	
-	^ self annotationWithType:  '*vulgarisation*'
+	^ CZQuery vulgarisation
 ]
 
 { #category : #accessing }

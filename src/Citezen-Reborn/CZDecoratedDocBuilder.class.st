@@ -44,6 +44,11 @@ builder := self new
 	builder generate.	
 		
 
+My subclasses are not really subclasses. They should be configuration objects. 
+
+
+
+
 "
 Class {
 	#name : #CZDecoratedDocBuilder,
@@ -156,7 +161,7 @@ CZDecoratedDocBuilder >> generate [
 	self generateFor: self build document.
 ]
 
-{ #category : #generate }
+{ #category : #'file helper' }
 CZDecoratedDocBuilder >> generateFor: aDoc [
 	self generateFor: aDoc on: (FileStream newFileNamed: Date today yyyymmdd , self extension).
 ]

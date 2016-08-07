@@ -1,3 +1,6 @@
+"
+To convert back a document into a bib file.
+"
 Class {
 	#name : #CZBibTeXDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
