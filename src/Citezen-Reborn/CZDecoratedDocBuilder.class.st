@@ -50,7 +50,6 @@ Class {
 	#superclass : #CZDocBuilder,
 	#instVars : [
 		'noHeader',
-		'xhtml',
 		'bodySpecification',
 		'footerString',
 		'headerString'
@@ -168,7 +167,6 @@ CZDecoratedDocBuilder >> generateFor: aDoc on: aStream [
 	visitor := self generatorClass new.
 	fieldOrder ifNotNil: [ visitor fieldOrder: fieldOrder ].
 	visitor outputStream: aStream.
-	self halt.
 	visitor visit: aDoc
 ]
 
