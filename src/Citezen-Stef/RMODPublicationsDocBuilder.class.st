@@ -8,6 +8,10 @@ How to use me for evaluation report helping.
 	self  query20112016
 		generateBibTeX;
 		statistics
+
+	we should get three left: unpublished, and two tooldemos. 
+	
+	
 		
 "
 Class {
@@ -52,6 +56,7 @@ RMODPublicationsDocBuilder class >> query20112016 [
 		startingYear: 2012;
 		endingYear: 2016;
 		teamMembers: self teamFor20112016;
+		keysOfBlackListedEntries: #(Stein12a Stein12b);
 		setFilteringOn;
 		yourself.
 	builder filter.
@@ -84,12 +89,13 @@ RMODPublicationsDocBuilder >> filter [
 
 { #category : #building }
 RMODPublicationsDocBuilder >> generateBibTeX [
+	"with this we will be able to do a nocite{*} and get all the references in our lovely report"
 	| visitor |
 	visitor := CZBibTexGenerator new.
-	visitor fieldOrder:
-			#(#author #title #chapter #journal #booktitle #volume #pages #publisher #school #year #impactfactor #misc #url #doi).
 	visitor
-		outputStream: (FileStream newFileNamed: self bibtexFileName).
+		fieldOrder:
+			#(#author #title #chapter #journal #booktitle #volume #pages #publisher #school #year #impactfactor #misc #url #doi).
+	visitor outputStream: (FileStream newFileNamed: self bibtexFileName).
 	visitor visit: workingBibSet
 ]
 
@@ -114,19 +120,17 @@ RMODPublicationsDocBuilder >> latexName [
 ]
 
 { #category : #building }
-RMODPublicationsDocBuilder >> lineFor: selector [
-	(workingBibSet select: CZQuery phdthesis)
-		groupedBy: CZQuery year.
-	2012 to: 2016 do: [ :each |  ]
-]
-
-{ #category : #building }
 RMODPublicationsDocBuilder >> lineFor: selector into: aStream [
 	| dict |
 	dict := (workingBibSet select: (CZQuery perform: selector)) groupedBy: CZQuery year.
+	workingBibSet := workingBibSet reject: (CZQuery perform: selector).
+	"so that we do not count twice the top conferences that are tagged internationalconference"
+	aStream
+		nextPutAll: selector asString;
+		space.
 	2012 to: 2016 do: [ :each | 
-			aStream nextPutAll: '& '.
-			aStream nextPutAll: (dict at: each ifAbsent: [ Set new ]) size printString ]
+		aStream nextPutAll: '& '.
+		aStream nextPutAll: (dict at: each ifAbsent: [ Set new ]) size printString ]
 ]
 
 { #category : #accessing }
@@ -137,33 +141,23 @@ RMODPublicationsDocBuilder >> startingYear: anInteger [
 
 { #category : #building }
 RMODPublicationsDocBuilder >> statistics [
-
 	| stream journals phds topconferences vulgarisation internationalconferences books conferences tr |
-	
-	stream := FileStream newFileNamed: 'tableForEvaluationReport.tex'.
-	stream nextPutAll: '\begin{center}
+	stream := FileStream forceNewFileNamed: 'tableForEvaluationReport.tex'.
+	stream
+		nextPutAll:
+			'\begin{center}
 \begin{tabular}{l|r|r|r|r|r} \hline
-&2012&2013&2014&2015&2016\\ \hline \hline'.
-	phds := workingBibSet select: CZQuery phdthesis.
-	
-	self lineFor: #phdthesis into: stream.
-	stream nextPutAll: '\\ \hline'
+&2012&2013&2014&2015&2016\\ \hline \hline';
+		lf.
+	#(#phdthesis #internationalJournal #nationalJournal #topConference #internationalConference #nationalConference #book bookChapter #internationalWorkshop #vulgarisation #techReport)
+		do: [ :each | 
+			self lineFor: each into: stream.
+			stream
+				nextPutAll: '\\ \hline';
+				lf ].
+	stream nextPutAll: '\end{tabular}\end{center}'
 
-"
-	phds := workingBibSet select: CZQuery phdthesis.
-	journals := workingBibSet select:  CZQuery article.
-	topconferences := workingBibSet select: CZQuery topconference.
-	internationalconferences := workingBibSet select: CZQuery internationalconference. 
-	'bug here since we count two times the same'
-	conferences := workingBibSet select: CZQuery conference. 
-	vulgarisation := workingBibSet select: CZQuery vulgarisation.
-	books := workingBibSet select: CZQuery book.
-	tr := workingBibSet select: CZQuery techreport."
-	"groupedBy: (CZFieldQuery named: #year checks: [ :value | value asNumber ])".
-	
-	
-
-"\begin{center}
+	"\begin{center}
 \begin{tabular}{l|r|r|r|r} \hline
                                 &2012-2013&2013-2014&2014-2015&2015-2016\\ \hline \hline
 PhD Theses                      &  3     &   1    &   2    &   2 \\ \hline
@@ -208,7 +202,7 @@ RMODPublicationsDocBuilder >> verifyStatisticsGeneration [
 	conferences := workingBibSet select: CZQuery conference.
 	vulgarisation := workingBibSet select: CZQuery vulgarisation.
 	books := workingBibSet select: CZQuery book.
-	tr := workingBibSet select: CZQuery techreport.
+	tr := workingBibSet select: CZQuery techReport.
 	self halt.
 	workingBibSet entries size = (tr size + books size
 		+ vulgarisation size + conferences size + journals size

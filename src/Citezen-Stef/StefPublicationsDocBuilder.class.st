@@ -34,7 +34,7 @@ StefPublicationsDocBuilder class >> xhtml [
 { #category : #building }
 StefPublicationsDocBuilder >> buildBody [
 
-	self addBibSection: (self journalQuery) withTitle: localization  internationalReviewedJournal;
+	self addBibSection: (self internationalJournalQuery) withTitle: localization  internationalReviewedJournal;
 		addBibSection: (self topConferenceQuery) withTitle:  localization topConferences;				
 		addBibSection: (self nationalJournalQuery) withTitle: localization nationalReviewedJournal;
 		addBibSection: (self internationalConferenceQuery)  withTitle: localization internationalConference;
