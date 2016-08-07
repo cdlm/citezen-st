@@ -16,7 +16,7 @@ Class {
 { #category : #visiting }
 CZDocElement >> acceptVisitor: aVisitor [
 
-	self subclassResponsibility
+	aVisitor visitText: self
 ]
 
 { #category : #accessing }

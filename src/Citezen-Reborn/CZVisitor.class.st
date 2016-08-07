@@ -111,10 +111,16 @@ CZVisitor >> visitCompositeValue: aCZCompositeValue [
 
 { #category : #'visiting doc' }
 CZVisitor >> visitDoc: aDocument [
-	self visitString: aDocument title. 
+	self visitDocTitle: aDocument title. 
 	self visit: aDocument header.
 	aDocument elements do: [ :each | self visit: each ].
 	self visit: aDocument footer.
+]
+
+{ #category : #'visiting doc' }
+CZVisitor >> visitDocTitle: aTitle [
+	self visitString: aTitle
+
 ]
 
 { #category : #visiting }

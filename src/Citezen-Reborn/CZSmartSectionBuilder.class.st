@@ -1,28 +1,57 @@
 "
-I'm a special builder that generates tagged-based sections.
+I'm a special builder that generates tagged-based publications separate files.
 
-I create a section with a title and a list of items each item is 
-one of the following items where the items are matched against the third element.
+${smartPublications: file='Editor'| title='Workshop Proceedings' | text =  
+		'Here are some of the proceedings of workshops and other activities I got over the year.' |
+		bibtag='kzEditor'}$
+should produce a file named Editor.pillar with Workshop Proceedings as title and some text
+followed by a list of all the publications tagged with kzEditor. 
+
+Here is a typical use
+!!! Maintenance and Software Evolution
+I'm interested in all the aspects of software evolution and maintenance of large systems. I consulted for companies. Do not hesitate to contact me. I'm interested in your problems.
+- topics1
+- topics2
 
 
-Given a specification following this pattern: 
+Given a specification will follow this pattern: 
 
+${smartPublications: file='Editor'| title='Workshop Proceedings' | text =  
+		'Here are some of the proceedings of workshops and other activities I got over the year.' |
+		bibtag='kzEditor']
 
-	^ #(
+!!Supported features
+
+- keysOfBlackListedEntries:
+- fileNamed: 'rmod.bib';
+- authorMatchingString:
+- fieldOrder:
+
+!! Example
+
+| builder |
+builder := self new
+		fileNamed: 'rmod.bib';
+		authorMatchingString: '*Ducasse*';
+		english; 
+		fieldOrder: #(#author 
+			  #title  #journal #booktitle 
+			  #volume  #pages  #publisher  
+			  #year  #school #impactfactor 
+			 #url #doi); 
+		setFilteringOn;
+	topics: 
+		#(
+			#('Editor' 'Workshop Proceedings ' 'Here are some of the proceedings of workshops and other activities I got over the year.' '*kzEditor*') 
+			#('Education' 'Teaching and Educative Support' 'I''m interested in how to teach computer sciences. I supervized Hilaire Fernandes on how computer sciences can support math teaching.' '*kzTeaching*') 
+			#('Vulgarisation' 'Computer Science Vulgarisation' 'I wrote several articles around programming language topics for mass journals.' '*kzVulgarisation*')).
+	builder generate.	
 		
-		#('Editor' 'Workshop Proceedings ' 
-		'Here are some of the proceedings of workshops and other activities I got over the year.' 
-		'*kzEditor*') 
-		
-		#('Education' 'Teaching and Educative Support' 
-		'I''m interested in how to teach computer sciences. I supervized Hilaire Fernandes on how computer sciences can support math teaching.' 
-		'*kzTeaching*')
-		
-		#('Vulgarisation' 'Computer Science Vulgarisation' 
-		'I wrote several articles around programming language topics for mass journals.' 
-		'*kzVulgarisation*')
-		)
-		
+
+	
+	 
+Todo: 
+Should probably be using Pillar structures. 
 	
 { ""title"" : 	""Editorial and Others"",
 	""items "" : [  
@@ -36,97 +65,84 @@ Given a specification following this pattern:
 
 
 
+
+
+
 "
 Class {
 	#name : #CZSmartSectionBuilder,
 	#superclass : #CZPillarDocBuilder,
+	#instVars : [
+		'topics'
+	],
 	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
-{ #category : #'as yet unclassified' }
-CZSmartSectionBuilder >> createSubTopic: file title: name text: text bibTag: bibTag [
+{ #category : #building }
+CZSmartSectionBuilder >> bibEntriesFor: aBibTag [
 
-	|  ndoc |
-	ndoc := CZDoc title: name.
-	ndoc add: (CZText text: text).
-	ndoc add: 
-			(CZSection new
-				title: name;				
-				text: text;
-				yourself).
+	^ workingBibSet select: (self queryForKozenTag: aBibTag)
+]
+
+{ #category : #building }
+CZSmartSectionBuilder >> createSubTopic: file title: name text: text bibTag: bibTag [
+	"I should create a new file so each CZDoc should be mapped to a file"
+
+	| ndoc |
+	ndoc := CZDoc new title: 'Sorted research'.
+	ndoc add: (CZSection new title: name; yourself).
+	ndoc add: (CZText new text: text; yourself).
+	ndoc add: (CZItemList new addElements: (self bibEntriesFor: bibTag)).
 	^ ndoc
 ]
 
-{ #category : #'as yet unclassified' }
-CZSmartSectionBuilder >> defaultSmartSpecification [ 
-
-	^ #(
-		
-		#('Editor' 'Workshop Proceedings ' 
-		'Here are some of the proceedings of workshops and other activities I got over the year.' 
-		'*kzEditor*') 
-		
-		#('Education' 'Teaching and Educative Support' 
-		'I''m interested in how to teach computer sciences. I supervized Hilaire Fernandes on how computer sciences can support math teaching.' 
-		'*kzTeaching*')
-		
-		#('Vulgarisation' 'Computer Science Vulgarisation' 
-		'I wrote several articles around programming language topics for mass journals.' 
-		'*kzVulgarisation*')
-		)
+{ #category : #initialize }
+CZSmartSectionBuilder >> defaultSmartSpecifications [
+	^ #(#('Editor' 'Workshop Proceedings ' 'Here are some of the proceedings of workshops and other activities I got over the year.' '*kzEditor*') #('Education' 'Teaching and Educative Support' 'I''m interested in how to teach computer sciences. I supervized Hilaire Fernandes on how computer sciences can support math teaching.' '*kzTeaching*') #('Vulgarisation' 'Computer Science Vulgarisation' 'I wrote several articles around programming language topics for mass journals.' '*kzVulgarisation*'))
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 CZSmartSectionBuilder >> filter [
-
 	super filter.
 	"here we do not want to remove from the working set so that 
 	the articles can have multiple categories"
+	"Yes but this is not there the problem"
 	workingBibSet := originalBibSet select: self authorQuery
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #generate }
 CZSmartSectionBuilder >> generate [
 	"self new generate"
-	
-	self defaultSmartSpecification 
+
+	self defaultSmartSpecifications
 		do: [ :each | 
-			self
+			| docTopic |
+			self filter.	"reset the bib to full to be able to support multiple classifications of one entry."
+
+			"a topic document should be generated in a separate file"
+			docTopic := self
 				createSubTopic: each first
 				title: each second
 				text: each third
 				bibTag: each fourth.
-			 ].
-]
-
-{ #category : #'as yet unclassified' }
-CZSmartSectionBuilder >> generateFor: aDoc on: aStream [ 
-
-	self generateTopicSectionOn: aStream. 
-	self generateTopics.
-	
-]
-
-{ #category : #'as yet unclassified' }
-CZSmartSectionBuilder >> generateTopicSectionOn: aStream [
-	
-	
-	| itemList |
-	self flag: #here. 
-	doc addSection:  (CZSection new title: 'Bla'; yourself).
-	itemList := (CZItemList new).
-	doc add: itemList. 
-	self defaultSmartSpecification 
-		do: [ :each | 
-				itemList add: (CZLinkItem link: '....')
-				
-				
+			(CZPillarNewGenerator new 	
+				filename: each first, self extension)
+				visitDoc: docTopic.
 				]
-				 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #utils }
 CZSmartSectionBuilder >> queryForKozenTag: aTag [
 
-	^ CZFieldQuery named: #keywords checks: [ :value | aTag match: value ]
+	^ CZFieldQuery named: #keywords checks: [ :value | '*', aTag, '*' match: value ]
+]
+
+{ #category : #accessing }
+CZSmartSectionBuilder >> topics [
+	^ topics ifNil: [ topics := self defaultSmartSpecifications ] 
+]
+
+{ #category : #accessing }
+CZSmartSectionBuilder >> topics: aCollectionOfTopics [
+	topics := aCollectionOfTopics
 ]

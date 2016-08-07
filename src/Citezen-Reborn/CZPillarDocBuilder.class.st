@@ -39,13 +39,12 @@ Class {
 
 { #category : #initialize }
 CZPillarDocBuilder >> extension [
-
-	^ '-Full.pillar'
+	^ '.pillar'
 ]
 
 { #category : #initialize }
 CZPillarDocBuilder >> generatorClass [
-	^ CZPillarGenerator 
+	^ CZPillarNewGenerator
 ]
 
 { #category : #initialize }

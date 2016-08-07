@@ -58,8 +58,7 @@ CZFileFormatGenerator >> fieldSeparatorString: aString [
 
 { #category : #'file helper' }
 CZFileFormatGenerator >> filename: aString [
-
-	outputStream := FileStream newFileNamed: aString 
+	outputStream := FileStream forceNewFileNamed: aString
 ]
 
 { #category : #initialize }
@@ -195,6 +194,13 @@ CZFileFormatGenerator >> visitString: aCZString [
 
 	self outputStream nextPutAll: 
 		(self treatString: (CZAccentuateCharactersParser parse: aCZString notExpanded))
+]
+
+{ #category : #visit }
+CZFileFormatGenerator >> visitText: aCZText [
+	self outputStream
+		nextPutAll: (CZAccentuateCharactersParser parse: aCZText text).
+	self line
 ]
 
 { #category : #visit }

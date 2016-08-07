@@ -29,6 +29,12 @@ CZPillarNewGenerator >> treatString: aString [
 	^ writer escape: aString
 ]
 
+{ #category : #visit }
+CZPillarNewGenerator >> visitDocTitle: aTitle [
+	self outputStream nextPutAll: '!'.
+	super visitDocTitle: aTitle.
+]
+
 { #category : #'as yet unclassified' }
 CZPillarNewGenerator >> visitField: aField [
 	

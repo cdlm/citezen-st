@@ -40,8 +40,7 @@ Class {
 
 { #category : #generate }
 CZPillarNewDocBuilder >> extension [
-
-	^ '-Full.pillar'
+	^ '.pillar'
 ]
 
 { #category : #utils }

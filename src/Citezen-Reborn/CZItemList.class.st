@@ -22,6 +22,11 @@ CZItemList >> addElement: anElement [
 	elements add: anElement
 ]
 
+{ #category : #adding }
+CZItemList >> addElements: aColOfElements [
+	elements addAll: aColOfElements
+]
+
 { #category : #accessing }
 CZItemList >> elements [
 
