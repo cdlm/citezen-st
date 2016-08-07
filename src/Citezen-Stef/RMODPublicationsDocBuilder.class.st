@@ -141,7 +141,7 @@ RMODPublicationsDocBuilder >> startingYear: anInteger [
 
 { #category : #building }
 RMODPublicationsDocBuilder >> statistics [
-	| stream journals phds topconferences vulgarisation internationalconferences books conferences tr |
+	| stream |
 	stream := FileStream forceNewFileNamed: 'tableForEvaluationReport.tex'.
 	stream
 		nextPutAll:
@@ -149,7 +149,7 @@ RMODPublicationsDocBuilder >> statistics [
 \begin{tabular}{l|r|r|r|r|r} \hline
 &2012&2013&2014&2015&2016\\ \hline \hline';
 		lf.
-	#(#phdthesis #internationalJournal #nationalJournal #topConference #internationalConference #nationalConference #book bookChapter #internationalWorkshop #vulgarisation #techReport)
+	#(#phdthesis #internationalJournal #nationalJournal #topConference #internationalConference #nationalConference #book #bookChapter #internationalWorkshop #vulgarisation #techReport)
 		do: [ :each | 
 			self lineFor: each into: stream.
 			stream
