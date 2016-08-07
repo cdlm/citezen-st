@@ -4,7 +4,7 @@ A CZHTMLGenerator is generating nice html for us.
 Class {
 	#name : #CZHTMLGenerator,
 	#superclass : #CZFileFormatGenerator,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
 { #category : #configuration }

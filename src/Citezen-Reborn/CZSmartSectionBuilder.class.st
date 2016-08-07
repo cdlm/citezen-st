@@ -40,7 +40,7 @@ Given a specification following this pattern:
 Class {
 	#name : #CZSmartSectionBuilder,
 	#superclass : #CZPillarDocBuilder,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #'as yet unclassified' }

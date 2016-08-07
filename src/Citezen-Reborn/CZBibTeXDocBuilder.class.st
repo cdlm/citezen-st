@@ -1,7 +1,7 @@
 Class {
 	#name : #CZBibTeXDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #utils }

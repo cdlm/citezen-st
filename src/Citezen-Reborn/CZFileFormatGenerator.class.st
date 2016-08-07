@@ -1,5 +1,5 @@
 "
-A CZFileFormatGenerator is mainly generated text into a file.
+A CZFileFormatGenerator is mainly generating text into a stream.
 Its subclasses are more interested.
 "
 Class {
@@ -9,7 +9,7 @@ Class {
 		'outputStream',
 		'fieldSeparatorString'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
 { #category : #configuration }
@@ -27,14 +27,14 @@ CZFileFormatGenerator >> defaultHeader [
 	^ ''
 ]
 
-{ #category : #entries }
+{ #category : #'header/footer hooks' }
 CZFileFormatGenerator >> emitEntryFooter: anEntry [
 
 	self outputStream nextPut: $..
 	self line
 ]
 
-{ #category : #entries }
+{ #category : #'header/footer hooks' }
 CZFileFormatGenerator >> emitEntryHeader: anEntry [
 	"Add to the outputStream a header for the correponding anEntry if needed."
 ]
@@ -56,7 +56,7 @@ CZFileFormatGenerator >> fieldSeparatorString: aString [
 	fieldSeparatorString := aString
 ]
 
-{ #category : #accessing }
+{ #category : #'file helper' }
 CZFileFormatGenerator >> filename: aString [
 
 	outputStream := FileStream newFileNamed: aString 

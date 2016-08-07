@@ -34,7 +34,7 @@ builder := self new
 Class {
 	#name : #CZPillarDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #initialize }

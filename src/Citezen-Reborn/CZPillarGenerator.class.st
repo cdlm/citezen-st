@@ -1,11 +1,12 @@
 "
 A visitor that generates pillar format.
+However I'm hacking the trasnformation of certain symbols instead of using a pillar canvas. I should be removed. 
 
 "
 Class {
 	#name : #CZPillarGenerator,
 	#superclass : #CZFileFormatGenerator,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
 { #category : #entries }

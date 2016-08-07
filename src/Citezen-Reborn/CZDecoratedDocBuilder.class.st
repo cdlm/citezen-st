@@ -55,7 +55,7 @@ Class {
 		'footerString',
 		'headerString'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #Bibtex }
@@ -168,6 +168,7 @@ CZDecoratedDocBuilder >> generateFor: aDoc on: aStream [
 	visitor := self generatorClass new.
 	fieldOrder ifNotNil: [ visitor fieldOrder: fieldOrder ].
 	visitor outputStream: aStream.
+	self halt.
 	visitor visit: aDoc
 ]
 

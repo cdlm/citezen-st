@@ -9,7 +9,7 @@ Class {
 		'entry2',
 		'bibset'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-Core-Visitor'
 }
 
 { #category : #setup }

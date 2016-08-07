@@ -8,7 +8,7 @@ Normally since we refer to the bibtex file we should invoke the CZBibSingleAutho
 Class {
 	#name : #CZXHTMLDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #'as yet unclassified' }

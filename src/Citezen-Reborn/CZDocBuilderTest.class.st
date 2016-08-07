@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'bibset'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #'examples for tests' }
@@ -326,9 +326,9 @@ CZDocBuilderTest >> testInSubmissionPublicationAreRemovedWhenFilteringIsOn [
 { #category : #tests }
 CZDocBuilderTest >> testSelectingJournalEffectivelyReturnsOnlyJournals [
 	"self debug: #testSelectingJournalEffectivelyReturnsOnlyJournals"
-	
+
 	| builder |
-	builder := CZDocBuilder new  bibset: bibset.
-	self assert: builder workingBibSet size = 6.				
+	builder := CZDocBuilder new bibset: bibset.
+	self assert: builder workingBibSet size = 6.
 	self assert: (builder workingBibSet select: builder journalQuery) size = 2
 ]

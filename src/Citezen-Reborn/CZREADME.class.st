@@ -47,5 +47,5 @@ Start by making sure your source is UTF-8 (read it with the second expression).
 Class {
 	#name : #CZREADME,
 	#superclass : #Object,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }

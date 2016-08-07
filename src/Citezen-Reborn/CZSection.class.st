@@ -21,15 +21,14 @@ CZSection >> acceptVisitor: aVisitor [
 
 { #category : #deprecated }
 CZSection >> name [
-	"deprecated"
-	
+	"deprecated sue title"
 	^ name
 ]
 
 { #category : #deprecated }
 CZSection >> name: aString [
-	"deprecated"
-	
+	"deprecated use title:"
+
 	name := aString
 ]
 

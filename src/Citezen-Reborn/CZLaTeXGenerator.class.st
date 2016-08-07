@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'fieldEmbellishingTable'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
 { #category : #configuration }

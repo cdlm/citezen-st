@@ -27,7 +27,7 @@ builder := self new
 Class {
 	#name : #CZLaTeXDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #building }

@@ -6,7 +6,7 @@ Class {
 		'entry2',
 		'renderer'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
 { #category : #setup }
@@ -47,9 +47,10 @@ CZLaTeXGeneratorTest >> testArticle [
 	
 	| result |
 	result := (CZLaTeXGenerator new visit: entry) outputStream contents.
-	self assert: result = '
+	self assert: result
+ ='
 	\pub  \czauthors{St\''ephane Ducasse and Damien Pollet},  \cztitle{Fingerprints},  In \czjournal{Journal of Information System}, 2010.
-' 
+'
 ]
 
 { #category : #setup }
@@ -59,7 +60,7 @@ CZLaTeXGeneratorTest >> testLongArticle [
 	| result |
 	result := (CZLaTeXGenerator new visit: entry2) outputStream contents.
 
-	self assert: result =  '
+	self assert: result = '
 	\pub  \czauthors{Hani Abdeen, Ilham Alloui, St\''ephane Ducasse, Damien Pollet and Mathieu Suen},  \cztitle{Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships},  In \czbooktitle{European Conference on Software Maintenance and Reengineering (CSMR)}, pp. 213--222, IEEE Computer Society Press, 2008, Acceptance rate: 24/87 = 27\%, http://scg.unibe.ch/archive/external/Abde08a.pdf.
-' 
+'
 ]

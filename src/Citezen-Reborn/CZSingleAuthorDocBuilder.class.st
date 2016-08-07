@@ -10,7 +10,7 @@ Class {
 		'noHeader',
 		'xhtml'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #Bibtex }

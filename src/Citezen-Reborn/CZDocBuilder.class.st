@@ -21,7 +21,7 @@ Class {
 		'keysOfBlackListedEntries',
 		'fieldOrder'
 	],
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #queries }

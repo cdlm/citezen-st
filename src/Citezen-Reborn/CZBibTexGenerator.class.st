@@ -4,7 +4,7 @@ to generate bibtex out of bibset entries :)
 Class {
 	#name : #CZBibTexGenerator,
 	#superclass : #CZFileFormatGenerator,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
 { #category : #entries }

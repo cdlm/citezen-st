@@ -1,3 +1,6 @@
+"
+A simple element list. 
+"
 Class {
 	#name : #CZItemList,
 	#superclass : #CZDocElement,

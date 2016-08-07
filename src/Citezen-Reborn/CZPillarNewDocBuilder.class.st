@@ -25,7 +25,9 @@ builder := self new
 			  #year 
 			  #school
 			  #impactfactor 
-			  #misc); ""removed doi and url since they may contain _ and the generator does not handle that well for the moment.""
+			  #misc
+			 #url
+			  #doi); 
 		setFilteringOn.
 	builder generate.	
 		
@@ -33,7 +35,7 @@ builder := self new
 Class {
 	#name : #CZPillarNewDocBuilder,
 	#superclass : #CZDecoratedDocBuilder,
-	#category : #'Citezen-Reborn'
+	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
 { #category : #generate }
