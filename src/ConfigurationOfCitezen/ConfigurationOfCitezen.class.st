@@ -2165,3 +2165,25 @@ ConfigurationOfCitezen >> version30: spec [
 				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
 				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.86' ]
 ]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version31: spec [
+	<version: '3.1' imports: #('1.8-baseline')>
+	spec
+		for: #common
+		do: [ spec blessing: #release.
+			spec description: 'first cut at bbl visitor support'.
+			spec author: 'StephaneDucasse'.
+			spec timestamp: '08/07/2016 16:43'.
+			spec
+				package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
+				package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.66';
+				package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+				package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.44';
+				package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.20';
+				package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.44';
+				package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.13';
+				package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.87' ]
+]
