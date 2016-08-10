@@ -48,7 +48,7 @@ BibAlternativePhrase >> do: aBlock [
 
 { #category : #accessing }
 BibAlternativePhrase >> do: aBlock for: anEntry [
-	^ (self subPhraseFor: anEntry) ifNotNilDo: [:it | aBlock value: it]
+	^ (self subPhraseFor: anEntry) ifNotNil: [ :it | aBlock value: it ]
 ]
 
 { #category : #'initialize-release' }

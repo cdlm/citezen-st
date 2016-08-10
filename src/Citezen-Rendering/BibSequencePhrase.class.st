@@ -105,7 +105,7 @@ BibSequencePhrase >> initiator: aPhrase [
 
 { #category : #'accessing-convenience' }
 BibSequencePhrase >> initiatorDo: aBlock [
-	^ self initiator ifNotNilDo: aBlock
+	^ self initiator ifNotNil: aBlock
 ]
 
 { #category : #'accessing-convenience' }
@@ -130,8 +130,8 @@ BibSequencePhrase >> lastSeparator: aPhrase [
 ]
 
 { #category : #'accessing-convenience' }
-BibSequencePhrase >> lastSeparatorDo: aBlock [ 
-	^ self lastSeparator ifNotNilDo: aBlock
+BibSequencePhrase >> lastSeparatorDo: aBlock [
+	^ self lastSeparator ifNotNil: aBlock
 ]
 
 { #category : #'accessing-convenience' }
@@ -151,7 +151,7 @@ BibSequencePhrase >> separator: aPhrase [
 
 { #category : #'accessing-convenience' }
 BibSequencePhrase >> separatorDo: aBlock [
-	^ self separator ifNotNilDo: aBlock
+	^ self separator ifNotNil: aBlock
 ]
 
 { #category : #'accessing-convenience' }
@@ -176,7 +176,7 @@ BibSequencePhrase >> terminator: aPhrase [
 
 { #category : #'accessing-convenience' }
 BibSequencePhrase >> terminatorDo: aBlock [
-	^ self terminator ifNotNilDo: aBlock
+	^ self terminator ifNotNil: aBlock
 ]
 
 { #category : #'accessing-convenience' }
