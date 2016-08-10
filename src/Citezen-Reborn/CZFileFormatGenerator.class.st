@@ -9,6 +9,9 @@ Class {
 		'outputStream',
 		'fieldSeparatorString'
 	],
+	#pools : [
+		'CZPool'
+	],
 	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
@@ -156,8 +159,8 @@ CZFileFormatGenerator >> visitField: aField [
 CZFileFormatGenerator >> visitFooter: aCZFooter [
 
 	aCZFooter isDefined
-		ifTrue: [self outputStream nextPutAll: aCZFooter text]
-		ifFalse: [self outputStream nextPutAll: self defaultFooter]
+		ifTrue: [ self outputStream nextPutAll: aCZFooter text ]
+		ifFalse: [ self outputStream nextPutAll: self defaultFooter ]
 ]
 
 { #category : #'visit doc' }

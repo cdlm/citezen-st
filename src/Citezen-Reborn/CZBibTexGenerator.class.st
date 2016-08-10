@@ -11,7 +11,6 @@ Class {
 CZBibTexGenerator >> emitEntryFooter: anEntry [
 	self outputStream nextPut: $}.
 	self line ; line
-
 ]
 
 { #category : #entries }

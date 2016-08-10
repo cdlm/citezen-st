@@ -70,19 +70,19 @@ CZVisitor >> initialize [
 { #category : #configuration }
 CZVisitor >> setAuthorDisplayAsFullName [
 
-	expandOption := #displayFullName
+	expandOption := #useDisplayFullName
 ]
 
 { #category : #configuration }
 CZVisitor >> setAuthorDisplayAsNormalizedName [
 
-	expandOption := #displayNormalizedName
+	expandOption := #useDisplayNormalizedName
 ]
 
 { #category : #configuration }
 CZVisitor >> setAuthorDisplayAsShortenedName [
 
-	expandOption := #displayShortenedName
+	expandOption := #useDisplayShortenedName
 ]
 
 { #category : #visiting }
