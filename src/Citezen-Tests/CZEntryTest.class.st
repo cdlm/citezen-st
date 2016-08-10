@@ -8,7 +8,8 @@ Class {
 		'inproceedingsEntry',
 		'masterEntry',
 		'team',
-		'dirty'
+		'dirty',
+		'uqui'
 	],
 	#category : #'Citezen-Tests'
 }
@@ -83,6 +84,7 @@ dirty := (CZEntry type: CZEntry inproceedings)
 				at: #author put: 'Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen';
 				at: #title put: 'Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships';
 				at: #Aeres	 put: 'ACT';
+				at: #'Hal-ID' put: 'hal-01344842}';
  				at: #Aeresstatus   put:  'aeres08';
 				at: #Annote       put:  'internationalconference stefPub';
  				at: #Booktitle    put: 'European Conference on Software Maintenance and Reengineering (CSMR)';
@@ -101,6 +103,20 @@ dirty := (CZEntry type: CZEntry inproceedings)
    				at: #'Bdsk-Url-1'  put: 'http://scg.unibe.ch/archive/external/Abde08a.pdf';
 				at: #'Date-Added' put: '{2009-10-20 14:54:13 +0200}';
 				at: #'Date-Modified' put: '{2009-10-20 15:05:13 +0200}'.
+
+
+uqui := (CZBibParser parse: '	
+@techreport{Dias14b,
+	Annote = {technicalReport},
+	Author = {Mart\''in Dias and Ver\''onica Uquillas-Gomez and Damien Cassou and St\''ephane Ducasse},
+	Hal-Id = {hal-01093496},
+	Inria = {RMOD},
+	Institution = {INRIA Lille},
+	Keywords = {lse-pub},
+	Title = {Software Integration Questions: A Quantitative Survey},
+	Url = {https://hal.inria.fr/hal-01093496},
+	Year = {2014}}
+') entries at: 1.
 				
 
 ]
@@ -132,6 +148,16 @@ CZEntryTest >> testAt [
 ]
 
 { #category : #tests }
+CZEntryTest >> testAuthorAccess [
+	"self debug: #testAuthorAccess"
+
+	self assert: dirty author class = CZField.
+	self assert: dirty author valueClass = CZPeople.
+	self assert: dirty author rawValueObject class = CZPeople.
+	self assert: dirty author rawValue class = ByteString
+]
+
+{ #category : #tests }
 CZEntryTest >> testClean [
 	"self debug: #testClean"
 
@@ -147,6 +173,14 @@ CZEntryTest >> testClean [
 	CZEntry fieldKeysToRemove
 		do: [ :each | self deny: (dirty hasFieldWithKey: each)].
 
+]
+
+{ #category : #tests }
+CZEntryTest >> testCompactName [
+	"self debug: #testCompactName"
+
+	self assert: dirty author rawValueObject people first compactLastName = 'Abdeen'.
+	self assert: uqui author rawValueObject people second compactLastName = 'Uquillas-Gomez'.
 ]
 
 { #category : #tests }
@@ -235,6 +269,14 @@ CZEntryTest >> testMoveToBibSet [
 ]
 
 { #category : #tests }
+CZEntryTest >> testPeople [
+	"self debug: #testPeople"
+
+	self assert: dirty author rawValueObject people class = OrderedCollection.
+	self assert: dirty author rawValueObject people first class = CZAuthor.
+]
+
+{ #category : #tests }
 CZEntryTest >> testPredefinedAccess [
 	"self debug: #testPredefinedAccess"
 	
@@ -279,6 +321,14 @@ CZEntryTest >> testRemoveFields [
 	
 
 
+]
+
+{ #category : #tests }
+CZEntryTest >> testShortenedName [
+	"self debug: #testShortenedName"
+
+	self assert: dirty author rawValueObject useDisplayShortenedName expanded = 'H. Abdeen, I. Alloui, S. Ducasse, D. Pollet and M. Suen'.
+	self assert: dirty author rawValueObject shortenedName = 'H. Abdeen, I. Alloui, S. Ducasse, D. Pollet and M. Suen'.
 ]
 
 { #category : #tests }
