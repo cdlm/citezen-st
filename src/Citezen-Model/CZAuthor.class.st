@@ -35,6 +35,12 @@ CZAuthor class >> named: aCollection firstNames: firstNamesCollection junior: ju
 		yourself
 ]
 
+{ #category : #displaying }
+CZAuthor >> compactLastName [
+	^ String streamContents: [:stream |
+		self displayCompactLastNamesOn: stream ]
+]
+
 { #category : #private }
 CZAuthor >> dispatchFirstVonLast: aCollection [
 	| index |
@@ -67,6 +73,14 @@ CZAuthor >> dispatchVonLast: aCollection [
 		ifTrue: [index := aCollection size].
 	self particles: (aCollection removeFirst: index - 1).
 	self lastNames: aCollection
+]
+
+{ #category : #displaying }
+CZAuthor >> displayCompactLastNamesOn: aStream [
+	"Uquillas Gomez -> UquillasGomez"
+	self lastNames
+		do: [:lastName | aStream nextPutAll: lastName]
+
 ]
 
 { #category : #displaying }

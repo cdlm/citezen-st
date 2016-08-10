@@ -91,7 +91,7 @@ CZField >> asCZInteger [
 
 { #category : #visitor }
 CZField >> dispatchVisitor: aVisitor [
-	self flag: #toFix. "strange method name and why the acceptVisitor does not do all the job"
+	self flag: #toFix. "strange method name and why the acceptVisitor: does not do all the job"
 	value acceptVisitor: aVisitor 
 ]
 
@@ -130,7 +130,15 @@ CZField >> printOn: aStream [
 
 { #category : #accessing }
 CZField >> rawValue [
+	self flag: #design. 
+	"why value and raw value neither of them return what is actually stored inside the value field.
+	I was forced to introduce rawValueObject"
 	^ value notExpanded
+]
+
+{ #category : #accessing }
+CZField >> rawValueObject [
+	^ value 
 ]
 
 { #category : #'initialize-release' }
@@ -154,6 +162,8 @@ CZField >> setKey: aSymbol value: czValue [
 { #category : #accessing }
 CZField >> value [
 	"evaluate macros and composite values, and cleanup strings"
+	self flag: #design. 
+	"why value and raw value neither of them return what is actually stored inside the value field. I was forced to rawValueObject"
 	^ value expanded
 ]
 

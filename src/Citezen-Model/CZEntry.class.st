@@ -534,9 +534,8 @@ CZEntry >> macroReferences [
 
 { #category : #bibset }
 CZEntry >> moveToBibSet: aCZSet [
-	self scope ifNotNilDo: [:it |
-		"pull references if necessary"
-		it removeEntry: self].
+	self scope
+		ifNotNil: [ :it | "pull references if necessary" it removeEntry: self ].
 	aCZSet addEntry: self
 ]
 

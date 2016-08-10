@@ -6,19 +6,26 @@ Class {
 	#superclass : #SharedPool,
 	#classVars : [
 		'Author',
+		'Book',
 		'BookTitle',
 		'Chapter',
+		'DOI',
+		'DefaultFields',
 		'Editor',
+		'HAL',
+		'HALID',
+		'ImpactFactor',
 		'Institution',
 		'Journal',
+		'Misc',
 		'Note',
 		'Number',
 		'Pages',
 		'Publisher',
-		'RequiredFields',
 		'School',
 		'Series',
 		'Title',
+		'URL',
 		'Volume',
 		'Year'
 	],
@@ -26,8 +33,28 @@ Class {
 }
 
 { #category : #constants }
+CZPool class >> DOI [
+	^ #doi
+]
+
+{ #category : #constants }
+CZPool class >> HALID [
+	^ #'hal-id'
+]
+
+{ #category : #constants }
+CZPool class >> URL [
+	^ #url
+]
+
+{ #category : #constants }
 CZPool class >> author [
 	^ #author
+]
+
+{ #category : #constants }
+CZPool class >> book [
+	^ #book
 ]
 
 { #category : #constants }
@@ -45,25 +72,55 @@ CZPool class >> editor [
 	^ #editor
 ]
 
+{ #category : #constants }
+CZPool class >> impactFactor [
+	^ #impactfactor
+]
+
 { #category : #initialize }
 CZPool class >> initialize [
 	"self initialize"
 	
-	RequiredFields := {
+	Author := self author. 
+	BookTitle := self booktitle.
+	Chapter := self chapter.
+	Book := self book.
+	Editor := self editor.
+	Institution := self institution.
+	Journal := self journal.
+	Note := self note.
+	Number := self number. 
+	Pages := self pages. 
+	Publisher := self publisher.
+	School := self school.
+	Series := self series.
+	Volume := self volume.
+	Title := self title.
+	ImpactFactor := self impactFactor. 
+	DOI := self DOI.
+	HALID := self HALID.
+	URL := self URL.
+	Misc := self misc.
+	Note := self note. 
+	DefaultFields := {
 		self author.
+		self title.
+		self journal.
 		self booktitle.
 		self chapter.
 		self editor.
 		self institution.
-		self journal.
-		self note.
 		self number.
 		self pages.
 		self publisher.
 		self school.
 		self series.
 		self volume.
-		self title.
+		self note.
+		self URL. 
+		self DOI.
+		self HALID.
+		self misc.
 	}
 	
 ]
@@ -76,6 +133,11 @@ CZPool class >> institution [
 { #category : #constants }
 CZPool class >> journal [
 	^ #journal
+]
+
+{ #category : #constants }
+CZPool class >> misc [ 
+	^ #misc
 ]
 
 { #category : #constants }
@@ -96,11 +158,6 @@ CZPool class >> pages [
 { #category : #constants }
 CZPool class >> publisher [
 	^ #publisher
-]
-
-{ #category : #constants }
-CZPool class >> requiredFields [
-	^ RequiredFields
 ]
 
 { #category : #constants }
