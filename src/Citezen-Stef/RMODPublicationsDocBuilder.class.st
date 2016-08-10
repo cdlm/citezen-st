@@ -99,6 +99,19 @@ RMODPublicationsDocBuilder >> generateBibTeX [
 	visitor visit: workingBibSet
 ]
 
+{ #category : #building }
+RMODPublicationsDocBuilder >> generateTeamBibliography [
+	"with this we will be able to do a nocite{*} and get all the references in our lovely report"
+
+	| docBuilder builder |
+	docBuilder := CZXHTMLDocBuilder new
+		bibset: self query20112016 bibset;
+		headerString: self xmlHeaderString;
+		footerString: self xmlFooterString;
+		setFilteringOn.
+	docBuilder generate 
+]
+
 { #category : #initialize }
 RMODPublicationsDocBuilder >> initialize [
 	super initialize.
