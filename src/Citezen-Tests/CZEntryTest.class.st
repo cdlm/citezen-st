@@ -9,17 +9,19 @@ Class {
 		'masterEntry',
 		'team',
 		'dirty',
-		'uqui'
+		'uqui',
+		'uqui2'
 	],
 	#category : #'Citezen-Tests'
 }
 
 { #category : #setup }
 CZEntryTest >> setUp [
-
 	entry := (CZBibParser parse: CZTestResource bibTest) entries at: 1.
 	duplicateEntry := (CZBibParser parse: CZTestResource bibTest) entries at: 1.
-	articleEntry := CZBibParser parse: '	@article{Herm00a,
+	articleEntry := CZBibParser
+		parse:
+			'	@article{Herm00a,
  author = {Herman, Ivan and Melan\c{c}on, Guy and Marshall, M. Scott},
  title = {Graph Visualization and Navigation in Information Visualization: A Survey},
  journal = {IEEE Transactions on Visualization and Computer Graphics},
@@ -32,8 +34,9 @@ CZEntryTest >> setUp [
  publisher = {IEEE Educational Activities Department},
  address = {Piscataway, NJ, USA}
  }'.
-
-inproceedingsEntry := (CZBibParser parse: '	
+	inproceedingsEntry := (CZBibParser
+		parse:
+			'	
 @inproceedings{Nier04d,
   Abstract     = {In this paper we briefly review various kinds of
                   software changes and the issues that arise from
@@ -54,8 +57,9 @@ inproceedingsEntry := (CZBibParser parse: '
                   {http://rmod.lille.inria.fr/archives/workshops/Nier04d-RDL04-Change.pdf},
   Year	       = {2004}
 }') entries at: 1.
-
-masterEntry := (CZBibParser parse: '	
+	masterEntry := (CZBibParser
+		parse:
+			'	
 @mastersthesis{Peirs08a,
   author       = {Romain Peirs},
   title	       = {Enhanced Dependency Structure Matrix},
@@ -77,38 +81,40 @@ masterEntry := (CZBibParser parse: '
   annote       = {master cook},
   school       = {Enseita}
  }') entries at: 1.
-
-				
-dirty := (CZEntry type: CZEntry inproceedings)
-				key: #Abde08a;
-				at: #author put: 'Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen';
-				at: #title put: 'Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships';
-				at: #Aeres	 put: 'ACT';
-				at: #'Hal-ID' put: 'hal-01344842}';
- 				at: #Aeresstatus   put:  'aeres08';
-				at: #Annote       put:  'internationalconference stefPub';
- 				at: #Booktitle    put: 'European Conference on Software Maintenance and Reengineering (CSMR)';
-  				at: #Inria	        put: 'ADAM';
-  				at: #Keywords     put:  'moose-pub';
-  				at: #Location     put: 'Athens, Greece';
-  				at: #Misc	       put:  'Acceptance rate: 24/87 = 27\%';
-  				at: #AcceptTotal  put:  87;
-  				at: #AcceptNum    put:  24;
-  				at: #Pages	       put:  '213--222';
-  				at: #Publisher    put:  'IEEE Computer Society Press';
-  				at: #Rate	       put:  '27%';
-  				at: #Selectif     put:  'oui';
-   				at: #Url	       put:  'http://scg.unibe.ch/archive/external/Abde08a.pdf';
-   				at: #Year	       put:  2008;
-   				at: #'Bdsk-Url-1'  put: 'http://scg.unibe.ch/archive/external/Abde08a.pdf';
-				at: #'Date-Added' put: '{2009-10-20 14:54:13 +0200}';
-				at: #'Date-Modified' put: '{2009-10-20 15:05:13 +0200}'.
-
-
-uqui := (CZBibParser parse: '	
+	dirty := (CZEntry type: CZEntry inproceedings)
+		key: #Abde08a;
+		at: #author
+			put: 'Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen';
+		at: #title
+			put:
+			'Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships';
+		at: #Aeres put: 'ACT';
+		at: #'Hal-ID' put: 'hal-01344842}';
+		at: #Aeresstatus put: 'aeres08';
+		at: #Annote put: 'internationalconference stefPub';
+		at: #Booktitle
+			put: 'European Conference on Software Maintenance and Reengineering (CSMR)';
+		at: #Inria put: 'ADAM';
+		at: #Keywords put: 'moose-pub';
+		at: #Location put: 'Athens, Greece';
+		at: #Misc put: 'Acceptance rate: 24/87 = 27\%';
+		at: #AcceptTotal put: 87;
+		at: #AcceptNum put: 24;
+		at: #Pages put: '213--222';
+		at: #Publisher put: 'IEEE Computer Society Press';
+		at: #Rate put: '27%';
+		at: #Selectif put: 'oui';
+		at: #Url put: 'http://scg.unibe.ch/archive/external/Abde08a.pdf';
+		at: #Year put: 2008;
+		at: #'Bdsk-Url-1' put: 'http://scg.unibe.ch/archive/external/Abde08a.pdf';
+		at: #'Date-Added' put: '{2009-10-20 14:54:13 +0200}';
+		at: #'Date-Modified' put: '{2009-10-20 15:05:13 +0200}'.
+	uqui := (CZBibParser
+		parse:
+			'	
 @techreport{Dias14b,
 	Annote = {technicalReport},
-	Author = {Mart\''in Dias and Ver\''onica Uquillas-Gomez and Damien Cassou and St\''ephane Ducasse},
+	Author = {Mart\''in Dias and Uquillas Gomez, Ver\''onica  and Damien Cassou and St\''ephane Ducasse},
 	Hal-Id = {hal-01093496},
 	Inria = {RMOD},
 	Institution = {INRIA Lille},
@@ -117,8 +123,20 @@ uqui := (CZBibParser parse: '
 	Url = {https://hal.inria.fr/hal-01093496},
 	Year = {2014}}
 ') entries at: 1.
-				
-
+	uqui2 := (CZBibParser
+		parse:
+			'	
+@techreport{Dias14b,
+	Annote = {technicalReport},
+	Author = {Mart\''in Dias and Uquillas G\''{o}mez, Ver\''onica  and Damien Cassou and St\''ephane Ducasse},
+	Hal-Id = {hal-01093496},
+	Inria = {RMOD},
+	Institution = {INRIA Lille},
+	Keywords = {lse-pub},
+	Title = {Software Integration Questions: A Quantitative Survey with \&},
+	Url = {https://hal.inria.fr/hal-01093496},
+	Year = {2014}}
+') entries at: 1
 ]
 
 { #category : #setup }
@@ -137,6 +155,15 @@ CZEntryTest >> testAddToBibSet [
 	self assert: ((bibset entries at:1) == entry).
 	self assert: (entry scope == bibset).
 	
+]
+
+{ #category : #tests }
+CZEntryTest >> testAsBibKey [
+	"self debug: #testAsBibKey"
+
+	self assert: dirty author rawValueObject people first asBibKey = 'abdeen'.			
+	self assert: uqui author rawValueObject people second asBibKey = 'uquillasgomez'.
+	self assert: uqui2 author rawValueObject people second asBibKey = 'uquillasgomez'.
 ]
 
 { #category : #tests }
@@ -176,11 +203,33 @@ CZEntryTest >> testClean [
 ]
 
 { #category : #tests }
+CZEntryTest >> testCleanForBibKey [
+	"self debug: #testAsBibKey"
+
+	self
+		assert:
+			(dirty author rawValueObject people first
+				cleanForBibKey: 'Abdeen') = 'abdeen'.
+	self
+		assert:
+			(uqui author rawValueObject people second
+				cleanForBibKey: 'Uquillas') = 'uquillas'.
+	self
+		assert:
+			(uqui author rawValueObject people second
+				cleanForBibKey: 'B\''era') = 'bera'.
+	self
+		assert:
+			(uqui author rawValueObject people second
+				cleanForBibKey: 'G\''{o}mez') = 'gomez'
+]
+
+{ #category : #tests }
 CZEntryTest >> testCompactName [
 	"self debug: #testCompactName"
 
 	self assert: dirty author rawValueObject people first compactLastName = 'Abdeen'.
-	self assert: uqui author rawValueObject people second compactLastName = 'Uquillas-Gomez'.
+	self assert: uqui author rawValueObject people second compactLastName = 'UquillasGomez'.
 ]
 
 { #category : #tests }
