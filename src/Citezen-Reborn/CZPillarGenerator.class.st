@@ -1,11 +1,13 @@
 "
 A visitor that generates pillar format.
-However I'm hacking the trasnformation of certain symbols instead of using a pillar canvas. I should be removed. 
-
+I use a pillar writer to properly encode special characters. 
 "
 Class {
 	#name : #CZPillarGenerator,
 	#superclass : #CZFileFormatGenerator,
+	#instVars : [
+		'writer'
+	],
 	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
@@ -15,20 +17,32 @@ CZPillarGenerator >> emitEntryHeader: anEntry [
 	self outputStream nextPutAll: '# '.
 ]
 
-{ #category : #visit }
-CZPillarGenerator >> treatString: aString [
+{ #category : #accessing }
+CZPillarGenerator >> expansionPolicyAppliedTo: aCZString [
+	^ aCZString expanded
+]
 
-	| s |
-	s := aString copyReplaceAll: '--' with: '-'.
-	s := s copyReplaceAll: '+' with: '\+'.
-	s := s copyReplaceAll: '''' with: '\''\'''.
-	s := s copyReplaceAll: '__' with: '-'.
-	s := s copyReplaceAll: '==' with: '='.
-	s := s copyReplaceAll: '@@' with: ''.
-	s := s copyReplaceAll: '""' with: '\"\"'.
-	s := s copyReplaceAll: String cr with: String space. 
-	s := s copyReplaceAll: String lf with: String space. 
-	^ s
+{ #category : #initialize }
+CZPillarGenerator >> initialize [
+	super initialize.
+	writer := PRPillarWriter new.
+]
+
+{ #category : #'string encoding hooks' }
+CZPillarGenerator >> setEncodedCharacterTransformationTable [
+	CZAccentuateCharactersParser toAccentedCharTable
+]
+
+{ #category : #'string encoding hooks' }
+CZPillarGenerator >> treatSignsInString: aString [
+	"we ask the pillar writer to escape all the special pillar characters."
+	^ writer escape: aString
+]
+
+{ #category : #visit }
+CZPillarGenerator >> visitDocTitle: aTitle [
+	self outputStream nextPutAll: '!'.
+	super visitDocTitle: aTitle.
 ]
 
 { #category : #visit }
@@ -60,24 +74,18 @@ CZPillarGenerator >> visitItem: anItem [
 ]
 
 { #category : #visit }
-CZPillarGenerator >> visitItemList: aList [
-
-	 aList elements do: [ :each | self visit: each ] 
-]
-
-{ #category : #visit }
 CZPillarGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.
-	self outputStream nextPutAll: (CZAccentuateCharactersParser parseToAccentedChars: aCZPeople expanded)
+	self outputStream nextPutAll: (self treatString: aCZPeople expanded)
 ]
 
 { #category : #visit }
-CZPillarGenerator >> visitSection: aCZSection [
+CZPillarGenerator >> visitSectionTitle: aCZString [
 	
 	outputStream 
 		nextPutAll: '!!'; 
-		nextPutAll: (CZAccentuateCharactersParser parseToAccentedChars: aCZSection name).
+		nextPutAll: (self treatString: aCZString expanded).
 		self line.
 		self line.
 ]

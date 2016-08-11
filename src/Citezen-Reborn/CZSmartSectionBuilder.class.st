@@ -88,11 +88,13 @@ CZSmartSectionBuilder >> bibEntriesFor: aBibTag [
 CZSmartSectionBuilder >> createSubTopic: file title: name text: text bibTag: bibTag [
 	"I should create a new file so each CZDoc should be mapped to a file"
 
-	| ndoc |
-	ndoc := CZDoc new title: 'Sorted research'.
-	ndoc add: (CZSection new title: name; yourself).
-	ndoc add: (CZText new text: text; yourself).
-	ndoc add: (CZItemList new addElements: (self bibEntriesFor: bibTag)).
+	| ndoc section |
+	ndoc := CZDoc new title: 'Topics based publications'.
+	section := CZSection new 
+						title: (CZString new setValue: name); 
+						text: (CZText new text: text; yourself);
+						items: (CZSet new addAll: (self bibEntriesFor: bibTag); yourself); yourself.
+	ndoc add: section. 
 	^ ndoc
 ]
 
@@ -125,7 +127,7 @@ CZSmartSectionBuilder >> generate [
 				title: each second
 				text: each third
 				bibTag: each fourth.
-			(CZPillarNewGenerator new 	
+			(CZPillarGenerator new 	
 				filename: each first, self extension)
 				visitDoc: docTopic.
 				]
@@ -134,7 +136,9 @@ CZSmartSectionBuilder >> generate [
 { #category : #utils }
 CZSmartSectionBuilder >> queryForKozenTag: aTag [
 
-	^ CZFieldQuery named: #keywords checks: [ :value | '*', aTag, '*' match: value ]
+	^ CZFieldQuery 
+			named: #keywords 
+			checks: [ :value | '*', aTag, '*' match: value ]
 ]
 
 { #category : #accessing }

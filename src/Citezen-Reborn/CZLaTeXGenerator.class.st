@@ -3,6 +3,13 @@ A CZLaTeXGenerator is a generator generating nice latex.
 
 Currently there is a problem with the generation because it is not simple to see that there is a _ or & in the input text since looking for only one character does not really work (usually we put \& and \_ so more logic should be done.).
 
+
+| visitor bibset |
+bibset := CZBibParser parse: (FileStream readOnlyFileNamed: 'rmod.bib') contents.
+bibset scope: CZSet standardDefinitions.
+visitor := CZLaTeXGenerator new filename: 'rmod-Generated.tex'.
+visitor visit: bibset.
+
 "
 Class {
 	#name : #CZLaTeXGenerator,
@@ -67,11 +74,17 @@ CZLaTeXGenerator >> initializeFieldEmbellishingTable [
 	
 ]
 
+{ #category : #'string encoding hooks' }
+CZLaTeXGenerator >> treatTexEncoding: aString [
+	"we want the tex encodings"
+
+	^ aString notExpanded
+]
+
 { #category : #visiting }
 CZLaTeXGenerator >> visitBibSet: aCZSet [
-	
-	"we should test and do not do anything if size is empty"
-	
+
+	aCZSet isEmpty ifTrue: [ ^self ].
 	self outputStream nextPutAll: '\begin{itemize}'.
 	super visitBibSet: aCZSet.
 	self outputStream nextPutAll: '\end{itemize}'
@@ -106,15 +119,23 @@ CZLaTeXGenerator >> visitField: aField [
 CZLaTeXGenerator >> visitPeople: aCZPeople [
 
 	aCZPeople perform:  expandOption.
-	self outputStream nextPutAll:  aCZPeople expanded "so that we are sure that we get \'' for é"
+	self outputStream nextPutAll:  aCZPeople notExpanded "so that we are sure that we get \'' for é"
 ]
 
 { #category : #visiting }
-CZLaTeXGenerator >> visitSection: aCZSection [
+CZLaTeXGenerator >> visitSectionText: aCZText [
+
+	self outputStream 
+		nextPutAll: aCZText text.
+	self line
+]
+
+{ #category : #visiting }
+CZLaTeXGenerator >> visitSectionTitle: aCZString [
 
 	self outputStream 
 		nextPutAll: '\section{';
-		nextPutAll: aCZSection name;
+		nextPutAll: aCZString notExpanded;
 		nextPut: $}.
 	self line
 ]

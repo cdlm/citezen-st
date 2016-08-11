@@ -34,7 +34,7 @@ Class {
 { #category : #initialization }
 CZBblGenerator >> defaultFieldOrder [
 	"adding hal-id and doi in separate specs"
-	^ {Author . Title . Chapter . Journal . BookTitle . Volume . Pages . Publisher . Year . ImpactFactor . Misc} 
+	^ {Author . Title . Chapter . Journal . BookTitle . Volume . Pages . Publisher . School . Month . Year . ImpactFactor . Misc . URL} 
 			 
 ]
 
@@ -68,7 +68,7 @@ CZBblGenerator >> emitEntryHeader: anEntry [
 	self outputStream  
 		nextPutAll: '\bibitem[', currentNumber printString, ']';
 		nextPut: ${;
-		nextPutAll: (self halKeyForEntry: anEntry);
+		nextPutAll: (self keyForEntry: anEntry);
 		nextPut: $}.
 	self outputStream nextPutAll: '\czauthors{', anEntry author rawValueObject shortenedName, '},'.
 	self line.
@@ -102,7 +102,7 @@ CZBblGenerator >> halKeyForEntry: anEntry [
   I.~Alloui, J.-R. Falleri},
 "
 
-	^ (anEntry author rawValueObject people first compactLastName asLowercase, ':', (anEntry at: HALID) value) 
+	^ (anEntry author rawValueObject people first asBibKey, ':', (anEntry at: HALID) value) 
 ]
 
 { #category : #utils }
@@ -139,9 +139,31 @@ CZBblGenerator >> initializeFieldEmbellishingTable [
 	
 ]
 
+{ #category : #utils }
+CZBblGenerator >> keyForEntry: anEntry [
+	"if there is a hal entry emit as author:hal- as in the raweb. Else put simply the key."
+	
+	^ (anEntry hasFieldWithKey: HALID)
+		ifTrue: [(self halKeyForEntry: anEntry)]
+		ifFalse: [ anEntry key asString ]
+]
+
 { #category : #visiting }
 CZBblGenerator >> newblock [
 	self outputStream nextPutAll: '\newblock '. 
+]
+
+{ #category : #'string encoding hooks' }
+CZBblGenerator >> treatTexEncoding: aString [
+	"we want the tex encodings"
+	^ aString 
+]
+
+{ #category : #utils }
+CZBblGenerator >> urlHrefForField: aHalField [
+	"Return the "
+
+	^ '\href{' , aHalField value , '}{[rmodUrl]}'
 ]
 
 { #category : #visiting }
@@ -172,8 +194,9 @@ CZBblGenerator >> visitEntry: anEntry [
 CZBblGenerator >> visitField: aField [
 	"We should probably use phrases instead of doing everything ourselves."
 
-	aField key = CZPool HALID ifTrue: [ ^ self outputStream nextPutAll: (self halHrefForField: aField) ].
-	aField key = CZPool DOI ifTrue: [ ^ self outputStream nextPutAll: (self doiHrefForField: aField)].
+	aField key = HALID ifTrue: [ ^ self outputStream nextPutAll: (self halHrefForField: aField) ].
+	aField key = DOI ifTrue: [ ^ self outputStream nextPutAll: (self doiHrefForField: aField)].
+	aField key = URL ifTrue: [ ^ self outputStream nextPutAll: (self urlHrefForField: aField)].
 	"we should not proceed again these values since they are fully transformed."
 	
 	"for the rest this is just adding nicer information so no return"
@@ -192,6 +215,24 @@ CZBblGenerator >> visitPeople: aCZPeople [
 
 	self outputStream nextPutAll: '\czauthors{'.
 	aCZPeople perform: expandOption.
-	outputStream nextPutAll: aCZPeople expanded.
+	outputStream nextPutAll: aCZPeople notExpanded.
 	self outputStream nextPut: $}.
+]
+
+{ #category : #visiting }
+CZBblGenerator >> visitSection: aCZSection [
+
+	super visitSection: aCZSection. 
+	self line. 
+	self outputStream nextPutAll: '\end{thebibliography}'.
+	self line
+]
+
+{ #category : #visiting }
+CZBblGenerator >> visitSectionTitle: aCZString [
+
+	self outputStream nextPutAll: '\begin{thebibliography}{100}[', aCZString notExpanded , ']'.
+	self line.
+	self outputStream nextPutAll: '\small'.
+	self line.
 ]

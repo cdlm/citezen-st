@@ -7,17 +7,6 @@ builder := self new
 		fileNamed: 'rmod.bib';
 		authorMatchingString: '*Ducasse*';
 		french; 
-		fieldOrder: #(#author 
-			  #title 
-			  #journal 
-			  #booktitle 
-			  #volume 
-			  #pages 
-			  #publisher  
-			  #year 
-			  #school
-			  #impactfactor 
-			  #misc); ""removed doi and url since they may contain _ and the generator does not handle that well for the moment.""
 		setFilteringOn.
 	builder generate.	
 		
@@ -61,7 +50,7 @@ CZLaTeXDocBuilder >> defaultHeaderString [
 
 { #category : #utils }
 CZLaTeXDocBuilder >> extension [
-	^ '-Full.tex'
+	^ '-AllSectionsSorted.tex'
 ]
 
 { #category : #utils }

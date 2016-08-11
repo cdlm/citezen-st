@@ -33,6 +33,13 @@ CZBibTexGenerator >> emitFieldSeparation [
 	self line.
 ]
 
+{ #category : #'string encoding hooks' }
+CZBibTexGenerator >> treatTexEncoding: aString [
+	"we want the tex encodings"
+
+	^ aString notExpanded
+]
+
 { #category : #visiting }
 CZBibTexGenerator >> visitComment: aCZCommentElement [
 	self outputStream 
@@ -76,7 +83,7 @@ CZBibTexGenerator >> visitPeople: aCZPeople [
 
 	self outputStream nextPut: ${.
 	aCZPeople perform: expandOption.
-	outputStream nextPutAll: aCZPeople expanded.
+	outputStream nextPutAll: aCZPeople notExpanded.
 	self outputStream nextPut: $}.
 ]
 

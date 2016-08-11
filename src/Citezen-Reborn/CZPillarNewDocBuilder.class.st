@@ -15,19 +15,6 @@ builder := self new
 		fileNamed: 'rmod.bib';
 		authorMatchingString: '*Ducasse*';
 		french; 
-		fieldOrder: #(#author 
-			  #title 
-			  #journal 
-			  #booktitle 
-			  #volume 
-			  #pages 
-			  #publisher  
-			  #year 
-			  #school
-			  #impactfactor 
-			  #misc
-			 #url
-			  #doi); 
 		setFilteringOn.
 	builder generate.	
 		
@@ -45,7 +32,7 @@ CZPillarNewDocBuilder >> extension [
 
 { #category : #utils }
 CZPillarNewDocBuilder >> generatorClass [
-	^ CZPillarNewGenerator 
+	^ CZPillarGenerator 
 ]
 
 { #category : #initialize }

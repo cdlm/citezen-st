@@ -9,9 +9,6 @@ Class {
 		'outputStream',
 		'fieldSeparatorString'
 	],
-	#pools : [
-		'CZPool'
-	],
 	#category : #'Citezen-Reborn-FormattingVisitors'
 }
 
@@ -45,6 +42,11 @@ CZFileFormatGenerator >> emitEntryHeader: anEntry [
 { #category : #visit }
 CZFileFormatGenerator >> emitFieldSeparation [
 	^ self outputStream nextPutAll: self fieldSeparatorString
+]
+
+{ #category : #accessing }
+CZFileFormatGenerator >> expansionPolicyAppliedTo: aCZString [
+	^ aCZString notExpanded
 ]
 
 { #category : #accessing }
@@ -91,11 +93,41 @@ CZFileFormatGenerator >> outputStream: aStream [
 	outputStream := aStream
 ]
 
-{ #category : #visit }
-CZFileFormatGenerator >> treatString: aString [
-	^ aString
+{ #category : #'string encoding hooks' }
+CZFileFormatGenerator >> setEncodedCharacterTransformationTable [
+	"I do not nothing since for bib bbl treatTexEncoding should do nothing. Now in Pillar I should use accentedchars and HTML html ones."
 
 	
+]
+
+{ #category : #'string encoding hooks' }
+CZFileFormatGenerator >> treatSignsInString: aString [
+	"By default do nothing because subclasses may apply way to handle strange characters such as _ \ and others. For example for latex _ is a special character for pillar too."
+
+	^ aString
+]
+
+{ #category : #'string encoding hooks' }
+CZFileFormatGenerator >> treatString: aString [
+	"There are two aspects that should be covered: 
+		- handling tex encodings ie. \' or \& or \'{o} to be turned into the correct glyph
+		- strange characters that are meta characters in different outputs."
+
+	^ (self treatSignsInString: (self treatTexEncoding: aString))
+]
+
+{ #category : #'string encoding hooks' }
+CZFileFormatGenerator >> treatTexEncoding: aString [
+	"How to handle the text accent encoding such as \'e 
+	parse: use the previously set table 
+		toHtmlTable    -> <acute>...
+		toAccentedCharTable -> à
+	"
+
+	"This method will do nothing in bib, latex and bbl formats."
+	"Check implementors of setEncodedCharacterTransformationTable."
+
+	^ CZAccentuateCharactersParser parse: aString
 ]
 
 { #category : #visit }
@@ -127,11 +159,8 @@ CZFileFormatGenerator >> visitCompositeValue: aCZCompositeValue [
 
 { #category : #'visit doc' }
 CZFileFormatGenerator >> visitDoc: aCZDocument [
-	"CZAccentuateCharactersParser toAccentedCharTable."
-	"i do not get how I can go from  \'e to é"
-	
+
 	super visitDoc: aCZDocument
-	
 ]
 
 { #category : #visit }
@@ -179,30 +208,52 @@ CZFileFormatGenerator >> visitMacroReference: aCZMacroReference [
 
 { #category : #visit }
 CZFileFormatGenerator >> visitPeople: aCZPeople [
-
-	aCZPeople perform:  expandOption.
-	"self outputStream nextPutAll: aCZPeople expanded"
-	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
+	aCZPeople perform: expandOption.
+	self outputStream
+		nextPutAll: (self treatString: aCZPeople expanded)
 			
 ]
 
 { #category : #visit }
 CZFileFormatGenerator >> visitSection: aCZSection [
 
-	self outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZSection name)
+	self visitSectionTitle: aCZSection title. 
+	self visitSectionText: aCZSection text.
+	self visitSectionItems: aCZSection items
+]
+
+{ #category : #visit }
+CZFileFormatGenerator >> visitSectionItems: aCZSet [
+
+	aCZSet acceptVisitor: self. 
+	"should kick in visitBibset:"
+]
+
+{ #category : #visit }
+CZFileFormatGenerator >> visitSectionText: aCZText [
+
+	aCZText acceptVisitor: self. 
+	
+]
+
+{ #category : #visit }
+CZFileFormatGenerator >> visitSectionTitle: aCZString [
+	self outputStream
+		nextPutAll:
+			(self treatString: aCZString expanded)
 ]
 
 { #category : #visit }
 CZFileFormatGenerator >> visitString: aCZString [
 
 	self outputStream nextPutAll: 
-		(self treatString: (CZAccentuateCharactersParser parse: aCZString notExpanded))
+		(self treatString: aCZString notExpanded)
 ]
 
 { #category : #visit }
 CZFileFormatGenerator >> visitText: aCZText [
 	self outputStream
-		nextPutAll: (CZAccentuateCharactersParser parse: aCZText text).
+		nextPutAll: (self treatString: aCZText text).
 	self line
 ]
 

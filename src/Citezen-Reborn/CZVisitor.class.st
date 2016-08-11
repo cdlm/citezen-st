@@ -16,6 +16,9 @@ Class {
 		'expandOption',
 		'fieldOrder'
 	],
+	#pools : [
+		'CZPool'
+	],
 	#category : #'Citezen-Reborn-Core-Visitor'
 }
 
@@ -29,21 +32,8 @@ CZVisitor >> authorNameExpandOption [
 
 { #category : #configuration }
 CZVisitor >> defaultFieldOrder [
-
-	^ #(#author 
-			  #title 
-			  #chapter
-			  #journal 
-			  #booktitle 
-			  #volume 
-			  #pages 
-			  #publisher  
-			  #year 
-			  #impactfactor 
-			  #misc 
-			  #url 
-			  #doi)
-			"rate is bad because it does not have enough information"
+	^ #(#author #title #chapter #journal #booktitle #volume #pages #publisher #year #impactfactor  #school #misc #url #doi)
+	"rate is bad because it does not have enough information"
 ]
 
 { #category : #accessing }

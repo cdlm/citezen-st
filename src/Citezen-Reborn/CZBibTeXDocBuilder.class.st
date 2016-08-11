@@ -1,9 +1,9 @@
 "
-To convert back a document into a bib file.
+could be a subclass of decorated but should be turned into a strategy.
 "
 Class {
 	#name : #CZBibTeXDocBuilder,
-	#superclass : #CZDecoratedDocBuilder,
+	#superclass : #CZDocBuilder,
 	#category : #'Citezen-Reborn-DocumentBuilder'
 }
 
@@ -16,7 +16,7 @@ CZBibTeXDocBuilder >> bibtexFileName [
 { #category : #generate }
 CZBibTeXDocBuilder >> extension [
 	
-	^ '-Full.bib'
+	^ '-Regenerated.bib'
 ]
 
 { #category : #utils }

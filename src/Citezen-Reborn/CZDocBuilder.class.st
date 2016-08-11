@@ -46,14 +46,11 @@ CZDocBuilder >> addBibSection: aQuery withTitle: aString [
 	self
 		addSection:
 			(CZSection new
-				title: aString;
+				title: (CZString new setValue: aString);
+				items: (CZSet new
+							addAll: entries;
+							yourself)
 				yourself).
-	"we recreate a CZ so that we can manage groups of bib in the outputers"			
-	self document
-		add:
-			(CZSet new
-				addAll: entries;
-				yourself)
 
 ]
 

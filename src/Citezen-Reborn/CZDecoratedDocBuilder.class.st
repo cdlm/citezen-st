@@ -26,20 +26,8 @@ Set the list and order of section in the document body. aColl is a list of symbo
 | builder |
 builder := self new
 		fileNamed: 'rmod.bib';
-		authorMatchingString: '*Ducasse*';
-		french; 
-		sectionSpecification: #(#internationalJournal #topConference #nationalJournal #internationalConference #nationalConference #invitedPaper #bookChapter #book #editor #internationalWorkshop #PhDAndHabilitation #toolDemo #vulgarisation));
-		fieldOrder: #(#author 
-			  #title 
-			  #journal 
-			  #booktitle 
-			  #volume 
-			  #pages 
-			  #publisher  
-			  #year 
-			  #school
-			  #impactfactor 
-			  #misc); ""removed doi and url since they may contain _ and the generator does not handle that well for the moment.""
+		authorMatchingString: '*';
+		sectionSpecification: #( #PhDAndHabilitation #internationalJournal #nationalJournal #topConference #internationalConference  #nationalConference #invitedPaper #bookChapter #book #editor #internationalWorkshop #toolDemo #vulgarisation);
 		setFilteringOn.
 	builder generate.	
 		
@@ -127,8 +115,7 @@ CZDecoratedDocBuilder >> defaultHeaderString [
 
 { #category : #initialize }
 CZDecoratedDocBuilder >> defaultSectionSpecification [
-
-	^ #(internationalJournal topConference  nationalJournal  internationalConference  nationalConference   invitedPaper bookChapter book editor internationalWorkshop PhDAndHabilitation toolDemo  vulgarisation ) 
+	^ #(#internationalJournal #nationalJournal #topConference internationalConference #nationalConference #invitedPaper #bookChapter #book #editor #internationalWorkshop #PhDAndHabilitation #toolDemo #vulgarisation)
 ]
 
 { #category : #generate }
@@ -163,7 +150,7 @@ CZDecoratedDocBuilder >> generate [
 
 { #category : #'file helper' }
 CZDecoratedDocBuilder >> generateFor: aDoc [
-	self generateFor: aDoc on: (FileStream newFileNamed: Date today yyyymmdd , self extension).
+	self generateFor: aDoc on: (FileStream forceNewFileNamed: Date today yyyymmdd , self extension).
 ]
 
 { #category : #generate }

@@ -1,5 +1,12 @@
 "
 A CZHTMLGenerator is generating nice html for us. 
+
+| visitor bibset |
+bibset := CZBibParser parse: (FileStream readOnlyFileNamed: 'rmod.bib') contents.
+bibset scope: CZSet standardDefinitions.
+visitor := CZHTMLGenerator new filename: 'rmod-Generated.html'.
+visitor visit: bibset.
+
 "
 Class {
 	#name : #CZHTMLGenerator,
@@ -45,6 +52,24 @@ CZHTMLGenerator >> emitEntryHeader: anEntry [
 	self line.
 ]
 
+{ #category : #initialization }
+CZHTMLGenerator >> initialize [
+	super initialize.
+	self setEncodedCharacterTransformationTable.
+]
+
+{ #category : #'string encoding hooks' }
+CZHTMLGenerator >> setEncodedCharacterTransformationTable [
+	^ CZAccentuateCharactersParser toHtmlTable
+]
+
+{ #category : #'string encoding hooks' }
+CZHTMLGenerator >> treatTexEncoding: aString [
+	"we want the HTML encodings to tex encoded characters"
+
+	^ CZAccentuateCharactersParser parse: aString
+]
+
 { #category : #visit }
 CZHTMLGenerator >> visitBibSet: aSet [	
 	
@@ -69,9 +94,8 @@ CZHTMLGenerator >> visitComment: aCZCommentElement [
 
 { #category : #visiting }
 CZHTMLGenerator >> visitDoc: aCZDoc [
-
-	CZAccentuateCharactersParser toHtmlTable.
-	super visitDoc: aCZDoc.
+	self setEncodedCharacterTransformationTable.
+	super visitDoc: aCZDoc
 ]
 
 { #category : #visiting }
@@ -100,20 +124,21 @@ CZHTMLGenerator >> visitMacroReference: aCZMacroReference [
 CZHTMLGenerator >> visitPeople: aCZPeople [
 	"self halt: aCZPeople printString."
 	aCZPeople perform: expandOption.
-	outputStream nextPutAll: (CZAccentuateCharactersParser parse: aCZPeople expanded)
+	outputStream nextPutAll: (self treatString: aCZPeople expanded)
 ]
 
 { #category : #visiting }
-CZHTMLGenerator >> visitSection: aCZSection [
-	
-	outputStream 
-		nextPutAll: '<h4'; 
+CZHTMLGenerator >> visitSectionTitle: aCZString [
+	outputStream
+		nextPutAll: '<h4';
 		nextPutAll: '>';
-		nextPutAll: (CZAccentuateCharactersParser parse: aCZSection name);
+		nextPutAll:
+			(self treatString: aCZString expanded);
 		nextPutAll: '</h4';
-		nextPutAll: '>';
-		lf;
-		lf
+		nextPutAll: '>'.
+	self
+		line;
+		line
 ]
 
 { #category : #visiting }
@@ -123,7 +148,7 @@ CZHTMLGenerator >> visitTitle: aCZTitleElement [
 	outputStream 
 		nextPutAll: '<h4'; 
 		nextPutAll: '>';
-		nextPutAll: (CZAccentuateCharactersParser parse: aCZTitleElement title);
+		nextPutAll: (self treatString: aCZTitleElement title);
 		nextPutAll: '</h4';
 		nextPutAll: '>'.
 	self line ; line. 

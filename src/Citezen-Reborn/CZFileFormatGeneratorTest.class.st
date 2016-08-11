@@ -87,11 +87,11 @@ CZFileFormatGeneratorTest >> testSet [
 	visitor := self generatorClass new.
 	visitor visit: bibset.
 	self assert: (visitor outputStream contents =
-'
+ '
 Ducasse, St\''ephane and Ducasse, Florence, La maledication de la fille de la femme crocodile, Journal of Hatred, 2012.
 Ducasse, St\''ephane, Botsinc: Learning programming in Squeak, Apress, 2005.
 
-').
+')
 ]
 
 { #category : #setUp }
@@ -109,5 +109,5 @@ Ducasse, St\''ephane and Ranger, Zork, Woa, Journal of Information System, 2010,
 Refereed Articles in International Conferences
 Denker, Marcus and Suen, Mathieu and Ducasse, St\''ephane, The Meta in Meta-object Architectures, Proceedings of TOOLS EUROPE 2008, 11, 218--237, Springer-Verlag, 2008, http://scg.unibe.ch/archive/papers/Denk08bMetaContextLNBIP.pdf, 10.1007/978-3-540-69824-1_13.
 
-')
+' )
 ]

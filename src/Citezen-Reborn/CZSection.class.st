@@ -1,14 +1,30 @@
 "
-A CZSection is a document section mainly a name.
-A Section does not contain bibset. 
+A CZSection is a document section  with a title, items and text.
+This way we can manage
 
-If we want to have section with list of entry we just build it that way for now.
+\begin{thebibliography}{100}[PhDs ]
+\small
+
+\bibitem[1]{anquetil:tel-01086785}\RAsc{N.~Anquetil},
+\newblock {Supporting Software Evolution in the Organizations},
+\newblock Accreditation to supervise research, {universite de Lille-1}, May
+  2014,
+\newblock \href {http://hal.inria.fr/tel-01086785} {\path{[hal:tel-01086785]
+  }}.
+...
+
+\end{thebibliography}
+
+The closing is forcing to get items attached to the section. 
+
 "
 Class {
 	#name : #CZSection,
 	#superclass : #CZDocElement,
 	#instVars : [
-		'name'
+		'text',
+		'items',
+		'title'
 	],
 	#category : #'Citezen-Reborn-DocModel'
 }
@@ -19,34 +35,49 @@ CZSection >> acceptVisitor: aVisitor [
 	aVisitor visitSection: self
 ]
 
-{ #category : #deprecated }
-CZSection >> name [
-	"deprecated sue title"
-	^ name
+{ #category : #initialization }
+CZSection >> initialize [
+	super initialize.
+	title := CZString new setValue: ''.
+	text := CZText new text: ''.
+	items := CZSet new
 ]
 
-{ #category : #deprecated }
-CZSection >> name: aString [
-	"deprecated use title:"
+{ #category : #accessing }
+CZSection >> items [
+	^ items
+]
 
-	name := aString
+{ #category : #accessing }
+CZSection >> items: aBibset [
+	items := aBibset
 ]
 
 { #category : #printing }
 CZSection >> printOn: aStream [
 
 	super printOn: aStream.
-	name ifNotNil: [aStream nextPutAll: '('; nextPutAll: name; nextPutAll: ')']
+	title ifNotNil: [aStream nextPutAll: '('; nextPutAll: title expanded; nextPutAll: ')']
+]
+
+{ #category : #accessing }
+CZSection >> text [
+	^ text 
+]
+
+{ #category : #accessing }
+CZSection >> text: aText [
+	text := aText
 ]
 
 { #category : #accessing }
 CZSection >> title [
 	
-	^ name
+	^ title
 ]
 
 { #category : #accessing }
 CZSection >> title: aString [
 	
-	name := aString
+	title := aString
 ]

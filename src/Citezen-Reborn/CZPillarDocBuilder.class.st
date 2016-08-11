@@ -12,23 +12,10 @@ Generate pillar descriptions
 
 | builder |
 builder := self new
-		fileNamed: 'rmod.bib';
-		authorMatchingString: '*Ducasse*';
-		french; 
-		fieldOrder: #(#author 
-			  #title 
-			  #journal 
-			  #booktitle 
-			  #volume 
-			  #pages 
-			  #publisher  
-			  #year 
-			  #school
-			  #impactfactor 
-			  #misc
-			#doi
-			#url	) ""removed doi and url since they may contain _ and the generator does not handle that well for the moment."".
-	builder generate.	
+			fileNamed: 'rmod.bib';
+			authorMatchingString: '*Ducasse*';
+			french.
+builder generate.	
 		
 "
 Class {
@@ -44,7 +31,7 @@ CZPillarDocBuilder >> extension [
 
 { #category : #initialize }
 CZPillarDocBuilder >> generatorClass [
-	^ CZPillarNewGenerator
+	^ CZPillarGenerator
 ]
 
 { #category : #initialize }
