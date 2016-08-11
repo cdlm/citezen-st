@@ -1,12 +1,14 @@
 "
-(ConfigurationOfCitezen project version: '2.7') load
+(ConfigurationOfCitezen project version: '3.2') load
+- stable 
+
 
 	
 To Do:
+	- move some subclasses of docBuilder as littel strategy
+	- revisit file input output
 	- create a new configuration without seaside.
-	- build a pillar object exporter.
-	- use converters to make sure that the input/output are correctly encoded. 
-	- pass header/footer probably using Mustache.
+
 "
 Class {
 	#name : #ConfigurationOfCitezen,
@@ -1527,7 +1529,7 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo3.x' version: '2.3'.
 	spec for: #'pharo4.x' version: '2.5'.
 	spec for: #'pharo5.x' version: '2.6'.
-	spec for: #'pharo6.x' version: '2.6'
+	spec for: #'pharo6.x' version: '3.2'
 ]
 
 { #category : #versions }
@@ -2186,4 +2188,26 @@ ConfigurationOfCitezen >> version31: spec [
 				package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
 				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.87' ]
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version32: spec [
+	<version: '3.2' imports: #('1.8-baseline')>
+	spec
+		for: #common
+		do: [ spec blessing: #release.
+			spec description: 'Cleaning treatString and we should get a stable version'.
+			spec author: 'StephaneDucasse'.
+			spec timestamp: '08/11/2016 16:43'.
+			spec
+				package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
+				package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.67';
+				package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+				package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.44';
+				package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.20';
+				package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.45';
+				package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.14';
+				package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.888' ]
 ]
