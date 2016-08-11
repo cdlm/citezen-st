@@ -5,8 +5,9 @@ Silly for now to subclass from singleAuthorDocBuilder (but probably SingleAuthor
 
 How to use me for evaluation report helping. 
 
-	self  query20112016
-		generateBibTeX;
+	RMODPublicationsDocBuilder   
+		query20122016
+		generateTeamBibliography;
 		statistics
 
 	we should get three left: unpublished, and two tooldemos. 
@@ -45,7 +46,7 @@ RMODPublicationsDocBuilder class >> generateLatexForEval2008to2012 [
 ]
 
 { #category : #generation }
-RMODPublicationsDocBuilder class >> query20112016 [
+RMODPublicationsDocBuilder class >> query20122016 [
 	"normally this is four years so we should stop in 2011 but there are fuzy so let us go until 2012"
 
 	"self query20112016"
@@ -95,7 +96,7 @@ RMODPublicationsDocBuilder >> generateBibTeX [
 	visitor
 		fieldOrder:
 			#(#author #title #chapter #journal #booktitle #volume #pages #publisher #school #year #impactfactor #misc #url #doi).
-	visitor outputStream: (FileStream newFileNamed: self bibtexFileName).
+	visitor outputStream: (FileStream forceNewFileNamed: self bibtexFileName).
 	visitor visit: workingBibSet
 ]
 
@@ -104,10 +105,11 @@ RMODPublicationsDocBuilder >> generateTeamBibliography [
 	"with this we will be able to do a nocite{*} and get all the references in our lovely report"
 
 	| docBuilder builder |
-	docBuilder := CZXHTMLDocBuilder new
-		bibset: self query20112016 bibset;
-		headerString: self xmlHeaderString;
-		footerString: self xmlFooterString;
+	docBuilder := CZBblDocBuilder new
+		bibset: self class query20122016 workingBibSet;
+		sectionSpecification: #(PhDAndHabilitation internationalJournal nationalJournal topConference internationalConference  nationalConference  invitedPaper bookChapter book editor internationalWorkshop  toolDemo vulgarisation ) ;
+		noHeader; 
+		"we cancel the main header since we will have one for each for the raweb"
 		setFilteringOn.
 	docBuilder generate 
 ]
