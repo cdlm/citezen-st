@@ -5,6 +5,7 @@ Class {
 	#name : #CZPool,
 	#superclass : #SharedPool,
 	#classVars : [
+		'Address',
 		'Author',
 		'Book',
 		'BookTitle',
@@ -18,6 +19,7 @@ Class {
 		'Institution',
 		'Journal',
 		'Misc',
+		'Month',
 		'Note',
 		'Number',
 		'Pages',
@@ -45,6 +47,11 @@ CZPool class >> HALID [
 { #category : #constants }
 CZPool class >> URL [
 	^ #url
+]
+
+{ #category : #constants }
+CZPool class >> address [
+	^ #address
 ]
 
 { #category : #constants }
@@ -80,7 +87,7 @@ CZPool class >> impactFactor [
 { #category : #initialize }
 CZPool class >> initialize [
 	"self initialize"
-	
+	Address := self address.
 	Author := self author. 
 	BookTitle := self booktitle.
 	Chapter := self chapter.
@@ -102,6 +109,8 @@ CZPool class >> initialize [
 	URL := self URL.
 	Misc := self misc.
 	Note := self note. 
+	Month := self month.
+	Year := self year.
 	DefaultFields := {
 		self author.
 		self title.
@@ -116,6 +125,8 @@ CZPool class >> initialize [
 		self school.
 		self series.
 		self volume.
+		self month.
+		self year.
 		self note.
 		self URL. 
 		self DOI.
@@ -138,6 +149,11 @@ CZPool class >> journal [
 { #category : #constants }
 CZPool class >> misc [ 
 	^ #misc
+]
+
+{ #category : #constants }
+CZPool class >> month [
+	^ #month
 ]
 
 { #category : #constants }

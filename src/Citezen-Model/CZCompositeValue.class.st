@@ -12,7 +12,7 @@ CZCompositeValue class >> with: aValue [
 	^ self new add: aValue
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #visiting }
 CZCompositeValue >> acceptVisitor: aVisitor [
 	aVisitor visitCompositeValue: self
 ]
@@ -37,26 +37,24 @@ CZCompositeValue >> addAll: aCollection [
 	aCollection do: [ :each | self add: each].
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #iterating }
 CZCompositeValue >> do: aBlock [
 	value do: aBlock
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #iterating }
 CZCompositeValue >> do: aBlock separatedBy: aSecondBlock [
 	value do: aBlock separatedBy: aSecondBlock 
 	
 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #accessing }
 CZCompositeValue >> expanded [
 	"evaluate recursively and concatenate"
 	| aStream |
 	aStream := WriteStream on: String new.
-
 	value do: [ :each | aStream nextPutAll: each expanded ].
-
 	^ aStream contents 
 ]
 
@@ -66,12 +64,12 @@ CZCompositeValue >> initialize [
 	value := OrderedCollection new
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #testing }
 CZCompositeValue >> isComposite [
 	^ true
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #accessing }
 CZCompositeValue >> notExpanded [
 	"return the bibtex # notation"
 	
@@ -89,7 +87,7 @@ CZCompositeValue >> notExpanded [
 	^ super notExpanded 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 CZCompositeValue >> printOn: aStream [
 	super printOn: aStream.
 	aStream nextPut: $(.

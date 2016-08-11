@@ -7,17 +7,17 @@ Class {
 	#category : #'Citezen-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #visitor }
 CZMacroReference >> acceptVisitor: aVisitor [
 	aVisitor visitMacroReference: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #enumerating }
 CZMacroReference >> do: aBlock [
 	value do: aBlock 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZMacroReference >> expanded [
 	"evaluation fixpoint"
 	^ (self lookupMacroAt: value asLowercase asSymbol) value

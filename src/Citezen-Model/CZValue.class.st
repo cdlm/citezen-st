@@ -26,27 +26,27 @@ CZValue class >> with: aValue [
 	^ self new setValue: aValue
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visitor }
 CZValue >> acceptVisitor: aVisitor [
 	self subclassResponsibility 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZValue >> expanded [
 	^ value
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 CZValue >> isComposite [
 	^ false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZValue >> notExpanded [
 	^ value
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZValue >> setValue: aValue [
 	value := aValue
 ]

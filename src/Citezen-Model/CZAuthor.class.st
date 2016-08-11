@@ -36,6 +36,24 @@ CZAuthor class >> named: aCollection firstNames: firstNamesCollection junior: ju
 ]
 
 { #category : #displaying }
+CZAuthor >> asBibKey [
+	"in lowercase and without \'{ and \' in the string"
+	^ String streamContents: [:stream |
+		self displayAsBibKeyOn: stream ]
+]
+
+{ #category : #private }
+CZAuthor >> cleanForBibKey: aString [
+	"Return a copy with the first letter capitalized"
+
+	aString isEmpty ifTrue: [ ^ '' ].
+	^ String streamContents: [ :str |
+		aString do: [ :aChar | 
+			aChar isLetter ifTrue: [ str nextPut: aChar asLowercase ]]]
+	
+]
+
+{ #category : #displaying }
 CZAuthor >> compactLastName [
 	^ String streamContents: [:stream |
 		self displayCompactLastNamesOn: stream ]
@@ -73,6 +91,15 @@ CZAuthor >> dispatchVonLast: aCollection [
 		ifTrue: [index := aCollection size].
 	self particles: (aCollection removeFirst: index - 1).
 	self lastNames: aCollection
+]
+
+{ #category : #displaying }
+CZAuthor >> displayAsBibKeyOn: aStream [
+	"Uquillas Gomez -> uquillasgomez"
+	"B\'era -> bera"
+	self lastNames
+		do: [:lastName | aStream nextPutAll: (self cleanForBibKey: lastName)]
+
 ]
 
 { #category : #displaying }

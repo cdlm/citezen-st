@@ -17,12 +17,12 @@ CZInteger class >> fieldsOfThisFormat [
 	^ #(year number volume edition)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #visitor }
 CZInteger >> acceptVisitor: aVisitor [
 	aVisitor visitInteger: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CZInteger >> expanded [
 	^ value asInteger
 ]

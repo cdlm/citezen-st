@@ -175,7 +175,8 @@ CZSet >> initialize [
 
 { #category : #accessing }
 CZSet >> isEmpty [
-	^self entries isEmpty
+
+	^ self entries isEmpty
 ]
 
 { #category : #accessing }
