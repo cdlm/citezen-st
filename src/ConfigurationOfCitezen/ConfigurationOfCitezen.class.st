@@ -2209,5 +2209,5 @@ ConfigurationOfCitezen >> version32: spec [
 				package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.14';
 				package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
-				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.888' ]
+				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.88' ]
 ]
