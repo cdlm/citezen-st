@@ -227,12 +227,16 @@ CZEntry class >> requiredFieldsFor: aSymbol [
 ]
 
 { #category : #'team ' }
+CZEntry class >> resetTeamMemberPatterns [
+	"self resetTeamMemberPatterns"
+	teamMemberPatterns := nil
+]
+
+{ #category : #'team ' }
 CZEntry class >> teamMemberPatterns [
 	^ teamMemberPatterns ifNil: [ teamMemberPatterns := 
-			#( '*Ducasse*S*' 
-				'*Denker*M*' 
-				'*Auverlot*'
-				'*Larcheveque*'
+			#( '*Ducasse*S*' '*Denker*M*' 
+				'*Auverlot*' '*Larcheveque*'
 				'*Anquetil*' 
 				'*Govin*'
 				'*Pollet*' 
@@ -240,8 +244,7 @@ CZEntry class >> teamMemberPatterns [
 				'*Laval*' 
 				'*Peirs*' 
 				'*Falleri*' 
-				'*Denier*' 
-			'*Marr*'
+				'*Denier*' '*Marr*'
 			'*Hora*' 
 			'*Etien*' 
 			'*Blondeau*'
@@ -262,7 +265,9 @@ CZEntry class >> teamMemberPatterns [
 			'*Ryseghem*' 
 			'*Papoulias*' 
 			'*Demarey*' 
-			'*Bera*' 
+			'*Bera*'
+			'*Miranda*'
+			'*B*ra*' 
 			'*Santos*')]
 ]
 
