@@ -66,7 +66,7 @@ RMODPublicationsDocBuilder class >> query20122016 [
 
 { #category : #generation }
 RMODPublicationsDocBuilder class >> teamFor20112016 [
-	^ #('*Ducasse*S*' '*Denker*M*' '*Auverlot*' '*Larcheveque*' '*Anquetil*' '*Govin*' '*Pollet*' '*Abdeen*' '*Laval*' '*Peirs*' '*Falleri*' '*Denier*' '*Marr*' '*Hora*' '*Etien*' '*Blondeau*' '*Casaccio*' '*Bruni*' '*Tesone*' '*Teruel*' '*Polito*' '*Martinez*Peck*' '*Uquillas*' '*Arnaud*' '*Bhatti*U*' '*Fernandes*' '*Razavizadeh*' '*Uquilla*' '*Dias*' '*Cassou*' '*Ryseghem*' '*Papoulias*' '*Demarey*' '*Bera*' '*Santos*' '*Miranda*' '*B*ra*')
+	^ #('*Ducasse*' '*Denker*' '*Auverlot*' '*Larcheveque*' '*Anquetil*' '*Govin*' '*Pollet*' '*Abdeen*' '*Laval*' '*Peirs*' '*Falleri*' '*Denier*' '*Marr*' '*Hora*' '*Etien*' '*Blondeau*' '*Casaccio*' '*Bruni*' '*Tesone*' '*Teruel*' '*Polito*' '*Martinez*Peck*' '*Uquillas*' '*Arnaud*' '*Bhatti*U*' '*Fernandes*' '*Razavizadeh*' '*Uquilla*' '*Dias*' '*Cassou*' '*Ryseghem*' '*Papoulias*' '*Demarey*' '*B*ra*' '*Santos*' '*Miranda*')
 ]
 
 { #category : #utils }
