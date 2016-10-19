@@ -1478,6 +1478,7 @@ ConfigurationOfCitezen >> baseline18: spec [
 			
 		spec
 			group: 'default' with: #('CoreAndTests');
+			group: 'NoWeb' with: #('default');
 			group: 'CoreAndTests' with: #('Core' 'Tests');
 			group: 'Core' with: #('Citezen-Model'
 							 'Citezen-Parsers'
