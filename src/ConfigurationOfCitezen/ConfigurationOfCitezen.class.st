@@ -1529,8 +1529,8 @@ ConfigurationOfCitezen >> stable: spec [
 	spec for: #'pharo2.x' version: '2.1'.
 	spec for: #'pharo3.x' version: '2.3'.
 	spec for: #'pharo4.x' version: '2.5'.
-	spec for: #'pharo5.x' version: '2.6'.
-	spec for: #'pharo6.x' version: '3.2'
+	spec for: #'pharo5.x' version: '3.3'.
+	spec for: #'pharo6.x' version: '3.3'
 ]
 
 { #category : #versions }
@@ -2207,6 +2207,28 @@ ConfigurationOfCitezen >> version32: spec [
 				package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.44';
 				package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.20';
 				package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.45';
+				package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.14';
+				package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.88' ]
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version33: spec [
+	<version: '3.3' imports: #('1.8-baseline')>
+	spec
+		for: #common
+		do: [ spec blessing: #release.
+			spec description: 'All green tests'.
+			spec author: 'StephaneDucasse'.
+			spec timestamp: '23/02/2017 16:43'.
+			spec
+				package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
+				package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.67';
+				package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+				package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.44';
+				package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.20';
+				package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.46';
 				package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.14';
 				package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
 				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
