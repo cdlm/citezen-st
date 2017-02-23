@@ -1,6 +1,6 @@
 Class {
 	#name : #CZLaTeXGeneratorTest,
-	#superclass : #TestCase,
+	#superclass : #CZAbstractFileFormatGeneratorTest,
 	#instVars : [
 		'entry',
 		'entry2',
@@ -79,10 +79,10 @@ CZLaTeXGeneratorTest >> testArticle [
 	
 	| result |
 	result := (CZLaTeXGenerator new visit: entry) outputStream contents.
-	self assert: result
+	self assert: result trimBoth
  = '
 	\pub  \czauthors{St\''ephane Ducasse and Damien Pollet},  \cztitle{Fingerprints},  In \czjournal{Journal of Information System}, 2010.
-'
+' trimBoth
 ]
 
 { #category : #setup }
@@ -94,10 +94,10 @@ CZLaTeXGeneratorTest >> testLatexAndCharacter [
 		visit: uqui2) outputStream contents.
 	self
 		assert:
-			result =
+			(self isString: result equalsTo:
  '
-	\pub  \czauthors{Mart\''in Dias, Ver\''onica Uquillas G\''{o}mez, Damien Cassou and St\''ephane Ducasse},  \cztitle{Software Integration Questions: A Quantitative Survey with \&}, 2014, https://hal.inria.fr/hal-01093496.
-'
+	\pub  \czauthors{Mart\''in Dias and Uquillas G\''{o}mez, Ver\''onica  and Damien Cassou and St\''ephane Ducasse},  \cztitle{Software Integration Questions: A Quantitative Survey with \&}, 2014, https://hal.inria.fr/hal-01093496.
+' )
 ]
 
 { #category : #setup }
@@ -107,8 +107,6 @@ CZLaTeXGeneratorTest >> testLongArticle [
 	| result |
 	result := (CZLaTeXGenerator new visit: entry2) outputStream contents.
 
-	self assert: result = 
- '
-	\pub  \czauthors{Hani Abdeen, Ilham Alloui, St\''ephane Ducasse, Damien Pollet and Mathieu Suen},  \cztitle{Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships},  In \czbooktitle{European Conference on Software Maintenance and Reengineering (CSMR)}, pp. 213--222, IEEE Computer Society Press, 2008, Acceptance rate: 24/87 = 27\%, http://scg.unibe.ch/archive/external/Abde08a.pdf.
-'
+	self assert: result trimBoth= 
+ '\pub  \czauthors{Hani Abdeen and Ilham Alloui and St\''ephane Ducasse and Damien Pollet and Mathieu Suen},  \cztitle{Package Reference Fingerprint: a Rich and Compact Visualization to Understand Package Relationships},  In \czbooktitle{European Conference on Software Maintenance and Reengineering (CSMR)}, pp. 213--222, IEEE Computer Society Press, 2008, Acceptance rate: 24/87 = 27\%, http://scg.unibe.ch/archive/external/Abde08a.pdf.'
 ]
