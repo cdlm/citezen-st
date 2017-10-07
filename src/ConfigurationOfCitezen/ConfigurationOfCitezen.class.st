@@ -55,7 +55,7 @@ ConfigurationOfCitezen class >> catalogChangeLog [
 { #category : #catalog }
 ConfigurationOfCitezen class >> catalogContactInfo [
 	"Returns a paragraph describing contact information such as email, mailing lists and website."
-	^ 'Contact Pharo4Stef@free.fr or Damien Pollet at damien.pollet@gmail.com'
+	^ 'Contact Stephane Ducasse at stepharo.self@gmail.com or Damien Pollet at damien.pollet@gmail.com'
 ]
 
 { #category : #catalog }
@@ -101,23 +101,6 @@ ConfigurationOfCitezen class >> ensureMetacello [
 		(Smalltalk at: #ConfigurationOfMetacello) perform: #load ]
 ]
 
-{ #category : #synching }
-ConfigurationOfCitezen class >> fetch [ 
-	
-
-	| packageNames |
-	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
-	packageNames 
-		do: [:each | Gofer new
-		squeaksource: 'Citezen';
-		package: each;
-		fetch ]
-
-
-
-
-]
-
 { #category : #'metacello tool support' }
 ConfigurationOfCitezen class >> isMetacelloConfig [
 	"Answer true and the Metacello tools will operate on you"
@@ -152,18 +135,6 @@ ConfigurationOfCitezen class >> loadNoWeb [
 	((ConfigurationOfCitezen project) latestVersion: #development) load: #NoWeb
 ]
 
-{ #category : #synching }
-ConfigurationOfCitezen class >> message [
-
-	^ message ifNil: [message := 'well you should use ConfigurationOfCitezen message: amessage ; push' ]
-]
-
-{ #category : #synching }
-ConfigurationOfCitezen class >> message: aString [
-
-	message := aString
-]
-
 { #category : #'metacello tool support' }
 ConfigurationOfCitezen class >> metacelloVersion: versionString loads: anArrayOrString [
 	"Stash the last version loaded and the list of packages loaded for that version. The list
@@ -176,24 +147,6 @@ ConfigurationOfCitezen class >> metacelloVersion: versionString loads: anArrayOr
 ConfigurationOfCitezen class >> project [
 
 	^self new project
-]
-
-{ #category : #synching }
-ConfigurationOfCitezen class >> push: aMessage [
-	"self  push: 'simpler message implementation' "
-
-	| packageNames |
-	packageNames := SystemOrganization categories select: [:each |    '*Citezen*' match: each].
-	packageNames 
-		do: [:each | Gofer new
-		squeaksource: 'Citezen';
-		package: each;
-		commit: self message ;
-		push ]
-
-
-
-
 ]
 
 { #category : #'development support' }
@@ -1504,6 +1457,7 @@ ConfigurationOfCitezen >> development: spec [
 	spec for: #'pharo3.x' version: '2.3'.
 	spec for: #'pharo4.x' version:  '1.7-baseline'.
 	spec for: #'pharo5.x' version:  '1.8-baseline'.
+	spec for: #'pharo6.x' version:  '1.8-baseline'.
 
 ]
 
@@ -1525,7 +1479,6 @@ ConfigurationOfCitezen >> stable: spec [
 	<symbolicVersion: #stable>
 	spec for: #pharo version: '0.8'.
 	spec for: #'pharo1.3.x' version: '0.8'.
-	"spec for: #'pharo1.4.x' version: '1.1'. previous stable"
 	spec for: #'pharo1.4.x' version: '1.6'.
 	spec for: #'pharo2.x' version: '2.1'.
 	spec for: #'pharo3.x' version: '2.3'.
@@ -2216,6 +2169,28 @@ ConfigurationOfCitezen >> version32: spec [
 
 { #category : #versions }
 ConfigurationOfCitezen >> version33: spec [
+	<version: '3.4' imports: #('1.8-baseline')>
+	spec
+		for: #common
+		do: [ spec blessing: #release.
+			spec description: 'All green tests (and more robust)'.
+			spec author: 'StephaneDucasse'.
+			spec timestamp: '23/02/2017 16:43'.
+			spec
+				package: 'Citezen-Checking' with: 'Citezen-Checking-StephaneDucasse.6';
+				package: 'Citezen-Model' with: 'Citezen-Model-StephaneDucasse.67';
+				package: 'Citezen-Parsers' with: 'Citezen-Parsers-StephaneDucasse.24';
+				package: 'Citezen-Rendering' with: 'Citezen-Rendering-StephaneDucasse.44';
+				package: 'Citezen-Query' with: 'Citezen-Query-StephaneDucasse.20';
+				package: 'Citezen-Reborn' with: 'Citezen-Reborn-StephaneDucasse.47';
+				package: 'Citezen-Stef' with: 'Citezen-Stef-StephaneDucasse.14';
+				package: 'Citezen-Herve' with: 'Citezen-Herve-HerveVerjus.3';
+				package: 'Citezen-Tools' with: 'Citezen-Tools-StephaneDucasse.3';
+				package: 'Citezen-Tests' with: 'Citezen-Tests-StephaneDucasse.88' ]
+]
+
+{ #category : #versions }
+ConfigurationOfCitezen >> version34: spec [
 	<version: '3.4' imports: #('1.8-baseline')>
 	spec
 		for: #common
