@@ -10,10 +10,12 @@ Class {
 	#classVars : [
 		'Book',
 		'BookChapter',
+		'Booklet',
 		'Deliverable',
 		'English',
 		'French',
 		'HDR',
+		'HandBook',
 		'InternationalConference',
 		'InternationalConferences',
 		'InternationalReview',
@@ -55,6 +57,8 @@ CZLocalisation class >> initializeEnglishEntries [
 	English at: InternationalConference put: 'Refereed Articles in International Conferences'.
 	English at: NationalReviewedConference put: 'Refereed Articles in National Conferences'.
  	English at: Book put: 'Books'.
+	English at: Booklet put: 'Booklets'.
+	English at: HandBook put: 'Handbooks'.
 	English at: BookChapter put: 'Book Chapters'.
 	English at: InvitedPaper put: 'Invited Articles'.
 	English at: #editor put: 'Editor'.
@@ -82,6 +86,8 @@ CZLocalisation class >> initializeFrenchEntries [
 	French at: InternationalConference put: 'Conf\''erences internationales avec comit\''e de lecture'.
 	French at: NationalReviewedConference put: 'Conf\''erences nationales avec comit\''e de lecture'.
  	French at: Book put: 'Livres'.
+	French at: Booklet put: 'Livrets'.
+	French at: HandBook put: 'Tutoriels'.
 	French at: BookChapter put: 'Articles dans un ouvrage collectif'.
 	French at: InvitedPaper put: 'Articles invit\''es'.
 	French at: #editor put: 'Editeur'.
@@ -109,6 +115,8 @@ CZLocalisation class >> initializeTypes [
 	InternationalConference := #internationalConferences.
 	NationalReviewedConference := #nationalConference.
 	Book := #book.
+	HandBook := #handbook.
+	Booklet := #booklet.	
 	BookChapter := #bookChapter.
 	InvitedPaper := #invitedPapers.
 	"Editor := #editor."
@@ -150,6 +158,12 @@ CZLocalisation >> bookChapters [
 ]
 
 { #category : #accessing }
+CZLocalisation >> booklets [
+
+	^ language at: Booklet
+]
+
+{ #category : #accessing }
 CZLocalisation >> books [
 
 	^ language at: Book
@@ -177,6 +191,12 @@ CZLocalisation >> english [
 CZLocalisation >> french [ 
 
 	language := French
+]
+
+{ #category : #accessing }
+CZLocalisation >> handbooks [
+
+	^ language at: Book
 ]
 
 { #category : #accessing }

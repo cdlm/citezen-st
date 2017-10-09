@@ -127,6 +127,11 @@ CZDocBuilder >> bookQuery [
 	^ CZQuery book
 ]
 
+{ #category : #queries }
+CZDocBuilder >> bookletQuery [
+	^ CZQuery booklet
+]
+
 { #category : #'public api' }
 CZDocBuilder >> build [
 	"Build the current document: i.e., add a document header and footer, filter entities that not desirable and build the document body."
