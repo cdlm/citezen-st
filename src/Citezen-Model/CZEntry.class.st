@@ -235,7 +235,7 @@ CZEntry class >> resetTeamMemberPatterns [
 { #category : #'team ' }
 CZEntry class >> teamMemberPatterns [
 	^ teamMemberPatterns ifNil: [ teamMemberPatterns := 
-			#( '*Ducasse*S*' '*Denker*M*' 
+			#( '*Ducasse*S*' '*S*Ducasse*' '*Denker*' 
 				'*Auverlot*' '*Larcheveque*'
 				'*Anquetil*' 
 				'*Govin*'
