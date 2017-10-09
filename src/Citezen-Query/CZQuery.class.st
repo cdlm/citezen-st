@@ -49,6 +49,14 @@ CZQuery class >> bookChapter [
 ]
 
 { #category : #builder }
+CZQuery class >> booklet [
+	^ CZFieldQuery
+		named: #annote
+		checks: [ :value | 
+			 '*booklet*' match: value ]
+]
+
+{ #category : #builder }
 CZQuery class >> conference [
 	^ CZTypeQuery checks: [ :value | value = 'inproceedings' ]
 ]
@@ -60,6 +68,7 @@ CZQuery class >> deliverable [
 
 { #category : #builder }
 CZQuery class >> editor [
+
 	^ (CZFieldQuery
 		named: #editor
 		checks: [ :value | value containsTeamMember: CZEntry teamMemberPatterns ])
