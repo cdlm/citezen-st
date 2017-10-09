@@ -42,6 +42,7 @@ StefPublicationsDocBuilder >> buildBody [
 		addBibSection: (self invitedQuery) withTitle: localization invitedPapers;
 		addBibSection: (self bookChapterQuery) withTitle: localization bookChapters;
 		addBibSection: (self bookQuery) withTitle: localization books;
+		addBibSection: (self bookletQuery) withTitle: localization booklets;
 		addBibSection: (self editorQuery) withTitle: localization editor;
 		addBibSection: (self internationalWorkshopQuery) withTitle: localization internationalReviewedWorkshops;
 		addBibSection: (self PhDAndHabilitationQuery) withTitle: localization phdAndHdr;
