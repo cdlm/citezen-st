@@ -8,7 +8,7 @@ Class {
 NicolasThemesDocBuilder >> addArchitectureSection [
 	self
 		addBibSection: NicolasHTMLSection
-		withTitle: 'Software Architecture'
+		withTitle: '<a name="archi"></a>Software Architecture'
 		withHeader: self architectureHeader
 		forEntries:(self themeQuery: 'architecture') 
 ]
@@ -33,7 +33,7 @@ NicolasThemesDocBuilder >> addBibSection: aSection withTitle: aString withHeader
 NicolasThemesDocBuilder >> addKnowledgeSection [
 	self
 		addBibSection: NicolasHTMLSection
-		withTitle: 'Knowledge management'
+		withTitle: '<a name="knwldge"></a>Knowledge management'
 		withHeader: self knowledgeHeader
 		forEntries:(self themeQuery: 'knowledge')
 ]
@@ -42,7 +42,7 @@ NicolasThemesDocBuilder >> addKnowledgeSection [
 NicolasThemesDocBuilder >> addMetricSection [
 	self
 		addBibSection: NicolasHTMLSection
-		withTitle: 'Software Quality / Metrics'
+		withTitle: '<a name="quality"></a>Software Quality / Metrics'
 		withHeader: self metricsHeader
 		forEntries:(self themeQuery: 'metric') 
 
@@ -52,9 +52,9 @@ NicolasThemesDocBuilder >> addMetricSection [
 NicolasThemesDocBuilder >> addOtherSection [
 	self
 		addBibSection: NicolasHTMLSection
-		withTitle: 'Other'
+		withTitle: '<a name="other"></a>Other'
 		withHeader: self otherHeader
-		forEntries:(self themeQuery: 'analysis') 
+		forEntries:(self themeQuery: 'other') 
 ]
 
 { #category : #sections }
@@ -71,7 +71,16 @@ NicolasThemesDocBuilder >> buildBody [
 
 	self document add: (CZHeader new text: '
 <p>You will find here my publications organized by topic.
-In my <a href="publications.html">publications page</a>, they are presented by type and in chronological order.</p>' ; yourself).
+In my <a href="publications.html">publications page</a>, they are presented by type and in chronological order.</p>
+
+<p>My work covers various topics of software maintenance:
+<ul>
+<li><a href="#archi">software architecture</a> and re-structuring, or how to help re-organizing a legacy software into coherent modules;</li>
+<li><a href="#quality">software quality</a>, to measure the maintenance activity and legacy software;</li>
+<li><a href="#knwldge">knowledge management</a>, to recover all the knowledge that is embedded in legacy software ; and,</li>
+<li><a href="#other">other aspects</a> of software maintenance management (software quality, risk management, ...)</li>
+</ul>
+</p>' ; yourself).
 	
 	self
 		addArchitectureSection ; 

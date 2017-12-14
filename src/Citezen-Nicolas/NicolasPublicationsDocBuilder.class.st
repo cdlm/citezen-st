@@ -28,7 +28,8 @@ In my <a href="themes.html">research themes page</a>, the same publications are 
 	      addBibSection: (self journalQuery) withTitle: localization  internationalReviewedJournal;
 		"addBibSection: (self topConferenceQuery) withTitle:  localization topConferences;"
 		addBibSection: (self nationalJournalQuery) withTitle: 'Refereed Articles in National Journals';
-		addBibSection: (self internationalConferenceQuery)  withTitle: localization internationalConference;
+		"adding topConf back to international conf"
+		addBibSection: (self internationalConferenceQuery OR: self topConferenceQuery)  withTitle: localization internationalConference;
 		addBibSection: (self nationalConferenceQuery) withTitle: localization nationalReviewedConference;
 		addBibSection: (self invitedQuery) withTitle: localization invitedPapers;
 		addBibSection: (self bookChapterQuery) withTitle: localization bookChapters;
@@ -37,8 +38,20 @@ In my <a href="themes.html">research themes page</a>, the same publications are 
 		addBibSection: (self internationalWorkshopQuery) withTitle: localization internationalReviewedWorkshops;
 		addBibSection: (self PhDAndHabilitationQuery) withTitle: localization phdAndHdr;
 
+		addBibSection: (self technicalReportQuery)   withTitle: localization technicalReport;
+
 		addBibSection: (self toolDemoQuery)   withTitle: localization toolDemo ;
 		addBibSection: (self vulgarisationQuery) withTitle: localization vulgarisation.
+]
+
+{ #category : #'as yet unclassified' }
+NicolasPublicationsDocBuilder >> filter [
+	"Adding a filter to remove entries that are explicitly ignored with TagNicolasA"
+	super filter.
+	workingBibSet := workingBibSet select: (CZFieldQuery 
+		named: #tagnicolasa 
+		checks: [ :value |  ('ignore' match: value) not ])
+
 ]
 
 { #category : #utils }
