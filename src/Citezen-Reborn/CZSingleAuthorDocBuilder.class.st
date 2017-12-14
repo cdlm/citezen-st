@@ -163,11 +163,17 @@ CZSingleAuthorDocBuilder >> generateXHTMLFile [
 { #category : #utils }
 CZSingleAuthorDocBuilder >> generateXHTMLFileFor: aDoc [
 	| visitor |
-	visitor := CZHTMLGenerator new.
+	visitor := self htmlGeneratorClass new.
 	fieldOrder ifNotNil: [ visitor fieldOrder: fieldOrder ].
 	visitor
 		outputStream: (FileStream newFileNamed: Date today yyyymmdd , '-Full.html');
 		visit: aDoc
+]
+
+{ #category : #accessing }
+CZSingleAuthorDocBuilder >> htmlGeneratorClass [
+	^ CZHTMLGenerator
+	
 ]
 
 { #category : #initialize }
