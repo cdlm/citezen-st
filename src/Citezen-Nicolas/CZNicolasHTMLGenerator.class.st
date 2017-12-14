@@ -18,12 +18,13 @@ CZNicolasHTMLGenerator >> visitBibSet: aSet [
 ]
 
 { #category : #visit }
-CZNicolasHTMLGenerator >> visitSection: aCZSection [
-	
-	outputStream 
+CZNicolasHTMLGenerator >> visitSectionTitle: aCZString [
+	outputStream
 		nextPutAll: '<h3>';
-		nextPutAll: (CZAccentuateCharactersParser parse: aCZSection name);
-		nextPutAll: '</h3>';
-		lf;
-		lf
+		nextPutAll:
+			(self treatString: aCZString expanded);
+		nextPutAll: '</h3>'.
+	self
+		line;
+		line
 ]

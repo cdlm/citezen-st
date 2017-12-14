@@ -21,11 +21,15 @@ NicolasThemesDocBuilder >> addBibSection: aSection withTitle: aString withHeader
 	(noEmptySection & entries size isZero)
 		ifTrue: [^ self].
 	entries sortByDateReverse.	
-	self addSection: (aSection new title: aString; yourself).
-	
-	self document add: (CZHeader new text: sectHead ; yourself).
-	
-	self document add:  (CZSet new addAll: entries ; yourself)
+	self
+		addSection:
+			(CZSection new
+				title: (CZString new setValue: aString);
+				text: (CZString new setValue: sectHead);
+				items: (CZSet new
+							addAll: entries;
+							yourself)
+				yourself).
 
 ]
 
