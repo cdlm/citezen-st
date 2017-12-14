@@ -342,7 +342,7 @@ CZDocBuilder >> teamEntryQuery [
 
 { #category : #queries }
 CZDocBuilder >> technicalReportQuery [
-	^ CZQuery techreport
+	^ CZQuery techReport
 ]
 
 { #category : #queries }
