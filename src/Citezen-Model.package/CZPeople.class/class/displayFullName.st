@@ -1,3 +1,0 @@
-customize
-displayFullName
-	^ #fullName

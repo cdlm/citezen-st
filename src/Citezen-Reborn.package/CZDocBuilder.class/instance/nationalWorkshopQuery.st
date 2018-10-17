@@ -1,3 +1,0 @@
-queries
-nationalWorkshopQuery
-	^ CZQuery nationalWorkshop

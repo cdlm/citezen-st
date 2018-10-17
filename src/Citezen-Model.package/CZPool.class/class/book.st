@@ -1,3 +1,0 @@
-constants
-book
-	^ #book

@@ -1,4 +1,0 @@
-utils
-extension
-
-	^ '-Full.html'

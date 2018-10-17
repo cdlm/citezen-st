@@ -1,1 +1,0 @@
-I manage the localisation of files and entries

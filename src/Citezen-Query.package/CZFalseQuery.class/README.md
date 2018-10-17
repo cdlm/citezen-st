@@ -1,1 +1,0 @@
-CZFalseQuery represents a query that always returns false.

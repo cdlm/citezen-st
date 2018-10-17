@@ -1,3 +1,0 @@
-generated
-parenthesizedStringId
-	^ 13

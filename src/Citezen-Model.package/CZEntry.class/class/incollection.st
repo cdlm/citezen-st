@@ -1,3 +1,0 @@
-metadata
-incollection
-	^ #incollection

@@ -1,3 +1,0 @@
-generated-reduction actions
-reduceActionFor__CommentDeclaration_MacroDeclaration_EntryDeclaration__1: nodes
-	^ OrderedCollection new

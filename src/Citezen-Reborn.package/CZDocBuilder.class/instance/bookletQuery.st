@@ -1,3 +1,0 @@
-queries
-bookletQuery
-	^ CZQuery booklet

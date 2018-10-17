@@ -1,4 +1,0 @@
-action
-blackListedFields
-	
-	^ blackListedFields 

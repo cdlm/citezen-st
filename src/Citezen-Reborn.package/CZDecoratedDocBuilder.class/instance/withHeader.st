@@ -1,4 +1,0 @@
-settings
-withHeader
-
-	noHeader := false

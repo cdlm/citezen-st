@@ -1,3 +1,0 @@
-queries
-journalQuery
-	^ CZQuery journal

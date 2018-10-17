@@ -1,3 +1,0 @@
-queries
-inSubmissionQuery
-	^ CZQuery inSubmission

@@ -1,1 +1,0 @@
-A Phrase which uses a block to control what is rendered. This is useful when the phrase depends on multiple parts of an entry.

@@ -1,3 +1,0 @@
-queries
-vulgarisationQuery
-	^ CZQuery vulgarisation

@@ -1,4 +1,0 @@
-utils
-generatorClass
-	^ CZHTMLGenerator
-	

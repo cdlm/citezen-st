@@ -1,4 +1,0 @@
-generate
-generatorClass
-
-	^ self subclassResponsibility 

@@ -1,4 +1,0 @@
-setting
-french 
-
-	language := French

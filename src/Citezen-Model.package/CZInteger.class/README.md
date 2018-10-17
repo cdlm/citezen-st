@@ -1,1 +1,0 @@
-A CZString represents an integer value in a BibTeX field.

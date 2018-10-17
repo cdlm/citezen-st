@@ -1,4 +1,0 @@
-accessing
-noHeader
-
-	noHeader := true

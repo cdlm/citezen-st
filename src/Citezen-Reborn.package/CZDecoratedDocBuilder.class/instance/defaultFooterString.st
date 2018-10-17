@@ -1,4 +1,0 @@
-initialize
-defaultFooterString
-	^ ''
-					

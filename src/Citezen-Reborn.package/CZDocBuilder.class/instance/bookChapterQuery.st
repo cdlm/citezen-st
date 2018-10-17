@@ -1,3 +1,0 @@
-queries
-bookChapterQuery
-	^ CZQuery bookChapter

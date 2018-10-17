@@ -1,3 +1,0 @@
-public
-OR: aQuery
-	^ CZTrueQueryInstance

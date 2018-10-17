@@ -1,4 +1,0 @@
-xhtml
-xhtmlName
-
-	^ 'Foo'

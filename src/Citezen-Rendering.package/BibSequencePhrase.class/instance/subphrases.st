@@ -1,3 +1,0 @@
-accessing
-subphrases
-	^ subphrases

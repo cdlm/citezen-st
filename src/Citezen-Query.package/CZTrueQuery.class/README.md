@@ -1,1 +1,0 @@
-CZTrueQuery represents a query that always returns true.

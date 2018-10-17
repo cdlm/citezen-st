@@ -1,1 +1,0 @@
-A CZCompositeValue represents a string value in a BibTeX field created with the concatenation of CZString or CZMacroReference.

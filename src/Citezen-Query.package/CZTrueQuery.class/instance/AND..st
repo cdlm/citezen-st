@@ -1,3 +1,0 @@
-public
-AND: aQuery
-	^ aQuery

@@ -1,3 +1,0 @@
-queries
-technicalReportQuery
-	^ CZQuery techreport

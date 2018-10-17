@@ -1,4 +1,0 @@
-configuration
-setAuthorDisplayAsFullName
-
-	expandOption := #useDisplayFullName

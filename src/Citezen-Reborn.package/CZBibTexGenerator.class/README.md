@@ -1,1 +1,0 @@
-to generate bibtex out of bibset entries :)

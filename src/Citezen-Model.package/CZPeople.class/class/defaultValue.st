@@ -1,3 +1,0 @@
-default
-defaultValue
-	^ self with: #()

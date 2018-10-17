@@ -1,3 +1,0 @@
-customize
-displayShortenedName
-	^ #shortenedName

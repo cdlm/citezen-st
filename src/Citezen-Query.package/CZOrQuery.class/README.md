@@ -1,1 +1,0 @@
-Returns leftAnd value: or rightAnd value: on the value: call

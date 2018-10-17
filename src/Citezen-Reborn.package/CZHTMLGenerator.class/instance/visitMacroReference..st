@@ -1,3 +1,0 @@
-visiting
-visitMacroReference: aCZMacroReference
-	outputStream nextPutAll: aCZMacroReference expanded 

@@ -1,3 +1,0 @@
-queries
-toolDemoQuery
-	^ CZQuery toolDemo

@@ -1,3 +1,0 @@
-utils
-extension
-	^ '-AllSectionsSorted.tex'

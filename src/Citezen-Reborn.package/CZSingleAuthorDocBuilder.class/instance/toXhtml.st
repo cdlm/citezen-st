@@ -1,3 +1,0 @@
-accessing
-toXhtml
-	xhtml := true

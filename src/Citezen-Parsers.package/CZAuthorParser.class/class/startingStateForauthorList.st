@@ -1,3 +1,0 @@
-generated
-startingStateForauthorList
-	^ 1

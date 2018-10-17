@@ -1,4 +1,0 @@
-accessing
-footerString
-
-	^ '\end{thebibliography}'

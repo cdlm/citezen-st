@@ -1,4 +1,0 @@
-setting
-english
-
-	language := English

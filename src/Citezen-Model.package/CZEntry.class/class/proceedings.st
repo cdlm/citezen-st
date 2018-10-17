@@ -1,3 +1,0 @@
-metadata
-proceedings
-	^ #proceedings

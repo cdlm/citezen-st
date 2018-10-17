@@ -1,3 +1,0 @@
-generated
-bracedStringId
-	^ 10

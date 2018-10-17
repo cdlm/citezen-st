@@ -1,4 +1,0 @@
-initialization
-doiAndHalFields
-	^ { DOI . HALID }
-	

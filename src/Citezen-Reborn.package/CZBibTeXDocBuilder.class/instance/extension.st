@@ -1,4 +1,0 @@
-generate
-extension
-	
-	^ '-Regenerated.bib'

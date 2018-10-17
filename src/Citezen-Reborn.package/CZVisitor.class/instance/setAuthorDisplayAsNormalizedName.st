@@ -1,4 +1,0 @@
-configuration
-setAuthorDisplayAsNormalizedName
-
-	expandOption := #useDisplayNormalizedName

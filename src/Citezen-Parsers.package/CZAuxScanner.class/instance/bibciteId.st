@@ -1,3 +1,0 @@
-generated
-bibciteId
-	^ 7

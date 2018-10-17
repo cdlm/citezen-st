@@ -1,1 +1,0 @@
-A CZString represents a string value in a BibTeX field.

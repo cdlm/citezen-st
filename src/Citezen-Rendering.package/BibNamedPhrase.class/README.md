@@ -1,1 +1,0 @@
-A BibNamedPhrase wraps another BibPhrase to give it a name, or mark it as a block. Name and block-ness are left for the renderer to interpret.

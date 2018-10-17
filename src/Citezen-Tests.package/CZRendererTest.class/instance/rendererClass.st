@@ -1,3 +1,0 @@
-setup
-rendererClass
-	self shouldBeImplemented

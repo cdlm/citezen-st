@@ -1,1 +1,0 @@
-BibTextRenderer renders bibliographic objects to plain-text-based formats.

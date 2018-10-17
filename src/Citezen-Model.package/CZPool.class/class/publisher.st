@@ -1,3 +1,0 @@
-constants
-publisher
-	^ #publisher

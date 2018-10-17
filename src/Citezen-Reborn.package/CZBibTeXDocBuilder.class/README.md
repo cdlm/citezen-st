@@ -1,1 +1,0 @@
-could be a subclass of decorated but should be turned into a strategy.

@@ -1,3 +1,0 @@
-generated
-startingStateForBodyContents
-	^ 2

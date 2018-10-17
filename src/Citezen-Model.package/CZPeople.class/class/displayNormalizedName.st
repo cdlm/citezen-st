@@ -1,3 +1,0 @@
-customize
-displayNormalizedName
-	^ #normalizedName

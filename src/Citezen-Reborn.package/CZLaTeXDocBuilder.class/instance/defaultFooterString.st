@@ -1,3 +1,0 @@
-building
-defaultFooterString
-	^ '\end{document}'

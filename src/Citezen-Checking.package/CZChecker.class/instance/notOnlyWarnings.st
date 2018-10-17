@@ -1,3 +1,0 @@
-interface
-notOnlyWarnings
-	warnings := false

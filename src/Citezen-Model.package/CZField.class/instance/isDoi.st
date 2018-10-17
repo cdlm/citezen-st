@@ -1,4 +1,0 @@
-testing
-isDoi
-
-	^ key = #doi

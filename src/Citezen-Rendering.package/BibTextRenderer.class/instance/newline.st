@@ -1,3 +1,0 @@
-rendering
-newline
-	stream cr

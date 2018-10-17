@@ -1,3 +1,0 @@
-default
-fieldsOfThisFormat
-	^ #(author editor)

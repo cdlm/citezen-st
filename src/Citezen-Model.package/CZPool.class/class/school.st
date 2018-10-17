@@ -1,3 +1,0 @@
-constants
-school
-	^ #school

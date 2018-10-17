@@ -1,0 +1,4 @@
+*.sources
+*.image
+*.changes
+pharo-local/
