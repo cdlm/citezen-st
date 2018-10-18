@@ -82,31 +82,6 @@ CZEntry class >> incollection [
 ]
 
 { #category : #metadata }
-CZEntry class >> initialize [
-	"self initialize"
-			
-	optionalFieldsDictionary := Dictionary new.
-	
-	optionalFieldsDictionary 
-		at: #article put: #(volume number pages month note key),self inriaFields;
-		at: #book put: #(volume series address edition month note key),self inriaFields;
-		at: #booklet put: #(author howpublished address month year note key),self inriaFields;
-		at: #conference put: #(editor pages organization publisher address month note key),self inriaFields;
-		at: #inbook put: #(volume series address edition month note key),self inriaFields;
-		at: #incollection put: #(editor pages organization publisher address month note key),self inriaFields;
-		at: #inproceedings put: #(editor series pages organization publisher address month note key),self inriaFields;
-		at: #manual put: #(author, organization, address, edition, month, year, note, key),self inriaFields;
-		at: #mastersthesis put: #(address month note key),self inriaFields;
-		at: #misc put: #(author title howpublished month year note key),self inriaFields;
-		at: #phdthesis put: #(aaddress month note key),self inriaFields;
-		at: #proceedings put: #(editor publisher organization address month note key),self inriaFields;
-		at: #techreport put: #(type number address month note key),self inriaFields;
-		at: #unpublished put: #(month year key),self inriaFields
-		
-	
-]
-
-{ #category : #metadata }
 CZEntry class >> initializeNeededFields [
 	"self initializeNeededFields"
 	neededFieldsDictionary := Dictionary new.
@@ -182,11 +157,6 @@ CZEntry class >> inproceedings [
 	^ #inproceedings
 ]
 
-{ #category : #'instance creation' }
-CZEntry class >> inriaFields [
-	^ #(hal keywords annote aeresstatus aeres selectif labo inria impactfactor rate x-editorial-board x-proceedings x-international-audience x-pays x-invited-conference x-scientific-popularization )
-]
-
 { #category : #metadata }
 CZEntry class >> manual [
 	^ #manual
@@ -208,14 +178,6 @@ CZEntry class >> phdthesis [
 ]
 
 { #category : #metadata }
-CZEntry class >> privateFields [
-	"privateFields is used to determine the fields that should be removed from our extended bib to offer a public bib"
-	"Would be probably better to say that private is everything that is not public"
-	
-	^ #(hal keywords annote aeresstatus aeres selectif labo inria rate #'x-editorial-board' #'x-proceedings' #'x-international-audience' #'x-pays' #'x-invited-conference' #'x-scientific-popularization' #'x-language'  #'peerreview' #'hal-id' #Cvs)
-]
-
-{ #category : #metadata }
 CZEntry class >> proceedings [
 	^ #proceedings
 ]
@@ -234,41 +196,7 @@ CZEntry class >> resetTeamMemberPatterns [
 
 { #category : #'team ' }
 CZEntry class >> teamMemberPatterns [
-	^ teamMemberPatterns ifNil: [ teamMemberPatterns := 
-			#( '*Ducasse*S*' '*S*Ducasse*' '*Denker*' 
-				'*Auverlot*' '*Larcheveque*'
-				'*Anquetil*' 
-				'*Govin*'
-				'*Pollet*' 
-				'*Abdeen*' 
-				'*Laval*' 
-				'*Peirs*' 
-				'*Falleri*' 
-				'*Denier*' '*Marr*'
-			'*Hora*' 
-			'*Etien*' 
-			'*Blondeau*'
-			'*Casaccio*' 
-			'*Bruni*'
-			'*Tesone*'
-			'*Teruel*'
-			'*Polito*' 
-			'*Martinez*Peck*' 
-			'*Uquillas*' 
-			'*Arnaud*' 
-			'*Bhatti*U*' 
-			'*Fernandes*' 
-			'*Razavizadeh*' 
-			'*Uquilla*' 
-			'*Dias*' 
-			'*Cassou*' 
-			'*Ryseghem*' 
-			'*Papoulias*' 
-			'*Demarey*' 
-			'*Bera*'
-			'*Miranda*'
-			'*B*ra*' 
-			'*Santos*')]
+	^ teamMemberPatterns ifNil: [ teamMemberPatterns := #( ) ]
 ]
 
 { #category : #'team ' }
@@ -281,19 +209,6 @@ CZEntry class >> teamMemberPatterns: array [
 { #category : #metadata }
 CZEntry class >> techreport [
 	^ #techreport
-]
-
-{ #category : #metadata }
-CZEntry class >> test [
-	"self test"
-	^  { CZPool author . CZPool title . CZPool journal . CZPool title }
-
-]
-
-{ #category : #metadata }
-CZEntry class >> test2 [
-	"self test"
-	^  CZPool author
 ]
 
 { #category : #'instance creation' }

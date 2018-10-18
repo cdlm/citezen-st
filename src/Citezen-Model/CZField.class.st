@@ -107,7 +107,7 @@ CZField >> isURL [
 	^ key = #url
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 CZField >> isUndefined [
 	^ false
 ]

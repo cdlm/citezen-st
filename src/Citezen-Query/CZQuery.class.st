@@ -19,12 +19,6 @@ Class {
 }
 
 { #category : #builder }
-CZQuery class >> PhDAndHabilitation [
-	^ (CZTypeQuery checks: [ :each | each = #phdthesis ])
-		OR: (self annotationWithType: '*habilitation*')
-]
-
-{ #category : #builder }
 CZQuery class >> annotationWithType: aString [
 
 	^  CZFieldQuery 
@@ -44,40 +38,8 @@ CZQuery class >> book [
 ]
 
 { #category : #builder }
-CZQuery class >> bookChapter [
-	^ self annotationWithType: '*articlebook*'
-]
-
-{ #category : #builder }
-CZQuery class >> booklet [
-	^ CZFieldQuery
-		named: #annote
-		checks: [ :value | 
-			 '*booklet*' match: value ]
-]
-
-{ #category : #builder }
 CZQuery class >> conference [
 	^ CZTypeQuery checks: [ :value | value = 'inproceedings' ]
-]
-
-{ #category : #builder }
-CZQuery class >> deliverable [
-	^ self annotationWithType: '*deliverable*'
-]
-
-{ #category : #builder }
-CZQuery class >> editor [
-
-	^ (CZFieldQuery
-		named: #editor
-		checks: [ :value | value containsTeamMember: CZEntry teamMemberPatterns ])
-		OR: (self annotationWithType: '*workshopproceedings*')
-]
-
-{ #category : #builder }
-CZQuery class >> inSubmission [
-	^ CZFieldQuery named: #keywords checks: [ :value | '*insubmission*' match: value ]
 ]
 
 { #category : #'initialize-release' }
@@ -89,57 +51,9 @@ CZQuery class >> initialize [
 ]
 
 { #category : #builder }
-CZQuery class >> internationalConference [
-	^ CZFieldQuery
-		named: #annote
-		checks: [ :value | 
-			 '*internationalconference*' match: value ]
-]
-
-{ #category : #builder }
-CZQuery class >> internationalJournal [
-	^ CZFieldQuery
-		named: #annote
-		checks: [ :value | 
-			'*internationaljournal*' match: value ]
-]
-
-{ #category : #builder }
-CZQuery class >> internationalWorkshop [
-	^ self annotationWithType: '*internationalworkshop*'
-]
-
-{ #category : #builder }
-CZQuery class >> invitedQuery [
-	^ self annotationWithType: '*invited*'
-]
-
-{ #category : #builder }
 CZQuery class >> journal [
 	"returns international and national journals."
 	^ CZTypeQuery checks: [ :value | value = #article ]
-]
-
-{ #category : #builder }
-CZQuery class >> nationalConference [
-	"pay attention not to put a star else internationalconference will be matched too"
-
-	^ self annotationWithType: 'nationalconference*'
-]
-
-{ #category : #builder }
-CZQuery class >> nationalJournal [
-	^ CZFieldQuery named: #annote checks: [ :value | ('*nationaljournal*' match: value) and: [ ('*internationaljournal*' match: value) not ] ]
-]
-
-{ #category : #builder }
-CZQuery class >> nationalWorkshop [
-	^ self annotationWithType: 'nationalworkshop*'
-]
-
-{ #category : #builder }
-CZQuery class >> periodical [
-	^ self annotationWithType: '*periodical*'
 ]
 
 { #category : #builder }
@@ -148,28 +62,8 @@ CZQuery class >> phdthesis [
 ]
 
 { #category : #builder }
-CZQuery class >> teamEntry [
-	^ CZEntryQuery checks: [ :each | each isTeamEntry ]
-]
-
-{ #category : #builder }
 CZQuery class >> techReport [
 	^ CZTypeQuery checks: [ :value | value = 'techreport' ]
-]
-
-{ #category : #builder }
-CZQuery class >> toolDemo [
-	^ self annotationWithType: '*tooldemo*'
-]
-
-{ #category : #builder }
-CZQuery class >> topConference [
-	^ self annotationWithType: '*topconference*'
-]
-
-{ #category : #builder }
-CZQuery class >> vulgarisation [
-	^ self annotationWithType: '*vulgarisation*'
 ]
 
 { #category : #builder }

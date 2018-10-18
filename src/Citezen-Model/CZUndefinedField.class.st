@@ -7,7 +7,7 @@ Class {
 	#category : 'Citezen-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 CZUndefinedField >> isUndefined [
 	^ true
 ]
