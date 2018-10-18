@@ -35,6 +35,15 @@ CZAuthor class >> named: aCollection firstNames: firstNamesCollection junior: ju
 		yourself
 ]
 
+{ #category : #comparing }
+CZAuthor >> = other [
+	^ self class == other class
+		and: [ lastNames = other lastNames
+			and: [ firstNames = other firstNames
+				and: [ particles = other particles
+					and: [ junior = other junior ] ] ] ]
+]
+
 { #category : #displaying }
 CZAuthor >> asBibKey [
 	"in lowercase and without \'{ and \' in the string"
@@ -69,8 +78,8 @@ CZAuthor >> dispatchFirstVonLast: aCollection [
 			firstNames: aCollection allButLast;
 			lastNames: (aCollection last: 1);
 			yourself].
-	self firstNames: (aCollection removeFirst: index - 1).
-	self dispatchVonLast: aCollection
+	self firstNames: (aCollection copyFrom: 1 to: index - 1).
+	self dispatchVonLast: (aCollection copyFrom: index to: aCollection size)
 ]
 
 { #category : #private }
@@ -89,8 +98,8 @@ CZAuthor >> dispatchVonLast: aCollection [
 	index := aCollection findFirst: [:name | name first isUppercase].
 	index = 0 "no name after particles"
 		ifTrue: [index := aCollection size].
-	self particles: (aCollection removeFirst: index - 1).
-	self lastNames: aCollection
+	self particles: (aCollection copyFrom: 1 to: index - 1).
+	self lastNames: (aCollection copyFrom: index to: aCollection size)
 ]
 
 { #category : #displaying }
@@ -145,12 +154,12 @@ CZAuthor >> displayShortenedNameOn: aStream [
 
 { #category : #accessing }
 CZAuthor >> firstNames [
-	^ firstNames ifNil: [OrderedCollection new]
+	^ firstNames
 ]
 
 { #category : #accessing }
 CZAuthor >> firstNames: aCollection [
-	firstNames := aCollection
+	firstNames := aCollection asArray
 ]
 
 { #category : #displaying }
@@ -162,23 +171,28 @@ CZAuthor >> fullName [
 ]
 
 { #category : #accessing }
+CZAuthor >> initialize [
+	firstNames := lastNames := junior := particles := #()
+]
+
+{ #category : #accessing }
 CZAuthor >> junior [
-	^ junior ifNil: [OrderedCollection new]
+	^ junior
 ]
 
 { #category : #accessing }
 CZAuthor >> junior: aCollection [
-	junior := aCollection
+	junior := aCollection asArray
 ]
 
 { #category : #accessing }
 CZAuthor >> lastNames [
-	^ lastNames ifNil: [OrderedCollection new]
+	^ lastNames
 ]
 
 { #category : #accessing }
 CZAuthor >> lastNames: aCollection [
-	lastNames := aCollection
+	lastNames := aCollection asArray
 ]
 
 { #category : #displaying }
@@ -189,12 +203,12 @@ CZAuthor >> normalizedName [
 
 { #category : #accessing }
 CZAuthor >> particles [
-	^ particles ifNil: [OrderedCollection new]
+	^ particles
 ]
 
 { #category : #accessing }
 CZAuthor >> particles: aCollection [
-	particles := aCollection
+	particles := aCollection asArray
 ]
 
 { #category : #printing }
